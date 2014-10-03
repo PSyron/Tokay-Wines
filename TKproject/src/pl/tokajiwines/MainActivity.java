@@ -20,12 +20,11 @@ public class MainActivity extends Activity implements
 	 * navigation drawer.
 	 */
 	private NavigationDrawerFragment mNavigationDrawerFragment;
-
+	// zmiana
 	/**
 	 * Used to store the last screen title. For use in
 	 * {@link #restoreActionBar()}.
 	 */
-	// kupa
 	private CharSequence mTitle;
 
 	@Override
