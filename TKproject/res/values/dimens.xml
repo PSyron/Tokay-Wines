@@ -9,6 +9,6 @@
          https://developer.android.com/design/patterns/navigation-drawer.html
     -->
     <dimen name="navigation_drawer_width">240dp</dimen>
-    <dimen name="item_news_height">72dp</dimen>
+    <dimen name="item_lists_height">72dp</dimen>
 
 </resources>
