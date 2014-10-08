@@ -98,6 +98,10 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
+
+        View header = inflater.inflate(R.layout.menu_header, null);
+
+        mDrawerListView.addHeaderView(header);
         //TODO do przerobki
 
         mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar().getThemedContext(),
@@ -107,6 +111,7 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_tour), getString(R.string.title_settings)
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+
         return mDrawerListView;
     }
 

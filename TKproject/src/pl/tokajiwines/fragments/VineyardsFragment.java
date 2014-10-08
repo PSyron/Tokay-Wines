@@ -8,29 +8,29 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import pl.tokajiwines.R;
-import pl.tokajiwines.adapters.WineyardsAdapter;
+import pl.tokajiwines.adapters.VineyardsAdapter;
 
-public class WineyardsFragment extends BaseFragment {
+public class VineyardsFragment extends BaseFragment {
 
     ListView mUiList;
-    WineyardsAdapter mAdapter;
+    VineyardsAdapter mAdapter;
 
-    public static WineyardsFragment newInstance() {
-        WineyardsFragment fragment = new WineyardsFragment();
+    public static VineyardsFragment newInstance() {
+        VineyardsFragment fragment = new VineyardsFragment();
         //        Bundle args = new Bundle();
         //        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         //        fragment.setArguments(args);
         return fragment;
     }
 
-    public WineyardsFragment() {
+    public VineyardsFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
         mUiList = (ListView) rootView.findViewById(R.id.frag_news_list);
-        mAdapter = new WineyardsAdapter(getActivity());
+        mAdapter = new VineyardsAdapter(getActivity());
         mUiList.setAdapter(mAdapter);
         return rootView;
     }

@@ -13,7 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import pl.tokajiwines.fragments.GuideFragment;
+import pl.tokajiwines.fragments.MapFragment;
 import pl.tokajiwines.fragments.NewsFragment;
+import pl.tokajiwines.fragments.WinesFragment;
+import pl.tokajiwines.fragments.VineyardsFragment;
 
 public class MainActivity extends Activity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -47,8 +51,20 @@ public class MainActivity extends Activity implements
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
-        if (position == 0) {
+        if (position == 1) {
             fragmentManager.beginTransaction().replace(R.id.container, NewsFragment.newInstance())
+                    .commit();
+        } else if (position == 2) {
+            fragmentManager.beginTransaction().replace(R.id.container, WinesFragment.newInstance())
+                    .commit();
+        } else if (position == 3) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, VineyardsFragment.newInstance()).commit();
+        } else if (position == 4) {
+            fragmentManager.beginTransaction().replace(R.id.container, MapFragment.newInstance())
+                    .commit();
+        } else if (position == 5) {
+            fragmentManager.beginTransaction().replace(R.id.container, GuideFragment.newInstance())
                     .commit();
         } else {
             fragmentManager.beginTransaction()

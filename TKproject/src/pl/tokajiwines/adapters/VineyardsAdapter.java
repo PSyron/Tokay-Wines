@@ -11,12 +11,12 @@ import android.widget.TextView;
 
 import pl.tokajiwines.R;
 
-public class WineyardsAdapter extends BaseAdapter {
+public class VineyardsAdapter extends BaseAdapter {
 
     Activity mActivity;
     private static LayoutInflater inflater = null;
 
-    public WineyardsAdapter(Activity act) {
+    public VineyardsAdapter(Activity act) {
         mActivity = act;
         inflater = (LayoutInflater) mActivity.getSystemService(mActivity.LAYOUT_INFLATER_SERVICE);
     }
@@ -50,7 +50,7 @@ public class WineyardsAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder = new Holder();
         View rowView;
-        rowView = inflater.inflate(R.layout.item_wineyard, null);
+        rowView = inflater.inflate(R.layout.item_vineyard, null);
         holder.title = (TextView) rowView.findViewById(R.id.item_wineyard_title);
         holder.content = (TextView) rowView.findViewById(R.id.item_wineyard_content);
         holder.img = (ImageView) rowView.findViewById(R.id.item_wineyard_image);

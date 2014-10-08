@@ -35,11 +35,11 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="pl.tokajiwines.acitivities.WineyardAcitvity"
+            android:name="pl.tokajiwines.acitivities.VineyardAcitvity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="pl.tokajiwines.acitivities.WineyardWinesActivity"
+            android:name="pl.tokajiwines.acitivities.VineyardWinesActivity"
             android:label="@string/app_name" >
         </activity>
     </application>
