@@ -22,13 +22,14 @@
             android:layout_margin="4dp"
             android:lines="1"
             android:text="Title"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/item_wineyard_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/item_news_title"
+            android:layout_below="@id/item_wineyard_title"
             android:layout_margin="4dp"
             android:lines="3"
             android:text="Tekst\n tekst\n tekst"

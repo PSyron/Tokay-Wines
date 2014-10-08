@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="menu_bg">#cccc</color>
+    <color name="menu_bg">#ff9966</color>
+    <color name="menu_item_bg">#ffcc99</color>
+    <color name="menu_item_bg_pressed">#ffcc99</color>
+    <color name="ab_bg_end">#ca0000</color>
+    <color name="ab_bg_start">#990000</color>
+    <color name="ab_bg_center">#b30000</color>
 
 </resources>

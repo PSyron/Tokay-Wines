@@ -56,7 +56,7 @@ public class NavigationDrawerFragment extends Fragment {
     private ListView mDrawerListView;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition = 1;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
@@ -101,7 +101,8 @@ public class NavigationDrawerFragment extends Fragment {
 
         View header = inflater.inflate(R.layout.menu_header, null);
 
-        mDrawerListView.addHeaderView(header);
+        //        mDrawerListView.addHeaderView(header);
+        mDrawerListView.addHeaderView(header, null, false);
         //TODO do przerobki
 
         mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar().getThemedContext(),
@@ -110,6 +111,9 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_wineyards), getString(R.string.title_map),
                         getString(R.string.title_tour), getString(R.string.title_settings)
                 }));
+
+        //        mDrawerListView.setAdapter(new NavigationDrawerAdapter(getActionBar().getThemedContext(),
+        //                android.R.layout.simple_list_item_activated_1));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
         return mDrawerListView;
@@ -254,7 +258,7 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
-        if (item.getItemId() == R.id.action_example) {
+        if (item.getItemId() == R.id.action_search) {
             Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
             return true;
         }

@@ -2,10 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#cccc"
+    android:background="@color/menu_bg"
     android:choiceMode="singleChoice"
     android:divider="@android:color/transparent"
-    android:dividerHeight="0dp"
+    android:dividerHeight="4dp"
     tools:context="pl.tokajiwines.NavigationDrawerFragment" >
 
 </ListView>
