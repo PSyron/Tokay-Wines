@@ -18,9 +18,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import pl.tokajiwines.adapters.MenuAdapter;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation
@@ -105,15 +106,16 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.addHeaderView(header, null, false);
         //TODO do przerobki
 
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1, android.R.id.text1, new String[] {
-                        getString(R.string.title_news), getString(R.string.title_wines),
-                        getString(R.string.title_wineyards), getString(R.string.title_map),
-                        getString(R.string.title_tour), getString(R.string.title_settings)
-                }));
+        //        mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar().getThemedContext(),
+        //                android.R.layout.simple_list_item_activated_1, android.R.id.text1, new String[] {
+        //                        getString(R.string.title_news), getString(R.string.title_wines),
+        //                        getString(R.string.title_wineyards), getString(R.string.title_map),
+        //                        getString(R.string.title_tour), getString(R.string.title_settings)
+        //                }));
 
         //        mDrawerListView.setAdapter(new NavigationDrawerAdapter(getActionBar().getThemedContext(),
         //                android.R.layout.simple_list_item_activated_1));
+        mDrawerListView.setAdapter(new MenuAdapter(getActivity()));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
         return mDrawerListView;
