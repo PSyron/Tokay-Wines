@@ -42,7 +42,8 @@ public class MenuAdapter extends BaseAdapter {
         View row = inflater.inflate(R.layout.item_menu, parent, false);
         TextView title;
         title = (TextView) row.findViewById(R.id.menu_title);
-
+        title.setCompoundDrawablesWithIntrinsicBounds(Constans.sMenuIcons[position], 0,
+                Constans.sMenuIcons[position], 0);
         title.setText(Constans.sMenuTitles[position]);
 
         return (row);

@@ -16,4 +16,9 @@ public class Constans {
             R.string.title_map, R.string.title_tour, R.string.title_settings
     };
 
+    public static final int[] sMenuIcons = {
+            R.drawable.menu_news, R.drawable.menu_wine, R.drawable.menu_vineyard,
+            R.drawable.menu_map, R.drawable.menu_guide, R.drawable.menu_settings
+    };
+
 }
