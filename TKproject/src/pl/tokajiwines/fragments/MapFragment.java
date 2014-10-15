@@ -2,10 +2,17 @@
 package pl.tokajiwines.fragments;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import pl.tokajiwines.R;
+import pl.tokajiwines.utils.Constans;
 
 public class MapFragment extends BaseFragment {
 
@@ -25,6 +33,8 @@ public class MapFragment extends BaseFragment {
     private GoogleMap googleMap;
     Context mCtx;
     MapView mMapView;
+    Spinner mUiRange;
+    Button mUiTours;
 
     public static MapFragment newInstance(Context ctx) {
         MapFragment fragment = new MapFragment(ctx);
@@ -70,46 +80,66 @@ public class MapFragment extends BaseFragment {
 
         // adding marker
         googleMap.addMarker(marker);
+        marker = new MarkerOptions().position(new LatLng(51.11272, 17.05908)).title(
+                "Pasaż Grunwaldzki");
+        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        googleMap.addMarker(marker);
+        marker = new MarkerOptions().position(new LatLng(51.10822, 17.06052)).title("C6 Polibuda");
+        googleMap.addMarker(marker);
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(51.1086408, 17.0608889)).zoom(15).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
+        mUiTours = (Button) v.findViewById(R.id.map_tours);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mCtx,
+                android.R.layout.simple_spinner_item, Constans.sMapRange);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mUiRange.setAdapter(dataAdapter);
+        mUiRange.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-        // Perform any camera updates here
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(mCtx, "OnClickListener : " + position, Toast.LENGTH_SHORT).show();
 
-        //        MapsInitializer.initialize(mCtx);
-        //        switch (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mCtx)) {
-        //            case ConnectionResult.SUCCESS:
-        //                Toast.makeText(getActivity(), "SUCCESS", Toast.LENGTH_SHORT).show();
-        //                mMapView = (MapView) rootView.findViewById(R.id.map);
-        //                mMapView.onCreate(savedInstanceState);
-        //                // Gets to GoogleMap from the MapView and does initialization stuff
-        //                if (mMapView != null) {
-        //                    map = mMapView.getMap();
-        //                    map.getUiSettings().setMyLocationButtonEnabled(false);
-        //                    map.setMyLocationEnabled(true);
-        //                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(43.1,
-        //                            -87.9), 10);
-        //                    map.animateCamera(cameraUpdate);
-        //                }
-        //                break;
-        //            case ConnectionResult.SERVICE_MISSING:
-        //                Toast.makeText(getActivity(), "SERVICE MISSING", Toast.LENGTH_SHORT).show();
-        //                break;
-        //            case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
-        //                Toast.makeText(getActivity(), "UPDATE REQUIRED", Toast.LENGTH_SHORT).show();
-        //                break;
-        //            default:
-        //                Toast.makeText(getActivity(),
-        //                        GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity()),
-        //                        Toast.LENGTH_SHORT).show();
-        //        }
-        //        if (map != null) {
-        //            Marker hamburg = map.addMarker(new MarkerOptions().position(HAMBURG).title("Hamburg"));
-        //            Marker kiel = map.addMarker(new MarkerOptions().position(KIEL).title("Kiel")
-        //                    .snippet("Kiel is cool")
-        //                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));
-        //        }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+
+            }
+        });
         return v;
+    }
+
+    //    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+    //        int Radius=6371;//radius of earth in Km         
+    //        double lat1 = StartP.latitude;
+    //        double lat2 = EndP.latitude;
+    //        double lon1 = StartP.longitude;
+    //        double lon2 = EndP.longitude;
+    //        double dLat = Math.toRadians(lat2-lat1);
+    //        double dLon = Math.toRadians(lon2-lon1);
+    //        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    //        Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+    //        Math.sin(dLon/2) * Math.sin(dLon/2);
+    //        double c = 2 * Math.asin(Math.sqrt(a));
+    //        double valueResult= Radius*c;
+    //        double km=valueResult/1;
+    //        DecimalFormat newFormat = new DecimalFormat("####");
+    //        int kmInDec =  Integer.valueOf(newFormat.format(km));
+    //        double meter=valueResult%1000;
+    //        int  meterInDec= Integer.valueOf(newFormat.format(meter));
+    //        Log.i("Radius Value",""+valueResult+"   KM  "+kmInDec+" Meter   "+meterInDec);
+    //
+    //        return Radius * c;
+    //     }
+
+    public float Distance(LatLng first, LatLng second) {
+        float[] results = new float[1];
+        Location.distanceBetween(first.latitude, first.longitude, second.latitude,
+                second.longitude, results);
+        return results[0];
     }
 
     @Override
