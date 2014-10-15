@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import pl.tokajiwines.fragments.GuideFragment;
+import pl.tokajiwines.fragments.MapFragment;
 import pl.tokajiwines.fragments.NewsFragment;
 import pl.tokajiwines.fragments.VineyardsFragment;
 import pl.tokajiwines.fragments.WinesFragment;
@@ -60,8 +61,8 @@ public class MainActivity extends Activity implements
             fragmentManager.beginTransaction()
                     .replace(R.id.container, VineyardsFragment.newInstance()).commit();
         } else if (position == 4) {
-            //            fragmentManager.beginTransaction().replace(R.id.container, MapFragment.newInstance())
-            //                    .commit();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, MapFragment.newInstance(this)).commit();
         } else if (position == 5) {
             fragmentManager.beginTransaction().replace(R.id.container, GuideFragment.newInstance())
                     .commit();
