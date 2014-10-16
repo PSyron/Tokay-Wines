@@ -33,13 +33,11 @@ public class MapFragment extends BaseFragment {
     }
 
     public MapFragment(Context ctx) {
-        // TODO Auto-generated constructor stub
         mCtx = ctx;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //   View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
         if (container == null) {
             return null;
@@ -74,41 +72,6 @@ public class MapFragment extends BaseFragment {
                 .target(new LatLng(51.1086408, 17.0608889)).zoom(15).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-        // Perform any camera updates here
-
-        //        MapsInitializer.initialize(mCtx);
-        //        switch (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mCtx)) {
-        //            case ConnectionResult.SUCCESS:
-        //                Toast.makeText(getActivity(), "SUCCESS", Toast.LENGTH_SHORT).show();
-        //                mMapView = (MapView) rootView.findViewById(R.id.map);
-        //                mMapView.onCreate(savedInstanceState);
-        //                // Gets to GoogleMap from the MapView and does initialization stuff
-        //                if (mMapView != null) {
-        //                    map = mMapView.getMap();
-        //                    map.getUiSettings().setMyLocationButtonEnabled(false);
-        //                    map.setMyLocationEnabled(true);
-        //                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(43.1,
-        //                            -87.9), 10);
-        //                    map.animateCamera(cameraUpdate);
-        //                }
-        //                break;
-        //            case ConnectionResult.SERVICE_MISSING:
-        //                Toast.makeText(getActivity(), "SERVICE MISSING", Toast.LENGTH_SHORT).show();
-        //                break;
-        //            case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
-        //                Toast.makeText(getActivity(), "UPDATE REQUIRED", Toast.LENGTH_SHORT).show();
-        //                break;
-        //            default:
-        //                Toast.makeText(getActivity(),
-        //                        GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity()),
-        //                        Toast.LENGTH_SHORT).show();
-        //        }
-        //        if (map != null) {
-        //            Marker hamburg = map.addMarker(new MarkerOptions().position(HAMBURG).title("Hamburg"));
-        //            Marker kiel = map.addMarker(new MarkerOptions().position(KIEL).title("Kiel")
-        //                    .snippet("Kiel is cool")
-        //                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));
-        //        }
         return v;
     }
 
