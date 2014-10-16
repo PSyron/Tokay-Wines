@@ -21,4 +21,8 @@ public class Constans {
             R.drawable.menu_map, R.drawable.menu_guide, R.drawable.menu_settings
     };
 
+    public static final String[] sMapRange = {
+            "5km", "10km", "15km", "20km"
+    };
+
 }

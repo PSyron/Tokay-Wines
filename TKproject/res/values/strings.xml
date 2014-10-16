@@ -4,14 +4,14 @@
     <string name="app_name">Tokaji Wines</string>
     <string name="title_news">News</string>
     <string name="title_wines">Wines</string>
-    <string name="title_wineyards">Wineyards</string>
+    <string name="title_wineyards">Producers</string>
     <string name="title_map">Map</string>
     <string name="title_tour">Guide</string>
     <string name="title_settings">Settings</string>
     <!-- Menu -->
     <string name="menu_news">News</string>
     <string name="menu_wines">Wines</string>
-    <string name="menu_wineyards">Wineyards</string>
+    <string name="menu_wineyards">Producers</string>
     <string name="menu_map">Find near on map</string>
     <string name="menu_tour">Guide around Tokaj</string>
     <string name="menu_settings">Settings</string>
