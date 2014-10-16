@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    
+	<!-- General -->
     <string name="app_name">Tokaji Wines</string>
+    <string name="name">Name</string>
     <string name="title_news">News</string>
     <string name="title_wines">Wines</string>
     <string name="title_wineyards">Producers</string>
@@ -19,5 +21,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
+    <!-- Vineyards -->
+    <string name="address">Address</string>
+    <string name="opening_hours">Opening hours</string>
+    <string name="phone_nb">Phone number</string>
 
 </resources>
