@@ -10,15 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import pl.tokajiwines.R;
+import pl.tokajiwines.models.ProducerListItem;
 
-public class VineyardsAdapter extends BaseAdapter {
+public class ProducersAdapter extends BaseAdapter {
 
     Activity mActivity;
     private static LayoutInflater inflater = null;
+    private ProducerListItem[] mProducers = null;
 
-    public VineyardsAdapter(Activity act) {
+    public ProducersAdapter(Activity act, ProducerListItem[] producers) {
         mActivity = act;
         inflater = (LayoutInflater) mActivity.getSystemService(mActivity.LAYOUT_INFLATER_SERVICE);
+        mProducers = producers;
     }
 
     public class Holder {
@@ -36,7 +39,7 @@ public class VineyardsAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         // TODO po pobraniu
-        return 100;
+        return mProducers.length;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class VineyardsAdapter extends BaseAdapter {
         return 0;
     }
 
-    //TODO zmienic kurwa
+    //TODO 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder = new Holder();
@@ -54,9 +57,9 @@ public class VineyardsAdapter extends BaseAdapter {
         holder.title = (TextView) rowView.findViewById(R.id.item_wineyard_title);
         holder.content = (TextView) rowView.findViewById(R.id.item_wineyard_content);
         holder.img = (ImageView) rowView.findViewById(R.id.item_wineyard_image);
-        holder.title.setText("Tytuł " + position);
+        holder.title.setText(mProducers[position].mName);
         holder.img.setImageResource(R.drawable.ic_launcher);
-        holder.content.setText("Tekst o pozycji " + position + "\n\n ma trzy linijki");
+        holder.content.setText(mProducers[position].mDescription);
         //        rowView.setOnClickListener(new OnClickListener() {
         //            @Override
         //            public void onClick(View v) {
