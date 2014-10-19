@@ -24,5 +24,9 @@ public class Constans {
     public static final String[] sMapRange = {
             "5km", "10km", "15km", "20km"
     };
+    
+    public static final String sUsername = "zpi";
+    
+    public static final String sPassword = "OEmGie";
 
 }
