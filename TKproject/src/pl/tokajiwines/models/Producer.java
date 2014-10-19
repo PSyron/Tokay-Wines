@@ -3,7 +3,7 @@ package pl.tokajiwines.models;
 
 import java.io.Serializable;
 
-public class Vineyards implements Serializable {
+public class Producer implements Serializable {
 
     /**
      * 

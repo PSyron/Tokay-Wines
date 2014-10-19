@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,13 +17,22 @@ import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.VineyardsAdapter;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Constans;
+import pl.tokajiwines.models.ProducerListItem;
+
+import java.util.ArrayList;
 
 public class VineyardsFragment extends BaseFragment {
 
     ListView mUiList;
     VineyardsAdapter mAdapter;
     JSONParser mParser;
-    static String sUrl = "http://remzo.usermd.net/zpi/producers.php";
+    private static final String sUrl = "http://remzo.usermd.net/zpi/producers.php";
+    private static final String TAG_ID = "idProducer";
+    private static final String TAG_NAME = "name";
+    private static final String TAG_SHORT_MESSAGE = "short";
+    private static final String TAG_PRODUCERS ="producers";
+    private JSONArray mProducersJSON = null;
+    private ArrayList<ProducerListItem> mProducersList;
 
     public static VineyardsFragment newInstance() {
         VineyardsFragment fragment = new VineyardsFragment();
@@ -63,9 +73,27 @@ public class VineyardsFragment extends BaseFragment {
            // TODO Auto-generated method stub
            
            mParser = new JSONParser();
-           mParser.getJSONFromUrl(sUrl, Constans.sUsername, Constans.sPassword);
+           JSONObject json = mParser.getJSONFromUrl(sUrl, Constans.sUsername, Constans.sPassword);
                // check your log for json response
-
+           
+           mProducersList = new ArrayList<ProducerListItem>();
+           
+           try
+           {
+               mProducersJSON = json.getJSONArray(TAG_PRODUCERS);
+               
+               for (int i =0; i < mProducersJSON.length(); i++)
+               {
+                   JSONObject  p = mProducersJSON.getJSONObject(i);
+                   mProducersList.add(new ProducerListItem(p.getInt(TAG_ID), p.getString(TAG_NAME), p.getString(TAG_SHORT_MESSAGE)));
+                   
+               }
+           }
+           
+           catch(JSONException e)
+           {
+               e.printStackTrace();
+           }
 
            return null;
 
