@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import pl.tokajiwines.fragments.GuideFragment;
 import pl.tokajiwines.fragments.MapFragment;
 import pl.tokajiwines.fragments.NewsFragment;
-import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.fragments.WinesFragment;
 
 public class MainActivity extends Activity implements
@@ -58,8 +57,8 @@ public class MainActivity extends Activity implements
             fragmentManager.beginTransaction().replace(R.id.container, WinesFragment.newInstance())
                     .commit();
         } else if (position == 3) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, ProducersFragment.newInstance()).commit();
+            //            fragmentManager.beginTransaction()
+            //                    .replace(R.id.container, ProducersFragment.newInstance()).commit();
         } else if (position == 4) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, MapFragment.newInstance(this)).commit();
@@ -165,7 +164,5 @@ public class MainActivity extends Activity implements
             ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
-    
-    
 
 }
