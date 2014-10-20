@@ -17,6 +17,7 @@ import pl.tokajiwines.fragments.GuideFragment;
 import pl.tokajiwines.fragments.MapFragment;
 import pl.tokajiwines.fragments.NewsFragment;
 import pl.tokajiwines.fragments.WinesFragment;
+import pl.tokajiwines.fragments.ProducersFragment;
 
 public class MainActivity extends Activity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -50,19 +51,19 @@ public class MainActivity extends Activity implements
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
-        if (position == 1) {
+        if (position == 0) {
             fragmentManager.beginTransaction().replace(R.id.container, NewsFragment.newInstance())
                     .commit();
-        } else if (position == 2) {
+        } else if (position == 1) {
             fragmentManager.beginTransaction().replace(R.id.container, WinesFragment.newInstance())
                     .commit();
+        } else if (position == 2) {
+                        fragmentManager.beginTransaction()
+                               .replace(R.id.container, ProducersFragment.newInstance()).commit();
         } else if (position == 3) {
-            //            fragmentManager.beginTransaction()
-            //                    .replace(R.id.container, ProducersFragment.newInstance()).commit();
-        } else if (position == 4) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, MapFragment.newInstance(this)).commit();
-        } else if (position == 5) {
+        } else if (position == 4) {
             fragmentManager.beginTransaction().replace(R.id.container, GuideFragment.newInstance())
                     .commit();
         } else {
