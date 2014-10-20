@@ -8,8 +8,6 @@ import java.io.UnsupportedEncodingException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -20,9 +18,6 @@ import android.util.Log;
 
 public class JSONParser {
 
-    static InputStream sInput = null;
-    static JSONObject sJSONObj = null;
-    static String sJSONCont = "";
 
     // constructor
     public JSONParser() {
@@ -30,6 +25,11 @@ public class JSONParser {
     }
 
     public JSONObject getJSONFromUrl(String url, String username, String password) {
+        
+
+        InputStream sInput = null;
+        JSONObject sJSONObj = null;
+        String sJSONCont = "";
 
         // Making HTTP request
         try {
@@ -80,4 +80,35 @@ public class JSONParser {
         return sJSONObj;
 
     }
+    
+    public InputStream retrieveStream(String url, String username, String password) {
+
+        // Making HTTP request
+        try {
+            // defaultHttpClient
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url);
+            
+            StringBuilder authentication = new StringBuilder().append(username).append(":").append(password);
+            String result = Base64.encodeBytes(authentication.toString().getBytes());
+            httpPost.setHeader("Authorization", "Basic " + result);
+
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            return httpEntity.getContent();
+
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+
+    }
+    
+    
 }

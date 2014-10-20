@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +23,10 @@ import pl.tokajiwines.adapters.ProducersAdapter;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.models.ProducerListItem;
+import pl.tokajiwines.models.ProducersResponse;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 
 public class ProducersFragment extends BaseFragment {
@@ -93,7 +99,24 @@ public class ProducersFragment extends BaseFragment {
 
        @Override
        protected String doInBackground(String... args) {
-           // TODO Auto-generated method stub
+           
+           mParser = new JSONParser();
+           
+           InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername, Constans.sPassword);
+           Gson gson = new Gson();
+           InputStreamReader reader = new InputStreamReader(source);
+           
+           ProducersResponse response = gson.fromJson(reader, ProducersResponse.class);
+           
+           if (response!=null)
+           {
+               System.out.println(response.producers[0].mName);
+               mProducersList = response.producers;
+           }
+           
+           
+           return null;
+    /*       // TODO Auto-generated method stub
            
            mParser = new JSONParser();
            JSONObject json = mParser.getJSONFromUrl(sUrl, Constans.sUsername, Constans.sPassword);
@@ -122,7 +145,7 @@ public class ProducersFragment extends BaseFragment {
 
 
            return null;
-
+*/
        }
 
        protected void onPostExecute(String file_url) {
