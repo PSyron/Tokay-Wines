@@ -16,7 +16,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/settings_titles_bg"
+                android:background="@drawable/filter_titles_bg"
                 android:padding="8dp"
                 android:text="@string/wine_search_color"
                 android:textSize="12sp" />

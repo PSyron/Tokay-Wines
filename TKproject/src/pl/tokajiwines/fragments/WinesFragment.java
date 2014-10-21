@@ -28,7 +28,7 @@ public class WinesFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_wine_search, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_wine_filter, container, false);
         mUiList = (ListView) rootView.findViewById(R.id.frag_wine_search_producers_list);
         mAdapter = new WineSearchAdapter(getActivity());
         mUiList.setAdapter(mAdapter);
