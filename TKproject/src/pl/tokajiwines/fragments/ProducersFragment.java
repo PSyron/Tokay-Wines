@@ -68,10 +68,14 @@ public class ProducersFragment extends BaseFragment {
         // TODO Auto-generated method stub
         super.onResume();
         
+        // if there is an access to the Internet, try to load data from remote database
+        
         if (App.isOnline(mContext))
         {
-            new ConnectingToDatabaseTask().execute();
+            new LoadProducersTask().execute();
         }
+        
+        // otherwise, show message
         
         else
         {
@@ -79,12 +83,16 @@ public class ProducersFragment extends BaseFragment {
         }
 
     }
+    
+    // async task class that loads producers data from remote database
 
     
-    class ConnectingToDatabaseTask extends AsyncTask<String, String, String> {
+    class LoadProducersTask extends AsyncTask<String, String, String> {
 
 
        boolean failure = false;
+       
+       // while data are loading, show progress dialog
 
        @Override
        protected void onPreExecute() {
@@ -96,6 +104,8 @@ public class ProducersFragment extends BaseFragment {
            mProgDial.show();
 
        }
+       
+       // retrieving producers data
 
        @Override
        protected String doInBackground(String... args) {
@@ -147,6 +157,8 @@ public class ProducersFragment extends BaseFragment {
            return null;
 */
        }
+       
+       // create adapter that contains loaded data and show list of producers
 
        protected void onPostExecute(String file_url) {
            

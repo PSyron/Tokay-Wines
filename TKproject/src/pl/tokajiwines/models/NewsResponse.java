@@ -1,9 +1,9 @@
 package pl.tokajiwines.models;
 
-public class ProducersResponse {
-    
+public class NewsResponse {
+       
     public int success;
     public String message;
-    public ProducerListItem[] producers;
+    public NewsListItem[] news;
 
 }
