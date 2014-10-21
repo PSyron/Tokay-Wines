@@ -1,118 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frag_wine_filter_linear"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <LinearLayout
+    <TextView
+        style="@style/FilterHeader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/wine_filter_search" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+    <ListView
+        android:id="@+id/frag_wine_filter_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/wine_filter_search_btn"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/wine_filter_search_title"
+        android:layout_weight="2.50" >
+    </ListView>
 
-            <TextView
-                style="@style/FilterHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/wine_search_color" />
+    <TextView
+        android:id="@+id/frag_wine_filter_search_btn"
+        style="@style/FilterSearchButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/wine_filter_search_btn" />
 
-            <CheckBox
-                android:id="@+id/frag_wine_search_color_all_cB"
-                style="@style/FilterCheckBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/wine_search_all" />
-
-            <CheckBox
-                android:id="@+id/frag_wine_search_color_white_cB"
-                style="@style/FilterCheckBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/wine_search_color_white" />
-
-            <CheckBox
-                android:id="@+id/frag_wine_search_color_pink_cB"
-                style="@style/FilterCheckBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/wine_search_color_pink" />
-
-            <CheckBox
-                android:id="@+id/frag_wine_search_color_red_cB"
-                style="@style/FilterCheckBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/wine_search_color_red" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/settings_titles_bg"
-                android:padding="8dp"
-                android:text="@string/wine_search_taste"
-                android:textSize="12sp" />
-
-            <CheckBox
-                android:id="@+id/frag_wine_search_taste_dry_cB"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/wine_search_taste_dry"
-                android:textSize="16sp" />
-
-            <CheckBox
-                android:id="@+id/frag_wine_search_taste_semidry_cB"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/wine_search_taste_semidry"
-                android:textSize="16sp" />
-
-            <CheckBox
-                android:id="@+id/frag_wine_search_taste_semisweet_cB"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/wine_search_taste_semisweet"
-                android:textSize="16sp" />
-
-            <CheckBox
-                android:id="@+id/frag_wine_search_taste_sweet_cB"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/wine_search_taste_sweet"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/settings_titles_bg"
-                android:padding="8dp"
-                android:text="@string/wine_search_produders"
-                android:textSize="12sp" />
-
-            <ListView
-                android:id="@+id/frag_wine_search_producers_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-            </ListView>
-        </LinearLayout>
-    </LinearLayout>
-
-</ScrollView>
+</RelativeLayout>
