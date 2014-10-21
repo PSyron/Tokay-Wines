@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import pl.tokajiwines.R;
-import pl.tokajiwines.adapters.WinesAdapter;
+import pl.tokajiwines.adapters.WineSearchAdapter;
 
 public class WinesFragment extends BaseFragment {
 
     ListView mUiList;
-    WinesAdapter mAdapter;
+    WineSearchAdapter mAdapter;
 
     public static WinesFragment newInstance() {
         WinesFragment fragment = new WinesFragment();
@@ -28,9 +28,9 @@ public class WinesFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_news, container, false);
-        mUiList = (ListView) rootView.findViewById(R.id.frag_news_list);
-        mAdapter = new WinesAdapter(getActivity());
+        View rootView = inflater.inflate(R.layout.fragment_wine_search, container, false);
+        mUiList = (ListView) rootView.findViewById(R.id.frag_wine_search_producers_list);
+        mAdapter = new WineSearchAdapter(getActivity());
         mUiList.setAdapter(mAdapter);
         return rootView;
     }

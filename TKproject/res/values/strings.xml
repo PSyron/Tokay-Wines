@@ -21,6 +21,18 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
+    <!-- Wine -->
+    <string name="wine_search_all">All</string>
+    <string name="wine_search_color">Color</string>
+    <string name="wine_search_color_white">White</string>
+    <string name="wine_search_color_pink">Pink</string>
+    <string name="wine_search_color_red">Red</string>
+    <string name="wine_search_taste">Taste</string>
+    <string name="wine_search_taste_dry">Dry</string>
+    <string name="wine_search_taste_semidry">Semidry</string>
+    <string name="wine_search_taste_semisweet">Semisweet</string>
+    <string name="wine_search_taste_sweet">Sweet</string>
+    <string name="wine_search_produders">Producers</string>
     <!-- Vineyards -->
     <string name="address">Address</string>
     <string name="opening_hours">Opening hours</string>
