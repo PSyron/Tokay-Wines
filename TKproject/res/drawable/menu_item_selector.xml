@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@color/ab_bg_end" android:state_pressed="true"/>
-    <item android:drawable="@color/ab_bg_start" android:state_focused="true"/>
-    <item android:drawable="@color/ab_bg_start" android:state_selected="true"/>
-    <item android:drawable="@color/ab_bg_start" android:state_activated="true"/>
-    <item android:drawable="@color/menu_item_bg"/>
+    <item android:drawable="@drawable/btn_menu_order_pressed" android:state_pressed="true"/>
+    <item android:drawable="@drawable/btn_menu_order_normal" android:state_focused="true"/>
+    <item android:drawable="@drawable/btn_menu_order_pressed" android:state_selected="true"/>
+    <item android:drawable="@drawable/btn_menu_order_pressed" android:state_activated="true"/>
+    <item android:drawable="@drawable/btn_menu_order_normal"/>
 
 </selector>
