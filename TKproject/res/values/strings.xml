@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-	<!-- General -->
+
+    <!-- General -->
     <string name="app_name">Tokaji Wines</string>
     <string name="name">Name</string>
     <string name="title_news">News</string>
@@ -33,7 +33,7 @@
     <string name="wine_search_taste_semisweet">Semisweet</string>
     <string name="wine_search_taste_sweet">Sweet</string>
     <string name="wine_search_produders">Producers</string>
-    <!-- Vineyards -->
+    <!-- Producers -->
     <string name="address">Address</string>
     <string name="opening_hours">Opening hours</string>
     <string name="phone_nb">Phone number</string>
