@@ -14,45 +14,38 @@
             android:orientation="vertical" >
 
             <TextView
+                style="@style/FilterHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/filter_titles_bg"
-                android:padding="8dp"
-                android:text="@string/wine_search_color"
-                android:textSize="12sp" />
-            
-             <CheckBox
+                android:text="@string/wine_search_color" />
+
+            <CheckBox
                 android:id="@+id/frag_wine_search_color_all_cB"
+                style="@style/FilterCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/wine_search_all"
-                android:textSize="16sp" />
+                android:text="@string/wine_search_all" />
 
             <CheckBox
                 android:id="@+id/frag_wine_search_color_white_cB"
+                style="@style/FilterCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/wine_search_color_white"
-                android:textSize="16sp" />
-            
+                android:text="@string/wine_search_color_white" />
+
             <CheckBox
                 android:id="@+id/frag_wine_search_color_pink_cB"
+                style="@style/FilterCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/wine_search_color_pink"
-                android:textSize="16sp" />
-            
+                android:text="@string/wine_search_color_pink" />
+
             <CheckBox
                 android:id="@+id/frag_wine_search_color_red_cB"
+                style="@style/FilterCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/wine_search_color_red"
-                android:textSize="16sp" />
-
+                android:text="@string/wine_search_color_red" />
         </LinearLayout>
 
         <LinearLayout
@@ -67,7 +60,7 @@
                 android:padding="8dp"
                 android:text="@string/wine_search_taste"
                 android:textSize="12sp" />
-            
+
             <CheckBox
                 android:id="@+id/frag_wine_search_taste_dry_cB"
                 android:layout_width="match_parent"
@@ -75,7 +68,7 @@
                 android:padding="8dp"
                 android:text="@string/wine_search_taste_dry"
                 android:textSize="16sp" />
-            
+
             <CheckBox
                 android:id="@+id/frag_wine_search_taste_semidry_cB"
                 android:layout_width="match_parent"
@@ -83,7 +76,7 @@
                 android:padding="8dp"
                 android:text="@string/wine_search_taste_semidry"
                 android:textSize="16sp" />
-            
+
             <CheckBox
                 android:id="@+id/frag_wine_search_taste_semisweet_cB"
                 android:layout_width="match_parent"
@@ -91,7 +84,7 @@
                 android:padding="8dp"
                 android:text="@string/wine_search_taste_semisweet"
                 android:textSize="16sp" />
-            
+
             <CheckBox
                 android:id="@+id/frag_wine_search_taste_sweet_cB"
                 android:layout_width="match_parent"
@@ -99,14 +92,13 @@
                 android:padding="8dp"
                 android:text="@string/wine_search_taste_sweet"
                 android:textSize="16sp" />
-            
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-            
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,7 +112,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
             </ListView>
-            
         </LinearLayout>
     </LinearLayout>
 
