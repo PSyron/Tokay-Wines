@@ -8,5 +8,7 @@
     <color name="ab_bg_start">#990000</color>
     <color name="ab_bg_center">#b30000</color>
     <color name="filter_text">#880000 </color>
+    <color name="filter_title">#cfbe5a </color>
+    <color name="filter_search_btn_bg">#640202</color>
 
 </resources>

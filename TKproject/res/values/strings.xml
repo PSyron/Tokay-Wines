@@ -22,17 +22,19 @@
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
     <!-- Wine -->
-    <string name="wine_search_all">All</string>
-    <string name="wine_search_color">Color</string>
-    <string name="wine_search_color_white">White</string>
-    <string name="wine_search_color_pink">Pink</string>
-    <string name="wine_search_color_red">Red</string>
-    <string name="wine_search_taste">Taste</string>
-    <string name="wine_search_taste_dry">Dry</string>
-    <string name="wine_search_taste_semidry">Semidry</string>
-    <string name="wine_search_taste_semisweet">Semisweet</string>
-    <string name="wine_search_taste_sweet">Sweet</string>
-    <string name="wine_search_produders">Producers</string>
+    <string name="wine_filter_search">Searching options</string>
+    <string name="wine_filter_search_btn">Search</string>
+    <string name="wine_filter_all">All</string>
+    <string name="wine_filter_color">Color</string>
+    <string name="wine_filter_color_white">White</string>
+    <string name="wine_filter_color_pink">Pink</string>
+    <string name="wine_filter_color_red">Red</string>
+    <string name="wine_filter_taste">Taste</string>
+    <string name="wine_filter_taste_dry">Dry</string>
+    <string name="wine_filter_taste_semidry">Semidry</string>
+    <string name="wine_filter_taste_semisweet">Semisweet</string>
+    <string name="wine_filter_taste_sweet">Sweet</string>
+    <string name="wine_filter_produders">Producers</string>
     <!-- Producers -->
     <string name="address">Address</string>
     <string name="opening_hours">Opening hours</string>
