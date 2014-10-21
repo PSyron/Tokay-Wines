@@ -53,7 +53,7 @@ public class ProducersAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder = new Holder();
         View rowView;
-        rowView = inflater.inflate(R.layout.item_vineyard, null);
+        rowView = inflater.inflate(R.layout.item_producer, null);
         holder.title = (TextView) rowView.findViewById(R.id.item_wineyard_title);
         holder.content = (TextView) rowView.findViewById(R.id.item_wineyard_content);
         holder.img = (ImageView) rowView.findViewById(R.id.item_wineyard_image);

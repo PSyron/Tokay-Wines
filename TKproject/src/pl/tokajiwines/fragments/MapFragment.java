@@ -363,4 +363,56 @@ public class MapFragment extends BaseFragment {
         }
     }
 
+    //    public class GetNearPlaces extends AsyncTask<LatLng, Void, Place[]> {
+    //
+    //        boolean failure = false;
+    //
+    //        @Override
+    //        protected void onPreExecute() {
+    //            super.onPreExecute();
+    //            //            mProgDial = new ProgressDialog(mContext);
+    //            //            mProgDial.setMessage("Loading producers data...");
+    //            //            mProgDial.setIndeterminate(false);
+    //            //            mProgDial.setCancelable(true);
+    //            //            mProgDial.show();
+    //
+    //        }
+    //
+    //        protected Place[] doInBackground(Void... args) {
+    //
+    //            JSONParser mParser = new JSONParser();
+    //
+    //            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
+    //                    Constans.sPassword);
+    //            Gson gson = new Gson();
+    //            InputStreamReader reader = new InputStreamReader(source);
+    //
+    //            ProducersResponse response = gson.fromJson(reader, ProducersResponse.class);
+    //
+    //            if (response != null) {
+    //                System.out.println(response.producers[0].mName);
+    //                mProducersList = response.producers;
+    //            }
+    //
+    //            return null;
+    //
+    //        }
+    //
+    //        protected void onPostExecute(String file_url) {
+    //
+    //            super.onPostExecute(file_url);
+    //            mProgDial.dismiss();
+    //            mAdapter = new ProducersAdapter(getActivity(), mProducersList);
+    //            mUiList.setAdapter(mAdapter);
+    //
+    //        }
+    //
+    //        @Override
+    //        protected Place[] doInBackground(LatLng... params) {
+    //            // TODO Auto-generated method stub
+    //            return null;
+    //        }
+    //
+    //    }
+
 }
