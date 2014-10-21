@@ -10,15 +10,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import pl.tokajiwines.R;
+import pl.tokajiwines.models.NewsListItem;
+import pl.tokajiwines.models.ProducerListItem;
 
 public class NewsAdapter extends BaseAdapter {
 
     Activity mActivity;
     private static LayoutInflater inflater = null;
+    private NewsListItem[] mNews = null;
 
-    public NewsAdapter(Activity act) {
+    public NewsAdapter(Activity act, NewsListItem[] news) {
         mActivity = act;
         inflater = (LayoutInflater) mActivity.getSystemService(mActivity.LAYOUT_INFLATER_SERVICE);
+        mNews = news;
     }
 
     public class Holder {
@@ -36,7 +40,7 @@ public class NewsAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         // TODO po pobraniu
-        return 100;
+        return mNews.length;
     }
 
     @Override
@@ -53,9 +57,9 @@ public class NewsAdapter extends BaseAdapter {
         holder.title = (TextView) rowView.findViewById(R.id.item_news_title);
         holder.content = (TextView) rowView.findViewById(R.id.item_news_content);
         holder.img = (ImageView) rowView.findViewById(R.id.item_news_image);
-        holder.title.setText("Tytuł " + position);
+        holder.title.setText(mNews[position].mHeader);
         holder.img.setImageResource(R.drawable.ic_launcher);
-        holder.content.setText("Tekst o pozycji " + position + "\n\n ma trzy linijki");
+        holder.content.setText(mNews[position].mDescription);
         //        rowView.setOnClickListener(new OnClickListener() {
         //            @Override
         //            public void onClick(View v) {
