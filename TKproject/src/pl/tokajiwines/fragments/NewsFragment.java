@@ -3,11 +3,13 @@ package pl.tokajiwines.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -15,6 +17,7 @@ import com.google.gson.Gson;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.acitivities.EventActivity;
 import pl.tokajiwines.adapters.NewsAdapter;
 import pl.tokajiwines.models.NewsListItem;
 import pl.tokajiwines.models.NewsResponse;
@@ -32,6 +35,7 @@ public class NewsFragment extends BaseFragment {
     JSONParser mParser;
     ProgressDialog mProgDial;
     private static final String sUrl = "http://remzo.usermd.net/zpi/news.php";
+    public static final String TAG_ID_NEWS = "IdNews";
     private NewsListItem[] mNewsList;
 
     public static NewsFragment newInstance() {
@@ -101,7 +105,7 @@ public class NewsFragment extends BaseFragment {
            
            mParser = new JSONParser();
            
-           InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername, Constans.sPassword);
+           InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername, Constans.sPassword, null);
            Gson gson = new Gson();
            InputStreamReader reader = new InputStreamReader(source);
            
@@ -125,9 +129,16 @@ public class NewsFragment extends BaseFragment {
            mProgDial.dismiss();
            mAdapter = new NewsAdapter(getActivity(),mNewsList);
            mUiList.setAdapter(mAdapter);
+           mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+               public void onItemClick(AdapterView<?> parent,View v,int position,long id){
+                   Intent intent = new Intent(mContext, EventActivity.class);
+                   intent.putExtra(TAG_ID_NEWS, mAdapter.getItemId(position));
+                   startActivity(intent);
+               }
+           });
     
        }
  
 
-       }
+    }
 }

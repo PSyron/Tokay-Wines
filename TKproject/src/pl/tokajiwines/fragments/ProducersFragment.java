@@ -112,7 +112,7 @@ public class ProducersFragment extends BaseFragment {
            
            mParser = new JSONParser();
            
-           InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername, Constans.sPassword);
+           InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername, Constans.sPassword, null);
            Gson gson = new Gson();
            InputStreamReader reader = new InputStreamReader(source);
            

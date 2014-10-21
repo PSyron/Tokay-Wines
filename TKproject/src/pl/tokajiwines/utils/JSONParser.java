@@ -8,13 +8,16 @@ import java.io.UnsupportedEncodingException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
+import java.util.List;
 
 public class JSONParser {
 
@@ -81,7 +84,7 @@ public class JSONParser {
 
     }
     
-    public InputStream retrieveStream(String url, String username, String password) {
+    public InputStream retrieveStream(String url, String username, String password, List<NameValuePair> params) {
 
         // Making HTTP request
         try {
@@ -92,9 +95,16 @@ public class JSONParser {
             StringBuilder authentication = new StringBuilder().append(username).append(":").append(password);
             String result = Base64.encodeBytes(authentication.toString().getBytes());
             httpPost.setHeader("Authorization", "Basic " + result);
+            
+            if (params != null)
+            {
+                httpPost.setEntity(new UrlEncodedFormEntity(params));
+            }
 
             HttpResponse httpResponse = httpClient.execute(httpPost);
+
             HttpEntity httpEntity = httpResponse.getEntity();
+
             return httpEntity.getContent();
 
 

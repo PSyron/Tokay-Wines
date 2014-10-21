@@ -45,8 +45,8 @@ public class NewsAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        // TODO zrobic
-        return 0;
+        
+        return mNews[position].mIdNews;
     }
 
     @Override

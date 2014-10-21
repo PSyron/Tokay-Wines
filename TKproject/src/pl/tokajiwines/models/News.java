@@ -9,10 +9,13 @@ public class News implements Serializable {
      * 
      */
     private static final long serialVersionUID = -2308726436283474494L;
-    private String Title;
-    private String Content;
+    public String header;
+    public String vast;
+    public String entryDate;
+    public String startDate;
+    public String endDate;
 
-    public News(String t, String c) {
+/*    public News(String t, String c) {
         Title = t;
         Content = c;
     }
@@ -23,6 +26,6 @@ public class News implements Serializable {
 
     public String getContent() {
         return this.Content;
-    }
+    }*/
 
 }
