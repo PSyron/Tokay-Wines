@@ -6,11 +6,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="lib" path="libs/osmdroid-android-4.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/Paula/git/Tokay-Wines/gson-2.3.jar" sourcepath="C:/Users/Paula/git/Tokay-Wines/gson-2.3-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/C:/Users/Paula/git/Tokay-Wines/gson-2.3-javadoc.jar!/"/>
-			<attribute name="source_encoding" value="UTF-8"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="libs/gson-2.3.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
