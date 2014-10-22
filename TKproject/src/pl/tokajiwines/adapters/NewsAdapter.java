@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.koushikdutta.ion.Ion;
+
 import pl.tokajiwines.R;
 import pl.tokajiwines.models.NewsListItem;
 import pl.tokajiwines.models.ProducerListItem;
@@ -58,8 +60,15 @@ public class NewsAdapter extends BaseAdapter {
         holder.content = (TextView) rowView.findViewById(R.id.item_news_content);
         holder.img = (ImageView) rowView.findViewById(R.id.item_news_image);
         holder.title.setText(mNews[position].mHeader);
-        holder.img.setImageResource(R.drawable.ic_launcher);
+        holder.img.setImageResource(R.drawable.placeholder_image);
+        
+        Ion.with(holder.img)
+        .placeholder(R.drawable.placeholder_image)
+        .error(R.drawable.error_image)
+       // .load(mNews[position].mImageUrl);
+        .load("http://forum.portalflorystyczny.pl/images/frezja.jpg");
         holder.content.setText(mNews[position].mDescription);
+        
         //        rowView.setOnClickListener(new OnClickListener() {
         //            @Override
         //            public void onClick(View v) {

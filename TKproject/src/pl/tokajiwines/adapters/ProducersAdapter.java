@@ -58,7 +58,7 @@ public class ProducersAdapter extends BaseAdapter {
         holder.content = (TextView) rowView.findViewById(R.id.item_wineyard_content);
         holder.img = (ImageView) rowView.findViewById(R.id.item_wineyard_image);
         holder.title.setText(mProducers[position].mName);
-        holder.img.setImageResource(R.drawable.ic_launcher);
+        holder.img.setImageResource(R.drawable.placeholder_image);
         holder.content.setText(mProducers[position].mDescription);
         //        rowView.setOnClickListener(new OnClickListener() {
         //            @Override

@@ -8,12 +8,13 @@
         android:id="@+id/item_wine_image"
         android:layout_width="@dimen/item_lists_height"
         android:layout_height="@dimen/item_lists_height"
+        android:layout_margin="5dp"
         android:src="@drawable/ic_launcher" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal" >
+        android:gravity="left" >
 
         <TextView
             android:id="@+id/item_wine_title"

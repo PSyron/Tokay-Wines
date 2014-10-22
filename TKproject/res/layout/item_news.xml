@@ -8,18 +8,20 @@
         android:id="@+id/item_news_image"
         android:layout_width="@dimen/item_lists_height"
         android:layout_height="@dimen/item_lists_height"
-        android:src="@drawable/ic_launcher" />
+        android:layout_margin="5dp"
+        android:src="@drawable/placeholder_image" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal" >
+        android:gravity="left" >
 
         <TextView
             android:id="@+id/item_news_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            android:gravity="start"
             android:lines="1"
             android:text="Title"
             android:textSize="14sp"
@@ -31,9 +33,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/item_news_title"
             android:layout_margin="4dp"
+            android:gravity="start"
             android:lines="3"
             android:text="Tekst\n tekst\n tekst"
             android:textSize="12sp" />
+
     </RelativeLayout>
 
 </LinearLayout>
