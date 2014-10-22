@@ -33,7 +33,7 @@ public class EventActivity extends BaseActivity {
     ProgressDialog mProgDial;
     Context mContext;
     JSONParser mParser;
-    private static final String sUrl = "http://remzo.usermd.net/zpi/newsdetail.php";
+    private static final String sUrl = "http://remzo.usermd.net/zpi/services/newsdetail.php";
     
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
