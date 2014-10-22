@@ -21,6 +21,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
+    <!-- News -->
+    <string name="news_details_date">Date of this event:</string>
     <!-- Wine -->
     <string name="wine_filter_search">Searching options</string>
     <string name="wine_filter_search_btn">Search</string>
