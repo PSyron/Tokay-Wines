@@ -14,6 +14,7 @@ public class News implements Serializable {
     public String entryDate;
     public String startDate;
     public String endDate;
+    public String image;
 
 /*    public News(String t, String c) {
         Title = t;

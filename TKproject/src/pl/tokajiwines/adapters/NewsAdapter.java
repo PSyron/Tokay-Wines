@@ -65,8 +65,9 @@ public class NewsAdapter extends BaseAdapter {
         Ion.with(holder.img)
         .placeholder(R.drawable.placeholder_image)
         .error(R.drawable.error_image)
-       // .load(mNews[position].mImageUrl);
-        .load("http://remzo.usermd.net/zpi/photos/akt1_thumb.jpg");
+        .load(mNews[position].mImageUrl);
+        
+     //   .load("http://remzo.usermd.net/zpi/photos/akt1_thumb.jpg");
         holder.content.setText(mNews[position].mDescription);
         
         //        rowView.setOnClickListener(new OnClickListener() {

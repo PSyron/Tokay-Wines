@@ -6,9 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.koushikdutta.ion.Ion;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -16,6 +20,7 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.fragments.NewsFragment;
+import pl.tokajiwines.models.News;
 import pl.tokajiwines.models.NewsDetailsResponse;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
@@ -30,6 +35,14 @@ public class EventActivity extends BaseActivity {
     
     private CharSequence mTitle;
     private int mIdNews;
+    private TextView mUiName;
+    private ImageView mUiImage;
+    private ImageView mUiAddIcon;
+    private TextView mUiDescription;
+    private TextView mUiDateLabel;
+    private TextView mUiDate;
+    private News mNews;
+
     ProgressDialog mProgDial;
     Context mContext;
     JSONParser mParser;
@@ -38,11 +51,20 @@ public class EventActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.item_wine_filter);
+        setContentView(R.layout.activity_news_details);
         
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         mContext = this;
+        
+        mUiName = (TextView)findViewById(R.id.activity_news_details_name);
+        mUiImage = (ImageView)findViewById(R.id.activity_news_details_image);
+        mUiDescription = (TextView)findViewById(R.id.activity_news_details_description);
+        mUiDateLabel = (TextView)findViewById(R.id.activity_news_details_datelabel);
+        mUiDate = (TextView)findViewById(R.id.activity_news_details_date);
+        mUiAddIcon = (ImageView)findViewById(R.id.activity_news_details_add_icon);
+        
+        
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mIdNews = (int)extras.getLong(NewsFragment.TAG_ID_NEWS);  
@@ -103,15 +125,9 @@ public class EventActivity extends BaseActivity {
            InputStreamReader reader = new InputStreamReader(source);
            
            NewsDetailsResponse response = gson.fromJson(reader, NewsDetailsResponse.class);
-           
-           if (response != null)
-           {
-               System.out.println(response.success);
-               System.out.println(response.message);
-               System.out.println(response.news.header);
+           mNews = response.news;
 
-           }
-           
+           System.out.println(mNews.image);
            
            return null;
 
@@ -123,6 +139,19 @@ public class EventActivity extends BaseActivity {
            
            super.onPostExecute(file_url);
            mProgDial.dismiss();
+           mUiName.setText(mNews.header);
+           mUiDescription.setText(mNews.vast);
+           Ion.with(mUiImage)
+           .placeholder(R.drawable.placeholder_image)
+           .error(R.drawable.error_image)
+           .load(mNews.image);
+           
+           if (mNews.startDate == null && mNews.endDate == null)
+           {
+               mUiDateLabel.setVisibility(View.INVISIBLE);
+               mUiDate.setVisibility(View.INVISIBLE);
+               mUiAddIcon.setVisibility(View.INVISIBLE);
+           }
     
        }
  

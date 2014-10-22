@@ -1,30 +1,28 @@
 
 package pl.tokajiwines.acitivities;
 
+import pl.tokajiwines.R;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import pl.tokajiwines.R;
-
 public class BaseActivity extends Activity {
-    
-    
+
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-            getMenuInflater().inflate(R.menu.main, menu);
-            restoreActionBar();
-            
-            return true;
+        getMenuInflater().inflate(R.menu.main, menu);
+        restoreActionBar();
+
+        return true;
     }
 
     @Override
@@ -36,24 +34,21 @@ public class BaseActivity extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
-        
+
         switch (id) {
 
-            case android.R.id.home:
-                {
-                    NavUtils.navigateUpFromSameTask(this);
-                     return true;
-                }
-                
-            case R.id.action_settings:
-                {
-                     return true;
-                }
+            case android.R.id.home: {
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            }
+
+            case R.id.action_settings: {
+                return true;
+            }
 
             default:
                 return super.onOptionsItemSelected(item);
-            }
+        }
     }
-
 
 }

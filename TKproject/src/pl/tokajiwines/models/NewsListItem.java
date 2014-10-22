@@ -10,7 +10,7 @@ public class NewsListItem {
     public String mHeader;
     @SerializedName("short")
     public String mDescription;
-    @SerializedName("Image")
+    @SerializedName("image")
     public String mImageUrl;
     
     public NewsListItem(int id, String header, String description)
