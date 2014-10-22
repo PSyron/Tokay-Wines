@@ -63,17 +63,17 @@ public class NewsFragment extends BaseFragment {
         // TODO Auto-generated method stub
         super.onResume();
         
-        if (App.isOnline(mContext))
-        {
-            new LoadNewsTask().execute();
-        }
-        
-        // otherwise, show message
-        
-        else
-        {
-            Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
-        }
+            if (App.isOnline(mContext))
+            {
+                new LoadNewsTask().execute();
+            }
+            
+            // otherwise, show message
+            
+            else
+            {
+                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+            }
 
     }
 
