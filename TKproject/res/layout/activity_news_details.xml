@@ -23,10 +23,6 @@
             android:layout_margin="5dp"
             android:src="@drawable/placeholder_image" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
@@ -42,17 +38,15 @@
                     style="@style/DetalisNormalText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Data" />
-            </TableRow>
+                    android:text="Data " />
 
-            <ImageView
-                android:layout_width="@dimen/item_menu_height"
-                android:layout_height="@dimen/item_menu_height"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_margin="5dp"
-                android:src="@drawable/placeholder_image" />
-        </RelativeLayout>
+                <ImageView
+                    android:layout_width="@dimen/item_menu_height"
+                    android:layout_height="@dimen/item_menu_height"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/add_event" />
+
+            </TableRow>
 
         <TextView
             android:id="@+id/activity_news_details_description"
