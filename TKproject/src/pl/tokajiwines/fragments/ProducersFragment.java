@@ -36,7 +36,7 @@ public class ProducersFragment extends BaseFragment {
     JSONParser mParser;
     ProgressDialog mProgDial;
     Context mContext;
-    private static final String sUrl = "http://remzo.usermd.net/zpi/producers.php";
+    private static final String sUrl = "http://remzo.usermd.net/zpi/services/producers.php";
     private static final String TAG_ID = "idProducer";
     private static final String TAG_NAME = "name";
     private static final String TAG_SHORT_MESSAGE = "short";

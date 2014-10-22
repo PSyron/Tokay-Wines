@@ -66,7 +66,7 @@ public class NewsAdapter extends BaseAdapter {
         .placeholder(R.drawable.placeholder_image)
         .error(R.drawable.error_image)
        // .load(mNews[position].mImageUrl);
-        .load("http://forum.portalflorystyczny.pl/images/frezja.jpg");
+        .load("http://remzo.usermd.net/zpi/photos/akt1_thumb.jpg");
         holder.content.setText(mNews[position].mDescription);
         
         //        rowView.setOnClickListener(new OnClickListener() {

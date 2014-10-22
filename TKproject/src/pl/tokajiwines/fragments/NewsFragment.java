@@ -34,7 +34,7 @@ public class NewsFragment extends BaseFragment {
     Context mContext;
     JSONParser mParser;
     ProgressDialog mProgDial;
-    private static final String sUrl = "http://remzo.usermd.net/zpi/news.php";
+    private static final String sUrl = "http://remzo.usermd.net/zpi/services/news.php";
     public static final String TAG_ID_NEWS = "IdNews";
     private NewsListItem[] mNewsList;
 
