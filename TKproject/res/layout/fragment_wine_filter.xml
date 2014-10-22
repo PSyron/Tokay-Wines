@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <TextView
-        style="@style/FilterHeader"
+        style="@style/DetailsHeader.Bookmark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/wine_filter_search" />

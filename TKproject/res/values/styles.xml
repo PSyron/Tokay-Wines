@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
 
     </style>
@@ -29,7 +29,7 @@
         <item name="android:textColor">@color/ab_text</item>
     </style>
 
-    <style name="DetalisHeader" parent="@android:style/Widget.TextView">
+    <style name="DetailsHeader" parent="@android:style/Widget.TextView">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
@@ -37,28 +37,31 @@
         <item name="android:layout_margin">8dp</item>
     </style>
 
-    <style name="DetalisBoldText" parent="@android:style/Widget.TextView">
-        <item name="android:textColor">@android:color/black</item>
+    <style name="DetailsHeader.BoldText">
         <item name="android:textSize">12sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:gravity">left</item>
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:gravity">start</item>
     </style>
-    
-    <style name="DetalisNormalText" parent="@android:style/Widget.TextView">
-        <item name="android:textColor">@android:color/black</item>
+
+    <style name="DetailsHeader.NormalText">
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:gravity">left</item>
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:gravity">start</item>
     </style>
 
-    <style name="FilterHeader" parent="@android:style/Widget.TextView">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/filter_titles_bg</item>
+    <style name="DetailsHeader.NormalText.Small">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="DetailsHeader.NormalText.Small.Producer">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:layout_margin">1dp</item>
+    </style>
+
+    <style name="DetailsHeader.Bookmark">
+        <item name="android:textColor">@color/filter_text</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/divider_filter</item>
+        <item name="android:gravity">start</item>
         <item name="android:padding">8dp</item>
     </style>
 
@@ -67,7 +70,6 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@color/filter_search_btn_bg</item>
         <item name="android:padding">8dp</item>
         <item name="android:layout_margin">8dp</item>
     </style>

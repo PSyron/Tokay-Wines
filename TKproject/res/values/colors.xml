@@ -8,15 +8,16 @@
     <color name="ab_bg_center">#450c14</color>
     <color name="ab_bg_end">#3a0a10</color>
     <color name="ab_text">#fff000</color>
-    <color name="filter_text">#880000 </color>
+    <color name="filter_text">#640202 </color>
     <color name="filter_title">#cfbe5a </color>
-    <color name="filter_search_btn_bg">#640202</color>
-    <color name="filter_header_underline">#640202</color>
-
+    
     <!-- Settings -->
     <color name="section_header_bg">#cfbe5a</color>
 
     <!-- Guide -->
     <color name="tab_indicator">#fff000</color>
+    
+    <!-- Simple colors -->
+    <color name="blue">#0000FF</color>
 
 </resources>

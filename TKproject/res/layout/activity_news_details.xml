@@ -10,7 +10,7 @@
 
         <TextView
             android:id="@+id/activity_news_details_name"
-            style="@style/DetalisHeader"
+            style="@style/DetailsHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Title" />
@@ -28,14 +28,14 @@
                 android:layout_height="wrap_content" >
 
                 <TextView
-                    style="@style/DetalisBoldText"
+                    style="@style/DetailsHeader.BoldText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/news_details_date" />
 
                 <TextView
                     android:id="@+id/activity_news_details_date"
-                    style="@style/DetalisNormalText"
+                    style="@style/DetailsHeader.NormalText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Data " />
@@ -50,7 +50,7 @@
 
         <TextView
             android:id="@+id/activity_news_details_description"
-            style="@style/DetalisNormalText"
+            style="@style/DetailsHeader.NormalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Description" />
