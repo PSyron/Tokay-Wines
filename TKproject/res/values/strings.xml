@@ -26,6 +26,8 @@
     <!-- News -->
     <string name="news_details_date">Date of this event:</string>
     <!-- Wine -->
+    <string name="wine_details_available_manufacturer">Available from the manufacturer</string>
+    <string name="wine_year">Year</string>
     <string name="wine_filter_search">Searching options</string>
     <string name="wine_filter_all">All</string>
     <string name="wine_filter_color">Color</string>
