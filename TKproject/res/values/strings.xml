@@ -50,6 +50,10 @@
     <!-- Map -->
     <string name="loading_near">Loading near places...</string>
     <string name="here_u_are">Here You are</string>
+    <string name="distance">Distance: </string>
+    <string name="duration">\nDuration: </string>
+    <string name="range">Range: </string>
+    <string name="preffered_tours">Pick from preffered tours!</string>
     <!-- Urls -->
     <string name="UrlNearLatLngPlace">http://remzo.usermd.net/zpi/services/nearPlaces.php</string>
 

@@ -1,31 +1,35 @@
 
 package pl.tokajiwines.fragments;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 
@@ -39,6 +43,7 @@ import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.DirectionsJSONParser;
 import pl.tokajiwines.utils.GPSTracker;
 import pl.tokajiwines.utils.JSONParser;
+import pl.tokajiwines.utils.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,10 +61,12 @@ public class MapFragment extends BaseFragment {
     Context mCtx;
     MapView mMapView;
     Spinner mUiRange;
-    Button mUiTours;
+    int mRangePicked = 5;
+    TextView mUiTours;
     ProgressDialog mProgDial;
+    Polyline mRoute;
     JSONParser mParser;
-    LatLng myPosition = new LatLng(51.1086408, 17.0608889); //TODO temp
+    LatLng myPosition; //TODO temp
     //    LatLng myMate1 = new LatLng(51.1486408, 17.0608889);
     //    LatLng myMate2 = new LatLng(51.1386408, 17.0808889);
     //    LatLng myMate3 = new LatLng(51.1286408, 17.0308889);
@@ -91,15 +98,12 @@ public class MapFragment extends BaseFragment {
         mMapView = (MapView) v.findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
         mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
-        mUiTours = (Button) v.findViewById(R.id.map_tours);
+        mUiTours = (TextView) v.findViewById(R.id.map_tours);
 
-        initView();
         return v;
     }
 
     public void initView() {
-
-        mMapView.onResume();// needed to get the map to display immediately
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -119,32 +123,44 @@ public class MapFragment extends BaseFragment {
 
         // adding marker
         googleMap.addMarker(marker);
-        //        addMarkers(new LatLng[] {
-        //                myMate1, myMate2, myMate3
-        //        });
+
         googleMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
             @Override
-            public boolean onMarkerClick(Marker arg0) {
-                Toast.makeText(
-                        mCtx,
-                        "Dysntns w lini prostej : " + Distance(myPosition, arg0.getPosition())
-                                + "m", Toast.LENGTH_SHORT).show();
+            public boolean onMarkerClick(final Marker arg0) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Route")
+                        .setMessage("Do You want to check route?")
+                        .setPositiveButton(android.R.string.yes,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Getting URL to the Google Directions API
+                                        if (mRoute != null) {
+                                            mRoute.remove();
+                                        }
+                                        String url = getDirectionsUrl(myPosition,
+                                                arg0.getPosition());
 
-                // Getting URL to the Google Directions API
-                String url = getDirectionsUrl(myPosition, arg0.getPosition());
+                                        DownloadTask downloadTask = new DownloadTask();
 
-                DownloadTask downloadTask = new DownloadTask();
+                                        // Start downloading json data from Google Directions API
+                                        downloadTask.execute(url);
+                                    }
+                                })
+                        .setNegativeButton(android.R.string.no,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // do nothing
+                                    }
+                                }).setIcon(android.R.drawable.ic_dialog_alert).show();
 
-                // Start downloading json data from Google Directions API
-                downloadTask.execute(url);
                 return false;
             }
         });
-        //        CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(15)
-        //                .build();
-        //        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        //TODO z opcji pobierac jaka miara
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(15)
+                .build();
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mCtx,
                 android.R.layout.simple_spinner_item, Constans.sMapRangeKm);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -153,7 +169,11 @@ public class MapFragment extends BaseFragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                Log.e("onItemKLIK", "kurwa");
+                mRangePicked = (position + 1) * 5;
+                if (App.isOnline(mCtx)) {
+                    new LoadNearPlaces().execute(new GPSTracker(mCtx).getLocationLatLng());
+                }
             }
 
             @Override
@@ -199,9 +219,11 @@ public class MapFragment extends BaseFragment {
     }
 
     public void addMarkers(Place[] pozycje) {
+
         for (Place pozycja : pozycje) {
 
-            MarkerOptions marker = new MarkerOptions().position(pozycja.getLatLng()).title("POI");
+            MarkerOptions marker = new MarkerOptions().position(pozycja.getLatLng()).title(
+                    pozycja.mPlaceType + ": " + pozycja.mName);
 
             // Changing marker icon
             if (pozycja.mPlaceType.contains("Hotel")) {
@@ -232,8 +254,9 @@ public class MapFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+        initView();
         if (App.isOnline(mCtx)) {
-            new LoadNearPlaces().execute();
+            new LoadNearPlaces().execute(myPosition);
         }
     }
 
@@ -278,9 +301,13 @@ public class MapFragment extends BaseFragment {
         protected String doInBackground(LatLng... args) {
 
             mParser = new JSONParser();
-
+            double tempRange = Constans.sMapRadiusInKm[(mRangePicked / 5) - 1];
+            String tempUrl = sUrl + "?lat=" + args[0].latitude + "&lng=" + args[0].longitude
+                    + "&radius=" + tempRange;
+            //TODO change below sUrl for tempUrl
             InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
                     Constans.sPassword, null);
+
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
 
@@ -288,28 +315,23 @@ public class MapFragment extends BaseFragment {
 
             if (response != null) {
                 mNearbyPlaces = response.places;
+
             }
 
             return null;
 
         }
 
-        // create adapter that contains loaded data and show list of news
-
         protected void onPostExecute(String file_url) {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            addMarkers(mNearbyPlaces);
-            //            mAdapter = new NewsAdapter(getActivity(), mNewsList);
-            //            mUiList.setAdapter(mAdapter);
-            //            mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            //                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            //                    Intent intent = new Intent(mContext, EventActivity.class);
-            //                    intent.putExtra(TAG_ID_NEWS, mAdapter.getItemId(position));
-            //                    startActivity(intent);
-            //                }
-            //            });
+
+            if (!(mNearbyPlaces.length < 1)) {
+                addMarkers(mNearbyPlaces);
+            } else {
+                Log.e("async", "brak punktow blisko");
+            }
 
         }
 
@@ -451,18 +473,21 @@ public class MapFragment extends BaseFragment {
 
                 // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);
-                lineOptions.width(2);
+                lineOptions.width(4);
                 lineOptions.color(Color.RED);
             }
 
             //            MainActivity.this.tvDistanceDuration.setText("Distance:" + distance + ", Duration:"
             //                    + duration);
 
-            Toast.makeText(mCtx, "Distance:" + distance + ", Duration:" + duration,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(
+                    mCtx,
+                    getResources().getString(R.string.distance) + distance
+                            + getResources().getString(R.string.duration) + duration,
+                    Toast.LENGTH_LONG).show();
 
             // Drawing polyline in the Google Map for the i-th route
-            MapFragment.this.googleMap.addPolyline(lineOptions);
+            mRoute = MapFragment.this.googleMap.addPolyline(lineOptions);
         }
     }
 

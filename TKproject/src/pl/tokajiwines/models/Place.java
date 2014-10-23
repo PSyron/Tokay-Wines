@@ -36,12 +36,13 @@ public class Place implements Serializable {
         mLng = lng;
         mLat = lat;
         mPlaceType = placeType;
-        mLatLng = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+
+        mLatLng = new LatLng(Double.parseDouble(mLat), Double.parseDouble(mLng));
 
     }
 
     public LatLng getLatLng() {
-        return mLatLng;
+        return new LatLng(Double.parseDouble(mLat), Double.parseDouble(mLng));
     }
 
 }

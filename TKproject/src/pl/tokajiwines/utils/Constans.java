@@ -24,6 +24,7 @@ public class Constans {
     public static final String[] sMapRangeKm = {
             "5 km", "10 km", "15 km", "20 km"
     };
+
     public static final String[] sMapRangeMil = {
             "3 mile", "6 mile", "9 mile", "12 mile"
     };
@@ -32,6 +33,11 @@ public class Constans {
     public static double sKmToLat = 0.0134;
     public static double sKmToLong = 0.0082;
     public static double sKmInDegreeAvg = 0.0108;
+
+    public static final double[] sMapRadiusInKm = {
+            0.054, 0.108, 0.162, 0.216
+
+    };
 
     //Nie potrzebne ale jest 
     public static double sMilToLat = 0.08375;

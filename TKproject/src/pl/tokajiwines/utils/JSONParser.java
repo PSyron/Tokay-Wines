@@ -1,10 +1,5 @@
-package pl.tokajiwines.utils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+package pl.tokajiwines.utils;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -16,11 +11,14 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public class JSONParser {
-
 
     // constructor
     public JSONParser() {
@@ -28,7 +26,6 @@ public class JSONParser {
     }
 
     public JSONObject getJSONFromUrl(String url, String username, String password) {
-        
 
         InputStream sInput = null;
         JSONObject sJSONObj = null;
@@ -39,8 +36,9 @@ public class JSONParser {
             // defaultHttpClient
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
-            
-            StringBuilder authentication = new StringBuilder().append(username).append(":").append(password);
+
+            StringBuilder authentication = new StringBuilder().append(username).append(":")
+                    .append(password);
             String result = Base64.encodeBytes(authentication.toString().getBytes());
             httpPost.setHeader("Authorization", "Basic " + result);
 
@@ -57,8 +55,7 @@ public class JSONParser {
         }
 
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    sInput, "utf-8"), 8);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(sInput, "utf-8"), 8);
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {
@@ -78,26 +75,27 @@ public class JSONParser {
         }
 
         // return JSON String
-        
+
         System.out.println(sJSONObj.toString());
         return sJSONObj;
 
     }
-    
-    public InputStream retrieveStream(String url, String username, String password, List<NameValuePair> params) {
+
+    public InputStream retrieveStream(String url, String username, String password,
+            List<NameValuePair> params) {
 
         // Making HTTP request
         try {
             // defaultHttpClient
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
-            
-            StringBuilder authentication = new StringBuilder().append(username).append(":").append(password);
+
+            StringBuilder authentication = new StringBuilder().append(username).append(":")
+                    .append(password);
             String result = Base64.encodeBytes(authentication.toString().getBytes());
             httpPost.setHeader("Authorization", "Basic " + result);
-            
-            if (params != null)
-            {
+
+            if (params != null) {
                 httpPost.setEntity(new UrlEncodedFormEntity(params));
             }
 
@@ -107,7 +105,6 @@ public class JSONParser {
 
             return httpEntity.getContent();
 
-
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (ClientProtocolException e) {
@@ -115,10 +112,9 @@ public class JSONParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         return null;
 
     }
-    
-    
+
 }

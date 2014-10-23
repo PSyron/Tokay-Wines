@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Range: " />
+            android:text="@string/range" />
 
         <Spinner
             android:id="@+id/map_range_spinner"
@@ -27,11 +27,14 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <Button
+    <TextView
         android:id="@+id/map_tours"
-        android:layout_width="wrap_content"
+        style="@style/DetailsButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Show preffered tours" />
+        android:padding="8dp"
+        android:text="@string/preffered_tours"
+        android:textSize="16sp" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
