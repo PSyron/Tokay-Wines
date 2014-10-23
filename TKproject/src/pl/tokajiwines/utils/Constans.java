@@ -21,12 +21,25 @@ public class Constans {
             R.drawable.menu_map, R.drawable.menu_guide, R.drawable.menu_settings
     };
 
-    public static final String[] sMapRange = {
-            "5km", "10km", "15km", "20km"
+    public static final String[] sMapRangeKm = {
+            "5 km", "10 km", "15 km", "20 km"
     };
-    
+    public static final String[] sMapRangeMil = {
+            "3 mile", "6 mile", "9 mile", "12 mile"
+    };
+
+    // TODO nie wiem jak sprawdzic czy dobrze mi wyszlo.
+    public static double sKmToLat = 0.0134;
+    public static double sKmToLong = 0.0082;
+    public static double sKmInDegreeAvg = 0.0108;
+
+    //Nie potrzebne ale jest 
+    public static double sMilToLat = 0.08375;
+    public static double sMilToLong = 0.005125;
+    public static double sMilInDegreeAvg = 0.0444375;
+
     public static final String sUsername = "zpi";
-    
+
     public static final String sPassword = "OEmGie";
 
 }

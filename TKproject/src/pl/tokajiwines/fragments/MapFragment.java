@@ -1,6 +1,7 @@
 
 package pl.tokajiwines.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
@@ -17,23 +18,27 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.models.NearPlacesResponse;
+import pl.tokajiwines.models.Place;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.DirectionsJSONParser;
+import pl.tokajiwines.utils.GPSTracker;
+import pl.tokajiwines.utils.JSONParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -52,10 +57,16 @@ public class MapFragment extends BaseFragment {
     MapView mMapView;
     Spinner mUiRange;
     Button mUiTours;
+    ProgressDialog mProgDial;
+    JSONParser mParser;
     LatLng myPosition = new LatLng(51.1086408, 17.0608889); //TODO temp
-    LatLng myMate1 = new LatLng(51.1486408, 17.0608889);
-    LatLng myMate2 = new LatLng(51.1386408, 17.0808889);
-    LatLng myMate3 = new LatLng(51.1286408, 17.0308889);
+    //    LatLng myMate1 = new LatLng(51.1486408, 17.0608889);
+    //    LatLng myMate2 = new LatLng(51.1386408, 17.0808889);
+    //    LatLng myMate3 = new LatLng(51.1286408, 17.0308889);
+    private Place[] mNearbyPlaces;
+
+    private static String sUrl;
+    public static final String TAG_ID_PLACE = "IdPlace";
 
     public static MapFragment newInstance(Context ctx) {
         MapFragment fragment = new MapFragment(ctx);
@@ -74,9 +85,19 @@ public class MapFragment extends BaseFragment {
         if (container == null) {
             return null;
         }
+        sUrl = getResources().getString(R.string.UrlNearLatLngPlace);
         View v = inflater.inflate(R.layout.fragment_map, container, false);
+        myPosition = new GPSTracker(mCtx).getLocationLatLng();
         mMapView = (MapView) v.findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
+        mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
+        mUiTours = (Button) v.findViewById(R.id.map_tours);
+
+        initView();
+        return v;
+    }
+
+    public void initView() {
 
         mMapView.onResume();// needed to get the map to display immediately
 
@@ -87,22 +108,20 @@ public class MapFragment extends BaseFragment {
         }
 
         googleMap = mMapView.getMap();
-        // latitude and longitude
-        //        double latitude = 51.1086408;
-        //        double longitude = 17.0608889;
 
         // create marker
         googleMap.setMyLocationEnabled(true);
-        MarkerOptions marker = new MarkerOptions().position(myPosition).title("Tutaj jestem");
+        MarkerOptions marker = new MarkerOptions().position(myPosition).title(
+                getResources().getString(R.string.here_u_are));
 
         // Changing marker icon
-        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
         // adding marker
         googleMap.addMarker(marker);
-        addMarkers(new LatLng[] {
-                myMate1, myMate2, myMate3
-        });
+        //        addMarkers(new LatLng[] {
+        //                myMate1, myMate2, myMate3
+        //        });
         googleMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
             @Override
@@ -122,20 +141,18 @@ public class MapFragment extends BaseFragment {
                 return false;
             }
         });
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(15)
-                .build();
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
-        mUiTours = (Button) v.findViewById(R.id.map_tours);
+        //        CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(15)
+        //                .build();
+        //        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        //TODO z opcji pobierac jaka miara
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mCtx,
-                android.R.layout.simple_spinner_item, Constans.sMapRange);
+                android.R.layout.simple_spinner_item, Constans.sMapRangeKm);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mUiRange.setAdapter(dataAdapter);
         mUiRange.setOnItemSelectedListener(new OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(mCtx, "OnClickListener : " + position, Toast.LENGTH_SHORT).show();
 
             }
 
@@ -145,8 +162,6 @@ public class MapFragment extends BaseFragment {
 
             }
         });
-
-        return v;
     }
 
     private String getDirectionsUrl(LatLng origin, LatLng dest) {
@@ -183,6 +198,29 @@ public class MapFragment extends BaseFragment {
         }
     }
 
+    public void addMarkers(Place[] pozycje) {
+        for (Place pozycja : pozycje) {
+
+            MarkerOptions marker = new MarkerOptions().position(pozycja.getLatLng()).title("POI");
+
+            // Changing marker icon
+            if (pozycja.mPlaceType.contains("Hotel")) {
+                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+            } else if (pozycja.mPlaceType.contains("Restaurant")) {
+                marker.icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            } else if (pozycja.mPlaceType.contains("Producer")) {
+                marker.icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+            } else {//Producer
+                marker.icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+            }
+            // adding marker
+            googleMap.addMarker(marker);
+        }
+    }
+
     public float Distance(LatLng first, LatLng second) {
         float[] results = new float[1];
         Location.distanceBetween(first.latitude, first.longitude, second.latitude,
@@ -194,6 +232,9 @@ public class MapFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+        if (App.isOnline(mCtx)) {
+            new LoadNearPlaces().execute();
+        }
     }
 
     @Override
@@ -213,6 +254,68 @@ public class MapFragment extends BaseFragment {
         super.onLowMemory();
         mMapView.onLowMemory();
     }
+
+    class LoadNearPlaces extends AsyncTask<LatLng, Void, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgDial = new ProgressDialog(mCtx);
+            mProgDial.setMessage(getResources().getString(R.string.loading_near));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
+
+        }
+
+        // retrieving news data
+
+        @Override
+        protected String doInBackground(LatLng... args) {
+
+            mParser = new JSONParser();
+
+            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
+                    Constans.sPassword, null);
+            Gson gson = new Gson();
+            InputStreamReader reader = new InputStreamReader(source);
+
+            NearPlacesResponse response = gson.fromJson(reader, NearPlacesResponse.class);
+
+            if (response != null) {
+                mNearbyPlaces = response.places;
+            }
+
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of news
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            addMarkers(mNearbyPlaces);
+            //            mAdapter = new NewsAdapter(getActivity(), mNewsList);
+            //            mUiList.setAdapter(mAdapter);
+            //            mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            //                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+            //                    Intent intent = new Intent(mContext, EventActivity.class);
+            //                    intent.putExtra(TAG_ID_NEWS, mAdapter.getItemId(position));
+            //                    startActivity(intent);
+            //                }
+            //            });
+
+        }
+
+    }
+
+    //DALEJ JEST Google Maps distance.
 
     /** A method to download json data from url */
     private String downloadUrl(String strUrl) throws IOException {
@@ -362,57 +465,5 @@ public class MapFragment extends BaseFragment {
             MapFragment.this.googleMap.addPolyline(lineOptions);
         }
     }
-
-    //    public class GetNearPlaces extends AsyncTask<LatLng, Void, Place[]> {
-    //
-    //        boolean failure = false;
-    //
-    //        @Override
-    //        protected void onPreExecute() {
-    //            super.onPreExecute();
-    //            //            mProgDial = new ProgressDialog(mContext);
-    //            //            mProgDial.setMessage("Loading producers data...");
-    //            //            mProgDial.setIndeterminate(false);
-    //            //            mProgDial.setCancelable(true);
-    //            //            mProgDial.show();
-    //
-    //        }
-    //
-    //        protected Place[] doInBackground(Void... args) {
-    //
-    //            JSONParser mParser = new JSONParser();
-    //
-    //            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
-    //                    Constans.sPassword);
-    //            Gson gson = new Gson();
-    //            InputStreamReader reader = new InputStreamReader(source);
-    //
-    //            ProducersResponse response = gson.fromJson(reader, ProducersResponse.class);
-    //
-    //            if (response != null) {
-    //                System.out.println(response.producers[0].mName);
-    //                mProducersList = response.producers;
-    //            }
-    //
-    //            return null;
-    //
-    //        }
-    //
-    //        protected void onPostExecute(String file_url) {
-    //
-    //            super.onPostExecute(file_url);
-    //            mProgDial.dismiss();
-    //            mAdapter = new ProducersAdapter(getActivity(), mProducersList);
-    //            mUiList.setAdapter(mAdapter);
-    //
-    //        }
-    //
-    //        @Override
-    //        protected Place[] doInBackground(LatLng... params) {
-    //            // TODO Auto-generated method stub
-    //            return null;
-    //        }
-    //
-    //    }
 
 }

@@ -14,6 +14,8 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class GPSTracker extends Service implements LocationListener {
 
     private final Context mContext;
@@ -43,6 +45,11 @@ public class GPSTracker extends Service implements LocationListener {
     public GPSTracker(Context context) {
         this.mContext = context;
         getLocation();
+    }
+
+    public LatLng getLocationLatLng() {
+        Location temp = getLocation();
+        return new LatLng(temp.getLatitude(), temp.getLongitude());
     }
 
     public Location getLocation() {
