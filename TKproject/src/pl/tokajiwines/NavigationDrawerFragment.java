@@ -102,8 +102,8 @@ public class NavigationDrawerFragment extends Fragment {
 
         View header = inflater.inflate(R.layout.menu_header, null);
 
-        //        mDrawerListView.addHeaderView(header);
-        //TODO  mDrawerListView.addHeaderView(header, null, false);
+        // mDrawerListView.addHeaderView(header);
+        mDrawerListView.addHeaderView(header, null, false);
         //TODO do przerobki
 
         //        mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar().getThemedContext(),

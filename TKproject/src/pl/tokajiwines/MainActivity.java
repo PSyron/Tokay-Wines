@@ -16,9 +16,9 @@ import android.view.ViewGroup;
 import pl.tokajiwines.fragments.GuideFragment;
 import pl.tokajiwines.fragments.MapFragment;
 import pl.tokajiwines.fragments.NewsFragment;
+import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.fragments.WinesFragment;
-import pl.tokajiwines.fragments.ProducersFragment;
 
 public class MainActivity extends Activity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -46,37 +46,40 @@ public class MainActivity extends Activity implements
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+        //TODO usunac :D
+        onNavigationDrawerItemSelected(1);
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
-        if (position == 0) {
+        //TODO wszystko -1 :D
+
+        if (position == 1) {
             mTitle = getString(R.string.title_news);
             fragmentManager.beginTransaction().replace(R.id.container, NewsFragment.newInstance())
                     .commit();
-        } else if (position == 1) {
+        } else if (position == 2) {
             mTitle = getString(R.string.title_wines);
             fragmentManager.beginTransaction().replace(R.id.container, WinesFragment.newInstance())
                     .commit();
-        } else if (position == 2) {
-            mTitle = getString(R.string.title_wineyards);
-                        fragmentManager.beginTransaction()
-                               .replace(R.id.container, ProducersFragment.newInstance()).commit();
         } else if (position == 3) {
+            mTitle = getString(R.string.title_wineyards);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, ProducersFragment.newInstance()).commit();
+        } else if (position == 4) {
             mTitle = getString(R.string.title_map);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, MapFragment.newInstance(this)).commit();
-        } else if (position == 4) {
+        } else if (position == 5) {
             mTitle = getString(R.string.title_tour);
             fragmentManager.beginTransaction().replace(R.id.container, GuideFragment.newInstance())
                     .commit();
         } else {
             mTitle = getString(R.string.title_settings);
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, SettingsFragment.newInstance())
-                    .commit();
+                    .replace(R.id.container, SettingsFragment.newInstance()).commit();
         }
     }
 
