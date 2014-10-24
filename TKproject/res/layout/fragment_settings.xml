@@ -15,34 +15,24 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/settings_notifi_title"
+                style="@style/DetailsHeader.Bookmark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/settings_titles_bg"
-                android:padding="8dp"
-                android:text="Notifications"
-                android:textSize="12sp" />
+                android:text="@string/notifications" />
 
             <CheckBox
+                android:id="@+id/settings_enable_notofications_cB"
+                style="@style/CustomCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="Notifications On/Off"
-                android:textSize="16sp" />
+                android:text="@string/enable_notifications" />
 
-            <TextView
+            <CheckBox
+                android:id="@+id/settings_vibrations_only_cB"
+                style="@style/CustomCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="Notifications On/Off"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="Vibrations only"
-                android:textSize="16sp" />
+                android:text="@string/vibrations_only" />
         </LinearLayout>
 
         <LinearLayout
@@ -51,13 +41,73 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/settings_apk_title"
+                style="@style/DetailsHeader.Bookmark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/settings_titles_bg"
-                android:padding="8dp"
-                android:text="Application"
-                android:textSize="12sp" />
+                android:text="@string/general_settings" />
+
+            <RelativeLayout
+                android:id="@+id/settings_general_language_rL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/settings_general_language_main_tV"
+                    style="@style/DetailsHeader.NormalText.Settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/language" />
+
+                <TextView
+                    android:id="@+id/settings_general_language_small_tV"
+                    style="@style/DetailsHeader.NormalText.Small.Settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/settings_general_language_main_tV"
+                    android:text="@string/english" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/settings_general_currency_rL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/settings_general_currency_main_tV"
+                    style="@style/DetailsHeader.NormalText.Settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/currency" />
+
+                <TextView
+                    android:id="@+id/settings_general_currency_small_tV"
+                    style="@style/DetailsHeader.NormalText.Small.Settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/settings_general_currency_main_tV"
+                    android:text="@string/currency_euro" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/settings_general_distance_rL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/settings_general_distance_main_tV"
+                    style="@style/DetailsHeader.NormalText.Settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/currency" />
+
+                <TextView
+                    android:id="@+id/settings_general_distance_small_tV"
+                    style="@style/DetailsHeader.NormalText.Small.Settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/settings_general_distance_main_tV"
+                    android:text="@string/distance_measure_km" />
+            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -66,29 +116,56 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/settings_gps_title"
+                style="@style/DetailsHeader.Bookmark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/settings_titles_bg"
-                android:padding="8dp"
-                android:text="GPS"
-                android:textSize="12sp" />
+                android:text="@string/gps" />
+
+            <RelativeLayout
+                android:id="@+id/settings_gps_rL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/settings_gps_main_tV"
+                    style="@style/DetailsHeader.NormalText.Settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/application_range" />
+
+                <TextView
+                    android:id="@+id/settings_gps_small_tV"
+                    style="@style/DetailsHeader.NormalText.Small.Settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/settings_gps_main_tV"
+                    android:text="5km" />
+            </RelativeLayout>
+
+            <CheckBox
+                style="@style/CustomCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mobile_data" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/settings_about"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/settings_about_title"
+                style="@style/DetailsHeader.Bookmark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/settings_titles_bg"
-                android:padding="8dp"
-                android:text="About"
-                android:textSize="12sp" />
+                android:text="@string/contact" />
+
+            <TextView
+                android:id="@+id/settings_about_application_tV"
+                style="@style/DetailsHeader.NormalText.Settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about_the_application" />
         </LinearLayout>
     </LinearLayout>
 
