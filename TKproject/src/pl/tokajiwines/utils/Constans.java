@@ -65,4 +65,15 @@ public class Constans {
             R.string.distance_measure_km, R.string.distance_measure_mph
     };
 
+    //Guide 
+    //TODO do stringow
+    public static final String[] sGuideTabTitle = new String[] {
+            "Curiosities", "Hotels", "Restaurants"
+    };
+    public static final int[] sGuideTabIcons = new int[] {
+            R.drawable.ic_guide_curiosities, R.drawable.ic_guide_hotels,
+            R.drawable.ic_guide_restaurants
+
+    };
+
 }
