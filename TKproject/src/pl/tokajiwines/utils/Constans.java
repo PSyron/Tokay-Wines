@@ -17,8 +17,8 @@ public class Constans {
     };
 
     public static final int[] sMenuIcons = {
-            R.drawable.menu_news, R.drawable.menu_wine, R.drawable.menu_vineyard,
-            R.drawable.menu_map, R.drawable.menu_guide, R.drawable.menu_settings
+            R.drawable.ic_menu_news, R.drawable.ic_menu_catalog, R.drawable.ic_menu_producents,
+            R.drawable.ic_menu_maps, R.drawable.ic_menu_guide, R.drawable.ic_menu_settings
     };
 
     public static final String[] sMapRangeKm = {

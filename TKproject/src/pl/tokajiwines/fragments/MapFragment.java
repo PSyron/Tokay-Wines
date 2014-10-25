@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,10 +97,10 @@ public class MapFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         myPosition = new GPSTracker(mCtx).getLocationLatLng();
         mMapView = (MapView) v.findViewById(R.id.map);
-        mMapView.onCreate(savedInstanceState);
+
         mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
         mUiTours = (TextView) v.findViewById(R.id.map_tours);
-
+        mMapView.onCreate(savedInstanceState);
         return v;
     }
 
@@ -253,11 +254,22 @@ public class MapFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mMapView.onResume();
-        initView();
-        if (App.isOnline(mCtx)) {
-            new LoadNearPlaces().execute(myPosition);
-        }
+
+        new CountDownTimer(1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                mMapView.onResume();
+                initView();
+                if (App.isOnline(mCtx)) {
+                    new LoadNearPlaces().execute(myPosition);
+                }
+            }
+
+        }.start();
+
     }
 
     @Override

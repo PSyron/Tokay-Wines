@@ -1,12 +1,12 @@
 
 package pl.tokajiwines.acitivities;
 
-import pl.tokajiwines.R;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import pl.tokajiwines.R;
 
 public class BaseActivity extends Activity {
 
@@ -38,7 +38,8 @@ public class BaseActivity extends Activity {
         switch (id) {
 
             case android.R.id.home: {
-                NavUtils.navigateUpFromSameTask(this);
+
+                onBackPressed();
                 return true;
             }
 
