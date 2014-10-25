@@ -1,5 +1,5 @@
 
-package pl.tokajiwines;
+package pl.tokajiwines.acitivities;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -13,8 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import pl.tokajiwines.R;
+import pl.tokajiwines.R.id;
+import pl.tokajiwines.R.layout;
+import pl.tokajiwines.R.menu;
+import pl.tokajiwines.R.string;
 import pl.tokajiwines.fragments.GuideFragment;
 import pl.tokajiwines.fragments.MapFragment;
+import pl.tokajiwines.fragments.NavigationDrawerFragment;
 import pl.tokajiwines.fragments.NewsFragment;
 import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.fragments.SettingsFilterFragment;

@@ -1,5 +1,5 @@
 
-package pl.tokajiwines;
+package pl.tokajiwines.fragments;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.MenuAdapter;
 
 /**
@@ -100,7 +101,7 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
-        View header = inflater.inflate(R.layout.menu_header, null);
+        //  View header = inflater.inflate(R.layout.menu_header, null);
 
         // mDrawerListView.addHeaderView(header);
         // mDrawerListView.addHeaderView(header, null, false);

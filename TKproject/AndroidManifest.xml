@@ -40,7 +40,7 @@
             android:value="AIzaSyCweB3IdP8HuqaO8TUUviVNfrQQ_exoAz4" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="pl.tokajiwines.acitivities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
