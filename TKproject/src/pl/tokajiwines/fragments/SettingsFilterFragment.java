@@ -9,18 +9,18 @@ import android.widget.ListView;
 
 import pl.tokajiwines.R;
 
-public class SettingsFragment extends BaseFragment {
+public class SettingsFilterFragment extends BaseFragment {
     ListView mUiList;
 
-    public static SettingsFragment newInstance() {
-        SettingsFragment fragment = new SettingsFragment();
+    public static SettingsFilterFragment newInstance() {
+        SettingsFilterFragment fragment = new SettingsFilterFragment();
         //        Bundle args = new Bundle();
         //        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         //        fragment.setArguments(args);
         return fragment;
     }
 
-    public SettingsFragment() {
+    public SettingsFilterFragment() {
     }
 
     @Override

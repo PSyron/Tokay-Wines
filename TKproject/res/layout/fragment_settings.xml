@@ -8,59 +8,69 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
+        <TextView
+            style="@style/DetailsHeader.Bookmark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/notifications" />
+
         <LinearLayout
             android:id="@+id/settings_notification"
+            style="@style/ItemCustomLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
-                style="@style/DetailsHeader.Bookmark"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/notifications" />
+                android:background="@drawable/divider_item"
+                android:orientation="vertical" >
 
-            <CheckBox
-                android:id="@+id/settings_enable_notofications_cB"
-                style="@style/CustomCheckBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/enable_notifications" />
+                <CheckBox
+                    android:id="@+id/settings_enable_notofications_cB"
+                    style="@style/ItemCheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enable_notifications" />
+            </LinearLayout>
 
             <CheckBox
                 android:id="@+id/settings_vibrations_only_cB"
-                style="@style/CustomCheckBox"
+                style="@style/ItemCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/vibrations_only" />
         </LinearLayout>
 
+        <TextView
+            style="@style/DetailsHeader.Bookmark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/general_settings" />
+
         <LinearLayout
+            style="@style/ItemCustomLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
-                style="@style/DetailsHeader.Bookmark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/general_settings" />
-
             <RelativeLayout
                 android:id="@+id/settings_general_language_rL"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:background="@drawable/divider_item" >
 
                 <TextView
                     android:id="@+id/settings_general_language_main_tV"
-                    style="@style/DetailsHeader.NormalText.Settings"
+                    style="@style/ItemFilterText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/language" />
 
                 <TextView
                     android:id="@+id/settings_general_language_small_tV"
-                    style="@style/DetailsHeader.NormalText.Small.Settings"
+                    style="@style/ItemFilterText.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/settings_general_language_main_tV"
@@ -70,18 +80,19 @@
             <RelativeLayout
                 android:id="@+id/settings_general_currency_rL"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:background="@drawable/divider_item" >
 
                 <TextView
                     android:id="@+id/settings_general_currency_main_tV"
-                    style="@style/DetailsHeader.NormalText.Settings"
+                    style="@style/ItemFilterText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/currency" />
 
                 <TextView
                     android:id="@+id/settings_general_currency_small_tV"
-                    style="@style/DetailsHeader.NormalText.Small.Settings"
+                    style="@style/ItemFilterText.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/settings_general_currency_main_tV"
@@ -95,14 +106,14 @@
 
                 <TextView
                     android:id="@+id/settings_general_distance_main_tV"
-                    style="@style/DetailsHeader.NormalText.Settings"
+                    style="@style/ItemFilterText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/currency" />
+                    android:text="@string/distance_measure" />
 
                 <TextView
                     android:id="@+id/settings_general_distance_small_tV"
-                    style="@style/DetailsHeader.NormalText.Small.Settings"
+                    style="@style/ItemFilterText.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/settings_general_distance_main_tV"
@@ -110,16 +121,17 @@
             </RelativeLayout>
         </LinearLayout>
 
+        <TextView
+            style="@style/DetailsHeader.Bookmark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gps" />
+
         <LinearLayout
+            style="@style/ItemCustomLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
-            <TextView
-                style="@style/DetailsHeader.Bookmark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/gps" />
 
             <RelativeLayout
                 android:id="@+id/settings_gps_rL"
@@ -128,14 +140,14 @@
 
                 <TextView
                     android:id="@+id/settings_gps_main_tV"
-                    style="@style/DetailsHeader.NormalText.Settings"
+                    style="@style/ItemFilterText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/application_range" />
 
                 <TextView
                     android:id="@+id/settings_gps_small_tV"
-                    style="@style/DetailsHeader.NormalText.Small.Settings"
+                    style="@style/ItemFilterText.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/settings_gps_main_tV"
@@ -143,26 +155,27 @@
             </RelativeLayout>
 
             <CheckBox
-                style="@style/CustomCheckBox"
+                style="@style/ItemCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/mobile_data" />
         </LinearLayout>
 
+        <TextView
+            style="@style/DetailsHeader.Bookmark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/contact" />
+
         <LinearLayout
+            style="@style/ItemCustomLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <TextView
-                style="@style/DetailsHeader.Bookmark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/contact" />
-
-            <TextView
                 android:id="@+id/settings_about_application_tV"
-                style="@style/DetailsHeader.NormalText.Settings"
+                style="@style/ItemFilterText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/about_the_application" />
