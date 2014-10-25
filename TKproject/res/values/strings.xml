@@ -78,6 +78,10 @@
     <string name="mobile_data">Mobile data</string>
     <string name="contact">Contact</string>
     <string name="about_the_application">About the application</string>
+    <string name="dialog_title_language">Select application language: </string>
+    <string name="dialog_title_currency">Select currency in application: </string>
+    <string name="dialog_title_measure">Select distance measure in application: </string>
+    <string name="dialog_title_range">Select distance range in application: </string>
 
     <!-- Urls -->
     <string name="UrlNearLatLngPlace">http://remzo.usermd.net/zpi/services/nearPlaces.php</string>

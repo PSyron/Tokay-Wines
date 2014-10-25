@@ -112,7 +112,7 @@ public class SettingsFilterFragment extends BaseFragment {
 
         final AlertDialog.Builder languageDialog = new AlertDialog.Builder(mCtx);
 
-        languageDialog.setTitle("Select application language: ").setItems(
+        languageDialog.setTitle(getResources().getString(R.string.dialog_title_language)).setItems(
                 Constans.sSettingsLanguage, new DialogInterface.OnClickListener() {
 
                     @Override
@@ -135,7 +135,7 @@ public class SettingsFilterFragment extends BaseFragment {
 
         final AlertDialog.Builder currencyDialog = new AlertDialog.Builder(mCtx);
 
-        currencyDialog.setTitle("Select currency in application: ").setItems(
+        currencyDialog.setTitle(getResources().getString(R.string.dialog_title_currency)).setItems(
                 Constans.sSettingsCurrency, new DialogInterface.OnClickListener() {
 
                     @Override
@@ -156,15 +156,15 @@ public class SettingsFilterFragment extends BaseFragment {
             }
         });
 
-        final AlertDialog.Builder distanceDialog = new AlertDialog.Builder(mCtx);
+        final AlertDialog.Builder measureDialog = new AlertDialog.Builder(mCtx);
 
         String[] temp = {
                 getResources().getString(Constans.sSettingsMeasure[0]),
                 getResources().getString(Constans.sSettingsMeasure[1])
         };
 
-        distanceDialog.setTitle("Select distance measure in application: ").setItems(temp,
-                new DialogInterface.OnClickListener() {
+        measureDialog.setTitle(getResources().getString(R.string.dialog_title_measure)).setItems(
+                temp, new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -180,14 +180,14 @@ public class SettingsFilterFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                distanceDialog.show();
+                measureDialog.show();
 
             }
         });
 
         final AlertDialog.Builder rangeDialog = new AlertDialog.Builder(mCtx);
 
-        rangeDialog.setTitle("Select distance range in application: ").setItems(
+        rangeDialog.setTitle(getResources().getString(R.string.dialog_title_range)).setItems(
                 Constans.sSettingsRange, new DialogInterface.OnClickListener() {
 
                     @Override
