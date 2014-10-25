@@ -48,4 +48,21 @@ public class Constans {
 
     public static final String sPassword = "OEmGie";
 
+    //Settings
+    public static final String[] sSettingsLanguage = {
+            "Polski", "English"
+    };
+
+    public static final String[] sSettingsCurrency = {
+            "PLN", "Euro", "Forint"
+    };
+
+    public static final String[] sSettingsRange = {
+            "5km", "10km", "15km", "20km", "25km"
+    };
+
+    public static final int[] sSettingsMeasure = {
+            R.string.distance_measure_km, R.string.distance_measure_mph
+    };
+
 }

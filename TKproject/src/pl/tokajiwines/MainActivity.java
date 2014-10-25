@@ -78,7 +78,7 @@ public class MainActivity extends Activity implements
         } else {
             mTitle = getString(R.string.title_settings);
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, SettingsFilterFragment.newInstance()).commit();
+                    .replace(R.id.container, SettingsFilterFragment.newInstance(this)).commit();
         }
     }
 
