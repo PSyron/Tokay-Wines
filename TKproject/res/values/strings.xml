@@ -31,18 +31,22 @@
     <!-- Wine -->
     <string name="wine_details_available_manufacturer">Available from the manufacturer</string>
     <string name="wine_year">Year</string>
-    <string name="wine_filter_search">Searching options</string>
-    <string name="wine_filter_all">All</string>
-    <string name="wine_filter_color">Color</string>
-    <string name="wine_filter_color_white">White</string>
-    <string name="wine_filter_color_pink">Pink</string>
-    <string name="wine_filter_color_red">Red</string>
-    <string name="wine_filter_taste">Taste</string>
-    <string name="wine_filter_taste_dry">Dry</string>
-    <string name="wine_filter_taste_semidry">Semidry</string>
-    <string name="wine_filter_taste_semisweet">Semisweet</string>
-    <string name="wine_filter_taste_sweet">Sweet</string>
-    <string name="wine_filter_produders">Producers</string>
+    <string name="wine_search">Searching options</string>
+    <string name="wine_all">All</string>
+    <string name="wine_color">Color</string>
+    <string name="wine_color_white">White</string>
+    <string name="wine_color_pink">Pink</string>
+    <string name="wine_color_red">Red</string>
+    <string name="wine_taste">Taste</string>
+    <string name="wine_taste_dry">Dry</string>
+    <string name="wine_taste_semidry">Semidry</string>
+    <string name="wine_taste_semisweet">Semisweet</string>
+    <string name="wine_taste_sweet">Sweet</string>
+    <string name="wine_type">Type</string>
+    <string name="wine_strain">Strain</string>
+    <string name="wine_price_range">Price range</string>
+    <string name="wine_produder">Producer</string>
+    <string name="any">Any (touch to choose)</string>
 
     <!-- Producers -->
     <string name="address">Address</string>

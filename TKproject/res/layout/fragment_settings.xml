@@ -12,41 +12,6 @@
             style="@style/DetailsHeader.Bookmark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/notifications" />
-
-        <LinearLayout
-            android:id="@+id/settings_notification"
-            style="@style/ItemCustomLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/divider_item"
-                android:orientation="vertical" >
-
-                <CheckBox
-                    android:id="@+id/settings_enable_notofications_cB"
-                    style="@style/ItemCheckBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/enable_notifications" />
-            </LinearLayout>
-
-            <CheckBox
-                android:id="@+id/settings_vibrations_only_cB"
-                style="@style/ItemCheckBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/vibrations_only" />
-        </LinearLayout>
-
-        <TextView
-            style="@style/DetailsHeader.Bookmark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="@string/general_settings" />
 
         <LinearLayout
@@ -119,6 +84,41 @@
                     android:layout_below="@id/settings_general_distance_main_tV"
                     android:text="@string/distance_measure_km" />
             </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            style="@style/DetailsHeader.Bookmark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/notifications" />
+
+        <LinearLayout
+            android:id="@+id/settings_notification"
+            style="@style/ItemCustomLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/divider_item"
+                android:orientation="vertical" >
+
+                <CheckBox
+                    android:id="@+id/settings_enable_notofications_cB"
+                    style="@style/ItemCheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enable_notifications" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/settings_vibrations_only_cB"
+                style="@style/ItemCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/vibrations_only" />
         </LinearLayout>
 
         <TextView
