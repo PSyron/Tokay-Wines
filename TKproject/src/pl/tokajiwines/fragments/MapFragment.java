@@ -66,6 +66,7 @@ public class MapFragment extends BaseFragment {
     TextView mUiTours;
     ProgressDialog mProgDial;
     Polyline mRoute;
+    Boolean mFirstRun = true;
     JSONParser mParser;
     LatLng myPosition; //TODO temp
     //    LatLng myMate1 = new LatLng(51.1486408, 17.0608889);
@@ -88,7 +89,8 @@ public class MapFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            final Bundle savedInstanceState) {
 
         if (container == null) {
             return null;
@@ -100,7 +102,19 @@ public class MapFragment extends BaseFragment {
 
         mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
         mUiTours = (TextView) v.findViewById(R.id.map_tours);
-        mMapView.onCreate(savedInstanceState);
+        //To laguje wlaczanie
+
+        new CountDownTimer(100, 100) {
+
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                mMapView.onCreate(savedInstanceState);
+
+            }
+
+        }.start();
         return v;
     }
 
@@ -170,10 +184,14 @@ public class MapFragment extends BaseFragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("onItemKLIK", "kurwa");
+
                 mRangePicked = (position + 1) * 5;
                 if (App.isOnline(mCtx)) {
-                    new LoadNearPlaces().execute(new GPSTracker(mCtx).getLocationLatLng());
+                    if (!mFirstRun) {
+
+                        new LoadNearPlaces().execute(new GPSTracker(mCtx).getLocationLatLng());
+                    }
+
                 }
             }
 
@@ -254,8 +272,8 @@ public class MapFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        new CountDownTimer(1000, 1000) {
+        Log.e("onresume", "kurwa ile");
+        new CountDownTimer(150, 150) {
 
             public void onTick(long millisUntilFinished) {
             }
@@ -266,6 +284,7 @@ public class MapFragment extends BaseFragment {
                 if (App.isOnline(mCtx)) {
                     new LoadNearPlaces().execute(myPosition);
                 }
+
             }
 
         }.start();
@@ -299,6 +318,7 @@ public class MapFragment extends BaseFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            Log.e("Async on PreExecute", "Executing create progress bar");
             mProgDial = new ProgressDialog(mCtx);
             mProgDial.setMessage(getResources().getString(R.string.loading_near));
             mProgDial.setIndeterminate(false);
@@ -307,7 +327,7 @@ public class MapFragment extends BaseFragment {
 
         }
 
-        // retrieving news data
+        // retrieving places near data 
 
         @Override
         protected String doInBackground(LatLng... args) {
@@ -337,6 +357,7 @@ public class MapFragment extends BaseFragment {
         protected void onPostExecute(String file_url) {
 
             super.onPostExecute(file_url);
+            Log.e("Async on PostExecute", "Executing dissmis progress bar");
             mProgDial.dismiss();
 
             if (!(mNearbyPlaces.length < 1)) {
@@ -344,6 +365,7 @@ public class MapFragment extends BaseFragment {
             } else {
                 Log.e("async", "brak punktow blisko");
             }
+            mFirstRun = false;
 
         }
 
