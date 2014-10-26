@@ -133,6 +133,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+            <CheckBox
+                android:id="@+id/settings_gps_data"
+                style="@style/ItemCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mobile_data" />
+
             <RelativeLayout
                 android:id="@+id/settings_gps_rL"
                 android:layout_width="match_parent"
@@ -153,13 +160,6 @@
                     android:layout_below="@id/settings_gps_main_tV"
                     android:text="5km" />
             </RelativeLayout>
-
-            <CheckBox
-                android:id="@+id/settings_gps_data"
-                style="@style/ItemCheckBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/mobile_data" />
         </LinearLayout>
 
         <TextView
