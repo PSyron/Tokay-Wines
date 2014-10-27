@@ -31,7 +31,6 @@ import java.util.List;
 
 public class EventActivity extends BaseActivity {
 
-    private CharSequence mTitle;
     private int mIdNews;
     private TextView mUiName;
     private ImageView mUiImage;
@@ -133,12 +132,12 @@ public class EventActivity extends BaseActivity {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            mUiName.setText(mNews.header);
+            mUiName.setText(mNews.mHeader);
             mUiDescription.setText(mNews.vast);
             Ion.with(mUiImage).placeholder(R.drawable.placeholder_image)
                     .error(R.drawable.error_image).load(mNews.image);
 
-            if (mNews.startDate == null && mNews.endDate == null) {
+            if (mNews.mStartDate == null && mNews.mEndDate == null) {
                 mUiDateLabel.setVisibility(View.INVISIBLE);
                 mUiDate.setVisibility(View.INVISIBLE);
                 mUiAddIcon.setVisibility(View.INVISIBLE);
