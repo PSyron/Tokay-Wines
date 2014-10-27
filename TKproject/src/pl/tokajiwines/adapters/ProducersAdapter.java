@@ -33,7 +33,7 @@ public class ProducersAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         // TODO zrobic
-        return null;
+        return mProducers[position];
     }
 
     @Override

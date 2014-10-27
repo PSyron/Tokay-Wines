@@ -96,8 +96,8 @@
                     style="@style/DetailsHeader.NormalText.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="url adress"
-                    android:textColor="@color/blue" />
+                    android:autoLink="web"
+                    android:text="url adress" />
             </LinearLayout>
 
             <ImageView
@@ -133,7 +133,7 @@
 
         <TextView
             style="@style/DetailsHeader.Bookmark"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/title_wines" />
 
@@ -168,13 +168,14 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/activity_producer_details_wine_name"
                     android:layout_centerHorizontal="true"
+                    android:padding="8dp"
                     android:text="@string/show_more_wines" />
             </RelativeLayout>
         </LinearLayout>
 
         <TextView
             style="@style/DetailsHeader.Bookmark"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/title_events" />
 
@@ -202,11 +203,13 @@
             style="@style/DetailsHeader.Bookmark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/users_reviews" />
+            android:text="@string/users_reviews"
+            android:visibility="gone" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/activity_producer_details_review"
@@ -222,6 +225,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/activity_producer_details_review"
                 android:gravity="right"
+                android:paddingLeft="0dp"
                 android:paddingRight="30dp"
                 android:text="John Winter" />
         </RelativeLayout>

@@ -52,93 +52,87 @@ public class NewsFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
         mUiList = (ListView) rootView.findViewById(R.id.frag_news_list);
         mContext = getActivity();
-        
+
         return rootView;
     }
-    
+
     // if there is an access to the Internet, try to load data from remote database
-    
-    
+
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        
-            if (App.isOnline(mContext))
-            {
-                new LoadNewsTask().execute();
-            }
-            
-            // otherwise, show message
-            
-            else
-            {
-                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
-            }
+
+        if (App.isOnline(mContext)) {
+            new LoadNewsTask().execute();
+        }
+
+        // otherwise, show message
+
+        else {
+            Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+        }
 
     }
 
-  
     // async task class that loads news data from remote database
-    
-    
+
     class LoadNewsTask extends AsyncTask<String, String, String> {
 
-       boolean failure = false;
-       
-       // while data are loading, show progress dialog
+        boolean failure = false;
 
-       @Override
-       protected void onPreExecute() {
-           super.onPreExecute();
-           mProgDial = new ProgressDialog(mContext);
-           mProgDial.setMessage("Loading news data...");
-           mProgDial.setIndeterminate(false);
-           mProgDial.setCancelable(true);
-           mProgDial.show();
+        // while data are loading, show progress dialog
 
-       }
-       
-       // retrieving news data
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgDial = new ProgressDialog(mContext);
+            mProgDial.setMessage("Loading news data...");
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
 
-       @Override
-       protected String doInBackground(String... args) {
-           
-           mParser = new JSONParser();
-           
-           InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername, Constans.sPassword, null);
-           Gson gson = new Gson();
-           InputStreamReader reader = new InputStreamReader(source);
-           
-           NewsResponse response = gson.fromJson(reader, NewsResponse.class);
-           
-           if (response!=null)
-           {
-               mNewsList = response.news;
-           }
-           
-           
-           return null;
+        }
 
-       }
-       
-       // create adapter that contains loaded data and show list of news
+        // retrieving news data
 
-       protected void onPostExecute(String file_url) {
-           
-           super.onPostExecute(file_url);
-           mProgDial.dismiss();
-           mAdapter = new NewsAdapter(getActivity(),mNewsList);
-           mUiList.setAdapter(mAdapter);
-           mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-               public void onItemClick(AdapterView<?> parent,View v,int position,long id){
-                   Intent intent = new Intent(mContext, EventActivity.class);
-                   intent.putExtra(TAG_ID_NEWS, mAdapter.getItemId(position));
-                   startActivity(intent);
-               }
-           });
-    
-       }
- 
+        @Override
+        protected String doInBackground(String... args) {
+
+            mParser = new JSONParser();
+
+            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
+                    Constans.sPassword, null);
+            Gson gson = new Gson();
+            InputStreamReader reader = new InputStreamReader(source);
+
+            NewsResponse response = gson.fromJson(reader, NewsResponse.class);
+
+            if (response != null) {
+                mNewsList = response.news;
+            }
+
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of news
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            mAdapter = new NewsAdapter(getActivity(), mNewsList);
+            mUiList.setAdapter(mAdapter);
+
+            mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                    Intent intent = new Intent(mContext, EventActivity.class);
+                    intent.putExtra(TAG_ID_NEWS, mAdapter.getItemId(position));
+                    startActivity(intent);
+                }
+            });
+
+        }
 
     }
 }
