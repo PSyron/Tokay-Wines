@@ -80,6 +80,10 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         // Select either the default item (0) or the last selected item.
+        //fix for header
+        if (mCurrentSelectedPosition == 0) {
+            mCurrentSelectedPosition += 1;
+        }
         selectItem(mCurrentSelectedPosition);
     }
 
@@ -101,10 +105,10 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
-        //  View header = inflater.inflate(R.layout.menu_header, null);
+        View header = inflater.inflate(R.layout.menu_header, null);
 
         // mDrawerListView.addHeaderView(header);
-        // mDrawerListView.addHeaderView(header, null, false);
+        mDrawerListView.addHeaderView(header, null, false);
         //TODO do przerobki
 
         //        mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar().getThemedContext(),

@@ -43,6 +43,7 @@ public class MainActivity extends Activity implements
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+        onNavigationDrawerItemSelected(1);
 
     }
 
@@ -50,7 +51,7 @@ public class MainActivity extends Activity implements
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
-
+        position -= 1;
         if (position == 0) {
             mTitle = getString(R.string.title_news);
             fragmentManager.beginTransaction().replace(R.id.container, NewsFragment.newInstance())
