@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="400dp" >
+        android:layout_height="500dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -15,7 +14,7 @@
             android:orientation="vertical" >
 
             <LinearLayout
-                android:id="@+id/wine_taste_lL"
+                android:id="@+id/frag_wine_taste_lL"
                 style="@style/ItemCustomLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -23,14 +22,13 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/wine_taste_tV"
                     style="@style/ItemFilterText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/wine_taste" />
 
                 <TextView
-                    android:id="@+id/wine_taste_small_tV"
+                    android:id="@+id/frag_wine_taste_tV"
                     style="@style/ItemFilterText.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -38,7 +36,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/wine_type_lL"
+                android:id="@+id/frag_wine_type_lL"
                 style="@style/ItemCustomLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,14 +44,13 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/wine_type_tV"
                     style="@style/ItemFilterText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/wine_type" />
 
                 <TextView
-                    android:id="@+id/wine_type_small_tV"
+                    android:id="@+id/frag_wine_type_tV"
                     style="@style/ItemFilterText.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -61,7 +58,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/wine_strain_lL"
+                android:id="@+id/frag_wine_strain_lL"
                 style="@style/ItemCustomLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,14 +66,13 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/wine_strain_tV"
                     style="@style/ItemFilterText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/wine_strain" />
 
                 <TextView
-                    android:id="@+id/wine_strain_small_tV"
+                    android:id="@+id/frag_wine_strain_tV"
                     style="@style/ItemFilterText.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -84,7 +80,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/wine_year_lL"
+                android:id="@+id/frag_wine_year_lL"
                 style="@style/ItemCustomLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -92,14 +88,13 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/wine_year_tV"
                     style="@style/ItemFilterText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/wine_year" />
 
                 <TextView
-                    android:id="@+id/wine_type_year_tV"
+                    android:id="@+id/frag_wine_year_tV"
                     style="@style/ItemFilterText.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -107,7 +102,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/wine_producer_lL"
+                android:id="@+id/frag_wine_producer_lL"
                 style="@style/ItemCustomLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -115,14 +110,13 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/wine_producer_tV"
                     style="@style/ItemFilterText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/wine_produder" />
 
                 <TextView
-                    android:id="@+id/wine_producer_small_tV"
+                    android:id="@+id/frag_wine_producer_tV"
                     style="@style/ItemFilterText.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -130,7 +124,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/wine_price_lL"
+                android:id="@+id/frag_wine_price_lL"
                 style="@style/ItemCustomLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -138,14 +132,13 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/wine_price_tV"
                     style="@style/ItemFilterText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/wine_price_range" />
 
                 <TextView
-                    android:id="@+id/wine_price_small_tV"
+                    android:id="@+id/frag_wine_price_tV"
                     style="@style/ItemFilterText.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -154,13 +147,19 @@
         </LinearLayout>
     </ScrollView>
 
-    <TextView
-        android:id="@+id/wine_search_btn"
-        style="@style/DetailsButton"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        android:text="@string/search"
-        android:textSize="20dp" />
+        android:layout_alignParentBottom="true" >
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/frag_wine_search_btn"
+            style="@style/DetailsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:text="@string/search"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
+</RelativeLayout>

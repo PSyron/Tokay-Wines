@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Guide -->
+    <string name="curiosities">Curiosities</string>
+    <string name="history">History of the area</string>
+    <string name="points_of_interest">Points of interest</string>
+    <string name="about_wine">What you should know about wine</string>
+    <string name="address">Address</string>
+    <string name="opening_hours">Opening hours</string>
+    <string name="phone_nb">Phone number</string>
+    <string name="users_reviews">Reviews</string>
+
+</resources>

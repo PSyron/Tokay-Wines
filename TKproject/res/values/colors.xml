@@ -19,5 +19,6 @@
     
     <!-- Simple colors -->
     <color name="blue">#0000FF</color>
+    <color name="gray">#707070</color>
 
 </resources>

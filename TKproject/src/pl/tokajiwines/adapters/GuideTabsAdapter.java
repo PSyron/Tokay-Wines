@@ -7,8 +7,9 @@ import android.support.v13.app.FragmentPagerAdapter;
 
 import com.viewpagerindicator.IconPagerAdapter;
 
-import pl.tokajiwines.fragments.NewsFragment;
-import pl.tokajiwines.fragments.ProducersFragment;
+import pl.tokajiwines.fragments.TabCuriositiesFragment;
+import pl.tokajiwines.fragments.TabHotelsFragment;
+import pl.tokajiwines.fragments.TabRestaurantsFragment;
 import pl.tokajiwines.utils.Constans;
 
 public class GuideTabsAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
@@ -26,16 +27,16 @@ public class GuideTabsAdapter extends FragmentPagerAdapter implements IconPagerA
             case 0:
                 //                return NewsFragment.newInstance(Constans.sGuideTabTitle[position
                 //                        % Constans.sGuideTabTitle.length]);
-                return NewsFragment.newInstance();
+                return TabCuriositiesFragment.newInstance();
                 // break;
             case 1:
                 //                return NewsFragment.newInstance(Constans.sGuideTabTitle[position
                 //                        % Constans.sGuideTabTitle.length]);
-                return ProducersFragment.newInstance();
+                return TabHotelsFragment.newInstance();
             case 2:
                 //                return NewsFragment.newInstance(Constans.sGuideTabTitle[position
                 //                        % Constans.sGuideTabTitle.length]);
-                return NewsFragment.newInstance();
+                return TabRestaurantsFragment.newInstance();
 
             default:
                 break;

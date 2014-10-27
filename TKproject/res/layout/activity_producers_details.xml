@@ -25,72 +25,75 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp" >
 
             <LinearLayout
-                android:id="@+id/linearLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:orientation="vertical" >
 
-                <TableRow
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
 
                     <TextView
-                        android:id="@+id/activity_producer_details_adress"
-                        style="@style/DetailsHeader.NormalText.Small.Producer"
+                        style="@style/DetailsHeader.NormalText.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/address" />
 
                     <TextView
-                        style="@style/DetailsHeader.NormalText.Small.Producer"
+                        android:id="@+id/activity_producer_details_adress"
+                        style="@style/DetailsHeader.NormalText.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="taste" />
-                </TableRow>
+                </LinearLayout>
 
-                <TableRow
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
 
                     <TextView
-                        android:id="@+id/activity_producer_details_hours"
-                        style="@style/DetailsHeader.NormalText.Small.Producer"
+                        style="@style/DetailsHeader.NormalText.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/opening_hours" />
 
                     <TextView
-                        style="@style/DetailsHeader.NormalText.Small.Producer"
+                        android:id="@+id/activity_producer_details_hours"
+                        style="@style/DetailsHeader.NormalText.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="oepning hours" />
-                </TableRow>
+                </LinearLayout>
 
-                <TableRow
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
 
                     <TextView
-                        android:id="@+id/activity_producer_details_phone"
-                        style="@style/DetailsHeader.NormalText.Small.Producer"
+                        style="@style/DetailsHeader.NormalText.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/phone_nb" />
 
                     <TextView
-                        style="@style/DetailsHeader.NormalText.Small.Producer"
+                        android:id="@+id/activity_producer_details_phone"
+                        style="@style/DetailsHeader.NormalText.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="phone number" />
-                </TableRow>
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/activity_producer_details_url"
-                    style="@style/DetailsHeader.NormalText.Small.Producer"
+                    style="@style/DetailsHeader.NormalText.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="url adress"
@@ -199,7 +202,7 @@
             style="@style/DetailsHeader.Bookmark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_events" />
+            android:text="@string/users_reviews" />
 
         <RelativeLayout
             android:layout_width="match_parent"

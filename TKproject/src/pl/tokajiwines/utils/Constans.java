@@ -49,6 +49,17 @@ public class Constans {
 
     public static final String sPassword = "OEmGie";
 
+    //WineFilter
+
+    public static final String[] sWineType = {
+            "Szamorodni Édes", "Szamorodni Szaraz", "Késői Szüret", "Aszú", "Aszúeszencia",
+            "Eszencia", "Fordítás", "Máslás"
+    };
+
+    public static final String[] sWineStrain = {
+            "Furmint", "Hárslevelű", "Sárga Muskotály", "Zéta", "Kabar", "Kövérszőlő"
+    };
+
     //Settings
     public static final String[] sSettingsLanguage = {
             "Polski", "English"

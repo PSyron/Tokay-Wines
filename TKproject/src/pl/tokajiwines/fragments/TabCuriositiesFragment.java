@@ -20,7 +20,7 @@ public class TabCuriositiesFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_offline_map, container, false);
+        View v = inflater.inflate(R.layout.fragment_curiosities, container, false);
 
         return v;
     }

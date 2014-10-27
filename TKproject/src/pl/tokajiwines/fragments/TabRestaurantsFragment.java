@@ -20,7 +20,7 @@ public class TabRestaurantsFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_offline_map, container, false);
+        View v = inflater.inflate(R.layout.fragment_restaurants, container, false);
 
         return v;
     }

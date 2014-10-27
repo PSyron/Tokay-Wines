@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="vpi_details_image_height">225dp</dimen>
+    <dimen name="vpi_details_image_width">300dp</dimen>
+    <dimen name="vpi_item_lists_height">72dp</dimen>
+
+</resources>

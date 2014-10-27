@@ -1,22 +1,19 @@
+<?xml version="1.0"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
+    <!-- Base application theme, dependent on API level. This theme is replaced by AppBaseTheme from res/values-vXX/styles.xml on newer devices. -->
+
     <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
+        <!-- Theme customizations available in newer API levels can go in res/values-vXX/styles.xml, while customizations related to backward-compatibility can go here. -->
 
     </style>
 
     <!-- Application theme. -->
+
     <style name="AppTheme" parent="AppBaseTheme">
 
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+
         <item name="android:actionBarStyle">@style/MyActionBar</item>
     </style>
 
@@ -38,6 +35,8 @@
         <item name="android:padding">8dp</item>
     </style>
 
+
+
     <style name="ItemCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
@@ -57,7 +56,7 @@
 
     <style name="ItemFilterText.Small">
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textColor">@color/gray</item>
         <item name="android:gravity">end</item>
     </style>
 
@@ -75,22 +74,18 @@
     </style>
 
     <style name="DetailsHeader.BoldText">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:gravity">start</item>
     </style>
 
     <style name="DetailsHeader.NormalText">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:gravity">start</item>
     </style>
 
     <style name="DetailsHeader.NormalText.Small">
         <item name="android:textSize">10sp</item>
-    </style>
-
-    <style name="DetailsHeader.NormalText.Small.Producer">
-        <item name="android:paddingLeft">10dp</item>
         <item name="android:layout_margin">1dp</item>
     </style>
 
@@ -107,8 +102,8 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
+        <item name="android:layout_margin">8dp</item>
         <item name="android:background">@color/filter_text</item>
-        <item name="android:padding">2dp</item>
     </style>
 
     <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
