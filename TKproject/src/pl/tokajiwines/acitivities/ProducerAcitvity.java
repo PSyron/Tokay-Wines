@@ -21,6 +21,11 @@ import pl.tokajiwines.utils.Log;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 public class ProducerAcitvity extends BaseActivity {
     JSONParser mParser;
@@ -71,13 +76,14 @@ public class ProducerAcitvity extends BaseActivity {
 
     public void fillView() {
         Log.e("fillView", mProducerFromBase.mIdProducer + " " + mProducerFromBase.mName + " "
-                + mProducerFromBase.mStreetName + " " + mProducerFromBase.mHouseNumber + " "
+                + mProducerFromBase.mStreetName + " " + mProducerFromBase.mStreetNumber + " " + mProducerFromBase.mHouseNumber + " "
                 + mProducerFromBase.mCity + " " + mProducerFromBase.mPostCode);
         mUiTitle.setText(mProducerFromBase.mName);
-        mUiAddress.setText(mProducerFromBase.mStreetName + " " + mProducerFromBase.mHouseNumber
+        mUiAddress.setText(mProducerFromBase.mStreetName + " " + mProducerFromBase.mStreetNumber+ " " + mProducerFromBase.mHouseNumber
                 + " " + mProducerFromBase.mCity + " " + mProducerFromBase.mPostCode);
         mUiUrl.setText(mProducerFromBase.mLink);
         mUiDescription.setText(mProducerFromBase.mVast);
+        mUiPhoneNumber.setText(mProducerFromBase.mPhone);
     }
 
     public void onResume() {
@@ -122,10 +128,14 @@ public class ProducerAcitvity extends BaseActivity {
         protected String doInBackground(Void... args) {
 
             mParser = new JSONParser();
-            String tempUrl = sUrl + "?who=" + mProducer.mIdProducer;
-            Log.e(ProducerAcitvity.class.getName(), tempUrl);
-            InputStream source = mParser.retrieveStream(tempUrl, Constans.sUsername,
-                    Constans.sPassword, null);
+  //          String tempUrl = sUrl + "?who=" + mProducer.mIdProducer;
+    //        Log.e(ProducerAcitvity.class.getName(), tempUrl);
+            
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("who", "" + mProducer.mIdProducer));
+            
+            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
+                    Constans.sPassword, params);
 
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
@@ -133,9 +143,10 @@ public class ProducerAcitvity extends BaseActivity {
             ProducerDetails response = gson.fromJson(reader, ProducerDetails.class);
             Log.e(ProducerAcitvity.class.getName(), response.mIdProducer + " ");
             if (response != null) {
-
+                System.out.println(response.mMessage);
                 mProducerFromBase = response;
             }
+            
 
             return null;
 

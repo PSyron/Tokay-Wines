@@ -31,6 +31,10 @@ public class ProducerDetails implements Serializable {
      * 
      */
     private static final long serialVersionUID = 6577206673206194819L;
+    @SerializedName("message")
+    public String mMessage;
+    @SerializedName("success")
+    public String mSuccess;
     @SerializedName("idProducer")
     public int mIdProducer;
     @SerializedName("email")
