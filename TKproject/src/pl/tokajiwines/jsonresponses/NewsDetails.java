@@ -1,4 +1,4 @@
-package pl.tokajiwines.models;
+package pl.tokajiwines.jsonresponses;
 
 import java.io.Serializable;
 

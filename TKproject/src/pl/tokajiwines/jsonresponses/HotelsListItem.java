@@ -1,13 +1,12 @@
 
-package pl.tokajiwines.models;
+package pl.tokajiwines.jsonresponses;
 
 import com.google.gson.annotations.SerializedName;
 
-public class RestaurantsListItem {
+public class HotelsListItem {
 
-    // TODO Auto-generated constructor stub
-    @SerializedName("idRestaurant")
-    public int mIdRestaurant;
+    @SerializedName("idHotel")
+    public int mIdHotel;
     @SerializedName("name")
     public String mName;
     @SerializedName("phone")
@@ -15,8 +14,8 @@ public class RestaurantsListItem {
     @SerializedName("image")
     public String mImageUrl;
 
-    public RestaurantsListItem(int id, String name, String phone) {
-        mIdRestaurant = id;
+    public HotelsListItem(int id, String name, String phone) {
+        mIdHotel = id;
         mName = name;
         mPhone = phone;
     }

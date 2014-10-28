@@ -1,5 +1,7 @@
 
-package pl.tokajiwines.models;
+package pl.tokajiwines.jsonresponses;
+
+import pl.tokajiwines.models.Place;
 
 public class NearPlacesResponse {
 

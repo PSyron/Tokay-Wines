@@ -19,8 +19,8 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.fragments.NewsFragment;
-import pl.tokajiwines.models.NewsDetails;
-import pl.tokajiwines.models.NewsDetailsResponse;
+import pl.tokajiwines.jsonresponses.NewsDetails;
+import pl.tokajiwines.jsonresponses.NewsDetailsResponse;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 

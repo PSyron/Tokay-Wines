@@ -38,7 +38,7 @@ import org.json.JSONObject;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.models.NearPlacesResponse;
+import pl.tokajiwines.jsonresponses.NearPlacesResponse;
 import pl.tokajiwines.models.Place;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.DirectionsJSONParser;

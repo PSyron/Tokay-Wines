@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.koushikdutta.ion.Ion;
 
 import pl.tokajiwines.R;
-import pl.tokajiwines.models.RestaurantsListItem;
+import pl.tokajiwines.jsonresponses.RestaurantsListItem;
 
 public class RestaurantsAdapter extends BaseAdapter {
 
