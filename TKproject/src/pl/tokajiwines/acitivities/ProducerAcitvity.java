@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.fragments.ProducersFragment;
-import pl.tokajiwines.models.Producer;
+import pl.tokajiwines.models.ProducerDetails;
 import pl.tokajiwines.models.ProducerListItem;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
@@ -28,7 +28,7 @@ public class ProducerAcitvity extends BaseActivity {
     private static final String sUrl = "http://remzo.usermd.net/zpi/services/producerDetails.php";
     ProgressDialog mProgDial;
     ProducerListItem mProducer;
-    Producer mProducerFromBase;
+    ProducerDetails mProducerFromBase;
 
     TextView mUiTitle;
     ImageView mUiImage;
@@ -70,8 +70,14 @@ public class ProducerAcitvity extends BaseActivity {
     }
 
     public void fillView() {
-
+        Log.e("fillView", mProducerFromBase.mIdProducer + " " + mProducerFromBase.mName + " "
+                + mProducerFromBase.mStreetName + " " + mProducerFromBase.mHouseNumber + " "
+                + mProducerFromBase.mCity + " " + mProducerFromBase.mPostCode);
         mUiTitle.setText(mProducerFromBase.mName);
+        mUiAddress.setText(mProducerFromBase.mStreetName + " " + mProducerFromBase.mHouseNumber
+                + " " + mProducerFromBase.mCity + " " + mProducerFromBase.mPostCode);
+        mUiUrl.setText(mProducerFromBase.mLink);
+        mUiDescription.setText(mProducerFromBase.mVast);
     }
 
     public void onResume() {
@@ -117,16 +123,17 @@ public class ProducerAcitvity extends BaseActivity {
 
             mParser = new JSONParser();
             String tempUrl = sUrl + "?who=" + mProducer.mIdProducer;
-
+            Log.e(ProducerAcitvity.class.getName(), tempUrl);
             InputStream source = mParser.retrieveStream(tempUrl, Constans.sUsername,
                     Constans.sPassword, null);
+
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
 
-            Producer response = gson.fromJson(reader, Producer.class);
-
+            ProducerDetails response = gson.fromJson(reader, ProducerDetails.class);
+            Log.e(ProducerAcitvity.class.getName(), response.mIdProducer + " ");
             if (response != null) {
-                Log.e(ProducerAcitvity.class.getName(), response.mName);
+
                 mProducerFromBase = response;
             }
 
