@@ -6,9 +6,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import pl.tokajiwines.models.Producer;
+import pl.tokajiwines.utils.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,7 @@ public class ProducersDataSource {
     };
 
     public ProducersDataSource(Context context) {
+
         dbHelper = new DatabaseHelper(context);
     }
 
@@ -48,7 +49,7 @@ public class ProducersDataSource {
         values.put("IdAddress_", producer.mIdAddress_);
         values.put("IdUser_", producer.mIdUser_);
         values.put("LastUpdate", producer.mLastUpdate);
-
+        Log.e(LOG, values.toString() + "  " + database);
         long insertId = database.insert(DatabaseHelper.TABLE_PRODUCERS, null, values);
 
         Log.e(LOG, "Producer with id: " + producer.mIdProducer + " inserted with id: " + insertId);
@@ -84,7 +85,8 @@ public class ProducersDataSource {
     public List<Producer> getAllProducers() {
         Log.e(LOG, "getAllProducers()");
         List<Producer> producers = new ArrayList<Producer>();
-
+        /*insertProducer(new Producer(1, "Email", "www.test.pl", "Testowy", "666666666", 1, 1, 1, 1,
+                "Dawno"));*/
         Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, allColumns, null, null,
                 null, null, null);
 

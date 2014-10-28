@@ -12,7 +12,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "1183_release";
     private static final int DATABASE_VERSION = 1;
-    private static final String LOG = "DatabaseHelper"; // Logcat tag       
+    private static final String LOG = "DatabaseHelper"; // LogCat tag       
 
     // ------------------------ Table names ----------------//  
 

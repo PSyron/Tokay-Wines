@@ -22,6 +22,9 @@ import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.ProducerAcitvity;
 import pl.tokajiwines.adapters.ProducersAdapter;
+import pl.tokajiwines.adapters.ProducersDBAdapter;
+import pl.tokajiwines.db.ProducersDataSource;
+import pl.tokajiwines.models.Producer;
 import pl.tokajiwines.models.ProducerListItem;
 import pl.tokajiwines.models.ProducersResponse;
 import pl.tokajiwines.utils.Constans;
@@ -30,6 +33,7 @@ import pl.tokajiwines.utils.Log;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class ProducersFragment extends BaseFragment {
 
@@ -90,7 +94,24 @@ public class ProducersFragment extends BaseFragment {
         // if there is an access to the Internet, try to load data from remote database
 
         if (App.isOnline(mContext)) {
-            new LoadProducersTask().execute();
+            //  new LoadProducersTask().execute();
+
+            ProducersDataSource x = new ProducersDataSource(mContext);
+            x.open();
+            String answear = "";
+            List<Producer> prodlist = x.getAllProducers();
+            if (prodlist.get(0) instanceof Producer)
+                answear = "yes";
+            else
+                answear = "no";
+            Log.e("ProducersFragment", answear);
+            Producer temp2 = prodlist.get(0);
+            Producer[] temp = {
+                temp2
+            };
+            ProducersDBAdapter mDBAdapter = new ProducersDBAdapter(getActivity(), temp);
+
+            mUiList.setAdapter(mDBAdapter);
         }
 
         // otherwise, show message
