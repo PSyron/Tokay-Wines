@@ -19,7 +19,7 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.fragments.NewsFragment;
-import pl.tokajiwines.models.News;
+import pl.tokajiwines.models.NewsDetails;
 import pl.tokajiwines.models.NewsDetailsResponse;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
@@ -38,7 +38,7 @@ public class EventActivity extends BaseActivity {
     private TextView mUiDescription;
     private TextView mUiDateLabel;
     private TextView mUiDate;
-    private News mNews;
+    private NewsDetails mNews;
 
     ProgressDialog mProgDial;
     Context mContext;
@@ -120,7 +120,6 @@ public class EventActivity extends BaseActivity {
             NewsDetailsResponse response = gson.fromJson(reader, NewsDetailsResponse.class);
             mNews = response.news;
 
-            System.out.println(mNews.image);
 
             return null;
 
@@ -133,9 +132,9 @@ public class EventActivity extends BaseActivity {
             super.onPostExecute(file_url);
             mProgDial.dismiss();
             mUiName.setText(mNews.mHeader);
-            mUiDescription.setText(mNews.vast);
+            mUiDescription.setText(mNews.mVast);
             Ion.with(mUiImage).placeholder(R.drawable.placeholder_image)
-                    .error(R.drawable.error_image).load(mNews.image);
+                    .error(R.drawable.error_image).load(mNews.mImage);
 
             if (mNews.mStartDate == null && mNews.mEndDate == null) {
                 mUiDateLabel.setVisibility(View.INVISIBLE);

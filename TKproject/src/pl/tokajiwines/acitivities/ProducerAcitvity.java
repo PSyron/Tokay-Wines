@@ -143,7 +143,6 @@ public class ProducerAcitvity extends BaseActivity {
             ProducerDetails response = gson.fromJson(reader, ProducerDetails.class);
             Log.e(ProducerAcitvity.class.getName(), response.mIdProducer + " ");
             if (response != null) {
-                System.out.println(response.mMessage);
                 mProducerFromBase = response;
             }
             
