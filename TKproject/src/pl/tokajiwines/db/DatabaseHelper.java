@@ -137,7 +137,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /* HOW TO CHECK DATABASE
     adb -d shell
     run-as pl.tokajiwines
-    cat databases/1183_release.db > /sdcard/database.db
+    cat databases/1183_release > /sdcard/database.db
     exit
     cd /sdcard
     ls -l <– check to make sure database.db is in here

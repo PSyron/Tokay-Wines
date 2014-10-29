@@ -22,7 +22,6 @@ import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.ProducerAcitvity;
 import pl.tokajiwines.adapters.ProducersAdapter;
-import pl.tokajiwines.adapters.ProducersDBAdapter;
 import pl.tokajiwines.db.ProducersDataSource;
 import pl.tokajiwines.models.Producer;
 import pl.tokajiwines.models.ProducerListItem;
@@ -100,11 +99,17 @@ public class ProducersFragment extends BaseFragment {
             pDs.open();
 
             List<Producer> prodlist = pDs.getAllProducers();
-            Producer[] temp = {
+            Log.i("Producent List", prodlist.toString());
+            ProducerListItem[] producers = {
+                    new ProducerListItem(prodlist.get(0)), new ProducerListItem(prodlist.get(1)),
+                    new ProducerListItem(prodlist.get(2))
+            };/*
+              Producer[] temp = {
                     prodlist.get(0), prodlist.get(1), prodlist.get(2)
-            };
-            ProducersDBAdapter mDBAdapter = new ProducersDBAdapter(getActivity(), temp);
-            mUiList.setAdapter(mDBAdapter);
+              };*/
+            // ProducersDBAdapter mDBAdapter = new ProducersDBAdapter(getActivity(), temp);
+            ProducersAdapter mAdapter = new ProducersAdapter(getActivity(), producers);
+            mUiList.setAdapter(mAdapter);
         }
 
         // otherwise, show message

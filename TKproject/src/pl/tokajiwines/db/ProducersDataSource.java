@@ -102,8 +102,15 @@ public class ProducersDataSource {
 
     private Producer cursorToProducer(Cursor cursor) {
         Producer producer = new Producer();
-        producer.mIdProducer = (int) cursor.getLong(0);
-        producer.mName = cursor.getString(1);
+        producer.mIdProducer = cursor.getInt(0);
+        producer.mEmail = cursor.getString(1);
+        producer.mLink = cursor.getString(2);
+        producer.mName = cursor.getString(3);
+        producer.mPhone = cursor.getString(4);
+        producer.mIdDescription_ = cursor.getInt(5);
+        producer.mIdAddress_ = cursor.getInt(6);
+        producer.mIdUser_ = cursor.getInt(7);
+        producer.mLastUpdate = cursor.getString(8);
         return producer;
     }
 }

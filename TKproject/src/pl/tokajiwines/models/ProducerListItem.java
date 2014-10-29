@@ -24,4 +24,9 @@ public class ProducerListItem implements Serializable {
         mDescription = description;
     }
 
+    public ProducerListItem(Producer p) {
+        mIdProducer = p.mIdProducer;
+        mName = p.mName;
+        mDescription = Integer.toString(p.mIdDescription_);
+    }
 }
