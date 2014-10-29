@@ -26,8 +26,6 @@ public class Place implements Serializable {
     @SerializedName("placeType")
     public String mPlaceType;
 
-    public LatLng mLatLng;
-
     public Place(int idPlace, String name, String address, String lng, String lat, String placeType) {
         super();
         mIdPlace = idPlace;
@@ -36,8 +34,6 @@ public class Place implements Serializable {
         mLng = lng;
         mLat = lat;
         mPlaceType = placeType;
-
-        mLatLng = new LatLng(Double.parseDouble(mLat), Double.parseDouble(mLng));
 
     }
 

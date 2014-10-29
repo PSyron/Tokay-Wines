@@ -20,7 +20,7 @@ public class BaseActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.search_with_home, menu);
         restoreActionBar();
 
         return true;
@@ -53,6 +53,11 @@ public class BaseActivity extends Activity {
 
             case R.id.action_settings: {
                 return true;
+            }
+            case R.id.action_home: {
+                //TODO
+                return true;
+
             }
 
             default:

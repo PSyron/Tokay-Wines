@@ -40,7 +40,8 @@
 
         <activity
             android:name="pl.tokajiwines.acitivities.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,26 +50,36 @@
         </activity>
         <activity
             android:name="pl.tokajiwines.acitivities.EventActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pl.tokajiwines.MainActivity" />
         </activity>
         <activity
             android:name="pl.tokajiwines.acitivities.PlaceAcitvity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="pl.tokajiwines.acitivities.WineActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="pl.tokajiwines.acitivities.ProducerAcitvity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="pl.tokajiwines.acitivities.ProducerWinesActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="pl.tokajiwines.acitivities.NearPlaceActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

@@ -2,8 +2,11 @@
 package pl.tokajiwines.acitivities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +21,7 @@ import pl.tokajiwines.R;
 import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.jsonresponses.ProducerDetails;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
+import pl.tokajiwines.models.Place;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
@@ -68,10 +72,25 @@ public class ProducerAcitvity extends BaseActivity {
         mUiOpeningHours = (TextView) findViewById(R.id.activity_producer_details_hours);
         mUiPhoneNumber = (TextView) findViewById(R.id.activity_producer_details_phone);
         mUiUrl = (TextView) findViewById(R.id.activity_producer_details_url);
-        mUiNear = (ImageView) findViewById(R.id.activity_producer_navigate);
-        mUiNavigate = (ImageView) findViewById(R.id.activity_producer_neighborhood);
+        mUiNear = (ImageView) findViewById(R.id.activity_producer_neighborhood);
+        mUiNavigate = (ImageView) findViewById(R.id.activity_producer_navigate);
         mUiMoreWines = (TextView) findViewById(R.id.activity_producer_details_wine_button);
         mUiDescription = (TextView) findViewById(R.id.activity_news_details_description);
+        mUiNear.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Place extraPlace = new Place(mProducerFromBase.mIdProducer,
+                        mProducerFromBase.mName, null, mProducerFromBase.mLng,
+                        mProducerFromBase.mLat, "Producer");
+
+                Intent intent = new Intent(ProducerAcitvity.this, NearPlaceActivity.class);
+                intent.putExtra(NearPlaceActivity.TAG_PLACE, extraPlace);
+
+                startActivityForResult(intent, NearPlaceActivity.REQUEST);
+
+            }
+        });
     }
 
     public void fillView() {
