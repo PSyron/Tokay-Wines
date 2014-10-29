@@ -78,6 +78,9 @@
     <string name="duration">\nDuration: </string>
     <string name="range">Range: </string>
     <string name="preffered_tours">Pick from preffered tours!</string>
+    <string name="here_u_started">Here You started</string>
+    <string name="navigation_to">Navigation to: </string>
+    <string name="places_near">Places near: </string>
 
     <!-- Guide -->
 

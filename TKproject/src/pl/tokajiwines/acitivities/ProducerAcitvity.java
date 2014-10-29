@@ -64,7 +64,7 @@ public class ProducerAcitvity extends BaseActivity {
     }
 
     public void initView() {
-        getActionBar().setHomeButtonEnabled(true);
+
         getActionBar().setTitle(mProducer.mName);
         mUiTitle = (TextView) findViewById(R.id.activity_news_details_name);
         mUiImage = (ImageView) findViewById(R.id.activity_news_details_image);
@@ -88,6 +88,21 @@ public class ProducerAcitvity extends BaseActivity {
                 intent.putExtra(NearPlaceActivity.TAG_PLACE, extraPlace);
 
                 startActivityForResult(intent, NearPlaceActivity.REQUEST);
+
+            }
+        });
+        mUiNavigate.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Place extraPlace = new Place(mProducerFromBase.mIdProducer,
+                        mProducerFromBase.mName, null, mProducerFromBase.mLng,
+                        mProducerFromBase.mLat, "Producer");
+
+                Intent intent = new Intent(ProducerAcitvity.this, NavigateToActivity.class);
+                intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
+
+                startActivityForResult(intent, NavigateToActivity.REQUEST);
 
             }
         });

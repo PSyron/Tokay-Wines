@@ -1,9 +1,7 @@
 
 package pl.tokajiwines.acitivities;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,30 +9,23 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
-import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.fragments.SettingsFragment;
-import pl.tokajiwines.jsonresponses.NearPlacesResponse;
 import pl.tokajiwines.models.Place;
-import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.DirectionsJSONParser;
+import pl.tokajiwines.utils.GPSTracker;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
-import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -46,21 +37,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class NearPlaceActivity extends BaseActivity {
+public class NavigateToActivity extends BaseActivity {
 
-    public static final String TAG_PLACE = "nearPlacefinder";
+    public static final String TAG_PLACE_TO = "nearPlacefinderTo";
     public static final String LOG_TAG = "NearPlaceActivity";
-    Place mPlace;
+    public static int REQUEST = 113;
+
+    Place mPlaceTo;
     Polyline mRoute;
     MapView mMapView;
-    LatLng mPlacePosition;
+    LatLng mStartPosition;
+    LatLng mFinishPosition;
     Boolean mFirstRun = true;
     JSONParser mParser;
     ProgressDialog mProgDial;
     private GoogleMap googleMap;
     static String sUrl;
     private Place[] mNearbyPlaces;
-    public static int REQUEST = 112;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,19 +61,21 @@ public class NearPlaceActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            mPlace = (Place) extras.getSerializable(NearPlaceActivity.TAG_PLACE);
 
+        if (extras != null) {
+
+            mPlaceTo = (Place) extras.getSerializable(NavigateToActivity.TAG_PLACE_TO);
         }
-        Log.e(LOG_TAG, mPlace + "");
-        if (mPlace == null) {
-            Toast.makeText(NearPlaceActivity.this, "404 Error", Toast.LENGTH_LONG).show();
+
+        if (mPlaceTo == null) {
+            Toast.makeText(NavigateToActivity.this, "404 Error", Toast.LENGTH_LONG).show();
             finish();
         } else {
-            mPlacePosition = mPlace.getLatLng();
+            mStartPosition = new GPSTracker(NavigateToActivity.this).getLocationLatLng();
+            mFinishPosition = mPlaceTo.getLatLng();
         }
-        getActionBar()
-                .setTitle(getResources().getString(R.string.places_near) + " " + mPlace.mName);
+        getActionBar().setTitle(
+                getResources().getString(R.string.navigation_to) + " " + mPlaceTo.mName);
         mMapView = (MapView) findViewById(R.id.activity_map_map);
         mMapView.onCreate(savedInstanceState);
         initView();
@@ -91,10 +86,6 @@ public class NearPlaceActivity extends BaseActivity {
         super.onResume();
 
         mMapView.onResume();
-        initView();
-        if (App.isOnline(NearPlaceActivity.this)) {
-            new LoadNearPlaces().execute(mPlacePosition);
-        }
 
     }
 
@@ -119,7 +110,7 @@ public class NearPlaceActivity extends BaseActivity {
     public void initView() {
         sUrl = getResources().getString(R.string.UrlNearLatLngPlace);
         try {
-            MapsInitializer.initialize(NearPlaceActivity.this);
+            MapsInitializer.initialize(NavigateToActivity.this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -129,50 +120,30 @@ public class NearPlaceActivity extends BaseActivity {
         // create marker
         googleMap.setMyLocationEnabled(true);
 
-        MarkerOptions marker = new MarkerOptions().position(mPlacePosition).title(mPlace.mName);
+        MarkerOptions markerFrom = new MarkerOptions().position(mStartPosition).title(
+                getResources().getString(R.string.here_u_started));
 
         // Changing marker icon
-        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        markerFrom.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+        googleMap.addMarker(markerFrom);
+
+        MarkerOptions markerTo = new MarkerOptions().position(mFinishPosition)
+                .title(mPlaceTo.mName);
+
+        markerTo.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
         // adding marker
-        googleMap.addMarker(marker);
+        googleMap.addMarker(markerTo);
 
-        googleMap.setOnMarkerClickListener(new OnMarkerClickListener() {
+        String url = getDirectionsUrl(mStartPosition, mFinishPosition);
 
-            @Override
-            public boolean onMarkerClick(final Marker arg0) {
-                if (arg0.getPosition() != mPlacePosition) {
-                    new AlertDialog.Builder(NearPlaceActivity.this)
-                            .setTitle("Route to " + arg0.getTitle())
-                            .setMessage("Do You want to check route?")
-                            .setPositiveButton(android.R.string.yes,
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // Getting URL to the Google Directions API
-                                            if (mRoute != null) {
-                                                mRoute.remove();
-                                            }
-                                            String url = getDirectionsUrl(mPlacePosition,
-                                                    arg0.getPosition());
+        DownloadTask downloadTask = new DownloadTask();
 
-                                            DownloadTask downloadTask = new DownloadTask();
+        // Start downloading json data from Google Directions API
+        downloadTask.execute(url);
 
-                                            // Start downloading json data from Google Directions API
-                                            downloadTask.execute(url);
-                                        }
-                                    })
-                            .setNegativeButton(android.R.string.no,
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // do nothing
-                                        }
-                                    }).setIcon(android.R.drawable.ic_dialog_alert).show();
-                }
-                return false;
-            }
-
-        });
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(mPlacePosition)
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(mStartPosition)
                 .zoom(13).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
@@ -198,103 +169,6 @@ public class NearPlaceActivity extends BaseActivity {
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
 
         return url;
-    }
-
-    public void addMarkers(Place[] pozycje) {
-
-        for (Place pozycja : pozycje) {
-
-            MarkerOptions marker = new MarkerOptions().position(pozycja.getLatLng()).title(
-                    pozycja.mPlaceType + ": " + pozycja.mName);
-
-            // Changing marker icon
-            if (pozycja.mPlaceType.contains("Hotel")) {
-                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-            } else if (pozycja.mPlaceType.contains("Restaurant")) {
-                marker.icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-            } else if (pozycja.mPlaceType.contains("Producer")) {
-                marker.icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-            } else {//Producer
-                marker.icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-            }
-
-            // adding marker
-            googleMap.addMarker(marker);
-        }
-    }
-
-    class LoadNearPlaces extends AsyncTask<LatLng, Void, String> {
-
-        boolean failure = false;
-
-        // while data are loading, show progress dialog
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.e("Async on PreExecute", "Executing create progress bar");
-            mProgDial = new ProgressDialog(NearPlaceActivity.this);
-            mProgDial.setMessage(getResources().getString(R.string.loading_near));
-            mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
-            mProgDial.show();
-            // clearing markers
-            googleMap.clear();
-
-        }
-
-        // retrieving places near data 
-
-        @Override
-        protected String doInBackground(LatLng... args) {
-
-            mParser = new JSONParser();
-            int tempShared = SharedPreferencesHelper.getSharedPreferencesInt(
-                    NearPlaceActivity.this, SettingsFragment.SharedKeyGPSRange,
-                    SettingsFragment.DefGPSRange);
-            double tempRange = Constans.sMapRadiusInKm[tempShared];
-            String tempUrl = sUrl + "?lat=" + args[0].latitude + "&lng=" + args[0].longitude
-                    + "&radius=" + tempRange;
-            //TODO change below sUrl for tempUrl
-            Log.e("pobieranie URL", tempUrl + "     " + sUrl);
-            InputStream source = mParser.retrieveStream(tempUrl, Constans.sUsername,
-                    Constans.sPassword, null);
-
-            Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
-
-            NearPlacesResponse response = gson.fromJson(reader, NearPlacesResponse.class);
-
-            if (response != null) {
-
-                if (response.success == 1)
-                    mNearbyPlaces = response.places;
-
-                else
-                    mNearbyPlaces = new Place[0];
-            }
-            return null;
-
-        }
-
-        protected void onPostExecute(String file_url) {
-
-            super.onPostExecute(file_url);
-            Log.e("Async on PostExecute", "Executing dissmis progress bar");
-            mProgDial.dismiss();
-
-            if (!(mNearbyPlaces.length < 1)) {
-                addMarkers(mNearbyPlaces);
-            } else {
-                Log.e("async", "brak punktow blisko");
-            }
-            mFirstRun = false;
-
-        }
-
     }
 
     //DALEJ JEST Google Maps distance.
@@ -349,7 +223,7 @@ public class NearPlaceActivity extends BaseActivity {
 
             try {
                 // Fetching the data from web service
-                data = NearPlaceActivity.this.downloadUrl(url[0]);
+                data = NavigateToActivity.this.downloadUrl(url[0]);
             } catch (Exception e) {
                 Log.d("Background Task", e.toString());
             }
@@ -402,7 +276,7 @@ public class NearPlaceActivity extends BaseActivity {
             String duration = "";
 
             if (result.size() < 1) {
-                Toast.makeText(NearPlaceActivity.this, "No Points", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NavigateToActivity.this, "No Points", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -441,13 +315,13 @@ public class NearPlaceActivity extends BaseActivity {
             //                    + duration);
 
             Toast.makeText(
-                    NearPlaceActivity.this,
+                    NavigateToActivity.this,
                     getResources().getString(R.string.distance) + distance
                             + getResources().getString(R.string.duration) + duration,
                     Toast.LENGTH_LONG).show();
 
             // Drawing polyline in the Google Map for the i-th route
-            mRoute = NearPlaceActivity.this.googleMap.addPolyline(lineOptions);
+            mRoute = NavigateToActivity.this.googleMap.addPolyline(lineOptions);
         }
     }
 
