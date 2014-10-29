@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import pl.tokajiwines.R;
-import pl.tokajiwines.models.ProducerListItem;
+import pl.tokajiwines.jsonresponses.ProducerListItem;
 
 public class ProducersAdapter extends BaseAdapter {
 

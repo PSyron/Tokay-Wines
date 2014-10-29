@@ -1,5 +1,5 @@
 
-package pl.tokajiwines.models;
+package pl.tokajiwines.jsonresponses;
 
 public class HotelsResponse {
 

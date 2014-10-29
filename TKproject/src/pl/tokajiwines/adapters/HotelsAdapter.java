@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.koushikdutta.ion.Ion;
 
 import pl.tokajiwines.R;
-import pl.tokajiwines.models.HotelsListItem;
+import pl.tokajiwines.jsonresponses.HotelsListItem;
 
 public class HotelsAdapter extends BaseAdapter {
 

@@ -13,8 +13,8 @@ import com.google.gson.Gson;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.fragments.ProducersFragment;
-import pl.tokajiwines.models.ProducerDetails;
-import pl.tokajiwines.models.ProducerListItem;
+import pl.tokajiwines.jsonresponses.ProducerDetails;
+import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
@@ -143,7 +143,6 @@ public class ProducerAcitvity extends BaseActivity {
             ProducerDetails response = gson.fromJson(reader, ProducerDetails.class);
             Log.e(ProducerAcitvity.class.getName(), response.mIdProducer + " ");
             if (response != null) {
-                System.out.println(response.mMessage);
                 mProducerFromBase = response;
             }
             

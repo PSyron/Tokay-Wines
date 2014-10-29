@@ -19,8 +19,8 @@ import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.EventActivity;
 import pl.tokajiwines.adapters.NewsAdapter;
-import pl.tokajiwines.models.NewsListItem;
-import pl.tokajiwines.models.NewsResponse;
+import pl.tokajiwines.jsonresponses.NewsListItem;
+import pl.tokajiwines.jsonresponses.NewsResponse;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 

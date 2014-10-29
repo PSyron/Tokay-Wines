@@ -12,8 +12,7 @@ import android.widget.TextView;
 import com.koushikdutta.ion.Ion;
 
 import pl.tokajiwines.R;
-import pl.tokajiwines.models.NewsListItem;
-import pl.tokajiwines.models.ProducerListItem;
+import pl.tokajiwines.jsonresponses.NewsListItem;
 
 public class NewsAdapter extends BaseAdapter {
 
