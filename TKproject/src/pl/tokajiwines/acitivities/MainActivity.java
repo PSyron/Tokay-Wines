@@ -16,7 +16,7 @@ import pl.tokajiwines.fragments.NavigationDrawerFragment;
 import pl.tokajiwines.fragments.NewsFragment;
 import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.fragments.SettingsFilterFragment;
-import pl.tokajiwines.fragments.WinesFragment;
+import pl.tokajiwines.fragments.WinesFilterFragment;
 
 public class MainActivity extends Activity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -59,7 +59,7 @@ public class MainActivity extends Activity implements
         } else if (position == 1) {
             mTitle = getString(R.string.title_wines);
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, WinesFragment.newInstance(this)).commit();
+                    .replace(R.id.container, WinesFilterFragment.newInstance(this)).commit();
         } else if (position == 2) {
             mTitle = getString(R.string.title_wineyards);
             fragmentManager.beginTransaction()

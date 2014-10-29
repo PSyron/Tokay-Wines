@@ -18,7 +18,7 @@ import pl.tokajiwines.utils.Constans;
 
 import java.util.ArrayList;
 
-public class WinesFragment extends BaseFragment {
+public class WinesFilterFragment extends BaseFragment {
 
     LinearLayout mUiTasteLin;
     TextView mUiTaste;
@@ -37,15 +37,15 @@ public class WinesFragment extends BaseFragment {
 
     Context mCtx;
 
-    public static WinesFragment newInstance(Context ctx) {
-        WinesFragment fragment = new WinesFragment(ctx);
+    public static WinesFilterFragment newInstance(Context ctx) {
+        WinesFilterFragment fragment = new WinesFilterFragment(ctx);
         //        Bundle args = new Bundle();
         //        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         //        fragment.setArguments(args);
         return fragment;
     }
 
-    public WinesFragment(Context ctx) {
+    public WinesFilterFragment(Context ctx) {
         mCtx = ctx;
     }
 
