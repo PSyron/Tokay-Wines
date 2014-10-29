@@ -3,6 +3,7 @@ package pl.tokajiwines.acitivities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -23,6 +24,13 @@ public class BaseActivity extends Activity {
         restoreActionBar();
 
         return true;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreate(savedInstanceState);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

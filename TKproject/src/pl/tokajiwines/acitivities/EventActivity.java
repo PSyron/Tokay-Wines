@@ -50,8 +50,6 @@ public class EventActivity extends BaseActivity {
 
         setContentView(R.layout.activity_news_details);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-
         mContext = this;
 
         mUiName = (TextView) findViewById(R.id.activity_news_details_name);
@@ -119,7 +117,6 @@ public class EventActivity extends BaseActivity {
 
             NewsDetailsResponse response = gson.fromJson(reader, NewsDetailsResponse.class);
             mNews = response.news;
-
 
             return null;
 

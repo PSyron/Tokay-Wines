@@ -97,7 +97,9 @@ public class MapFragment extends BaseFragment {
         }
         sUrl = getResources().getString(R.string.UrlNearLatLngPlace);
         View v = inflater.inflate(R.layout.fragment_map, container, false);
-        myPosition = new GPSTracker(mCtx).getLocationLatLng();
+        // myPosition = new GPSTracker(mCtx).getLocationLatLng();
+        // odjac lat roznica 0.02 
+        myPosition = new LatLng(48.184, 21.3633);
         mMapView = (MapView) v.findViewById(R.id.map);
 
         mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
@@ -143,34 +145,36 @@ public class MapFragment extends BaseFragment {
 
             @Override
             public boolean onMarkerClick(final Marker arg0) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Route")
-                        .setMessage("Do You want to check route?")
-                        .setPositiveButton(android.R.string.yes,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // Getting URL to the Google Directions API
-                                        if (mRoute != null) {
-                                            mRoute.remove();
+                if (arg0.getPosition() != myPosition) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Route to " + arg0.getTitle())
+                            .setMessage("Do You want to check route?")
+                            .setPositiveButton(android.R.string.yes,
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // Getting URL to the Google Directions API
+                                            if (mRoute != null) {
+                                                mRoute.remove();
+                                            }
+                                            String url = getDirectionsUrl(myPosition,
+                                                    arg0.getPosition());
+
+                                            DownloadTask downloadTask = new DownloadTask();
+
+                                            // Start downloading json data from Google Directions API
+                                            downloadTask.execute(url);
                                         }
-                                        String url = getDirectionsUrl(myPosition,
-                                                arg0.getPosition());
-
-                                        DownloadTask downloadTask = new DownloadTask();
-
-                                        // Start downloading json data from Google Directions API
-                                        downloadTask.execute(url);
-                                    }
-                                })
-                        .setNegativeButton(android.R.string.no,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // do nothing
-                                    }
-                                }).setIcon(android.R.drawable.ic_dialog_alert).show();
-
+                                    })
+                            .setNegativeButton(android.R.string.no,
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // do nothing
+                                        }
+                                    }).setIcon(android.R.drawable.ic_dialog_alert).show();
+                }
                 return false;
             }
+
         });
         CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(15)
                 .build();
@@ -272,7 +276,7 @@ public class MapFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("onresume", "kurwa ile");
+
         new CountDownTimer(150, 150) {
 
             public void onTick(long millisUntilFinished) {
@@ -337,7 +341,8 @@ public class MapFragment extends BaseFragment {
             String tempUrl = sUrl + "?lat=" + args[0].latitude + "&lng=" + args[0].longitude
                     + "&radius=" + tempRange;
             //TODO change below sUrl for tempUrl
-            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
+            Log.e("pobieranie URL", tempUrl + "     " + sUrl);
+            InputStream source = mParser.retrieveStream(tempUrl, Constans.sUsername,
                     Constans.sPassword, null);
 
             Gson gson = new Gson();
@@ -346,10 +351,13 @@ public class MapFragment extends BaseFragment {
             NearPlacesResponse response = gson.fromJson(reader, NearPlacesResponse.class);
 
             if (response != null) {
-                mNearbyPlaces = response.places;
 
+                if (response.success == 1)
+                    mNearbyPlaces = response.places;
+
+                else
+                    mNearbyPlaces = new Place[0];
             }
-
             return null;
 
         }

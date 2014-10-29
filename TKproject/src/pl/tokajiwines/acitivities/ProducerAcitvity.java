@@ -10,6 +10,9 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.fragments.ProducersFragment;
@@ -23,9 +26,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 public class ProducerAcitvity extends BaseActivity {
     JSONParser mParser;
@@ -76,11 +76,13 @@ public class ProducerAcitvity extends BaseActivity {
 
     public void fillView() {
         Log.e("fillView", mProducerFromBase.mIdProducer + " " + mProducerFromBase.mName + " "
-                + mProducerFromBase.mStreetName + " " + mProducerFromBase.mStreetNumber + " " + mProducerFromBase.mHouseNumber + " "
-                + mProducerFromBase.mCity + " " + mProducerFromBase.mPostCode);
+                + mProducerFromBase.mStreetName + " " + mProducerFromBase.mStreetNumber + " "
+                + mProducerFromBase.mHouseNumber + " " + mProducerFromBase.mCity + " "
+                + mProducerFromBase.mPostCode);
         mUiTitle.setText(mProducerFromBase.mName);
-        mUiAddress.setText(mProducerFromBase.mStreetName + " " + mProducerFromBase.mStreetNumber+ " " + mProducerFromBase.mHouseNumber
-                + " " + mProducerFromBase.mCity + " " + mProducerFromBase.mPostCode);
+        mUiAddress.setText(mProducerFromBase.mStreetName + " " + mProducerFromBase.mStreetNumber
+                + " " + mProducerFromBase.mHouseNumber + " " + mProducerFromBase.mCity + " "
+                + mProducerFromBase.mPostCode);
         mUiUrl.setText(mProducerFromBase.mLink);
         mUiDescription.setText(mProducerFromBase.mVast);
         mUiPhoneNumber.setText(mProducerFromBase.mPhone);
@@ -128,12 +130,10 @@ public class ProducerAcitvity extends BaseActivity {
         protected String doInBackground(Void... args) {
 
             mParser = new JSONParser();
-  //          String tempUrl = sUrl + "?who=" + mProducer.mIdProducer;
-    //        Log.e(ProducerAcitvity.class.getName(), tempUrl);
-            
+
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("who", "" + mProducer.mIdProducer));
-            
+
             InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
                     Constans.sPassword, params);
 
@@ -145,7 +145,6 @@ public class ProducerAcitvity extends BaseActivity {
             if (response != null) {
                 mProducerFromBase = response;
             }
-            
 
             return null;
 
