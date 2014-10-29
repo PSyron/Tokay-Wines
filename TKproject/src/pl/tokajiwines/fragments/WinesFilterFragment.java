@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import pl.tokajiwines.R;
 import pl.tokajiwines.utils.Constans;
-import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 import java.util.ArrayList;
 
@@ -233,20 +232,20 @@ public class WinesFilterFragment extends BaseFragment {
     }
 
     private void getSettingFromSharedPreferences() {
-        currCurrency = Constans.sSettingsCurrency[SharedPreferencesHelper.getSharedPreferencesInt(
-                mCtx, SettingsFilterFragment.SharedKeyCurrency, SettingsFilterFragment.DefCurrency)];
-
-        switch (currCurrency) {
-            case "PLN":
-                currCurrencyTab = Constans.sWinePricesPLN;
-                break;
-            case "Euro":
-                currCurrencyTab = Constans.sWinePricesEuro;
-                break;
-            case "Forint":
-                currCurrencyTab = Constans.sWinePricesForint;
-                break;
-        }
+        //        currCurrency = Constans.sSettingsCurrency[SharedPreferencesHelper.getSharedPreferencesInt(
+        //                mCtx, SettingsFragment.SharedKeyCurrency, SettingsFragment.DefCurrency)];
+        //
+        //        switch (currCurrency) {
+        //            case "PLN":
+        //                currCurrencyTab = Constans.sWinePricesPLN;
+        //                break;
+        //            case "Euro":
+        //                currCurrencyTab = Constans.sWinePricesEuro;
+        //                break;
+        //            case "Forint":
+        //                currCurrencyTab = Constans.sWinePricesForint;
+        //                break;
+        //        }
 
     }
 }
