@@ -31,6 +31,7 @@ public class ProducersDataSource {
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
+        Log.i(LOG, database + " ");
     }
 
     public void close() {
@@ -38,7 +39,7 @@ public class ProducersDataSource {
     }
 
     public long insertProducer(Producer producer) {
-        Log.e(LOG, "insertProducer()");
+        Log.i(LOG, "insertProducer()");
         ContentValues values = new ContentValues();
         values.put("IdProducer", producer.mIdProducer);
         values.put("Email", producer.mEmail);
@@ -49,22 +50,20 @@ public class ProducersDataSource {
         values.put("IdAddress_", producer.mIdAddress_);
         values.put("IdUser_", producer.mIdUser_);
         values.put("LastUpdate", producer.mLastUpdate);
-        Log.e(LOG, values.toString() + "  " + database);
         long insertId = database.insert(DatabaseHelper.TABLE_PRODUCERS, null, values);
-
-        Log.e(LOG, "Producer with id: " + producer.mIdProducer + " inserted with id: " + insertId);
+        Log.i(LOG, "Producer with id: " + producer.mIdProducer + " inserted with id: " + insertId);
         return insertId;
     }
 
     public void deleteProducer(Producer producer) {
-        Log.e(LOG, "deleteProducer()");
+        Log.i(LOG, "deleteProducer()");
         long id = producer.mIdProducer;
-        Log.e(LOG, "Deleted producer with id: " + id);
+        Log.w(LOG, "Deleted producer with id: " + id);
         database.delete(DatabaseHelper.TABLE_PRODUCERS, "IdProducer" + " = " + id, null);
     }
 
     public void updateProducer(Producer producerOld, Producer producerNew) {
-        Log.e(LOG, "updateProducer()");
+        Log.i(LOG, "updateProducer()");
         ContentValues values = new ContentValues();
         values.put("IdProducer", producerNew.mIdProducer);
         values.put("Email", producerNew.mEmail);
@@ -78,15 +77,15 @@ public class ProducersDataSource {
 
         int rows = database.update(DatabaseHelper.TABLE_PRODUCERS, values, "'"
                 + producerOld.mIdProducer + "' = '" + producerNew.mIdProducer + "'", null);
-        Log.e(LOG, "Updated producer with id: " + producerOld.mIdProducer + " on: " + rows
+        Log.i(LOG, "Updated producer with id: " + producerOld.mIdProducer + " on: " + rows
                 + " rows");
     }
 
     public List<Producer> getAllProducers() {
-        Log.e(LOG, "getAllProducers()");
+        Log.i(LOG, "getAllProducers()");
         List<Producer> producers = new ArrayList<Producer>();
-        /*insertProducer(new Producer(1, "Email", "www.test.pl", "Testowy", "666666666", 1, 1, 1, 1,
-                "Dawno"));*/
+        /* insertProducer(new Producer(1, "Email", "www.test.pl", "Testowy", "666666666", 1, 1, 1, 1,
+                 "Dawno"));*/
         Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, allColumns, null, null,
                 null, null, null);
 

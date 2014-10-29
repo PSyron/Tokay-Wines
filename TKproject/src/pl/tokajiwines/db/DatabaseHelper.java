@@ -4,7 +4,8 @@ package pl.tokajiwines.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+
+import pl.tokajiwines.utils.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -63,6 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // creating required tables
+        Log.w(LOG, "Creating tables");
         db.execSQL(CREATE_TABLE_ADDRESSES);
         /*
         db.execSQL(CREATE_TABLE_COLORS);
@@ -131,5 +133,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // create new tables
         onCreate(db);
     }
+
+    /* HOW TO CHECK DATABASE
+    adb -d shell
+    run-as pl.tokajiwines
+    cat databases/1183_release.db > /sdcard/database.db
+    exit
+    cd /sdcard
+    ls -l <– check to make sure database.db is in here
+    exit*/
 
 }

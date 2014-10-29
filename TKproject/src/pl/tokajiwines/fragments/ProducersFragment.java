@@ -96,21 +96,14 @@ public class ProducersFragment extends BaseFragment {
         if (App.isOnline(mContext)) {
             //  new LoadProducersTask().execute();
 
-            ProducersDataSource x = new ProducersDataSource(mContext);
-            x.open();
-            String answear = "";
-            List<Producer> prodlist = x.getAllProducers();
-            if (prodlist.get(0) instanceof Producer)
-                answear = "yes";
-            else
-                answear = "no";
-            Log.e("ProducersFragment", answear);
-            Producer temp2 = prodlist.get(0);
+            ProducersDataSource pDs = new ProducersDataSource(mContext);
+            pDs.open();
+
+            List<Producer> prodlist = pDs.getAllProducers();
             Producer[] temp = {
-                temp2
+                    prodlist.get(0), prodlist.get(1), prodlist.get(2)
             };
             ProducersDBAdapter mDBAdapter = new ProducersDBAdapter(getActivity(), temp);
-
             mUiList.setAdapter(mDBAdapter);
         }
 
