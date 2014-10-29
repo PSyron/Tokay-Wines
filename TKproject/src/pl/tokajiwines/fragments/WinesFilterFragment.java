@@ -10,13 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import pl.tokajiwines.R;
 import pl.tokajiwines.utils.Constans;
+import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 import java.util.ArrayList;
 
@@ -35,8 +35,6 @@ public class WinesFilterFragment extends BaseFragment {
     LinearLayout mUiPriceLin;
     TextView mUiPrice;
     TextView mUiSearch;
-    EditText mUiYearFrom;
-    EditText mUiYearTo;
 
     AlertDialog dialog;
     String currCurrency;
@@ -67,8 +65,6 @@ public class WinesFilterFragment extends BaseFragment {
         mUiSrainLin = (LinearLayout) v.findViewById(R.id.frag_wine_strain_lL);
         mUiYear = (TextView) v.findViewById(R.id.frag_wine_year_tV);
         mUiYearLin = (LinearLayout) v.findViewById(R.id.frag_wine_year_lL);
-        mUiYearFrom = (EditText) v.findViewById(R.id.frag_wine_filter_yearFrom);
-        mUiYearTo = (EditText) v.findViewById(R.id.frag_wine_filter_yearTo);
         mUiProducer = (TextView) v.findViewById(R.id.frag_wine_producer_tV);
         mUiProducerLin = (LinearLayout) v.findViewById(R.id.frag_wine_producer_lL);
         mUiPrice = (TextView) v.findViewById(R.id.frag_wine_price_tV);
@@ -83,7 +79,7 @@ public class WinesFilterFragment extends BaseFragment {
 
     private void initResources() {
 
-        final String[] sWineTaste = {
+        final String[] mWineTaste = {
                 mCtx.getResources().getString(R.string.wine_taste_dry),
                 mCtx.getResources().getString(R.string.wine_taste_semidry),
                 mCtx.getResources().getString(R.string.wine_taste_sweet),
@@ -91,14 +87,15 @@ public class WinesFilterFragment extends BaseFragment {
                 mCtx.getResources().getString(R.string.wine_taste_sparkling)
         };
 
-        //TODO Getting Producers names from SQLite
+        //TODO Getting Producers names and wines years from SQLite
         final String[] mProducerName = {};
+        final String[] mWineYear = {};
 
         mUiTasteLin.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                createDialogCheckBox(getResources().getString(R.string.wine_taste), sWineTaste,
+                createDialogCheckBox(getResources().getString(R.string.wine_taste), mWineTaste,
                         mUiTaste);
 
             }
@@ -128,7 +125,8 @@ public class WinesFilterFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                createDialogYear(getResources().getString(R.string.dialog_wine_year), mUiYear);
+                createDialogCheckBox(getResources().getString(R.string.dialog_wine_year),
+                        mWineYear, mUiYear);
             }
         });
 
@@ -148,6 +146,15 @@ public class WinesFilterFragment extends BaseFragment {
                 createDialogCheckBox(getResources().getString(R.string.wine_price_range) + ": "
                         + currCurrency, currCurrencyTab, mUiPrice);
 
+            }
+        });
+
+        mUiSearch.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(mCtx, "Not working yet", 10);
+                toast.show();
             }
         });
     }
@@ -192,37 +199,6 @@ public class WinesFilterFragment extends BaseFragment {
 
     }
 
-    private void createDialogYear(String label, TextView options) {
-        final TextView currText = options;
-        AlertDialog.Builder builder = new AlertDialog.Builder(mCtx);
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-
-        builder.setTitle(label);
-        builder.setView(inflater.inflate(R.layout.fragment_wine_filter_year, null))
-        // Set the action buttons
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on OK
-                        //  You can write the code  to save the selected item here
-                        // String text = mUiYearFrom.getText().toString();
-                        currText.setTextColor(Color.BLACK);
-                        Toast toast = Toast.makeText(mCtx, "not working properly", 4);
-                        toast.show();
-                    }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                        currText.setText(R.string.any);
-                        currText.setTextColor(getResources().getColor(R.color.gray));
-                    }
-                });
-        dialog = builder.create();//AlertDialog dialog; create like this outside onClick
-        dialog.show();
-
-    }
-
     private String showChosenOptions(ArrayList<Integer> list, String[] opt) {
         String chosenOptions = "";
         for (Integer a : list) {
@@ -232,20 +208,21 @@ public class WinesFilterFragment extends BaseFragment {
     }
 
     private void getSettingFromSharedPreferences() {
-        //        currCurrency = Constans.sSettingsCurrency[SharedPreferencesHelper.getSharedPreferencesInt(
-        //                mCtx, SettingsFragment.SharedKeyCurrency, SettingsFragment.DefCurrency)];
-        //
-        //        switch (currCurrency) {
-        //            case "PLN":
-        //                currCurrencyTab = Constans.sWinePricesPLN;
-        //                break;
-        //            case "Euro":
-        //                currCurrencyTab = Constans.sWinePricesEuro;
-        //                break;
-        //            case "Forint":
-        //                currCurrencyTab = Constans.sWinePricesForint;
-        //                break;
-        //        }
+        currCurrency = Constans.sSettingsCurrency[SharedPreferencesHelper.getSharedPreferencesInt(
+                mCtx, SettingsFragment.SharedKeyCurrency, SettingsFragment.DefCurrency)];
+
+        switch (SharedPreferencesHelper.getSharedPreferencesInt(mCtx,
+                SettingsFragment.SharedKeyCurrency, SettingsFragment.DefCurrency)) {
+            case 0:
+                currCurrencyTab = Constans.sWinePricesPLN;
+                break;
+            case 1:
+                currCurrencyTab = Constans.sWinePricesEuro;
+                break;
+            case 2:
+                currCurrencyTab = Constans.sWinePricesForint;
+                break;
+        }
 
     }
 }
