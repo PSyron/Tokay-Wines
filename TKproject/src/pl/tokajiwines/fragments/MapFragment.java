@@ -69,10 +69,10 @@ public class MapFragment extends BaseFragment {
     Boolean mFirstRun = true;
     JSONParser mParser;
     LatLng myPosition; //TODO temp
-    //    LatLng myMate1 = new LatLng(51.1486408, 17.0608889);
-    //    LatLng myMate2 = new LatLng(51.1386408, 17.0808889);
-    //    LatLng myMate3 = new LatLng(51.1286408, 17.0308889);
+
     private Place[] mNearbyPlaces;
+
+    boolean debug_position_mode = false; // emulating position
 
     private static String sUrl;
     public static final String TAG_ID_PLACE = "IdPlace";
@@ -97,11 +97,13 @@ public class MapFragment extends BaseFragment {
         }
         sUrl = getResources().getString(R.string.UrlNearLatLngPlace);
         View v = inflater.inflate(R.layout.fragment_map, container, false);
-        // myPosition = new GPSTracker(mCtx).getLocationLatLng();
-        // odjac lat roznica 0.02 
-        myPosition = new LatLng(48.184, 21.3633);
-        mMapView = (MapView) v.findViewById(R.id.map);
 
+        mMapView = (MapView) v.findViewById(R.id.map);
+        if (debug_position_mode) {
+            myPosition = new LatLng(48.1295, 21.4089);
+        } else {
+            myPosition = new GPSTracker(mCtx).getLocationLatLng();
+        }
         mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
         mUiTours = (TextView) v.findViewById(R.id.map_tours);
         //To laguje wlaczanie
@@ -192,8 +194,13 @@ public class MapFragment extends BaseFragment {
                 mRangePicked = (position + 1) * 5;
                 if (App.isOnline(mCtx)) {
                     if (!mFirstRun) {
+                        if (debug_position_mode) {
+                            new LoadNearPlaces().execute(myPosition);
+                        } else {
 
-                        new LoadNearPlaces().execute(new GPSTracker(mCtx).getLocationLatLng());
+                            new LoadNearPlaces().execute(new GPSTracker(mCtx).getLocationLatLng());
+                        }
+
                     }
 
                 }
@@ -261,6 +268,7 @@ public class MapFragment extends BaseFragment {
                 marker.icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
             }
+
             // adding marker
             googleMap.addMarker(marker);
         }
@@ -328,6 +336,8 @@ public class MapFragment extends BaseFragment {
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
             mProgDial.show();
+            // clearing markers
+            googleMap.clear();
 
         }
 
