@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProducersDataSource {
-    // Logcat tag
+    // LogCat tag
     private static final String LOG = "ProducersDataSource";
     // Database fields
     private SQLiteDatabase database;

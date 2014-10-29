@@ -103,11 +103,7 @@ public class ProducersFragment extends BaseFragment {
             ProducerListItem[] producers = {
                     new ProducerListItem(prodlist.get(0)), new ProducerListItem(prodlist.get(1)),
                     new ProducerListItem(prodlist.get(2))
-            };/*
-              Producer[] temp = {
-                    prodlist.get(0), prodlist.get(1), prodlist.get(2)
-              };*/
-            // ProducersDBAdapter mDBAdapter = new ProducersDBAdapter(getActivity(), temp);
+            };
             ProducersAdapter mAdapter = new ProducersAdapter(getActivity(), producers);
             mUiList.setAdapter(mAdapter);
         }
