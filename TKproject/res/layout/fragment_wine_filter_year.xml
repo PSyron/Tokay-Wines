@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal" >
+
+    <EditText
+        android:id="@+id/frag_wine_filter_yearFrom"
+        style="@style/DetailsHeader.NormalText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLength="4" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/DetailsHeader.NormalText"
+        android:gravity="center_horizontal"
+        android:text=" - " />
+
+    <EditText
+        android:id="@+id/frag_wine_filter_yearTo"
+        style="@style/DetailsHeader.NormalText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLength="4" />
+
+</LinearLayout>
