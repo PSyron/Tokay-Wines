@@ -36,7 +36,7 @@ public class Constans {
     public static double sKmInDegreeAvg = 0.0108;
 
     public static final double[] sMapRadiusInKm = {
-            0.054, 0.108, 0.162, 0.216
+            0.054, 0.108, 0.162, 0.216, 0.27
 
     };
 
