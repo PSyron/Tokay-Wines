@@ -3,6 +3,7 @@ package pl.tokajiwines.acitivities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,7 +56,10 @@ public class BaseActivity extends Activity {
                 return true;
             }
             case R.id.action_home: {
-                //TODO
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("EXIT", true);
+                startActivity(intent);
                 return true;
 
             }

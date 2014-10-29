@@ -56,7 +56,7 @@ public class NavigateToActivity extends BaseActivity {
     private Place[] mNearbyPlaces;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
@@ -77,8 +77,10 @@ public class NavigateToActivity extends BaseActivity {
         getActionBar().setTitle(
                 getResources().getString(R.string.navigation_to) + " " + mPlaceTo.mName);
         mMapView = (MapView) findViewById(R.id.activity_map_map);
+
         mMapView.onCreate(savedInstanceState);
         initView();
+
     }
 
     @Override

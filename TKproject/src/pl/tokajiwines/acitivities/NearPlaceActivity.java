@@ -63,7 +63,7 @@ public class NearPlaceActivity extends BaseActivity {
     public static int REQUEST = 112;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
@@ -82,8 +82,10 @@ public class NearPlaceActivity extends BaseActivity {
         getActionBar()
                 .setTitle(getResources().getString(R.string.places_near) + " " + mPlace.mName);
         mMapView = (MapView) findViewById(R.id.activity_map_map);
+
         mMapView.onCreate(savedInstanceState);
         initView();
+
     }
 
     @Override
