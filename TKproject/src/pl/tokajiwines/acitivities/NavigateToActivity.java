@@ -54,6 +54,7 @@ public class NavigateToActivity extends BaseActivity {
     private GoogleMap googleMap;
     static String sUrl;
     private Place[] mNearbyPlaces;
+    GPSTracker mGPStrack;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -71,7 +72,9 @@ public class NavigateToActivity extends BaseActivity {
             Toast.makeText(NavigateToActivity.this, "404 Error", Toast.LENGTH_LONG).show();
             finish();
         } else {
-            mStartPosition = new GPSTracker(NavigateToActivity.this).getLocationLatLng();
+            mGPStrack = new GPSTracker(this);
+            mGPStrack.getLocation();
+            mStartPosition = mGPStrack.getLocationLatLng();
             mFinishPosition = mPlaceTo.getLatLng();
         }
         getActionBar().setTitle(
