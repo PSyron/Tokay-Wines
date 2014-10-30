@@ -102,6 +102,7 @@
         android:layout_height="@dimen/details_icon_height"
         android:layout_margin="5dp"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_launcher" />
+        android:visibility="invisible"
+        android:src="@drawable/ic_navigation" />
 
 </LinearLayout>
