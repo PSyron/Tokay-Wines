@@ -27,6 +27,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
+    <string name="action_home">Home</string>
 
     <!-- News -->
 
@@ -55,12 +56,12 @@
     <string name="wine_produder">Producer</string>
     <string name="any">Any (touch to choose)</string>
     <string name="dialog_wine_taste">Select taste</string>
-	<string name="dialog_wine_type">Select type</string>
-	<string name="dialog_wine_strain">Select strain</string>
-	<string name="dialog_wine_producer">Select producer</string>
-	<string name="dialog_wine_year">Select year</string>
-	<string name="dialog_wine_price">Select price range</string>
-	<string name="wine_available">Available from</string>
+    <string name="dialog_wine_type">Select type</string>
+    <string name="dialog_wine_strain">Select strain</string>
+    <string name="dialog_wine_producer">Select producer</string>
+    <string name="dialog_wine_year">Select year</string>
+    <string name="dialog_wine_price">Select price range</string>
+    <string name="wine_available">Available from</string>
     <!-- Producers -->
 
     <string name="address">Address</string>
@@ -77,6 +78,9 @@
     <string name="duration">\nDuration: </string>
     <string name="range">Range: </string>
     <string name="preffered_tours">Pick from preffered tours!</string>
+    <string name="here_u_started">Here You started</string>
+    <string name="navigation_to">Navigation to: </string>
+    <string name="places_near">Places near: </string>
 
     <!-- Guide -->
 

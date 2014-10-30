@@ -15,6 +15,7 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
 
         <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
     </style>
 
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
@@ -36,7 +37,7 @@
     </style>
 
     <style name="ItemCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_margin">8dp</item>
@@ -100,11 +101,11 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_margin">8dp</item>
         <item name="android:background">@color/filter_text</item>
     </style>
 
     <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
+        <item name="android:background">@drawable/custom_tab_indicator</item>
         <item name="android:textAppearance">@style/CustomTabPageIndicator.Text</item>
         <item name="android:textColor">#FF555555</item>
         <item name="android:textSize">16sp</item>

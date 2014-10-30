@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.HotelsAdapter;
-import pl.tokajiwines.models.HotelsListItem;
+import pl.tokajiwines.jsonresponses.HotelsListItem;
 import pl.tokajiwines.utils.JSONParser;
 
 public class TabHotelsFragment extends BaseFragment {

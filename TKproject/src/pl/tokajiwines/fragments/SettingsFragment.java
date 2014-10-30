@@ -19,7 +19,7 @@ import pl.tokajiwines.R;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
 
-public class SettingsFilterFragment extends BaseFragment {
+public class SettingsFragment extends BaseFragment {
 
     public static final String SharedKeyNotif = "notifications";
     public static final String SharedKeyNotifVibrat = "vibrations";
@@ -51,15 +51,15 @@ public class SettingsFilterFragment extends BaseFragment {
 
     Context mCtx;
 
-    public static SettingsFilterFragment newInstance(Context ctx) {
-        SettingsFilterFragment fragment = new SettingsFilterFragment(ctx);
+    public static SettingsFragment newInstance(Context ctx) {
+        SettingsFragment fragment = new SettingsFragment(ctx);
         //        Bundle args = new Bundle();
         //        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         //        fragment.setArguments(args);
         return fragment;
     }
 
-    public SettingsFilterFragment(Context ctx) {
+    public SettingsFragment(Context ctx) {
         mCtx = ctx;
     }
 

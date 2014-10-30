@@ -1,9 +1,9 @@
-package pl.tokajiwines.models;
+package pl.tokajiwines.jsonresponses;
 
 public class NewsDetailsResponse {
     
     public int success;
     public String message;
-    public News news;
+    public NewsDetails news;
 
 }

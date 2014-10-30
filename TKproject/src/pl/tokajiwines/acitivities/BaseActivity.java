@@ -3,8 +3,11 @@ package pl.tokajiwines.acitivities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import pl.tokajiwines.R;
 
@@ -19,10 +22,17 @@ public class BaseActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.search_with_home, menu);
         restoreActionBar();
 
         return true;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreate(savedInstanceState);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -44,6 +54,18 @@ public class BaseActivity extends Activity {
             }
 
             case R.id.action_settings: {
+                return true;
+            }
+            case R.id.action_home: {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("EXIT", true);
+                startActivity(intent);
+                return true;
+
+            }
+            case R.id.action_search: {
+                Toast.makeText(BaseActivity.this, "Not working yet", Toast.LENGTH_LONG).show();
                 return true;
             }
 

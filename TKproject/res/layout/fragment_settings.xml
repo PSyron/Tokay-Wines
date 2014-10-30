@@ -9,7 +9,7 @@
         android:orientation="vertical" >
 
         <TextView
-            style="@style/DetailsHeader.Bookmark"
+            style="@style/SettingsBookmark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/general_settings" />
@@ -67,7 +67,8 @@
             <RelativeLayout
                 android:id="@+id/settings_general_distance_rL"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:background="@drawable/divider_item" >
 
                 <TextView
                     android:id="@+id/settings_general_distance_main_tV"
@@ -87,7 +88,7 @@
         </LinearLayout>
 
         <TextView
-            style="@style/DetailsHeader.Bookmark"
+            style="@style/SettingsBookmark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/notifications" />
@@ -113,16 +114,23 @@
                     android:text="@string/enable_notifications" />
             </LinearLayout>
 
-            <CheckBox
-                android:id="@+id/settings_vibrations_only_cB"
-                style="@style/ItemCheckBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/vibrations_only" />
+                android:background="@drawable/divider_item"
+                android:orientation="vertical" >
+
+                <CheckBox
+                    android:id="@+id/settings_vibrations_only_cB"
+                    style="@style/ItemCheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vibrations_only" />
+            </LinearLayout>
         </LinearLayout>
 
         <TextView
-            style="@style/DetailsHeader.Bookmark"
+            style="@style/SettingsBookmark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/gps" />
@@ -133,17 +141,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <CheckBox
-                android:id="@+id/settings_gps_data"
-                style="@style/ItemCheckBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/mobile_data" />
+                android:background="@drawable/divider_item"
+                android:orientation="vertical" >
+
+                <CheckBox
+                    android:id="@+id/settings_gps_data"
+                    style="@style/ItemCheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mobile_data" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/settings_gps_rL"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:background="@drawable/divider_item" >
 
                 <TextView
                     android:id="@+id/settings_gps_main_tV"
@@ -163,7 +179,7 @@
         </LinearLayout>
 
         <TextView
-            style="@style/DetailsHeader.Bookmark"
+            style="@style/SettingsBookmark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contact" />

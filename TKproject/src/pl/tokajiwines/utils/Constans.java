@@ -36,7 +36,7 @@ public class Constans {
     public static double sKmInDegreeAvg = 0.0108;
 
     public static final double[] sMapRadiusInKm = {
-            0.054, 0.108, 0.162, 0.216
+            0.054, 0.108, 0.162, 0.216, 0.27
 
     };
 
@@ -58,6 +58,15 @@ public class Constans {
 
     public static final String[] sWineStrain = {
             "Furmint", "Hárslevelű", "Sárga Muskotály", "Zéta", "Kabar", "Kövérszőlő"
+    };
+    public static final String[] sWinePricesPLN = {
+            "< 10", "10 - 25", "25 - 40", "> 40"
+    };
+    public static final String[] sWinePricesEuro = {
+            "< 3", "3 - 5", "5 - 10", "> 10"
+    };
+    public static final String[] sWinePricesForint = {
+            "< 350", "350 - 2000", "2000 - 3000", "> 3000"
     };
 
     //Settings

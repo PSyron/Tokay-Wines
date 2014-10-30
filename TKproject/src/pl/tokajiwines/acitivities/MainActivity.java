@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import pl.tokajiwines.R;
 import pl.tokajiwines.fragments.GuideFragment;
@@ -15,8 +16,8 @@ import pl.tokajiwines.fragments.MapFragment;
 import pl.tokajiwines.fragments.NavigationDrawerFragment;
 import pl.tokajiwines.fragments.NewsFragment;
 import pl.tokajiwines.fragments.ProducersFragment;
-import pl.tokajiwines.fragments.SettingsFilterFragment;
-import pl.tokajiwines.fragments.WinesFragment;
+import pl.tokajiwines.fragments.SettingsFragment;
+import pl.tokajiwines.fragments.WinesFilterFragment;
 
 public class MainActivity extends Activity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -59,7 +60,7 @@ public class MainActivity extends Activity implements
         } else if (position == 1) {
             mTitle = getString(R.string.title_wines);
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, WinesFragment.newInstance(this)).commit();
+                    .replace(R.id.container, WinesFilterFragment.newInstance(this)).commit();
         } else if (position == 2) {
             mTitle = getString(R.string.title_wineyards);
             fragmentManager.beginTransaction()
@@ -75,7 +76,7 @@ public class MainActivity extends Activity implements
         } else {
             mTitle = getString(R.string.title_settings);
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, SettingsFilterFragment.newInstance(this)).commit();
+                    .replace(R.id.container, SettingsFragment.newInstance(this)).commit();
         }
     }
 
@@ -129,6 +130,9 @@ public class MainActivity extends Activity implements
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            return true;
+        } else if (id == R.id.action_search) {
+            Toast.makeText(MainActivity.this, "Not working yet", Toast.LENGTH_LONG).show();
             return true;
         }
         return super.onOptionsItemSelected(item);

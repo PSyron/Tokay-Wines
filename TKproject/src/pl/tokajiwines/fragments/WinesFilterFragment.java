@@ -12,13 +12,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import pl.tokajiwines.R;
 import pl.tokajiwines.utils.Constans;
+import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 import java.util.ArrayList;
 
-public class WinesFragment extends BaseFragment {
+public class WinesFilterFragment extends BaseFragment {
 
     LinearLayout mUiTasteLin;
     TextView mUiTaste;
@@ -32,20 +34,22 @@ public class WinesFragment extends BaseFragment {
     TextView mUiProducer;
     LinearLayout mUiPriceLin;
     TextView mUiPrice;
+    TextView mUiSearch;
 
     AlertDialog dialog;
-
+    String currCurrency;
+    String[] currCurrencyTab;
     Context mCtx;
 
-    public static WinesFragment newInstance(Context ctx) {
-        WinesFragment fragment = new WinesFragment(ctx);
+    public static WinesFilterFragment newInstance(Context ctx) {
+        WinesFilterFragment fragment = new WinesFilterFragment(ctx);
         //        Bundle args = new Bundle();
         //        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         //        fragment.setArguments(args);
         return fragment;
     }
 
-    public WinesFragment(Context ctx) {
+    public WinesFilterFragment(Context ctx) {
         mCtx = ctx;
     }
 
@@ -65,14 +69,17 @@ public class WinesFragment extends BaseFragment {
         mUiProducerLin = (LinearLayout) v.findViewById(R.id.frag_wine_producer_lL);
         mUiPrice = (TextView) v.findViewById(R.id.frag_wine_price_tV);
         mUiPriceLin = (LinearLayout) v.findViewById(R.id.frag_wine_price_lL);
+        mUiSearch = (TextView) v.findViewById(R.id.frag_wine_search_btn);
 
+        getSettingFromSharedPreferences();
         initResources();
+
         return v;
     }
 
     private void initResources() {
 
-        final String[] sWineTaste = {
+        final String[] mWineTaste = {
                 mCtx.getResources().getString(R.string.wine_taste_dry),
                 mCtx.getResources().getString(R.string.wine_taste_semidry),
                 mCtx.getResources().getString(R.string.wine_taste_sweet),
@@ -80,11 +87,15 @@ public class WinesFragment extends BaseFragment {
                 mCtx.getResources().getString(R.string.wine_taste_sparkling)
         };
 
+        //TODO Getting Producers names and wines years from SQLite
+        final String[] mProducerName = {};
+        final String[] mWineYear = {};
+
         mUiTasteLin.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                createDialogCheckBox(getResources().getString(R.string.wine_taste), sWineTaste,
+                createDialogCheckBox(getResources().getString(R.string.wine_taste), mWineTaste,
                         mUiTaste);
 
             }
@@ -107,6 +118,43 @@ public class WinesFragment extends BaseFragment {
                 createDialogCheckBox(getResources().getString(R.string.wine_strain),
                         Constans.sWineStrain, mUiStrain);
 
+            }
+        });
+
+        mUiYearLin.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                createDialogCheckBox(getResources().getString(R.string.dialog_wine_year),
+                        mWineYear, mUiYear);
+            }
+        });
+
+        mUiProducerLin.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                createDialogCheckBox(getResources().getString(R.string.wine_produder),
+                        mProducerName, mUiProducer);
+
+            }
+        });
+        mUiPriceLin.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                createDialogCheckBox(getResources().getString(R.string.wine_price_range) + ": "
+                        + currCurrency, currCurrencyTab, mUiPrice);
+
+            }
+        });
+
+        mUiSearch.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(mCtx, "Not working yet", 10);
+                toast.show();
             }
         });
     }
@@ -157,5 +205,24 @@ public class WinesFragment extends BaseFragment {
             chosenOptions += opt[Integer.valueOf(a)] + ", ";
         }
         return chosenOptions;
+    }
+
+    private void getSettingFromSharedPreferences() {
+        currCurrency = Constans.sSettingsCurrency[SharedPreferencesHelper.getSharedPreferencesInt(
+                mCtx, SettingsFragment.SharedKeyCurrency, SettingsFragment.DefCurrency)];
+
+        switch (SharedPreferencesHelper.getSharedPreferencesInt(mCtx,
+                SettingsFragment.SharedKeyCurrency, SettingsFragment.DefCurrency)) {
+            case 0:
+                currCurrencyTab = Constans.sWinePricesPLN;
+                break;
+            case 1:
+                currCurrencyTab = Constans.sWinePricesEuro;
+                break;
+            case 2:
+                currCurrencyTab = Constans.sWinePricesForint;
+                break;
+        }
+
     }
 }

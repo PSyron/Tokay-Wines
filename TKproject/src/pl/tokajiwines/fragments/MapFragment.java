@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -38,7 +39,7 @@ import org.json.JSONObject;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.models.NearPlacesResponse;
+import pl.tokajiwines.jsonresponses.NearPlacesResponse;
 import pl.tokajiwines.models.Place;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.DirectionsJSONParser;
@@ -69,10 +70,10 @@ public class MapFragment extends BaseFragment {
     Boolean mFirstRun = true;
     JSONParser mParser;
     LatLng myPosition; //TODO temp
-    //    LatLng myMate1 = new LatLng(51.1486408, 17.0608889);
-    //    LatLng myMate2 = new LatLng(51.1386408, 17.0808889);
-    //    LatLng myMate3 = new LatLng(51.1286408, 17.0308889);
+
     private Place[] mNearbyPlaces;
+
+    boolean debug_position_mode = false; // emulating position
 
     private static String sUrl;
     public static final String TAG_ID_PLACE = "IdPlace";
@@ -97,9 +98,13 @@ public class MapFragment extends BaseFragment {
         }
         sUrl = getResources().getString(R.string.UrlNearLatLngPlace);
         View v = inflater.inflate(R.layout.fragment_map, container, false);
-        myPosition = new GPSTracker(mCtx).getLocationLatLng();
-        mMapView = (MapView) v.findViewById(R.id.map);
 
+        mMapView = (MapView) v.findViewById(R.id.map);
+        if (debug_position_mode) {
+            myPosition = new LatLng(48.1295, 21.4089);
+        } else {
+            myPosition = new GPSTracker(mCtx).getLocationLatLng();
+        }
         mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
         mUiTours = (TextView) v.findViewById(R.id.map_tours);
         //To laguje wlaczanie
@@ -143,34 +148,36 @@ public class MapFragment extends BaseFragment {
 
             @Override
             public boolean onMarkerClick(final Marker arg0) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Route")
-                        .setMessage("Do You want to check route?")
-                        .setPositiveButton(android.R.string.yes,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // Getting URL to the Google Directions API
-                                        if (mRoute != null) {
-                                            mRoute.remove();
+                if (arg0.getPosition() != myPosition) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Route to " + arg0.getTitle())
+                            .setMessage("Do You want to check route?")
+                            .setPositiveButton(android.R.string.yes,
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // Getting URL to the Google Directions API
+                                            if (mRoute != null) {
+                                                mRoute.remove();
+                                            }
+                                            String url = getDirectionsUrl(myPosition,
+                                                    arg0.getPosition());
+
+                                            DownloadTask downloadTask = new DownloadTask();
+
+                                            // Start downloading json data from Google Directions API
+                                            downloadTask.execute(url);
                                         }
-                                        String url = getDirectionsUrl(myPosition,
-                                                arg0.getPosition());
-
-                                        DownloadTask downloadTask = new DownloadTask();
-
-                                        // Start downloading json data from Google Directions API
-                                        downloadTask.execute(url);
-                                    }
-                                })
-                        .setNegativeButton(android.R.string.no,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // do nothing
-                                    }
-                                }).setIcon(android.R.drawable.ic_dialog_alert).show();
-
+                                    })
+                            .setNegativeButton(android.R.string.no,
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // do nothing
+                                        }
+                                    }).setIcon(android.R.drawable.ic_dialog_alert).show();
+                }
                 return false;
             }
+
         });
         CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(15)
                 .build();
@@ -188,8 +195,13 @@ public class MapFragment extends BaseFragment {
                 mRangePicked = (position + 1) * 5;
                 if (App.isOnline(mCtx)) {
                     if (!mFirstRun) {
+                        if (debug_position_mode) {
+                            new LoadNearPlaces().execute(myPosition);
+                        } else {
 
-                        new LoadNearPlaces().execute(new GPSTracker(mCtx).getLocationLatLng());
+                            new LoadNearPlaces().execute(new GPSTracker(mCtx).getLocationLatLng());
+                        }
+
                     }
 
                 }
@@ -198,6 +210,14 @@ public class MapFragment extends BaseFragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // TODO Auto-generated method stub
+
+            }
+        });
+        mUiTours.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MapFragment.this.mCtx, "Not working yet", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -257,6 +277,7 @@ public class MapFragment extends BaseFragment {
                 marker.icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
             }
+
             // adding marker
             googleMap.addMarker(marker);
         }
@@ -272,7 +293,7 @@ public class MapFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("onresume", "kurwa ile");
+
         new CountDownTimer(150, 150) {
 
             public void onTick(long millisUntilFinished) {
@@ -324,6 +345,8 @@ public class MapFragment extends BaseFragment {
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
             mProgDial.show();
+            // clearing markers
+            googleMap.clear();
 
         }
 
@@ -337,7 +360,8 @@ public class MapFragment extends BaseFragment {
             String tempUrl = sUrl + "?lat=" + args[0].latitude + "&lng=" + args[0].longitude
                     + "&radius=" + tempRange;
             //TODO change below sUrl for tempUrl
-            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
+            Log.e("pobieranie URL", tempUrl + "     " + sUrl);
+            InputStream source = mParser.retrieveStream(tempUrl, Constans.sUsername,
                     Constans.sPassword, null);
 
             Gson gson = new Gson();
@@ -346,10 +370,13 @@ public class MapFragment extends BaseFragment {
             NearPlacesResponse response = gson.fromJson(reader, NearPlacesResponse.class);
 
             if (response != null) {
-                mNearbyPlaces = response.places;
 
+                if (response.success == 1)
+                    mNearbyPlaces = response.places;
+
+                else
+                    mNearbyPlaces = new Place[0];
             }
-
             return null;
 
         }

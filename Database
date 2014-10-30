@@ -1,0 +1,1819 @@
+-- phpMyAdmin SQL Dump
+-- version 4.2.9.1
+-- http://www.phpmyadmin.net
+--
+-- Host: mysql3.mydevil.net
+-- Czas generowania: 28 Paź 2014, 15:51
+-- Wersja serwera: 5.6.20-log
+-- Wersja PHP: 5.3.28
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Baza danych: `m1183_tokaj`
+--
+
+DELIMITER $$
+--
+-- Procedury
+--
+CREATE DEFINER=`m1183_nietoperek`@`%.devil` PROCEDURE `pPlaces`()
+    MODIFIES SQL DATA
+BEGIN
+DROP TABLE IF EXISTS tPlaces;
+CREATE TABLE tPlaces (
+IdPlace INT NOT NULL AUTO_INCREMENT,
+Name VARCHAR(20) NOT NULL,
+Address VARCHAR(70) NOT NULL,
+Latitude DOUBLE NOT NULL,
+Longitude DOUBLE NOT NULL,
+PlaceType VARCHAR(20),
+PRIMARY KEY(IdPlace)
+);
+  INSERT INTO tPlaces (Name, Address, Latitude, Longitude, PlaceType) 
+(
+SELECT tHotels.Name, CONCAT(tAddresses.StreetName,' ',tAddresses.StreetNumber,' ',tAddresses.City), tAddresses.Latitude, tAddresses.Longitude, "Hotel"
+FROM tHotels
+LEFT JOIN tAddresses
+ON tHotels.IdAddress_=tAddresses.IdAddress
+);
+
+
+INSERT INTO tPlaces (Name, Address, Latitude, Longitude, PlaceType) 
+(
+SELECT tRestaurants.Name, CONCAT(tAddresses.StreetName,' ',tAddresses.StreetNumber,' ',tAddresses.City), tAddresses.Latitude, tAddresses.Longitude, "Restaurant"
+FROM tRestaurants
+LEFT JOIN tAddresses
+ON tRestaurants.IdAddress_=tAddresses.IdAddress
+);
+
+INSERT INTO tPlaces (Name, Address, Latitude, Longitude, PlaceType) 
+(
+SELECT tMonuments.Name, CONCAT(tAddresses.StreetName,' ',tAddresses.StreetNumber,' ',tAddresses.City), tAddresses.Latitude, tAddresses.Longitude, "Monument"
+FROM tMonuments
+LEFT JOIN tAddresses
+ON tMonuments.IdAddress_=tAddresses.IdAddress
+);
+INSERT INTO tPlaces (Name, Address, Latitude, Longitude, PlaceType) 
+(
+SELECT tProducers.Name, CONCAT(tAddresses.StreetName,' ',tAddresses.StreetNumber,' ',tAddresses.City), tAddresses.Latitude, tAddresses.Longitude, "Producer"
+FROM tProducers
+LEFT JOIN tAddresses
+ON tProducers.IdAddress_=tAddresses.IdAddress
+);
+INSERT INTO tPlaces (Name, Address, Latitude, Longitude, PlaceType) 
+(
+SELECT tLookouts.Name, CONCAT(tAddresses.StreetName,' ',tAddresses.StreetNumber,' ',tAddresses.City), tAddresses.Latitude, tAddresses.Longitude, "Lookout"
+FROM tLookouts
+LEFT JOIN tAddresses
+ON tLookouts.IdAddress_=tAddresses.IdAddress
+);
+INSERT INTO tPlaces (Name, Address, Latitude, Longitude, PlaceType) 
+(
+SELECT tOddities.Name, CONCAT(tAddresses.StreetName,' ',tAddresses.StreetNumber,' ',tAddresses.City), tAddresses.Latitude, tAddresses.Longitude, "Oddity"
+FROM tOddities
+LEFT JOIN tAddresses
+ON tOddities.IdAddress_=tAddresses.IdAddress
+);
+INSERT INTO tPlaces (Name, Address, Latitude, Longitude, PlaceType) 
+(
+SELECT tNews.Header, CONCAT(tAddresses.StreetName,' ',tAddresses.StreetNumber,' ',tAddresses.City), tAddresses.Latitude, tAddresses.Longitude, "Event"
+FROM tNews
+JOIN tAddresses
+ON tNews.IdAddress_=tAddresses.IdAddress
+);
+END$$
+
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tAccountTypes`
+--
+
+CREATE TABLE IF NOT EXISTS `tAccountTypes` (
+`IdAccountType` int(11) NOT NULL,
+  `Name` varchar(20) DEFAULT NULL,
+  `PowerLevel` int(2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tAddresses`
+--
+
+CREATE TABLE IF NOT EXISTS `tAddresses` (
+`IdAddress` int(11) NOT NULL,
+  `StreetName` varchar(20) NOT NULL,
+  `StreetNumber` varchar(5) NOT NULL,
+  `HouseNumber` varchar(4) NOT NULL,
+  `City` varchar(50) NOT NULL,
+  `Postcode` varchar(8) NOT NULL,
+  `Latitude` double NOT NULL,
+  `Longitude` double NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tAddresses`
+--
+
+INSERT INTO `tAddresses` (`IdAddress`, `StreetName`, `StreetNumber`, `HouseNumber`, `City`, `Postcode`, `Latitude`, `Longitude`, `LastUpdate`) VALUES
+(1, 'Rákóczi', '83', '', 'Mád', '3909', 48.1941, 21.2788, '2014-10-24 19:28:55'),
+(2, 'hrsz.: 085/18', '', '', 'Erdőbénye', '3932', 48.272304, 21.374803, '2014-10-24 19:28:55'),
+(3, 'Hrsz.0202', '', '', 'Mezőzombo', '3931', 48.1654, 21.303, '2014-10-24 20:34:40'),
+(4, 'Dózsa György', '1', '', 'Tokaj', '3910', 48.1253, 21.4043, '2014-10-24 20:34:40'),
+(5, 'Iskola köz', '15', '', 'Bodrogkeresztúr', '3916', 48.163, 21.3633, '2014-10-24 20:53:56'),
+(6, 'Terézia kert', '9', '', 'Tarcal', '3915', 48.143589, 21.334291, '2014-10-24 20:53:56'),
+(7, 'Kossuth tér', '1', '', 'Tokaj', '3910', 48.1257, 21.4074, '2014-10-24 22:07:44'),
+(8, 'Bánom', '8', '', 'Olaszliszka', '3933', 48.2446, 21.4304, '2014-10-24 22:07:44'),
+(9, 'József Attila', '2', '', 'Tokaj', '3910', 48.1278, 21.4092, '2014-10-24 22:27:39'),
+(10, 'Kossuth', '103', '', 'Bodrogkeresztúr', '3916', 48.1607, 21.3634, '2014-10-24 22:27:39'),
+(11, 'Pincék Völgye', '16', '', 'Sátoraljaújhely', '3980', 48.40694444, 21.64972222, '2014-10-18 17:24:41'),
+(12, 'Kisfaludy u.', '23', '', 'Győr', '9021', 47.6869, 17.6334, '2014-10-18 17:24:41'),
+(13, 'Károlyi István', '10', '', 'Budapest', '1047', 47.5644, 19.081, '2014-10-18 17:52:06'),
+(14, 'Kossuth', '1', '', 'Erdõbénye', '3932', 48.2659, 21.3551, '2014-10-18 17:52:06'),
+(15, 'Téglagyári Pincesor', '545', '17', 'Tarcal', '3915', 48.13076459, 21.34205443, '2014-10-18 17:59:43'),
+(16, 'Bajcsy-Zsilinszky', '45', '', 'Tolcsva', '3934', 48.2843, 21.4461, '2014-10-18 17:59:43'),
+(17, 'Hajdú köz', '2', '', 'Tokaj', '3910', 48.1238, 21.4106, '2014-10-18 19:50:00'),
+(18, 'Vasvári Pál', '26', '', 'Tokaj', '3910', 48.1295, 21.4089, '2014-10-18 19:50:00'),
+(19, 'Rákóczi', '16', '', 'Tokaj', '3910', 48.12262938, 21.41129564, '2014-10-18 19:55:32'),
+(20, 'Bodrogkeresztúri', '44', '', 'Tokaj', '3910', 48.1369, 21.4013, '2014-10-18 19:55:32'),
+(21, 'Rákóczi', '5', '', 'Tokaj', '3910', 48.12262225, 21.41188051, '2014-10-18 19:57:58'),
+(22, 'Petőfi', '57', '', 'Encs', '3860', 48.333, 21.1151, '2014-10-18 20:15:20'),
+(23, 'Bajcsy-Zsilinszky', '21', '', 'Tokaj', '3910', 48.333, 21.1151, '2014-10-18 20:15:20'),
+(24, 'Kossuth tér', '7', '', 'Tokaj', '3910', 48.1257, 21.4074, '2014-10-18 20:28:23'),
+(25, 'Disznókő dűlő', '', '', 'Mezőzombor', '3931', 48.16923505, 21.30926494, '2014-10-18 20:28:23'),
+(26, 'Hunyadi', '21', '', 'Erdőbénye', '3932', 48.2647, 21.3559, '2014-10-24 22:41:45'),
+(27, 'Dienes Pál', '78', '', 'Tokaj', '3910', 48.1453, 21.3868, '2014-10-24 22:41:45'),
+(28, 'Béke', '111', '', 'Abaújszántó', '3881', 48.2742, 21.1853, '2014-10-24 23:01:48');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tColors`
+--
+
+CREATE TABLE IF NOT EXISTS `tColors` (
+`IdColor` int(11) NOT NULL,
+  `NameEng` varchar(30) NOT NULL,
+  `NamePl` varchar(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tColors`
+--
+
+INSERT INTO `tColors` (`IdColor`, `NameEng`, `NamePl`) VALUES
+(1, 'Red', 'Czerwone'),
+(2, 'White', 'Białe'),
+(3, 'Rosé', 'Różowe');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tCurrencies`
+--
+
+CREATE TABLE IF NOT EXISTS `tCurrencies` (
+`IdCurrency` int(11) NOT NULL,
+  `Name` varchar(30) NOT NULL,
+  `NameShort` varchar(3) NOT NULL,
+  `Ratio` double DEFAULT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tDescriptions`
+--
+
+CREATE TABLE IF NOT EXISTS `tDescriptions` (
+`IdDescription` int(11) NOT NULL,
+  `IdLang_` int(11) NOT NULL,
+  `Version` int(1) NOT NULL,
+  `Short` varchar(150) NOT NULL,
+  `Vast` varchar(600) NOT NULL,
+  `IdUser_` int(11) DEFAULT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tDescriptions`
+--
+
+INSERT INTO `tDescriptions` (`IdDescription`, `IdLang_`, `Version`, `Short`, `Vast`, `IdUser_`, `LastUpdate`) VALUES
+(2, 2, 1, 'The south and south-west part of the Öreg Király vineyard forming a 10-hectare vineyard.', 'The south and south-west part of the Öreg Király vineyard forming a 10-hectare vineyard. In addition a 17-hectare southern, south-eastern not yet re-cultivated area in the Kovágó vineyard. Soil: A really stony volcanic rhyolite, zeolite and red clay mixture.\r\n\r\nGrape varieties: 80% of the territory is type T85, partially provided by other old vineyards so-called madárkás furmint, 10% is hárslevelu, 5% muscat ottonel and 5% kövérszolo. Cultivating: About half of the territory is 1.4x0.8 m hand-cultivated, the other half is 1.8x1 m low cordon trained.', NULL, '2014-10-24 19:38:12'),
+(3, 2, 1, 'The Béres Estate is a youthful, dynamic winery, adding great colour to Tokaj.', 'The Béres Estate is a youthful, dynamic winery, adding great colour to Tokaj. However, it was not only us but also the village of Erdőbénye which contributed to the impetus of recent years: it is packed with convivial festivals par excellence, including the Mountainbike Challenge for the lovers of mountain biking or the traditional “Bor, mámor,…Bénye – gastro and cultural festival in the gardens of Erdőbénye. Enjoy the programmes and the wines!', NULL, '2014-10-24 19:38:12'),
+(4, 2, 1, 'Disznókő has crafted its own style of Tokaji wines, the legendary sweet winew of Hungary.', 'Disznoko has crafted its own style of Tokaji wines, the legendary sweet wines of Hungary.\r\nThe Disznókő Tokaji Aszus are contemporary noble wines with perfect balance between the purity of the fruit, the freshness of grape varieties and the complexity of the Botrytis.\r\n"The grapes guide us in our quest for the pure and balanced expression of their quality and of our precious terroir."', NULL, '2014-10-24 20:42:25'),
+(5, 2, 1, 'DOBOGÓ ALSO MEANS “HEARTBEAT” IN HUNGARIAN, THE ONOMATOPOEIC DO-BO-GO, DO-BO-GO, DO-BO-GO- INDEED, FOR US IT IS FAR MORE THAN A WINERY.', 'DOBOGÓ ALSO MEANS “HEARTBEAT” IN HUNGARIAN, THE ONOMATOPOEIC DO-BO-GO, DO-BO-GO, DO-BO-GO- INDEED, FOR US IT IS FAR MORE THAN A WINERY.IT IS A PLACE WE LOVE TO WAKE UP IN, THAT REMINDS US OF THE HAPPY DAYS OF OUR CHILDHOOD, WHEN WE WOULD COME HOME FROM SCHOOL TO A HOUSE FRAGRANT WITH THE PROMISE OF LUNCH ON THE FAMILY TABLE. THE DOBOGÓ WINERY WAS FOUNDED IN 1869 RIGHT IN THE CENTRE OF THE SMALL TOWN OF TOKAJ. DOBOGÓ LITERALLY MEANS “CLIPPITY CLOP”, THE SOUND HORSES’ HOOVES MADE ON THE COBBLESTONES AS THE CARTS PASSED BY ON THEIR WAY BACK FROM THE VINEYARDS. ', NULL, '2014-10-24 20:42:25'),
+(6, 2, 1, 'The winery was named after György Füleky, founder of the First Tokaj Wine Growers’ Society.', 'The winery was named after György Füleky, founder of the First Tokaj Wine Growers’ Society.\r\n\r\nThe beautifully renovated and restored winery and the 18th-century Baroque Füleky mansion are located in the centre of Bodrogkeresztúr next to the late-Gothic church, the former school and priest’s residence.\r\n\r\nThe modern winery constructed from local stone and sympathetically to the historic environment won the Industrial Building of the Year 2011 award in the online poll of ArchDaily.com, the world’s most popular architecture website.', NULL, '2014-10-24 20:58:22'),
+(7, 2, 1, 'Following the initial investment the development of the modern winery designed by architect Ferenc Salamin began in 1996.', 'Following the initial investment the development of the modern winery designed by architect Ferenc Salamin began in 1996. The offices were set in the former press house above the cellar while the grape processing and wine making is carried out in the new part of the attached building.\r\nThe family undertook more than just the establishment of the winery. In 1997 they bought the Tokaj main square former Degenfeld Palace, where there is now an elegant restaurant, wine shop, cellar for wine tasting and conference facilities.', NULL, '2014-10-24 20:58:22'),
+(8, 1, 1, 'Tállya była kilkaset lat temu jedną z najważniejszych miejscowości regionu tokajskiego, jako producent i centrum handlu winem', 'Najbardziej znaną rodziną łączącą Tállya z Polską byli Lippoczy. Szczególnie dobrze pamiętany jest u nas mieszkający od 1930 roku w Tarnowie Norbert Lippoczy, winiarz, kolekcjoner, społecznik. Na domu w Tállya, w którym się urodził umieszczona jest tablica pamiątkowa. W Tarnowie zaś upamiętnia go działająca w jego dawnym składzie win restauracja i winiarnia „Lippoczy Pince”. Mimo świetnych tradycji, po 1989 Tállya nie rozwijała się zbyt dynamicznie. W okresie powojennym jej winiarstwo podupadło,', NULL, '2014-10-18 16:08:33'),
+(9, 1, 1, 'Udział w prasowej wycieczce „Terroir of Riesling” organizowanej przez Deutsches Weininstitut był jedną z nagród w konkursie..', 'Za pisanie o Tokaju zostałem wysłany przez Magazyn Wino do Niemiec. Udział w prasowej wycieczce „Terroir of Riesling” organizowanej przez Deutsches Weininstitut był jedną z nagród w konkursie blogów winiarskich. Temat ujęto nietypowo, zrezygnowano z odwiedzin winnic nad Mozelą, uważając tę atrakcję za zbyt banalną dla grona specjalistów.Cieszyłem się z tego wyjazdu. Interesuje mnie rodzina białych win północnej Europy, do której należą zarówno niemieckie Rieslingi jak i wina z Tokaju.', NULL, '2014-10-18 16:08:33'),
+(10, 1, 1, 'Bor, mámor, Bénye 2014 już za nami. Festiwal był fantastyczny, być może najlepszy z wszystkich dotychczasowych.', 'Bor, mámor, Bénye 2014 już za nami. Festiwal był fantastyczny, być może najlepszy z wszystkich dotychczasowych. Żałując, że minął, można już rezerwować czas (i noclegi) na następne odwiedziny Erdőbénye, w dniach 13-16 sierpnia 2015.\r\n\r\n\r\nOrganizatorzy planują rozpoczęcie przyszłorocznej imprezy już w czwartek, co być może ma sens. W tym roku festiwal był naprawdę wypełniony zdarzeniami od piątku do niedzieli, choć tradycyjnie, zdecydowanie najwięcej gości odwiedziło Erdőbénye w sobotę.', NULL, '2014-10-18 16:20:19'),
+(11, 1, 1, 'Do wybuchu II wojny światowej w piwnicy hetmańskiej przechowywano kolekcję najstarszych na świecie win tokajskich.', 'Do wybuchu II wojny światowej przechowywano w niej kolekcję najstarszych na świecie win tokajskich i miodów pitnych. Wśród kilku tysięcy butelek znajdowało się ponad trzysta butelek z rocznika 1606 i ogółem około tysiąca butelek z winem siedemnastowiecznym. Kolekcję zrabowali Niemcy w październiku 1939. Prawdopodobnie jej część uległa rozproszeniu już przed wojną w związku kłopotami finansowymi firmy „T. Fukier” nie będącej już wtedy w rękach rodziny Fukierów.', NULL, '2014-10-18 16:20:19'),
+(12, 1, 1, 'W wydanym kilka miesięcy temu przewodniku po Tokaju autorstwa Gergely Ripka możemy znaleźć wywiad ze Stepjhanie.', 'Pisałem niedawno o kolejnym sukcesie Stephanie Berecz, tytule Borászok Borásza 2014. W wydanym kilka miesięcy temu przewodniku po Tokaju autorstwa Gergely Ripka możemy znaleźć wywiad ze Stepjhanie, poświęcony wytrawnym winom z Tokaju. Za zgodą Gergely publikuję przekład fragmentu wywiadu.', NULL, '2014-10-18 16:23:12'),
+(13, 1, 1, 'Na Węgrzech ukazał się nowy przewodnik po Tokaju: „Tokaj Kalauz Guide 2014”. Jego autorem jest Gergely Ripka.', 'Na Węgrzech ukazał się nowy przewodnik po Tokaju: „Tokaj Kalauz Guide 2014”. Jego autorem jest Gergely Ripka, prowadzący blog winiarski TáncolóMedve. Książka jest dwujęzyczna, tę samą treść można w niej czytać po węgiersku i angielsku. Liczy 219 stron spiętych drutem co jest dość wygodne, choć książeczka jest odrobinę za szeroka by łatwo mieścić się w kieszeni. Wydrukowano ją na papierze z lekkim połyskiem. Zawiera sporo kolorowych fotografii, mapki miejscowości i plany winnic.', NULL, '2014-10-18 16:23:12'),
+(14, 1, 1, 'Zapraszam wszystkie osoby interesujące się winiarstwem na jutrzejsze spotkanie z Mártą  Wille-Baumkauff.', 'Zapraszam wszystkie osoby interesujące się winiarstwem na jutrzejsze spotkanie z Mártą  Wille-Baumkauff, właścicielką dobrze znanej tokajskiej winiarni Pendits. Spotkanie połączone z degustacją win odbędzie się w Krakowie, w wine-barze Krakó Slow Wines przy ul. Lipowej 6F, sobota 10 maja, godz. 19.00. Márta Wille-Baumkauff jest jedną z najbardziej oryginalnych producentek wina w Tokaju. Jest Węgierką ale do Tokaju przybyła z Niemiec w 1991 spełniając swoje marzenie o posiadaniu winnicy w tym legendarnym regionie winiarskim.', NULL, '2014-10-18 16:30:09'),
+(15, 1, 1, 'Stephanie Berecz dołączyła w ostatni piątek do listy osób wyróżnionych  tytułem „Borászok Borásza”, czyli „winiarz winiarzy”.', 'Stephanie Berecz dołączyła w ostatni piątek do krótkiej listy osób wyróżnionych zaszczytnym tytułem „Borászok Borásza”, czyli „winiarz winiarzy”. Jest on nadawany od roku 2007 przez samych winiarzy węgierskich. Poprzednikami Stephanie są Zoltán Demeter, György Lőrincz, István Szepsy, Ottó Légli, Imre Kaló, Imre Györgykovács, József Szentesi. Stephanie jest więc trzecią osobą z Tokaju, która zdobywa to wyróżnienie, dołączając do wielkiej dwójki: Istvána Szepsi i Zoltána Demetera.', NULL, '2014-10-18 16:30:09'),
+(16, 1, 1, '„Smak Magazyn Wokół Stołu” w swoim najnowszym zimowym wydaniu poświęcił nieco miejsca tematom winiarskim.', '„Smak Magazyn Wokół Stołu” w swoim najnowszym zimowym wydaniu poświęcił nieco miejsca tematom winiarskim. Izabela Kamińska opowiedziała o winach lodowych a ja o tokajach. Poza tym, w czasopiśmie znajdziemy wiele ciekawych materiałów krążących wokół nie tylko polskiego stołu, czasem sięgających w mniej lub bardziej odległa przeszłość i piękne nastrojowe fotografie z kulinarnymi motywami. Zachęcam do czytania i oglądania. Poniżej publikuję fragmenty wywiadu, jaki przeprowadziła ze mną red. Monika Powalisz.', NULL, '2014-10-18 16:33:16'),
+(17, 1, 1, 'La Confrerie de Tokaj ma się stać międzynarodową społecznością osób zainteresowanych winami tokajskimi.', 'La Confrerie de Tokaj powstała ponad rok temu. Ma się stać międzynarodową społecznością osób zainteresowanych winami tokajskimi i dziedzictwem historycznym regionu. Ma zjednoczyć zarówno miłośników Tokaju jak i osoby związane zawodowo z winiarstwem. Stowarzyszenie chce się wzorować na burgundzkiej La Confrérie des Chevaliers du Tastevin.', NULL, '2014-10-18 16:33:16'),
+(18, 1, 1, 'Zapraszam na wyjątkową ucztę 13 kwietnia a więc w następną niedzielę w restauracji „Sowa i przyjaciele”!', 'Zapraszam na wyjątkową ucztę! 13 kwietnia a więc w następną niedzielę w restauracji „Sowa i przyjaciele” znakomita autorska kuchnia Roberta Sowy spotka się z wybitnymi tokajskimi winami importowanymi przez Rafa Wino.W większości będą to wina z małych butikowych winiarni poszukujących śmiało własnego stylu i dążących do tworzenia win  najwyższej jakości. Barta, Budahazy, Gizella, Gróf Degenfeld, Karadi-Berger, Tokaj Nobilis to twórcy win dających dużo pozytywnych wrażeń i emocji oraz zdobywających najwyższe uznanie koneserów.', NULL, '2014-10-18 16:36:35'),
+(19, 1, 1, 'Luty jest na Węgrzech miesiącem furmintu – Furmint Februar.', 'Luty jest na Węgrzech miesiącem furmintu – Furmint Februar. Głównym wydarzeniem promującym wina z tego szczepu jest wielka degustacja odbywająca się na początku miesiąca w Budapeszcie. Później przez cały miesiąc winiarnie, wine-bary, restauracje organizują różne degustacje i promocje. Rok temu swoimi uwagami na temat tego szczepu podzielili się ze mną Peter Molnar, dyrektor winiarni Patrícius i Gergely Makai, enolog z Hétszőlő.', NULL, '2014-10-18 16:36:35'),
+(20, 1, 1, 'Winnica Oremus leżąca koło Sátoraljaújhely to, według tradycji, miejsce powstania pierwszego wina z owoców aszú.', 'Nazwa Oremus jest dobrze znana miłośnikom Tokaju. Winnica Oremus leżąca koło Sátoraljaújhely to, według tradycji, miejsce powstania pierwszego wina z owoców aszú. W pierwszej połowie XVII wieku winnica należała do Zuzanny Lorántffy, żony Jerzego Rakoczego a zarządzał nią Szepsi Lackó Máté, pastor i winiarz. Tureckie wycieczki w te strony miały spowodować któregoś roku znaczne opóźnienie zbiorów. Gdy niebezpieczeństwo się oddaliło i powrócono do pracy w winnicy, znaleziono w niej dziwnie pokurczone, podsuszone owoce. Chociaż wyglądały na zepsute, zrobiono z nich wino o niezwykłym smaku.', NULL, '2014-10-18 16:38:48'),
+(21, 1, 1, 'Zapraszam do spędzenia dwóch przedwiosennych dni wśród najlepszych win Węgier.', 'Zapraszam do spędzenia dwóch przedwiosennych dni wśród najlepszych win Węgier. Wspólnie z Rafa-Wino i biurem turystycznym Wactur organizujemy dwudniową wycieczkę dla pasjonatów win, podczas której wpadniemy na pół dnia do najdynamiczniej rozwijającej się wioski winiarskiej Tokaju – Mád. Następnego dnia rano pojedziemy do Budapesztu i cały dzień będziemy uczestniczyć w niezwykłym wydarzeniu, jakim jest VinCE. Wyjazd 28 lutego, powrót do Polski nocą z 1 na 2 marca. Tutaj można znaleźć szczegółowy program.', NULL, '2014-10-18 16:38:48'),
+(22, 1, 1, 'Béke Cuvee (Kupaż pokoju)﻿ to eleganckie, idealnie wyważone wino.', 'Béke Cuvee (Kupaż pokoju)﻿ to eleganckie, idealnie wyważone wino. Delikatne i gładkie w smaku, oraz złożone w swoich aromatach, z przyjemnym finiszem. Idealne do wszelkiego rodzaju mięs.', NULL, '2014-10-18 16:50:57'),
+(23, 1, 1, 'Lekkie i owocowe wino, charakterystyczne w smaku i zapachu dla szczepu Furmint. ', 'Lekkie i owocowe wino, charakterystyczne w smaku i zapachu dla szczepu Furmint. Delikatnie cytrusowe aromaty z lekko beczkowym charakterem. W ustach pikantne i mineralne, świeże i ciepłe. Długi cytrusowo-miodowy finisz. Idealny aperitif, polecany również do sałatek i lekkich potraw z grilla.', NULL, '2014-10-18 16:50:57'),
+(24, 1, 1, 'Klasyczny przykład Egri Bikaver, bogaty kupaż, doskonale zrównoważony o spokojnym charakterze owoców.', 'Klasyczny przykład Egri Bikaver, bogaty kupaż, doskonale zrównoważony o spokojnym charakterze owoców. Aromaty otworzą się po dekantacji lub napowietrzeniu. Polecany do dań z drobiu, wołowiny i wieprzowiny', NULL, '2014-10-18 16:52:39'),
+(25, 1, 1, 'Bukiet czerwonych owoców i przypraw. Nos wytrawny, ciepły, pikantny. Wino dobrze zbudowane, harmonijne i dojrzałe. ﻿', 'Bukiet czerwonych owoców i przypraw. Nos wytrawny, ciepły, pikantny. Wino dobrze zbudowane, harmonijne i dojrzałe. ﻿', NULL, '2014-10-18 16:52:39'),
+(26, 1, 1, 'Klasyczny tokajski furmint produkowany w małym nakładzie, 1919 butelek.', 'Klasyczny tokajski furmint produkowany w małym nakładzie, 1919 butelek. Dojrzewający przez 6 miesięcy w nowej, dębowej beczce. Mineralność, świeżość, aromaty i smak cytrusów oraz delikatny waniliowy finisz.', NULL, '2014-10-18 16:54:23'),
+(27, 1, 1, 'Bukiet czerwonych owoców i przypraw. Nos wytrawny, ciepły, pikantny.', 'Bukiet czerwonych owoców i przypraw. Nos wytrawny, ciepły, pikantny. Wino dobrze zbudowane, harmonijne i dojrzałe. ﻿', NULL, '2014-10-18 16:54:23'),
+(28, 1, 1, 'Jedna z najbardziej uznanych winnic nie tylko w Tokaju, ale całych Węgrzech. Początki winnicy sięgają XVIII wieku.', 'Jedna z najbardziej uznanych winnic nie tylko w Tokaju, ale całych Węgrzech. Początki winnicy sięgają XVIII wieku. Za początek nowej winnicy uznaje się jej zmodernizowanie w 1999 r.', NULL, '2014-10-18 17:15:11'),
+(29, 1, 1, 'Hotel położony w malowniczej okolicy. Zakres usług jest bardziej rozbudowany niż w hotelach turystycznych.', 'Hotel położony w malowniczej okolicy. Zakres usług jest bardziej rozbudowany niż w hotelach turystycznych. Oferta skierowana jest przede wszystkim do osób podróżujących służbowo, jak również dla turystów i rodzin z dziećmi.', NULL, '2014-10-18 19:58:53'),
+(30, 1, 1, 'Restauracja przyciąga niepowtarzalnym klimatem i doskonałym jedzeniem', 'Dania, przygotowywane na bazie sezonowych produktów o największym twórczym potencjale, stają się tu dziełami sztuki. Urzekają zmysły, jednocześnie rozbudzając wyobraźnię. Obok klasycznego Manu à la carte, każdego dnia podawane są specjalności inspirowane chwilą.', NULL, '2014-10-18 20:31:12'),
+(31, 2, 1, 'The Patricius Winery is found in the Tokaj region and was established by the Kékessy family. ', 'The Patricius Winery is found in the Tokaj region and was established by the Kékessy family. The Kékessy family’s winemaking mission is nurtured by their family history. The owners are Dezső Kékessy and his daughter Katinka Kékessy.\r\nThe family’s maternal and paternal ancestors were well-known vineyard owners in the regions of the Tokaj and Mátra foothills from the 18thcentury. The maternal ancestors—the Okolicsányi family—had vineyards in Tokaj, Szegi, and Szőlőske, and also held important offices as public servants (Deputy Lord-Lieutenant, Member of Parliament).', NULL, '2014-10-24 22:13:20'),
+(32, 2, 1, 'Samuel Tinon was born in Bordeaux in 1969 and grew up on the family estate in Sainte-Croix du Mont, near Bordeaux.', 'Samuel Tinon was born in Bordeaux in 1969 and grew up on the family estate in Sainte-Croix du Mont, near Bordeaux. He graduated in viticulture and oenology in 1989 travelling the world as a flying winemaker in Australia, Texas, Chile, and in Italy where he has worked since 1996 in partnership with the Count Brandino Brandolini d’Adda* in Vistorta near Venezia (Friuli).\r\n\r\nThe Tokaj adventure begins in 1991. He was the first French man to settle in the region, just after the political changes and prior the start of the privatization of the vineyards.', NULL, '2014-10-24 22:13:20'),
+(33, 2, 1, 'Extremely strict pruning and selection of shoots and bunches produces a yield of 17-19 hl of wine per hectare.', 'When we decided to set up the Tokaj Nobilis Winery it was our dream to have a setup in which we would be making hand-crafted wines of unique quality and thereby giving expression to the vineyard, the grape varieties and our closeness to nature.The first step was to find land which would, in our opinion, be suitable for producing wines which would match our expectations. With this in mind we decided on the Barakonyi and Csirke-mál vineyards on the edge of Bodrogkisfalud, where we planted 6 hectares of grapes in 1999 and 2004.Wine production for us begins with the grapes themselves.', NULL, '2014-10-24 22:29:43'),
+(34, 2, 1, 'The winery of Szilvia Karádi and Zsolt Berger.\r\nControlled yield: 1 – 1.5 kg grapes per vine.', 'The winery of Szilvia Karádi and Zsolt Berger.\r\nControlled yield: 1 – 1.5 kg grapes per vine.\r\nWe use a basket press to obtain the juice. Some of our grapes are made into fresh dry wine bursting with flavour: Furmint-Hárs. Selected grapes from our two dűlő are fermented in the barrel and become single-vineyard dry wines. For our sweet wines we select grapes from the whole estate and, after fermentation in oak barrels, we bottle to preserve their fresh, fruity flavours. We have vineyards in Palandor and Narancsi dűlő, excellent south-, southwest-facing plots.', NULL, '2014-10-24 22:45:31'),
+(35, 2, 1, 'The soil composition in Tokaj is complex and varied. It is different on every site and slope. ', 'The soil composition in Tokaj is complex and varied. It is different on every site and slope. Roots reach even the volcanic layers which provide the grapes with the organic properties that give our wines their distinctive taste. 6 hectares of plantations with 5 vineyards: each possesses different and diversified characteristics. What do they have in common? Mindful attendance and wholehearted and enthusiastic people.', NULL, '2014-10-24 22:45:31'),
+(36, 2, 1, 'Over the years we have bought vineyard acreage in some of the best growing areas within the Tokaj-region – a total of 10 hectares by 2012.', 'Over the years we have bought vineyard acreage in some of the best growing areas within the Tokaj-region – a total of 10 hectares by 2012. We stress the ongoing reconstruction and replanting of the unique micro-terraces that fell into oblivion after the War. All vineyards are part ot the UNESCO World Heritage sight which was given to the region as appreciation to the special cultural landscape in 2002.', NULL, '2014-10-24 23:02:55'),
+(37, 2, 1, 'Light golden colour. On the nose minerality is the most intense with hints of peach and juicy pear.', 'Light golden colour. On the nose minerality is the most intense with hints of peach and juicy pear. It is a dry, full-bodied wine with lively acids and a light salty flavour. The minerality and the fruity notes form a delicately balanced mouthfeel. The best served on 13-14 degrees with fish and white meat or pork. 3445 bottles were made.', NULL, '2014-10-25 12:55:27'),
+(38, 2, 1, 'Medium intense straw-yellow coloured wine.', 'Medium intense straw-yellow coloured wine. This is a light sweet wine with strong fruity notes both in the palate and on the nose. Smoot, quite long aftertaste. Goes well with Asian food, for example coconut soup (tom-kha-khai).  3840 bottles were made.', NULL, '2014-10-25 12:55:27'),
+(39, 2, 1, 'The basic wine of the winery, made of 85% Furmint, 5% Kövérszőlő, 5% Sárgamuskotály and 5% Hárslevelű.', 'The basic wine of the winery, made of 85% Furmint, 5% Kövérszőlő, 5% Sárgamuskotály and 5% Hárslevelű. It contains all the grape varieties of our vineyard. On the nose it shows sparkling peach and elderflower aromas. In the palate the residual sugar shows great balance with the well-structured acidity. Goes well with jasmin and other flowery desserts, for example sorbet or floating island. 3331 bottles were made.', NULL, '2014-10-25 12:56:35'),
+(40, 2, 1, '60% Muskotály and 40% Furmint. Lovely, not too sweet wine with residual sugar.', '60% Muskotály and 40% Furmint. Lovely, not too sweet wine with residual sugar. On the nose very typical muscat notes: grapes, pear, apple, elderflower. In the palate nice sugar-acidity balance goes well with the minerality. Best served on 10-12 degrees with Asian food, sweet-sauced fish dishes and with less sweet deserts. 2914 bottles were made.', NULL, '2014-10-25 12:56:35'),
+(41, 2, 1, 'It’s quite rare that a late harvest wine is made of 100% Furmint. ', 'It’s quite rare that a late harvest wine is made of 100% Furmint. Very mineral on the nose with citrus notes. In the palate the residual sugar is perfectly balanced with lively acidity. 3747 bottles were made.', NULL, '2014-10-25 12:59:27'),
+(42, 2, 1, 'Szamorodni is a Polish world meaning “as it is born”. It’s a speciality of Tokaj made of noble rotten, shrivelled and healthy berries mixed together.', 'Szamorodni is a Polish world meaning “as it is born”. It’s a speciality of Tokaj made of noble rotten, shrivelled and healthy berries mixed together. Golden-yellow colour. Minerality is the most intense surrounded by honey, apricot, raisin and fruit jam aromas. Inimitable. Very long falloff and potential. Roasted duck and goose liver, Tikka massala, orange duck, chocolate desserts and Roquefort cheese could be the best with it. 2480 bottles were made.', NULL, '2014-10-25 12:59:27'),
+(43, 2, 1, 'This wine category, the Aszú is made by collecting only the noble rotten berries.', 'This wine category, the Aszú is made by collecting only the noble rotten berries. Collecting only a few berries from a bunch makes this winemaking technique a very labour-intensive and time-consuming procedure. It’s a real terroir wine. Both on the nose and in the palate the most typical note is the minerality. This wine has a very long potential. In the palate the 240g/l sugar is not too much since it is well balanced with intense, salty minerality and lively acids. Best served with blue cheese and really sweet deserts. 892 bottles were made. ', NULL, '2014-10-25 12:59:54');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tFlavours`
+--
+
+CREATE TABLE IF NOT EXISTS `tFlavours` (
+`IdFlavour` int(11) NOT NULL,
+  `NameEng` varchar(30) NOT NULL,
+  `NamePl` varchar(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tFlavours`
+--
+
+INSERT INTO `tFlavours` (`IdFlavour`, `NameEng`, `NamePl`) VALUES
+(1, 'Dry', 'Wytrawne'),
+(2, 'Semi-dry', 'Półwytrawne'),
+(3, 'Semi-sweet', 'Półsłodkie'),
+(4, 'Sweet', 'Słodkie'),
+(5, 'Sparkling', 'Musujące');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tGrades`
+--
+
+CREATE TABLE IF NOT EXISTS `tGrades` (
+`IdGrade` int(11) NOT NULL,
+  `NAME` varchar(30) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tGrades`
+--
+
+INSERT INTO `tGrades` (`IdGrade`, `NAME`) VALUES
+(1, 'Szamorodni'),
+(2, 'Késői Szüret'),
+(3, 'Aszú 3 puttonyos'),
+(4, 'Aszú 4 puttonyos'),
+(5, 'Aszú 5 puttonyos'),
+(6, 'Aszú 6 puttonyos'),
+(7, 'Aszúeszencia'),
+(8, 'Eszencia'),
+(9, 'Fordítás'),
+(10, 'Máslás');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tHotelImages`
+--
+
+CREATE TABLE IF NOT EXISTS `tHotelImages` (
+`IdHotelImage` int(11) NOT NULL,
+  `IdHotel_` int(11) NOT NULL,
+  `IdImage_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tHotelReviews`
+--
+
+CREATE TABLE IF NOT EXISTS `tHotelReviews` (
+`IdHotelReview` int(11) NOT NULL,
+  `IdHotel_` int(11) NOT NULL,
+  `Mark` double DEFAULT NULL,
+  `IdDescription_` int(11) NOT NULL,
+  `IdUser_` int(11) NOT NULL,
+  `EntryDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tHotels`
+--
+
+CREATE TABLE IF NOT EXISTS `tHotels` (
+`IdHotel` int(11) NOT NULL,
+  `Email` varchar(50) NOT NULL,
+  `Link` varchar(50) NOT NULL,
+  `Name` varchar(20) NOT NULL,
+  `Phone` varchar(20) DEFAULT NULL,
+  `IdDescription_` int(11) NOT NULL,
+  `IdAddress_` int(11) NOT NULL,
+  `IdUser_` int(11) DEFAULT NULL,
+  `IdImageCover_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tHotels`
+--
+
+INSERT INTO `tHotels` (`IdHotel`, `Email`, `Link`, `Name`, `Phone`, `IdDescription_`, `IdAddress_`, `IdUser_`, `IdImageCover_`, `LastUpdate`) VALUES
+(1, 'info@toldifogado.hu', 'www.toldifogado.hu', 'Toldi Fogadó', '+36 47 353 403', 29, 18, NULL, 0, '2014-10-18 20:04:39'),
+(2, '', 'http://torkolatpanzio.hu/eng/magunkrol.html', 'Torkolat Panzió', NULL, 29, 19, NULL, 0, '2014-10-18 20:04:39'),
+(3, 'tokajszallas@t-online.hu', 'http://www.hulipanzio.hu/', 'Huli Panzio', '+36 30 504 1408', 29, 20, NULL, 0, '2014-10-18 20:07:49'),
+(4, 'info@hotelkelep.hu', 'www.hotelkelep.hu', 'Hotel Kelep', '+36 47 563 803', 29, 21, NULL, 0, '2014-10-18 20:07:49'),
+(5, 'info@tokajhotel.hu info@hoteltokaj.hu', 'http://www.tokajhotel.hu/', 'Hotel Tokaj & Restau', '+36 47 352 344', 29, 22, NULL, 0, '2014-10-18 20:09:58');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tImages`
+--
+
+CREATE TABLE IF NOT EXISTS `tImages` (
+`IdImage` int(11) NOT NULL,
+  `Version` int(11) NOT NULL,
+  `Width` int(11) NOT NULL,
+  `Height` int(11) NOT NULL,
+  `Weight` double NOT NULL,
+  `Author` varchar(30) DEFAULT NULL,
+  `Image` varchar(100) NOT NULL,
+  `IdUser_` int(11) DEFAULT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tImages`
+--
+
+INSERT INTO `tImages` (`IdImage`, `Version`, `Width`, `Height`, `Weight`, `Author`, `Image`, `IdUser_`, `LastUpdate`) VALUES
+(0, 1, 125, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/no_image.jpg', NULL, '2014-10-24 18:17:58'),
+(5, 1, 125, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt1_thumb.jpg', NULL, '2014-10-22 20:20:46'),
+(6, 1, 125, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt2_thumb.jpg', NULL, '2014-10-22 20:20:46'),
+(7, 1, 125, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt3_thumb.jpg', NULL, '2014-10-22 20:21:46'),
+(8, 1, 125, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt4_thumb.jpg', NULL, '2014-10-22 20:21:46'),
+(9, 1, 125, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt5_thumb.jpg', NULL, '2014-10-22 20:22:48'),
+(10, 1, 125, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt6_thumb.jpg', NULL, '2014-10-22 20:22:48'),
+(11, 1, 125, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt7_thumb.jpg', NULL, '2014-10-22 20:23:14'),
+(12, 1, 125, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt8_thumb.jpg', NULL, '2014-10-22 20:23:14'),
+(13, 1, 125, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt9_thumb.jpg', NULL, '2014-10-22 20:23:45'),
+(14, 1, 125, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt10_thumb.jpg', NULL, '2014-10-22 20:23:45'),
+(15, 1, 125, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt11_thumb.jpg', NULL, '2014-10-22 20:24:05'),
+(16, 1, 125, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt12_thumb.jpg', NULL, '2014-10-22 20:24:05'),
+(17, 1, 125, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt13_thumb.jpg', NULL, '2014-10-22 20:24:39'),
+(18, 1, 125, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt14_thumb.jpg', NULL, '2014-10-22 20:24:39'),
+(19, 1, 300, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt1_big.jpg', NULL, '2014-10-22 20:25:16'),
+(20, 1, 300, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt2_big.jpg', NULL, '2014-10-22 20:25:16'),
+(21, 1, 300, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt3_big.jpg', NULL, '2014-10-22 20:26:14'),
+(22, 1, 300, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt4_big.jpg', NULL, '2014-10-22 20:26:14'),
+(23, 1, 300, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt5_big.jpg', NULL, '2014-10-22 20:26:39'),
+(24, 1, 300, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt6_big.jpg', NULL, '2014-10-22 20:26:39'),
+(25, 1, 300, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt7_big.jpg', NULL, '2014-10-22 20:27:05'),
+(26, 1, 300, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt8_big.jpg', NULL, '2014-10-22 20:27:05'),
+(27, 1, 300, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt9_big.jpg', NULL, '2014-10-22 20:27:34'),
+(28, 1, 300, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt10_big.jpg', NULL, '2014-10-22 20:27:34'),
+(29, 1, 300, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt11_big.jpg', NULL, '2014-10-22 20:28:03'),
+(30, 1, 300, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt12_big.jpg', NULL, '2014-10-22 20:28:03'),
+(31, 1, 300, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt13_big.jpg', NULL, '2014-10-22 20:28:26'),
+(32, 1, 300, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/akt14_big.jpg', NULL, '2014-10-22 20:28:26'),
+(33, 1, 83, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/barta_szamorodni_thumb.jpg', NULL, '2014-10-26 12:18:38'),
+(34, 1, 83, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/barta_kesoi_furmint_muskotaly_thumb.jpg', NULL, '2014-10-26 12:18:38'),
+(35, 1, 84, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/barta_kesoi_furmint_thumb.jpg', NULL, '2014-10-26 12:21:42'),
+(36, 1, 82, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/barta_furmint_thumb.jpg', NULL, '2014-10-26 12:21:42'),
+(37, 1, 64, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/barta_egy_kis_edes_furmint_thumb.jpg', NULL, '2014-10-26 12:24:28'),
+(38, 1, 72, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/barta_birtokedes_thumb.jpg', NULL, '2014-10-26 12:24:28'),
+(39, 1, 83, 125, 0, NULL, 'http://remzo.usermd.net/zpi/photos/barta_aszu_thumb.jpg', NULL, '2014-10-26 12:38:47'),
+(40, 1, 150, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/barta_szamorodni_big.jpg', NULL, '2014-10-26 12:57:00'),
+(41, 1, 150, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/barta_kesoi_furmint_muskotaly_big.jpg', NULL, '2014-10-26 12:57:00'),
+(42, 1, 151, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/barta_kesoi_furmint_big.jpg', NULL, '2014-10-26 12:58:05'),
+(43, 1, 147, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/barta_furmint_big.jpg', NULL, '2014-10-26 12:58:05'),
+(44, 1, 116, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/barta_egy_kis_edes_furmint_big.jpg', NULL, '2014-10-26 13:00:56'),
+(45, 1, 130, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/barta_birtokedes_big.jpg', NULL, '2014-10-26 13:00:56'),
+(46, 1, 150, 225, 0, NULL, 'http://remzo.usermd.net/zpi/photos/barta_aszu_big.jpg', NULL, '2014-10-26 13:01:17');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tLangs`
+--
+
+CREATE TABLE IF NOT EXISTS `tLangs` (
+`IdLang` int(11) NOT NULL,
+  `Name` varchar(20) DEFAULT NULL,
+  `ShortName` varchar(3) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tLangs`
+--
+
+INSERT INTO `tLangs` (`IdLang`, `Name`, `ShortName`) VALUES
+(1, 'Polski', 'PL'),
+(2, 'English', 'ENG');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tLookoutImages`
+--
+
+CREATE TABLE IF NOT EXISTS `tLookoutImages` (
+`IdLookoutImage` int(11) NOT NULL,
+  `IdLookout_` int(11) NOT NULL,
+  `IdImage_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tLookouts`
+--
+
+CREATE TABLE IF NOT EXISTS `tLookouts` (
+`IdLookout` int(11) NOT NULL,
+  `Name` varchar(20) NOT NULL,
+  `IdDescription_` int(11) NOT NULL,
+  `IdAddress_` int(11) NOT NULL,
+  `IdImageCover_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tMonumentImages`
+--
+
+CREATE TABLE IF NOT EXISTS `tMonumentImages` (
+`IdMomunemtImage` int(11) NOT NULL,
+  `IdMonument_` int(11) NOT NULL,
+  `IdImage_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tMonuments`
+--
+
+CREATE TABLE IF NOT EXISTS `tMonuments` (
+`IdMonument` int(11) NOT NULL,
+  `Name` varchar(20) NOT NULL,
+  `IdDescription_` int(11) NOT NULL,
+  `IdAddress_` int(11) NOT NULL,
+  `IdImageCover_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tNews`
+--
+
+CREATE TABLE IF NOT EXISTS `tNews` (
+`IdNews` int(11) NOT NULL,
+  `Header` varchar(30) NOT NULL,
+  `EntryDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `StartDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `EndDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `IdDescription_` int(11) NOT NULL,
+  `IdAddress_` int(11) DEFAULT NULL,
+  `IdImageCover_` int(11) NOT NULL DEFAULT '0',
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tNews`
+--
+
+INSERT INTO `tNews` (`IdNews`, `Header`, `EntryDate`, `StartDate`, `EndDate`, `IdDescription_`, `IdAddress_`, `IdImageCover_`, `LastUpdate`) VALUES
+(1, 'Tállya przyspiesza', '2014-10-20 20:00:00', '2014-10-24 22:40:27', '2014-10-24 22:40:27', 8, NULL, 0, '2014-10-18 16:14:46'),
+(2, 'Nad Renem (1/2)', '2014-10-20 20:00:00', '2014-10-24 22:40:27', '2014-10-24 22:40:27', 9, NULL, 0, '2014-10-18 16:14:46'),
+(3, 'Sierpniowy weekend w Erdőbénye', '2014-10-20 20:00:00', '2014-10-24 22:40:27', '2014-10-24 22:40:27', 10, NULL, 0, '2014-10-18 16:41:29'),
+(4, 'Lokalizacja Piwnicy Hetmańskie', '2014-10-20 20:00:00', '2014-10-24 22:40:27', '2014-10-24 22:40:27', 11, NULL, 0, '2014-10-18 16:41:29'),
+(5, 'Wywiad ze Stephanie Berecz:', '2014-10-20 20:00:00', '2014-10-24 22:40:27', '2014-10-24 22:40:27', 12, NULL, 0, '2014-10-18 16:42:15'),
+(6, 'Tokaj Kalauz Guide 2014', '2014-10-20 20:00:00', '2014-10-24 22:40:27', '2014-10-24 22:40:27', 13, NULL, 0, '2014-10-18 16:42:15'),
+(7, 'Márta Wille-Baumkauff w Polsce', '2014-10-20 20:00:00', '2014-10-24 22:40:27', '2014-10-24 22:40:27', 14, NULL, 0, '2014-10-18 16:43:08'),
+(8, 'István? Zoltán? Stephanie!', '2014-10-20 20:00:00', '2014-10-24 22:40:27', '2014-10-24 22:40:27', 15, NULL, 0, '2014-10-18 16:43:08'),
+(9, 'O tokajach ze Smakiem', '2014-10-20 20:00:00', '2014-10-24 22:40:27', '2014-10-24 22:40:27', 16, NULL, 0, '2014-10-18 16:43:40'),
+(10, 'Wielka Aukcja 2014', '2014-10-20 20:00:00', '2014-10-24 22:40:27', '2014-10-24 22:40:27', 17, NULL, 0, '2014-10-18 16:43:40'),
+(11, 'Zapraszam na ucztę!', '2014-10-20 20:00:00', '2014-10-24 22:40:27', '2014-10-24 22:40:27', 18, NULL, 0, '2014-10-18 16:44:17'),
+(12, 'Dwa słowa o furmincie', '2014-10-20 20:00:00', '2014-10-24 22:40:27', '2014-10-24 22:40:27', 19, NULL, 0, '2014-10-18 16:44:17'),
+(13, 'Firma “Juliusz Grosse”', '2014-10-20 20:00:00', '2014-10-24 22:40:27', '2014-10-24 22:40:27', 20, NULL, 0, '2014-10-18 16:45:19'),
+(14, 'Tysiąc win w sercu Budapesztu', '2014-10-20 20:00:00', '2014-10-24 22:40:27', '2014-10-24 22:40:27', 21, NULL, 0, '2014-10-18 16:45:19');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tNewsImages`
+--
+
+CREATE TABLE IF NOT EXISTS `tNewsImages` (
+`IdNewsImage` int(11) NOT NULL,
+  `IdNews_` int(11) NOT NULL,
+  `IdImage_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tNewsImages`
+--
+
+INSERT INTO `tNewsImages` (`IdNewsImage`, `IdNews_`, `IdImage_`, `LastUpdate`) VALUES
+(1, 1, 5, '2014-10-22 20:29:51'),
+(2, 2, 6, '2014-10-22 20:29:51'),
+(3, 3, 7, '2014-10-22 20:30:07'),
+(4, 4, 8, '2014-10-22 20:30:07'),
+(5, 5, 9, '2014-10-22 20:30:21'),
+(6, 6, 10, '2014-10-22 20:30:21'),
+(7, 7, 11, '2014-10-22 20:30:49'),
+(8, 8, 12, '2014-10-22 20:30:49'),
+(9, 9, 13, '2014-10-22 20:31:03'),
+(10, 10, 14, '2014-10-22 20:31:03'),
+(11, 11, 15, '2014-10-22 20:31:20'),
+(12, 12, 16, '2014-10-22 20:31:20'),
+(13, 13, 17, '2014-10-22 20:31:38'),
+(14, 14, 18, '2014-10-22 20:31:38'),
+(15, 1, 19, '2014-10-22 20:32:12'),
+(16, 2, 20, '2014-10-22 20:32:12'),
+(17, 3, 21, '2014-10-22 20:32:28'),
+(18, 4, 22, '2014-10-22 20:32:28'),
+(19, 5, 23, '2014-10-22 20:32:46'),
+(20, 6, 24, '2014-10-22 20:32:46'),
+(21, 7, 25, '2014-10-22 20:33:09'),
+(22, 8, 26, '2014-10-22 20:33:09'),
+(23, 9, 27, '2014-10-22 20:33:29'),
+(24, 10, 28, '2014-10-22 20:33:29'),
+(25, 11, 29, '2014-10-22 20:33:48'),
+(26, 12, 30, '2014-10-22 20:33:48'),
+(27, 13, 31, '2014-10-22 20:34:03'),
+(28, 14, 32, '2014-10-22 20:34:03');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tNotifications`
+--
+
+CREATE TABLE IF NOT EXISTS `tNotifications` (
+`IdNotification` int(11) NOT NULL,
+  `Name` varchar(50) NOT NULL,
+  `Link` varchar(50) NOT NULL,
+  `DateStart` date NOT NULL,
+  `DateEnd` date NOT NULL,
+  `IdNotificationType_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tNotificationTypes`
+--
+
+CREATE TABLE IF NOT EXISTS `tNotificationTypes` (
+`IdNotificationType` int(11) NOT NULL,
+  `Name` varchar(30) NOT NULL,
+  `Importance` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tOddities`
+--
+
+CREATE TABLE IF NOT EXISTS `tOddities` (
+`IdOddity` int(11) NOT NULL,
+  `Name` varchar(30) DEFAULT NULL,
+  `Header` varchar(20) DEFAULT NULL,
+  `IdOddityType_` int(11) NOT NULL,
+  `IdDescription_` int(11) NOT NULL,
+  `IdAddress_` int(11) DEFAULT NULL,
+  `IdImageCover_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tOddityImages`
+--
+
+CREATE TABLE IF NOT EXISTS `tOddityImages` (
+`IdOddityImage` int(11) NOT NULL,
+  `IdOddity_` int(11) NOT NULL,
+  `IdImage_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tOddityTypes`
+--
+
+CREATE TABLE IF NOT EXISTS `tOddityTypes` (
+`IdOddityType` int(11) NOT NULL,
+  `Name` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tOpenningHours`
+--
+
+CREATE TABLE IF NOT EXISTS `tOpenningHours` (
+  `IdProducer_` int(11) NOT NULL,
+`OrderNumber` int(11) NOT NULL,
+  `DateStart` date DEFAULT NULL,
+  `DateEnd` date DEFAULT NULL,
+  `MondaysStart` time DEFAULT NULL,
+  `MondaysEnd` time DEFAULT NULL,
+  `TuesdaysStart` time DEFAULT NULL,
+  `TuesdaysEnd` time DEFAULT NULL,
+  `WednesdaysStart` time DEFAULT NULL,
+  `WednesdaysEnd` time DEFAULT NULL,
+  `ThursdaysStart` time DEFAULT NULL,
+  `ThursdaysEnd` time DEFAULT NULL,
+  `FridaysStart` time DEFAULT NULL,
+  `FridaysEnd` time DEFAULT NULL,
+  `SaturdaysStart` time DEFAULT NULL,
+  `SaturdaysEnd` time DEFAULT NULL,
+  `SundaysStart` time DEFAULT NULL,
+  `SundaysEnd` time DEFAULT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tParticipants`
+--
+
+CREATE TABLE IF NOT EXISTS `tParticipants` (
+  `IdNews_` int(11) NOT NULL,
+`IdParticipant` int(11) NOT NULL,
+  `IdProducer_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tPlaces`
+--
+
+CREATE TABLE IF NOT EXISTS `tPlaces` (
+`IdPlace` int(11) NOT NULL,
+  `Name` varchar(20) NOT NULL,
+  `Address` varchar(70) NOT NULL,
+  `Latitude` double NOT NULL,
+  `Longitude` double NOT NULL,
+  `PlaceType` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tPlaces`
+--
+
+INSERT INTO `tPlaces` (`IdPlace`, `Name`, `Address`, `Latitude`, `Longitude`, `PlaceType`) VALUES
+(1, 'Toldi Fogadó', 'Vasvári Pál 26 Tokaj', 48.1295, 21.4089, 'Hotel'),
+(2, 'Torkolat Panzió', 'Rákóczi 16 Tokaj', 48.12262938, 21.41129564, 'Hotel'),
+(3, 'Huli Panzio', 'Bodrogkeresztúri 44 Tokaj', 48.1369, 21.4013, 'Hotel'),
+(4, 'Hotel Kelep', 'Rákóczi 5 Tokaj', 48.12262225, 21.41188051, 'Hotel'),
+(5, 'Hotel Tokaj & Restau', 'Petőfi 57 Encs', 48.333, 21.1151, 'Hotel'),
+(8, 'Anyukám Mondta', 'Bajcsy-Zsilinszky 21 Tokaj', 48.333, 21.1151, 'Restaurant'),
+(9, 'Bonchidai Csarda', 'Kossuth tér 7 Tokaj', 48.1257, 21.4074, 'Restaurant'),
+(10, 'Bacchus Restaurant', 'Disznókő dűlő  Mezőzombor', 48.16923505, 21.30926494, 'Restaurant'),
+(11, 'Toldi Fogadó Restaur', 'Vasvári Pál 26 Tokaj', 48.1295, 21.4089, 'Restaurant'),
+(12, 'Sárga Borház Vendégl', 'Hunyadi 21 Erdőbénye', 48.2647, 21.3559, 'Restaurant'),
+(15, 'Barta', 'Rákóczi 83 Mád', 48.1941, 21.2788, 'Producer'),
+(16, 'Béres', 'hrsz.: 085/18  Erdőbénye', 48.272304, 21.374803, 'Producer'),
+(17, 'Disznókő', 'Hrsz.0202  Mezőzombo', 48.1654, 21.303, 'Producer'),
+(18, 'Dobogó Pincészet', 'Dózsa György 1 Tokaj', 48.1253, 21.4043, 'Producer'),
+(19, 'Füleky', 'Iskola köz 15 Bodrogkeresztúr', 48.163, 21.3633, 'Producer'),
+(20, 'Gróf Degenfeld', 'Terézia kert 9 Tarcal', 48.143589, 21.334291, 'Producer'),
+(21, 'Patricius', 'Kossuth tér 1 Tokaj', 48.1257, 21.4074, 'Producer'),
+(22, 'Samuel Tinon', 'Bánom 8 Olaszliszka', 48.2446, 21.4304, 'Producer'),
+(23, 'Tokaj Nobilis', 'Disznókő dűlő  Mezőzombor', 48.16923505, 21.30926494, 'Producer'),
+(24, 'Karádi és Berger', 'Hunyadi 21 Erdőbénye', 48.2647, 21.3559, 'Producer'),
+(25, 'Gizella Pince', 'Dienes Pál 78 Tokaj', 48.1453, 21.3868, 'Producer'),
+(26, 'Pendits', 'Béke 111 Abaújszántó', 48.2742, 21.1853, 'Producer');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tProducerImages`
+--
+
+CREATE TABLE IF NOT EXISTS `tProducerImages` (
+`IdProducerImage` int(11) NOT NULL,
+  `IdProducer_` int(11) NOT NULL,
+  `IdImage_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tProducerReviews`
+--
+
+CREATE TABLE IF NOT EXISTS `tProducerReviews` (
+`IdProducerReview` int(11) NOT NULL,
+  `IdProducer_` int(11) NOT NULL,
+  `Mark` double DEFAULT NULL,
+  `IdDescription_` int(11) NOT NULL,
+  `IdUser_` int(11) NOT NULL,
+  `EntryDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tProducers`
+--
+
+CREATE TABLE IF NOT EXISTS `tProducers` (
+`IdProducer` int(11) NOT NULL,
+  `Email` varchar(50) NOT NULL,
+  `Link` varchar(50) NOT NULL,
+  `Name` varchar(20) NOT NULL,
+  `Phone` varchar(20) DEFAULT NULL,
+  `IdDescription_` int(11) NOT NULL,
+  `IdAddress_` int(11) NOT NULL,
+  `IdUser_` int(11) DEFAULT NULL,
+  `IdImageCover_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tProducers`
+--
+
+INSERT INTO `tProducers` (`IdProducer`, `Email`, `Link`, `Name`, `Phone`, `IdDescription_`, `IdAddress_`, `IdUser_`, `IdImageCover_`, `LastUpdate`) VALUES
+(1, 'info@bartapince.com', 'www.bartapince.com', 'Barta', '+361-417-3248', 2, 1, NULL, 0, '2014-10-24 20:25:10'),
+(2, 'info@beresbor.hu', 'http://www.beresbor.hu/', 'Béres', '+36 47 536 000', 3, 2, NULL, 0, '2014-10-24 20:25:10'),
+(3, 'disznoko@disznoko.hu', 'http://disznoko.hu/', 'Disznókő', '+36 47 569 410', 4, 3, NULL, 0, '2014-10-24 20:46:10'),
+(4, 'dobogotokaj@t-online.hu', 'www.dobogo.hu', 'Dobogó Pincészet', '+36 - 47 552 147', 5, 4, NULL, 0, '2014-10-24 20:46:10'),
+(5, 'info@tokaj.org', 'www.tokaj.org', 'Füleky', '(+36) 47 396-478', 6, 5, NULL, 0, '2014-10-24 21:02:17'),
+(6, 'degenfeld@degenfeld.hu', 'http://grofdegenfeld.com/', 'Gróf Degenfeld', '36-47-380-173', 7, 6, NULL, 0, '2014-10-24 21:02:17'),
+(7, 'info@patricius.hu', 'http://patricius.hu/', 'Patricius', '+36 47 396 001', 31, 7, NULL, 0, '2014-10-24 22:21:19'),
+(8, 'samueltinon@samueltinon.com', 'http://samueltinon.com/', 'Samuel Tinon', '+36 47 358 405', 32, 8, NULL, 0, '2014-10-24 22:21:19'),
+(9, 'bardos@tokajnobilis.hu', 'http://tokajnobilis.hu/', 'Tokaj Nobilis', '+36 20 391 83 28', 33, 25, NULL, 0, '2014-10-24 22:31:17'),
+(14, 'boraszat@karadiesberger.hu', 'http://www.karadiesberger.hu/', 'Karádi és Berger', '+36 70 615 4797', 34, 26, NULL, 0, '2014-10-24 22:57:19'),
+(15, 'laszlo.szilagyi@gizellapince.hu', 'http://www.gizellapince.hu/', 'Gizella Pince', '+36 20 2333 212', 35, 27, NULL, 0, '2014-10-24 22:57:19'),
+(16, 'pendits@t-online.hu', 'http://www.pendits.de/', 'Pendits', '+36 47-330-567', 36, 28, NULL, 0, '2014-10-24 23:04:51');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tRestaurantImages`
+--
+
+CREATE TABLE IF NOT EXISTS `tRestaurantImages` (
+`IdRestaurantImage` int(11) NOT NULL,
+  `IdRestaurant_` int(11) NOT NULL,
+  `IdImage_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tRestaurantReviews`
+--
+
+CREATE TABLE IF NOT EXISTS `tRestaurantReviews` (
+  `IdRestaurantReview` int(11) NOT NULL,
+  `IdRestaurant_` int(11) NOT NULL,
+  `Mark` double DEFAULT NULL,
+  `IdDescription_` int(11) NOT NULL,
+  `IdUser_` int(11) NOT NULL,
+  `EntryDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tRestaurants`
+--
+
+CREATE TABLE IF NOT EXISTS `tRestaurants` (
+`IdRestaurant` int(11) NOT NULL,
+  `Email` varchar(50) NOT NULL,
+  `Link` varchar(50) NOT NULL,
+  `Name` varchar(20) NOT NULL,
+  `Phone` varchar(20) DEFAULT NULL,
+  `IdDescription_` int(11) NOT NULL,
+  `IdAddress_` int(11) NOT NULL,
+  `IdUser_` int(11) DEFAULT NULL,
+  `IdImageCover_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tRestaurants`
+--
+
+INSERT INTO `tRestaurants` (`IdRestaurant`, `Email`, `Link`, `Name`, `Phone`, `IdDescription_`, `IdAddress_`, `IdUser_`, `IdImageCover_`, `LastUpdate`) VALUES
+(1, 'anyukammondta@gmail.com ', 'http://www.anyukammondta.hu/', 'Anyukám Mondta', '46/587-340', 30, 23, NULL, 0, '2014-10-18 20:35:39'),
+(2, 'bonchi@mail.datanet.hu', 'http://www.hollandrt.hu/tokaj-bonc.htm', 'Bonchidai Csarda', '+36 20 5 841 758', 30, 24, NULL, 0, '2014-10-18 20:35:39'),
+(3, 'bajiandi@freemail.hu', 'http://www.borostyanbacchus.hu', 'Bacchus Restaurant', '+36 20 494 8850', 30, 25, NULL, 0, '2014-10-18 20:42:23'),
+(4, 'info@toldifagado.hu', 'http://www.toldifogado.hu/', 'Toldi Fogadó Restaur', '+36 47 369 029', 30, 18, NULL, 0, '2014-10-18 20:42:23'),
+(5, 'info@sarga-borhaz.hu', 'http://www.sarga-borhaz.hu/', 'Sárga Borház Vendégl', '+36 47 369 029', 30, 26, NULL, 0, '2014-10-18 20:43:54');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tStrains`
+--
+
+CREATE TABLE IF NOT EXISTS `tStrains` (
+`IdStrain` int(11) NOT NULL,
+  `NAME` varchar(30) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tStrains`
+--
+
+INSERT INTO `tStrains` (`IdStrain`, `NAME`) VALUES
+(1, 'Furmint'),
+(2, 'Hárslevelű'),
+(3, 'Sárga Muskotály'),
+(4, 'Zéta'),
+(5, 'Kabar'),
+(6, 'Kövérszőlő');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tUserFavouriteHotels`
+--
+
+CREATE TABLE IF NOT EXISTS `tUserFavouriteHotels` (
+  `IdUser_` int(11) NOT NULL,
+  `IdHotel_` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tUserFavouriteNews`
+--
+
+CREATE TABLE IF NOT EXISTS `tUserFavouriteNews` (
+  `IdUser_` int(11) NOT NULL,
+  `IdNews_` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tUserFavouriteOddities`
+--
+
+CREATE TABLE IF NOT EXISTS `tUserFavouriteOddities` (
+  `IdUser_` int(11) NOT NULL,
+  `IdOddity_` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tUserFavouriteProducers`
+--
+
+CREATE TABLE IF NOT EXISTS `tUserFavouriteProducers` (
+  `IdUser_` int(11) NOT NULL,
+  `IdProducer_` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tUserFavouriteRestaurants`
+--
+
+CREATE TABLE IF NOT EXISTS `tUserFavouriteRestaurants` (
+  `IdUser_` int(11) NOT NULL,
+  `IdRestaurant_` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tUserFavouriteUsers`
+--
+
+CREATE TABLE IF NOT EXISTS `tUserFavouriteUsers` (
+  `IdUser_` int(11) NOT NULL,
+  `IdUserFav_` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tUserFavouriteWines`
+--
+
+CREATE TABLE IF NOT EXISTS `tUserFavouriteWines` (
+  `IdUser_` int(11) NOT NULL,
+  `IdWine_` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tUsers`
+--
+
+CREATE TABLE IF NOT EXISTS `tUsers` (
+`IdUser` int(11) NOT NULL,
+  `Email` varchar(50) NOT NULL,
+  `NickName` varchar(20) NOT NULL,
+  `FirstName` varchar(20) NOT NULL,
+  `LastName` varchar(30) NOT NULL,
+  `Phone` varchar(20) DEFAULT NULL,
+  `Age` int(3) DEFAULT NULL,
+  `Password` varchar(50) NOT NULL,
+  `IdAccountType_` int(11) NOT NULL,
+  `IdAddress_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tWineImages`
+--
+
+CREATE TABLE IF NOT EXISTS `tWineImages` (
+`IdWineImage` int(11) NOT NULL,
+  `IdWine_` int(11) NOT NULL,
+  `IdImage_` int(11) NOT NULL,
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tWineImages`
+--
+
+INSERT INTO `tWineImages` (`IdWineImage`, `IdWine_`, `IdImage_`, `LastUpdate`) VALUES
+(1, 1, 43, '2014-10-26 13:05:41'),
+(2, 2, 44, '2014-10-26 13:05:41'),
+(3, 3, 45, '2014-10-26 13:06:08'),
+(4, 4, 41, '2014-10-26 13:06:08'),
+(5, 5, 42, '2014-10-26 13:06:43'),
+(6, 6, 40, '2014-10-26 13:06:43'),
+(7, 7, 46, '2014-10-26 13:06:52');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tWineReviews`
+--
+
+CREATE TABLE IF NOT EXISTS `tWineReviews` (
+`IdWineReview` int(11) NOT NULL,
+  `IdWine_` int(11) NOT NULL,
+  `Mark` double DEFAULT NULL,
+  `IdDescription_` int(11) NOT NULL,
+  `IdUser_` int(11) NOT NULL,
+  `EntryDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tWines`
+--
+
+CREATE TABLE IF NOT EXISTS `tWines` (
+`IdWine` int(11) NOT NULL,
+  `Name` varchar(40) NOT NULL,
+  `ProdDate` int(4) NOT NULL,
+  `Price` double(8,2) DEFAULT '0.00',
+  `Volume` int(11) DEFAULT '0' COMMENT 'Volume of the bottle in cl. i.e.: 50 as for 50cl = 500ml',
+  `AvailablePL` tinyint(1) NOT NULL DEFAULT '0',
+  `Label` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Representative for the producer. 1 for yes 0 for no',
+  `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `IdColor_` int(11) NOT NULL,
+  `IdFlavour_` int(11) NOT NULL,
+  `IdProducer_` int(11) NOT NULL,
+  `IdDescription_` int(11) NOT NULL,
+  `IdGrade_` int(11) DEFAULT NULL,
+  `IdImageCover_` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tWines`
+--
+
+INSERT INTO `tWines` (`IdWine`, `Name`, `ProdDate`, `Price`, `Volume`, `AvailablePL`, `Label`, `LastUpdate`, `IdColor_`, `IdFlavour_`, `IdProducer_`, `IdDescription_`, `IdGrade_`, `IdImageCover_`) VALUES
+(1, 'Barta Furmint', 2011, NULL, 75, 0, 1, '2014-10-25 13:22:55', 2, 1, 1, 37, NULL, 36),
+(2, 'Barta Egy Kis Édes Furmint', 2011, NULL, 75, 0, 0, '2014-10-25 13:30:30', 2, 4, 1, 38, NULL, 37),
+(3, 'Barta Birtokédes', 2011, NULL, 75, 0, 0, '2014-10-25 13:30:30', 2, 4, 1, 39, NULL, 38),
+(4, 'Barta Késői Furmint - Muskotály', 2011, NULL, 75, 0, 0, '2014-10-25 13:34:11', 2, 4, 1, 40, 2, 34),
+(5, 'Barta Késői Furmint', 2010, NULL, 50, 0, 0, '2014-10-26 11:41:54', 2, 4, 1, 41, 2, 35),
+(6, 'Barta Szamorodni', 2008, NULL, 50, 0, 0, '2014-10-26 11:41:54', 2, 4, 1, 42, 1, 33),
+(7, 'Barta Aszú', 2008, NULL, 50, 0, 0, '2014-10-26 11:48:02', 2, 4, 1, 43, 3, 39);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `tWineStrains`
+--
+
+CREATE TABLE IF NOT EXISTS `tWineStrains` (
+`IdWineStrain` int(11) NOT NULL,
+  `Content` int(11) NOT NULL DEFAULT '0' COMMENT 'Percents in INT. i.e.: 20 as for 20%',
+  `IdStrain_` int(11) NOT NULL,
+  `IdWine_` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `tWineStrains`
+--
+
+INSERT INTO `tWineStrains` (`IdWineStrain`, `Content`, `IdStrain_`, `IdWine_`) VALUES
+(1, 100, 1, 1),
+(2, 85, 1, 3),
+(3, 5, 6, 3),
+(4, 5, 3, 3),
+(5, 5, 2, 3),
+(6, 60, 3, 4),
+(7, 40, 1, 4),
+(8, 100, 1, 2),
+(9, 100, 1, 5);
+
+--
+-- Indeksy dla zrzutów tabel
+--
+
+--
+-- Indexes for table `tAccountTypes`
+--
+ALTER TABLE `tAccountTypes`
+ ADD PRIMARY KEY (`IdAccountType`);
+
+--
+-- Indexes for table `tAddresses`
+--
+ALTER TABLE `tAddresses`
+ ADD PRIMARY KEY (`IdAddress`);
+
+--
+-- Indexes for table `tColors`
+--
+ALTER TABLE `tColors`
+ ADD PRIMARY KEY (`IdColor`);
+
+--
+-- Indexes for table `tCurrencies`
+--
+ALTER TABLE `tCurrencies`
+ ADD PRIMARY KEY (`IdCurrency`);
+
+--
+-- Indexes for table `tDescriptions`
+--
+ALTER TABLE `tDescriptions`
+ ADD PRIMARY KEY (`IdDescription`,`IdLang_`,`Version`), ADD KEY `IdDescription` (`IdDescription`,`Version`), ADD KEY `IdUser_` (`IdUser_`), ADD KEY `IdLang_` (`IdLang_`);
+
+--
+-- Indexes for table `tFlavours`
+--
+ALTER TABLE `tFlavours`
+ ADD PRIMARY KEY (`IdFlavour`);
+
+--
+-- Indexes for table `tGrades`
+--
+ALTER TABLE `tGrades`
+ ADD PRIMARY KEY (`IdGrade`);
+
+--
+-- Indexes for table `tHotelImages`
+--
+ALTER TABLE `tHotelImages`
+ ADD PRIMARY KEY (`IdHotelImage`), ADD KEY `IdHotel_` (`IdHotel_`), ADD KEY `IdImage_` (`IdImage_`);
+
+--
+-- Indexes for table `tHotelReviews`
+--
+ALTER TABLE `tHotelReviews`
+ ADD PRIMARY KEY (`IdHotelReview`), ADD KEY `IdDescription_` (`IdDescription_`), ADD KEY `IdUser_` (`IdUser_`), ADD KEY `IdHotel_` (`IdHotel_`);
+
+--
+-- Indexes for table `tHotels`
+--
+ALTER TABLE `tHotels`
+ ADD PRIMARY KEY (`IdHotel`), ADD KEY `IdDescription_` (`IdDescription_`), ADD KEY `IdAddress_` (`IdAddress_`), ADD KEY `IdUser_` (`IdUser_`), ADD KEY `IdImageCover_` (`IdImageCover_`);
+
+--
+-- Indexes for table `tImages`
+--
+ALTER TABLE `tImages`
+ ADD PRIMARY KEY (`IdImage`), ADD KEY `IdUser_` (`IdUser_`);
+
+--
+-- Indexes for table `tLangs`
+--
+ALTER TABLE `tLangs`
+ ADD PRIMARY KEY (`IdLang`);
+
+--
+-- Indexes for table `tLookoutImages`
+--
+ALTER TABLE `tLookoutImages`
+ ADD PRIMARY KEY (`IdLookoutImage`), ADD KEY `IdLookout_` (`IdLookout_`), ADD KEY `IdImage_` (`IdImage_`);
+
+--
+-- Indexes for table `tLookouts`
+--
+ALTER TABLE `tLookouts`
+ ADD PRIMARY KEY (`IdLookout`), ADD KEY `IdDescription_` (`IdDescription_`), ADD KEY `IdAddress_` (`IdAddress_`), ADD KEY `IdImageCover_` (`IdImageCover_`);
+
+--
+-- Indexes for table `tMonumentImages`
+--
+ALTER TABLE `tMonumentImages`
+ ADD PRIMARY KEY (`IdMomunemtImage`), ADD KEY `IdMonument_` (`IdMonument_`), ADD KEY `IdImage_` (`IdImage_`);
+
+--
+-- Indexes for table `tMonuments`
+--
+ALTER TABLE `tMonuments`
+ ADD PRIMARY KEY (`IdMonument`), ADD KEY `IdDescription_` (`IdDescription_`), ADD KEY `IdAddress_` (`IdAddress_`), ADD KEY `IdImageCover_` (`IdImageCover_`);
+
+--
+-- Indexes for table `tNews`
+--
+ALTER TABLE `tNews`
+ ADD PRIMARY KEY (`IdNews`), ADD KEY `IdDescription_` (`IdDescription_`), ADD KEY `IdAddress_` (`IdAddress_`), ADD KEY `IdImageCover_` (`IdImageCover_`);
+
+--
+-- Indexes for table `tNewsImages`
+--
+ALTER TABLE `tNewsImages`
+ ADD PRIMARY KEY (`IdNewsImage`), ADD KEY `IdNews_` (`IdNews_`), ADD KEY `IdImage_` (`IdImage_`);
+
+--
+-- Indexes for table `tNotifications`
+--
+ALTER TABLE `tNotifications`
+ ADD PRIMARY KEY (`IdNotification`), ADD KEY `IdNotificationType_` (`IdNotificationType_`);
+
+--
+-- Indexes for table `tNotificationTypes`
+--
+ALTER TABLE `tNotificationTypes`
+ ADD PRIMARY KEY (`IdNotificationType`);
+
+--
+-- Indexes for table `tOddities`
+--
+ALTER TABLE `tOddities`
+ ADD PRIMARY KEY (`IdOddity`), ADD KEY `IdOddityType_` (`IdOddityType_`), ADD KEY `IdDescription_` (`IdDescription_`), ADD KEY `IdAddress_` (`IdAddress_`), ADD KEY `IdImageCover_` (`IdImageCover_`);
+
+--
+-- Indexes for table `tOddityImages`
+--
+ALTER TABLE `tOddityImages`
+ ADD PRIMARY KEY (`IdOddityImage`), ADD KEY `IdOddity_` (`IdOddity_`), ADD KEY `IdImage_` (`IdImage_`);
+
+--
+-- Indexes for table `tOddityTypes`
+--
+ALTER TABLE `tOddityTypes`
+ ADD PRIMARY KEY (`IdOddityType`);
+
+--
+-- Indexes for table `tOpenningHours`
+--
+ALTER TABLE `tOpenningHours`
+ ADD PRIMARY KEY (`OrderNumber`,`IdProducer_`), ADD KEY `IdProducer_` (`IdProducer_`);
+
+--
+-- Indexes for table `tParticipants`
+--
+ALTER TABLE `tParticipants`
+ ADD PRIMARY KEY (`IdParticipant`), ADD KEY `IdNews_` (`IdNews_`), ADD KEY `IdProducer_` (`IdProducer_`);
+
+--
+-- Indexes for table `tPlaces`
+--
+ALTER TABLE `tPlaces`
+ ADD PRIMARY KEY (`IdPlace`);
+
+--
+-- Indexes for table `tProducerImages`
+--
+ALTER TABLE `tProducerImages`
+ ADD PRIMARY KEY (`IdProducerImage`), ADD KEY `IdProducer_` (`IdProducer_`), ADD KEY `IdImage_` (`IdImage_`);
+
+--
+-- Indexes for table `tProducerReviews`
+--
+ALTER TABLE `tProducerReviews`
+ ADD PRIMARY KEY (`IdProducerReview`), ADD KEY `IdDescription_` (`IdDescription_`), ADD KEY `IdUser_` (`IdUser_`), ADD KEY `IdProducer_` (`IdProducer_`);
+
+--
+-- Indexes for table `tProducers`
+--
+ALTER TABLE `tProducers`
+ ADD PRIMARY KEY (`IdProducer`), ADD KEY `IdDescription_` (`IdDescription_`), ADD KEY `IdAddress_` (`IdAddress_`), ADD KEY `IdUser_` (`IdUser_`), ADD KEY `IdImageCover_` (`IdImageCover_`);
+
+--
+-- Indexes for table `tRestaurantImages`
+--
+ALTER TABLE `tRestaurantImages`
+ ADD PRIMARY KEY (`IdRestaurantImage`), ADD KEY `IdRestaurant_` (`IdRestaurant_`), ADD KEY `IdImage_` (`IdImage_`);
+
+--
+-- Indexes for table `tRestaurantReviews`
+--
+ALTER TABLE `tRestaurantReviews`
+ ADD PRIMARY KEY (`IdRestaurantReview`), ADD KEY `IdDescription_` (`IdDescription_`), ADD KEY `IdUser_` (`IdUser_`), ADD KEY `IdRestaurant_` (`IdRestaurant_`);
+
+--
+-- Indexes for table `tRestaurants`
+--
+ALTER TABLE `tRestaurants`
+ ADD PRIMARY KEY (`IdRestaurant`), ADD KEY `IdDescription_` (`IdDescription_`), ADD KEY `IdAddress_` (`IdAddress_`), ADD KEY `IdUser_` (`IdUser_`), ADD KEY `IdImageCover_` (`IdImageCover_`);
+
+--
+-- Indexes for table `tStrains`
+--
+ALTER TABLE `tStrains`
+ ADD PRIMARY KEY (`IdStrain`);
+
+--
+-- Indexes for table `tUserFavouriteHotels`
+--
+ALTER TABLE `tUserFavouriteHotels`
+ ADD PRIMARY KEY (`IdUser_`,`IdHotel_`), ADD KEY `IdHotel_` (`IdHotel_`);
+
+--
+-- Indexes for table `tUserFavouriteNews`
+--
+ALTER TABLE `tUserFavouriteNews`
+ ADD PRIMARY KEY (`IdUser_`,`IdNews_`), ADD KEY `IdNews_` (`IdNews_`);
+
+--
+-- Indexes for table `tUserFavouriteOddities`
+--
+ALTER TABLE `tUserFavouriteOddities`
+ ADD PRIMARY KEY (`IdUser_`,`IdOddity_`), ADD KEY `IdOddity_` (`IdOddity_`);
+
+--
+-- Indexes for table `tUserFavouriteProducers`
+--
+ALTER TABLE `tUserFavouriteProducers`
+ ADD PRIMARY KEY (`IdUser_`,`IdProducer_`), ADD KEY `IdProducer_` (`IdProducer_`);
+
+--
+-- Indexes for table `tUserFavouriteRestaurants`
+--
+ALTER TABLE `tUserFavouriteRestaurants`
+ ADD PRIMARY KEY (`IdUser_`,`IdRestaurant_`), ADD KEY `IdRestaurant_` (`IdRestaurant_`);
+
+--
+-- Indexes for table `tUserFavouriteUsers`
+--
+ALTER TABLE `tUserFavouriteUsers`
+ ADD PRIMARY KEY (`IdUser_`,`IdUserFav_`), ADD KEY `IdUserFav_` (`IdUserFav_`);
+
+--
+-- Indexes for table `tUserFavouriteWines`
+--
+ALTER TABLE `tUserFavouriteWines`
+ ADD PRIMARY KEY (`IdUser_`,`IdWine_`), ADD KEY `IdWine_` (`IdWine_`);
+
+--
+-- Indexes for table `tUsers`
+--
+ALTER TABLE `tUsers`
+ ADD PRIMARY KEY (`IdUser`), ADD KEY `IdAccountType_` (`IdAccountType_`), ADD KEY `IdAddress_` (`IdAddress_`);
+
+--
+-- Indexes for table `tWineImages`
+--
+ALTER TABLE `tWineImages`
+ ADD PRIMARY KEY (`IdWineImage`), ADD KEY `IdWine_` (`IdWine_`), ADD KEY `IdImage_` (`IdImage_`);
+
+--
+-- Indexes for table `tWineReviews`
+--
+ALTER TABLE `tWineReviews`
+ ADD PRIMARY KEY (`IdWineReview`), ADD KEY `IdDescription_` (`IdDescription_`), ADD KEY `IdWine_` (`IdWine_`), ADD KEY `IdUser_` (`IdUser_`);
+
+--
+-- Indexes for table `tWines`
+--
+ALTER TABLE `tWines`
+ ADD PRIMARY KEY (`IdWine`), ADD KEY `IdColor_` (`IdColor_`), ADD KEY `IdFlavour_` (`IdFlavour_`), ADD KEY `IdProducer_` (`IdProducer_`), ADD KEY `IdDescription_` (`IdDescription_`), ADD KEY `IdGrade_` (`IdGrade_`), ADD KEY `IdImageCover_` (`IdImageCover_`);
+
+--
+-- Indexes for table `tWineStrains`
+--
+ALTER TABLE `tWineStrains`
+ ADD PRIMARY KEY (`IdWineStrain`), ADD KEY `IdStrain_` (`IdStrain_`), ADD KEY `IdWine_` (`IdWine_`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT dla tabeli `tAccountTypes`
+--
+ALTER TABLE `tAccountTypes`
+MODIFY `IdAccountType` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tAddresses`
+--
+ALTER TABLE `tAddresses`
+MODIFY `IdAddress` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
+--
+-- AUTO_INCREMENT dla tabeli `tColors`
+--
+ALTER TABLE `tColors`
+MODIFY `IdColor` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT dla tabeli `tCurrencies`
+--
+ALTER TABLE `tCurrencies`
+MODIFY `IdCurrency` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tDescriptions`
+--
+ALTER TABLE `tDescriptions`
+MODIFY `IdDescription` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
+--
+-- AUTO_INCREMENT dla tabeli `tFlavours`
+--
+ALTER TABLE `tFlavours`
+MODIFY `IdFlavour` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT dla tabeli `tGrades`
+--
+ALTER TABLE `tGrades`
+MODIFY `IdGrade` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT dla tabeli `tHotelImages`
+--
+ALTER TABLE `tHotelImages`
+MODIFY `IdHotelImage` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tHotelReviews`
+--
+ALTER TABLE `tHotelReviews`
+MODIFY `IdHotelReview` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tHotels`
+--
+ALTER TABLE `tHotels`
+MODIFY `IdHotel` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT dla tabeli `tImages`
+--
+ALTER TABLE `tImages`
+MODIFY `IdImage` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=47;
+--
+-- AUTO_INCREMENT dla tabeli `tLangs`
+--
+ALTER TABLE `tLangs`
+MODIFY `IdLang` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT dla tabeli `tLookoutImages`
+--
+ALTER TABLE `tLookoutImages`
+MODIFY `IdLookoutImage` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tLookouts`
+--
+ALTER TABLE `tLookouts`
+MODIFY `IdLookout` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tMonumentImages`
+--
+ALTER TABLE `tMonumentImages`
+MODIFY `IdMomunemtImage` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tMonuments`
+--
+ALTER TABLE `tMonuments`
+MODIFY `IdMonument` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tNews`
+--
+ALTER TABLE `tNews`
+MODIFY `IdNews` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+--
+-- AUTO_INCREMENT dla tabeli `tNewsImages`
+--
+ALTER TABLE `tNewsImages`
+MODIFY `IdNewsImage` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
+--
+-- AUTO_INCREMENT dla tabeli `tNotifications`
+--
+ALTER TABLE `tNotifications`
+MODIFY `IdNotification` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tNotificationTypes`
+--
+ALTER TABLE `tNotificationTypes`
+MODIFY `IdNotificationType` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tOddities`
+--
+ALTER TABLE `tOddities`
+MODIFY `IdOddity` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tOddityImages`
+--
+ALTER TABLE `tOddityImages`
+MODIFY `IdOddityImage` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tOddityTypes`
+--
+ALTER TABLE `tOddityTypes`
+MODIFY `IdOddityType` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tOpenningHours`
+--
+ALTER TABLE `tOpenningHours`
+MODIFY `OrderNumber` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tParticipants`
+--
+ALTER TABLE `tParticipants`
+MODIFY `IdParticipant` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tPlaces`
+--
+ALTER TABLE `tPlaces`
+MODIFY `IdPlace` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=27;
+--
+-- AUTO_INCREMENT dla tabeli `tProducerImages`
+--
+ALTER TABLE `tProducerImages`
+MODIFY `IdProducerImage` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tProducerReviews`
+--
+ALTER TABLE `tProducerReviews`
+MODIFY `IdProducerReview` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tProducers`
+--
+ALTER TABLE `tProducers`
+MODIFY `IdProducer` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
+--
+-- AUTO_INCREMENT dla tabeli `tRestaurantImages`
+--
+ALTER TABLE `tRestaurantImages`
+MODIFY `IdRestaurantImage` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tRestaurants`
+--
+ALTER TABLE `tRestaurants`
+MODIFY `IdRestaurant` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT dla tabeli `tStrains`
+--
+ALTER TABLE `tStrains`
+MODIFY `IdStrain` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT dla tabeli `tUsers`
+--
+ALTER TABLE `tUsers`
+MODIFY `IdUser` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tWineImages`
+--
+ALTER TABLE `tWineImages`
+MODIFY `IdWineImage` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT dla tabeli `tWineReviews`
+--
+ALTER TABLE `tWineReviews`
+MODIFY `IdWineReview` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT dla tabeli `tWines`
+--
+ALTER TABLE `tWines`
+MODIFY `IdWine` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT dla tabeli `tWineStrains`
+--
+ALTER TABLE `tWineStrains`
+MODIFY `IdWineStrain` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+--
+-- Ograniczenia dla zrzutów tabel
+--
+
+--
+-- Ograniczenia dla tabeli `tDescriptions`
+--
+ALTER TABLE `tDescriptions`
+ADD CONSTRAINT `tDescriptions_ibfk_1` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`),
+ADD CONSTRAINT `tDescriptions_ibfk_2` FOREIGN KEY (`IdLang_`) REFERENCES `tLangs` (`IdLang`);
+
+--
+-- Ograniczenia dla tabeli `tHotelImages`
+--
+ALTER TABLE `tHotelImages`
+ADD CONSTRAINT `tHotelImages_ibfk_1` FOREIGN KEY (`IdHotel_`) REFERENCES `tHotels` (`IdHotel`),
+ADD CONSTRAINT `tHotelImages_ibfk_2` FOREIGN KEY (`IdImage_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tHotelReviews`
+--
+ALTER TABLE `tHotelReviews`
+ADD CONSTRAINT `tHotelReviews_ibfk_1` FOREIGN KEY (`IdDescription_`) REFERENCES `tDescriptions` (`IdDescription`),
+ADD CONSTRAINT `tHotelReviews_ibfk_2` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`),
+ADD CONSTRAINT `tHotelReviews_ibfk_3` FOREIGN KEY (`IdHotel_`) REFERENCES `tHotels` (`IdHotel`);
+
+--
+-- Ograniczenia dla tabeli `tHotels`
+--
+ALTER TABLE `tHotels`
+ADD CONSTRAINT `tHotels_ibfk_1` FOREIGN KEY (`IdDescription_`) REFERENCES `tDescriptions` (`IdDescription`),
+ADD CONSTRAINT `tHotels_ibfk_2` FOREIGN KEY (`IdAddress_`) REFERENCES `tAddresses` (`IdAddress`),
+ADD CONSTRAINT `tHotels_ibfk_3` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`),
+ADD CONSTRAINT `tHotels_ibfk_4` FOREIGN KEY (`IdImageCover_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tImages`
+--
+ALTER TABLE `tImages`
+ADD CONSTRAINT `tImages_ibfk_1` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`);
+
+--
+-- Ograniczenia dla tabeli `tLookoutImages`
+--
+ALTER TABLE `tLookoutImages`
+ADD CONSTRAINT `tLookoutImages_ibfk_1` FOREIGN KEY (`IdLookout_`) REFERENCES `tLookouts` (`IdLookout`),
+ADD CONSTRAINT `tLookoutImages_ibfk_2` FOREIGN KEY (`IdImage_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tLookouts`
+--
+ALTER TABLE `tLookouts`
+ADD CONSTRAINT `tLookouts_ibfk_1` FOREIGN KEY (`IdDescription_`) REFERENCES `tDescriptions` (`IdDescription`),
+ADD CONSTRAINT `tLookouts_ibfk_2` FOREIGN KEY (`IdAddress_`) REFERENCES `tAddresses` (`IdAddress`),
+ADD CONSTRAINT `tLookouts_ibfk_3` FOREIGN KEY (`IdImageCover_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tMonumentImages`
+--
+ALTER TABLE `tMonumentImages`
+ADD CONSTRAINT `tMonumentImages_ibfk_1` FOREIGN KEY (`IdMonument_`) REFERENCES `tMonuments` (`IdMonument`),
+ADD CONSTRAINT `tMonumentImages_ibfk_2` FOREIGN KEY (`IdImage_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tMonuments`
+--
+ALTER TABLE `tMonuments`
+ADD CONSTRAINT `tMonuments_ibfk_1` FOREIGN KEY (`IdDescription_`) REFERENCES `tDescriptions` (`IdDescription`),
+ADD CONSTRAINT `tMonuments_ibfk_2` FOREIGN KEY (`IdAddress_`) REFERENCES `tAddresses` (`IdAddress`),
+ADD CONSTRAINT `tMonuments_ibfk_3` FOREIGN KEY (`IdImageCover_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tNews`
+--
+ALTER TABLE `tNews`
+ADD CONSTRAINT `tNews_ibfk_1` FOREIGN KEY (`IdDescription_`) REFERENCES `tDescriptions` (`IdDescription`),
+ADD CONSTRAINT `tNews_ibfk_2` FOREIGN KEY (`IdAddress_`) REFERENCES `tAddresses` (`IdAddress`),
+ADD CONSTRAINT `tNews_ibfk_3` FOREIGN KEY (`IdImageCover_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tNewsImages`
+--
+ALTER TABLE `tNewsImages`
+ADD CONSTRAINT `tNewsImages_ibfk_1` FOREIGN KEY (`IdNews_`) REFERENCES `tNews` (`IdNews`),
+ADD CONSTRAINT `tNewsImages_ibfk_2` FOREIGN KEY (`IdImage_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tNotifications`
+--
+ALTER TABLE `tNotifications`
+ADD CONSTRAINT `tNotifications_ibfk_1` FOREIGN KEY (`IdNotificationType_`) REFERENCES `tNotificationTypes` (`IdNotificationType`);
+
+--
+-- Ograniczenia dla tabeli `tOddities`
+--
+ALTER TABLE `tOddities`
+ADD CONSTRAINT `tOddities_ibfk_1` FOREIGN KEY (`IdOddityType_`) REFERENCES `tOddityTypes` (`IdOddityType`),
+ADD CONSTRAINT `tOddities_ibfk_2` FOREIGN KEY (`IdDescription_`) REFERENCES `tDescriptions` (`IdDescription`),
+ADD CONSTRAINT `tOddities_ibfk_3` FOREIGN KEY (`IdAddress_`) REFERENCES `tAddresses` (`IdAddress`),
+ADD CONSTRAINT `tOddities_ibfk_4` FOREIGN KEY (`IdImageCover_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tOddityImages`
+--
+ALTER TABLE `tOddityImages`
+ADD CONSTRAINT `tOddityImages_ibfk_1` FOREIGN KEY (`IdOddity_`) REFERENCES `tOddities` (`IdOddity`),
+ADD CONSTRAINT `tOddityImages_ibfk_2` FOREIGN KEY (`IdImage_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tOpenningHours`
+--
+ALTER TABLE `tOpenningHours`
+ADD CONSTRAINT `tOpenningHours_ibfk_1` FOREIGN KEY (`IdProducer_`) REFERENCES `tProducers` (`IdProducer`);
+
+--
+-- Ograniczenia dla tabeli `tParticipants`
+--
+ALTER TABLE `tParticipants`
+ADD CONSTRAINT `tParticipants_ibfk_1` FOREIGN KEY (`IdNews_`) REFERENCES `tNews` (`IdNews`),
+ADD CONSTRAINT `tParticipants_ibfk_2` FOREIGN KEY (`IdProducer_`) REFERENCES `tProducers` (`IdProducer`);
+
+--
+-- Ograniczenia dla tabeli `tProducerImages`
+--
+ALTER TABLE `tProducerImages`
+ADD CONSTRAINT `tProducerImages_ibfk_1` FOREIGN KEY (`IdProducer_`) REFERENCES `tProducers` (`IdProducer`),
+ADD CONSTRAINT `tProducerImages_ibfk_2` FOREIGN KEY (`IdImage_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tProducerReviews`
+--
+ALTER TABLE `tProducerReviews`
+ADD CONSTRAINT `tProducerReviews_ibfk_1` FOREIGN KEY (`IdDescription_`) REFERENCES `tDescriptions` (`IdDescription`),
+ADD CONSTRAINT `tProducerReviews_ibfk_2` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`),
+ADD CONSTRAINT `tProducerReviews_ibfk_3` FOREIGN KEY (`IdProducer_`) REFERENCES `tProducers` (`IdProducer`);
+
+--
+-- Ograniczenia dla tabeli `tProducers`
+--
+ALTER TABLE `tProducers`
+ADD CONSTRAINT `tProducers_ibfk_1` FOREIGN KEY (`IdDescription_`) REFERENCES `tDescriptions` (`IdDescription`),
+ADD CONSTRAINT `tProducers_ibfk_2` FOREIGN KEY (`IdAddress_`) REFERENCES `tAddresses` (`IdAddress`),
+ADD CONSTRAINT `tProducers_ibfk_3` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`),
+ADD CONSTRAINT `tProducers_ibfk_4` FOREIGN KEY (`IdImageCover_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tRestaurantImages`
+--
+ALTER TABLE `tRestaurantImages`
+ADD CONSTRAINT `tRestaurantImages_ibfk_1` FOREIGN KEY (`IdRestaurant_`) REFERENCES `tRestaurants` (`IdRestaurant`),
+ADD CONSTRAINT `tRestaurantImages_ibfk_2` FOREIGN KEY (`IdImage_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tRestaurantReviews`
+--
+ALTER TABLE `tRestaurantReviews`
+ADD CONSTRAINT `tRestaurantReviews_ibfk_1` FOREIGN KEY (`IdDescription_`) REFERENCES `tDescriptions` (`IdDescription`),
+ADD CONSTRAINT `tRestaurantReviews_ibfk_2` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`),
+ADD CONSTRAINT `tRestaurantReviews_ibfk_3` FOREIGN KEY (`IdRestaurant_`) REFERENCES `tRestaurants` (`IdRestaurant`);
+
+--
+-- Ograniczenia dla tabeli `tRestaurants`
+--
+ALTER TABLE `tRestaurants`
+ADD CONSTRAINT `tRestaurants_ibfk_1` FOREIGN KEY (`IdDescription_`) REFERENCES `tDescriptions` (`IdDescription`),
+ADD CONSTRAINT `tRestaurants_ibfk_2` FOREIGN KEY (`IdAddress_`) REFERENCES `tAddresses` (`IdAddress`),
+ADD CONSTRAINT `tRestaurants_ibfk_3` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`),
+ADD CONSTRAINT `tRestaurants_ibfk_4` FOREIGN KEY (`IdImageCover_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tUserFavouriteHotels`
+--
+ALTER TABLE `tUserFavouriteHotels`
+ADD CONSTRAINT `tUserFavouriteHotels_ibfk_1` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`),
+ADD CONSTRAINT `tUserFavouriteHotels_ibfk_2` FOREIGN KEY (`IdHotel_`) REFERENCES `tHotels` (`IdHotel`);
+
+--
+-- Ograniczenia dla tabeli `tUserFavouriteNews`
+--
+ALTER TABLE `tUserFavouriteNews`
+ADD CONSTRAINT `tUserFavouriteNews_ibfk_1` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`),
+ADD CONSTRAINT `tUserFavouriteNews_ibfk_2` FOREIGN KEY (`IdNews_`) REFERENCES `tNews` (`IdNews`);
+
+--
+-- Ograniczenia dla tabeli `tUserFavouriteOddities`
+--
+ALTER TABLE `tUserFavouriteOddities`
+ADD CONSTRAINT `tUserFavouriteOddities_ibfk_1` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`),
+ADD CONSTRAINT `tUserFavouriteOddities_ibfk_2` FOREIGN KEY (`IdOddity_`) REFERENCES `tOddities` (`IdOddity`);
+
+--
+-- Ograniczenia dla tabeli `tUserFavouriteProducers`
+--
+ALTER TABLE `tUserFavouriteProducers`
+ADD CONSTRAINT `tUserFavouriteProducers_ibfk_1` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`),
+ADD CONSTRAINT `tUserFavouriteProducers_ibfk_2` FOREIGN KEY (`IdProducer_`) REFERENCES `tProducers` (`IdProducer`);
+
+--
+-- Ograniczenia dla tabeli `tUserFavouriteRestaurants`
+--
+ALTER TABLE `tUserFavouriteRestaurants`
+ADD CONSTRAINT `tUserFavouriteRestaurants_ibfk_1` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`),
+ADD CONSTRAINT `tUserFavouriteRestaurants_ibfk_2` FOREIGN KEY (`IdRestaurant_`) REFERENCES `tRestaurants` (`IdRestaurant`);
+
+--
+-- Ograniczenia dla tabeli `tUserFavouriteUsers`
+--
+ALTER TABLE `tUserFavouriteUsers`
+ADD CONSTRAINT `tUserFavouriteUsers_ibfk_1` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`),
+ADD CONSTRAINT `tUserFavouriteUsers_ibfk_2` FOREIGN KEY (`IdUserFav_`) REFERENCES `tUsers` (`IdUser`);
+
+--
+-- Ograniczenia dla tabeli `tUserFavouriteWines`
+--
+ALTER TABLE `tUserFavouriteWines`
+ADD CONSTRAINT `tUserFavouriteWines_ibfk_1` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`),
+ADD CONSTRAINT `tUserFavouriteWines_ibfk_2` FOREIGN KEY (`IdWine_`) REFERENCES `tWines` (`IdWine`);
+
+--
+-- Ograniczenia dla tabeli `tUsers`
+--
+ALTER TABLE `tUsers`
+ADD CONSTRAINT `tUsers_ibfk_1` FOREIGN KEY (`IdAccountType_`) REFERENCES `tAccountTypes` (`IdAccountType`),
+ADD CONSTRAINT `tUsers_ibfk_2` FOREIGN KEY (`IdAddress_`) REFERENCES `tAddresses` (`IdAddress`);
+
+--
+-- Ograniczenia dla tabeli `tWineImages`
+--
+ALTER TABLE `tWineImages`
+ADD CONSTRAINT `tWineImages_ibfk_1` FOREIGN KEY (`IdWine_`) REFERENCES `tWines` (`IdWine`),
+ADD CONSTRAINT `tWineImages_ibfk_2` FOREIGN KEY (`IdImage_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tWineReviews`
+--
+ALTER TABLE `tWineReviews`
+ADD CONSTRAINT `tWineReviews_ibfk_1` FOREIGN KEY (`IdDescription_`) REFERENCES `tDescriptions` (`IdDescription`),
+ADD CONSTRAINT `tWineReviews_ibfk_2` FOREIGN KEY (`IdWine_`) REFERENCES `tWines` (`IdWine`),
+ADD CONSTRAINT `tWineReviews_ibfk_3` FOREIGN KEY (`IdUser_`) REFERENCES `tUsers` (`IdUser`);
+
+--
+-- Ograniczenia dla tabeli `tWines`
+--
+ALTER TABLE `tWines`
+ADD CONSTRAINT `tWines_ibfk_1` FOREIGN KEY (`IdColor_`) REFERENCES `tColors` (`IdColor`),
+ADD CONSTRAINT `tWines_ibfk_2` FOREIGN KEY (`IdFlavour_`) REFERENCES `tFlavours` (`IdFlavour`),
+ADD CONSTRAINT `tWines_ibfk_3` FOREIGN KEY (`IdProducer_`) REFERENCES `tProducers` (`IdProducer`),
+ADD CONSTRAINT `tWines_ibfk_4` FOREIGN KEY (`IdDescription_`) REFERENCES `tDescriptions` (`IdDescription`),
+ADD CONSTRAINT `tWines_ibfk_5` FOREIGN KEY (`IdGrade_`) REFERENCES `tGrades` (`IdGrade`),
+ADD CONSTRAINT `tWines_ibfk_6` FOREIGN KEY (`IdImageCover_`) REFERENCES `tImages` (`IdImage`);
+
+--
+-- Ograniczenia dla tabeli `tWineStrains`
+--
+ALTER TABLE `tWineStrains`
+ADD CONSTRAINT `tWineStrains_ibfk_1` FOREIGN KEY (`IdStrain_`) REFERENCES `tStrains` (`IdStrain`),
+ADD CONSTRAINT `tWineStrains_ibfk_2` FOREIGN KEY (`IdWine_`) REFERENCES `tWines` (`IdWine`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
