@@ -77,6 +77,7 @@ public class MapFragment extends BaseFragment {
 
     private static String sUrl;
     public static final String TAG_ID_PLACE = "IdPlace";
+    GPSTracker mGPStrack;
 
     public static MapFragment newInstance(Context ctx) {
         MapFragment fragment = new MapFragment(ctx);
@@ -103,7 +104,9 @@ public class MapFragment extends BaseFragment {
         if (debug_position_mode) {
             myPosition = new LatLng(48.1295, 21.4089);
         } else {
-            myPosition = new GPSTracker(mCtx).getLocationLatLng();
+            mGPStrack = new GPSTracker(getActivity());
+            mGPStrack.getLocation();
+            myPosition = mGPStrack.getLocationLatLng();
         }
         mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
         mUiTours = (TextView) v.findViewById(R.id.map_tours);
