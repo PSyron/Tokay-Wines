@@ -13,5 +13,6 @@
     <dimen name="item_menu_height">40dp</dimen>
     <dimen name="details_image_height">225dp</dimen>
     <dimen name="details_image_width">300dp</dimen>
+    <dimen name="details_icon_height">64dp</dimen>
 
 </resources>
