@@ -44,7 +44,9 @@ public class ProducerDetails implements Serializable {
     @SerializedName("name")
     public String mName;
     @SerializedName("phone")
-    public String mPhone;
+    public String mPhone;  
+    @SerializedName("image")
+    public String mImageUrl;
 
     @SerializedName("vast")
     public String mVast;

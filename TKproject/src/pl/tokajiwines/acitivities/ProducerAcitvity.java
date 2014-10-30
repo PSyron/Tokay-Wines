@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.koushikdutta.ion.Ion;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -179,7 +180,7 @@ public class ProducerAcitvity extends BaseActivity {
             if (response != null) {
                 mProducerFromBase = response;
             }
-
+            
             return null;
 
         }
@@ -193,6 +194,10 @@ public class ProducerAcitvity extends BaseActivity {
             if (mProducerFromBase != null) {
                 fillView();
             }
+            
+            Ion.with(mUiImage).placeholder(R.drawable.placeholder_image)
+            .error(R.drawable.error_image).load(mProducerFromBase.mImageUrl);
+
         }
 
     }

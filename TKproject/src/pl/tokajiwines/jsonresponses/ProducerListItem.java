@@ -17,6 +17,8 @@ public class ProducerListItem implements Serializable {
     public String mName;
     @SerializedName("short")
     public String mDescription;
+    @SerializedName("image")
+    public String mImageUrl;
 
     public ProducerListItem(int id, String name, String description) {
         mIdProducer = id;

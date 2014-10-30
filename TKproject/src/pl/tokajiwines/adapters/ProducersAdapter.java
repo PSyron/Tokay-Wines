@@ -1,6 +1,8 @@
 
 package pl.tokajiwines.adapters;
 
+import com.koushikdutta.ion.Ion;
+
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +62,13 @@ public class ProducersAdapter extends BaseAdapter {
         holder.title.setText(mProducers[position].mName);
         holder.img.setImageResource(R.drawable.placeholder_image);
         holder.content.setText(mProducers[position].mDescription);
+
+        Ion.with(holder.img)
+        .placeholder(R.drawable.placeholder_image)
+        .error(R.drawable.error_image)
+        .load(mProducers[position].mImageUrl);
+        
+        System.out.println(mProducers[position].mImageUrl);
         //        rowView.setOnClickListener(new OnClickListener() {
         //            @Override
         //            public void onClick(View v) {
