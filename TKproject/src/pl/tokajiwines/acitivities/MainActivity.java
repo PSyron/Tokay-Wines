@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import pl.tokajiwines.R;
 import pl.tokajiwines.fragments.GuideFragment;
@@ -129,6 +130,9 @@ public class MainActivity extends Activity implements
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            return true;
+        } else if (id == R.id.action_search) {
+            Toast.makeText(MainActivity.this, "Not working yet", Toast.LENGTH_LONG).show();
             return true;
         }
         return super.onOptionsItemSelected(item);

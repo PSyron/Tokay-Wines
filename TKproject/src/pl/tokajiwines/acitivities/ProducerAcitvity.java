@@ -107,6 +107,16 @@ public class ProducerAcitvity extends BaseActivity {
 
             }
         });
+        mUiMoreWines.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText(ProducerAcitvity.this, "Not working yet", Toast.LENGTH_LONG).show();
+
+            }
+
+        });
     }
 
     public void fillView() {
@@ -180,7 +190,7 @@ public class ProducerAcitvity extends BaseActivity {
             if (response != null) {
                 mProducerFromBase = response;
             }
-            
+
             return null;
 
         }
@@ -194,9 +204,9 @@ public class ProducerAcitvity extends BaseActivity {
             if (mProducerFromBase != null) {
                 fillView();
             }
-            
+
             Ion.with(mUiImage).placeholder(R.drawable.placeholder_image)
-            .error(R.drawable.error_image).load(mProducerFromBase.mImageUrl);
+                    .error(R.drawable.error_image).load(mProducerFromBase.mImageUrl);
 
         }
 

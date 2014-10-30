@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import pl.tokajiwines.R;
 
@@ -62,6 +63,10 @@ public class BaseActivity extends Activity {
                 startActivity(intent);
                 return true;
 
+            }
+            case R.id.action_search: {
+                Toast.makeText(BaseActivity.this, "Not working yet", Toast.LENGTH_LONG).show();
+                return true;
             }
 
             default:
