@@ -109,119 +109,125 @@
                 android:src="@drawable/ic_navigation" />
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/activity_producer_neighborhood"
-            android:layout_width="@dimen/item_lists_height"
-            android:layout_height="@dimen/item_lists_height"
-            android:layout_gravity="end|top"
-            android:layout_margin="5dp"
-            android:src="@drawable/ic_menu_maps_pressed" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/activity_news_details_description"
+                style="@style/DetailsHeader.NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description" />
+
+            <ImageView
+                android:id="@+id/activity_producer_neighborhood"
+                android:layout_width="@dimen/item_lists_height"
+                android:layout_height="@dimen/item_lists_height"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_menu_maps_pressed" />
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/activity_news_details_description"
-            style="@style/DetailsHeader.NormalText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            style="@style/DetailsHeader.Bookmark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_wines" />
 
-            <TextView
-                style="@style/DetailsHeader.Bookmark"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/activity_producer_details_wine_image"
+                android:layout_width="@dimen/item_menu_height"
+                android:layout_height="@dimen/item_menu_height"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_launcher" />
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/title_wines" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal" >
-
-                <ImageView
-                    android:id="@+id/activity_producer_details_wine_image"
-                    android:layout_width="@dimen/item_menu_height"
-                    android:layout_height="@dimen/item_menu_height"
-                    android:layout_margin="5dp"
-                    android:src="@drawable/ic_launcher" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="left" >
-
-                    <TextView
-                        android:id="@+id/activity_producer_details_wine_name"
-                        style="@style/DetailsHeader.NormalText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Name" />
-
-                    <TextView
-                        android:id="@+id/activity_producer_details_wine_button"
-                        style="@style/DetailsButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/activity_producer_details_wine_name"
-                        android:layout_centerHorizontal="true"
-                        android:padding="8dp"
-                        android:text="@string/show_more_wines" />
-                </RelativeLayout>
-            </LinearLayout>
-
-            <TextView
-                style="@style/DetailsHeader.Bookmark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/title_events" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal" >
-
-                <ImageView
-                    android:id="@+id/activity_producer_details_event_image"
-                    android:layout_width="@dimen/item_menu_height"
-                    android:layout_height="@dimen/item_menu_height"
-                    android:layout_margin="5dp"
-                    android:src="@drawable/ic_launcher" />
+                android:gravity="left" >
 
                 <TextView
-                    android:id="@+id/activity_producer_details_event_name"
+                    android:id="@+id/activity_producer_details_wine_name"
                     style="@style/DetailsHeader.NormalText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Name" />
-            </LinearLayout>
-
-            <TextView
-                style="@style/DetailsHeader.Bookmark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/users_reviews"
-                android:visibility="gone" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" >
 
                 <TextView
-                    android:id="@+id/activity_producer_details_review"
-                    style="@style/DetailsHeader.NormalText"
+                    android:id="@+id/activity_producer_details_wine_button"
+                    style="@style/DetailsButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Great!" />
-
-                <TextView
-                    android:id="@+id/activity_producer_details_review_user"
-                    style="@style/DetailsHeader.NormalText.Small"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/activity_producer_details_review"
-                    android:gravity="right"
-                    android:paddingLeft="0dp"
-                    android:paddingRight="30dp"
-                    android:text="John Winter" />
+                    android:layout_below="@+id/activity_producer_details_wine_name"
+                    android:layout_centerHorizontal="true"
+                    android:padding="8dp"
+                    android:text="@string/show_more_wines" />
             </RelativeLayout>
-        </TextView>
+        </LinearLayout>
+
+        <TextView
+            style="@style/DetailsHeader.Bookmark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_events" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/activity_producer_details_event_image"
+                android:layout_width="@dimen/item_menu_height"
+                android:layout_height="@dimen/item_menu_height"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_launcher" />
+
+            <TextView
+                android:id="@+id/activity_producer_details_event_name"
+                style="@style/DetailsHeader.NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/DetailsHeader.Bookmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/users_reviews"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/activity_producer_details_review"
+                style="@style/DetailsHeader.NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Great!" />
+
+            <TextView
+                android:id="@+id/activity_producer_details_review_user"
+                style="@style/DetailsHeader.NormalText.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_producer_details_review"
+                android:gravity="right"
+                android:paddingLeft="0dp"
+                android:paddingRight="30dp"
+                android:text="John Winter" />
+        </RelativeLayout>
     </LinearLayout>
 
 </ScrollView>
