@@ -19,7 +19,7 @@
             android:id="@+id/activity_news_details_image"
             android:layout_width="@dimen/details_image_width"
             android:layout_height="@dimen/details_image_height"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
             android:src="@drawable/placeholder_image" />
 
         <RelativeLayout
