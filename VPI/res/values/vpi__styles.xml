@@ -46,69 +46,6 @@
         <item name="android:layout_marginRight">6dp</item>
     </style>
 
-    <style name="ItemGuideText" parent="@android:style/Widget.TextView">
-        <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:gravity">start</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:layout_margin">8dp</item>
-        <item name="android:background">@drawable/divider_item</item>
-    </style>
 
-    <style name="ItemText" parent="@android:style/Widget.TextView">
-        <item name="android:padding">4dp</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:gravity">start</item>
-    </style>
-
-    <style name="ItemTextSmall" parent="@android:style/Widget.TextView">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:paddingLeft">4dp</item>
-        <item name="android:gravity">start</item>
-    </style>
-    
-     <style name="DetailsHeader" parent="@android:style/Widget.TextView">
-        <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_margin">8dp</item>
-    </style>
-
-    <style name="DetailsHeader.BoldText">
-        <item name="android:textSize">12sp</item>
-        <item name="android:gravity">start</item>
-    </style>
-
-    <style name="DetailsHeader.NormalText">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:gravity">start</item>
-    </style>
-
-    <style name="DetailsHeader.NormalText.Small">
-        <item name="android:textSize">10sp</item>
-        <item name="android:layout_margin">1dp</item>
-    </style>
-
-    <style name="DetailsHeader.Bookmark">
-        <item name="android:textColor">@color/vpi_filter_text</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:background">@drawable/divider_filter</item>
-        <item name="android:gravity">start</item>
-        <item name="android:padding">8dp</item>
-    </style>
-
-    <style name="DetailsButton" parent="@android:style/Widget.TextView">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@color/vpi_filter_text</item>
-        <item name="android:padding">2dp</item>
-    </style>
 
 </resources>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/item_map_image"
+        android:layout_width="@dimen/item_lists_height"
+        android:layout_height="@dimen/item_lists_height"
+        android:layout_margin="5dp"
+        android:src="@drawable/ic_launcher" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.70"
+        android:gravity="left"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/item_map_title"
+            style="@style/ItemText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/ItemTextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/address" />
+
+            <TextView
+                android:id="@+id/item_map_address"
+                style="@style/ItemTextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="adress" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/ItemTextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/phone_nb" />
+
+            <TextView
+                android:id="@+id/item_map_phone"
+                style="@style/ItemTextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="adress" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/ItemTextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/distance" />
+
+            <TextView
+                android:id="@+id/item_map_distance"
+                style="@style/ItemTextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="dis" />
+
+            <TextView
+                style="@style/ItemTextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/duration_item" />
+
+            <TextView
+                android:id="@+id/item_map_duration"
+                style="@style/ItemTextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="dur" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/item_map_navigate"
+        android:layout_width="@dimen/details_icon_height"
+        android:layout_height="@dimen/details_icon_height"
+        android:layout_margin="5dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_launcher" />
+
+</LinearLayout>

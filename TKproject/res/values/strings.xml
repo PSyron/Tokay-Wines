@@ -64,9 +64,9 @@
     <string name="wine_available">Available from</string>
     <!-- Producers -->
 
-    <string name="address">Address</string>
-    <string name="opening_hours">Opening hours</string>
-    <string name="phone_nb">Phone number</string>
+    <string name="address">Address:</string>
+    <string name="opening_hours">Opening hours:</string>
+    <string name="phone_nb">Phone number:</string>
     <string name="show_more_wines">Show more wines</string>
     <string name="users_reviews">Reviews</string>
 
@@ -76,6 +76,7 @@
     <string name="here_u_are">Here You are</string>
     <string name="distance">Distance: </string>
     <string name="duration">\nDuration: </string>
+    <string name="duration_item">Duration: </string>
     <string name="range">Range: </string>
     <string name="preffered_tours">Pick from preffered tours!</string>
     <string name="here_u_started">Here You started</string>
