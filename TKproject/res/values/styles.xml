@@ -36,11 +36,10 @@
         <item name="android:padding">8dp</item>
     </style>
 
-    <style name="ItemCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
+     <style name="ItemCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:gravity">end</item>
         <item name="android:button">@null</item>
         <item name="android:drawableRight">?android:attr/listChoiceIndicatorMultiple</item>
     </style>
@@ -85,6 +84,10 @@
     <style name="ItemCustomLayout">
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
+    </style>
+      <style name="ItemSettingsCustomLayout">
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
     </style>
 
     <style name="DetailsHeader" parent="@android:style/Widget.TextView">

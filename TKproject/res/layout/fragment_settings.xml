@@ -100,33 +100,45 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <LinearLayout
+            <RelativeLayout
+                style="@style/ItemSettingsCustomLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/divider_item"
-                android:orientation="vertical" >
+                android:background="@drawable/divider_item" >
+
+                <TextView
+                    style="@style/ItemFilterText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/enable_notifications" />
 
                 <CheckBox
                     android:id="@+id/settings_enable_notofications_cB"
                     style="@style/ItemCheckBox"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/enable_notifications" />
-            </LinearLayout>
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
+                style="@style/ItemSettingsCustomLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/divider_item"
-                android:orientation="vertical" >
+                android:background="@drawable/divider_item" >
+
+                <TextView
+                    style="@style/ItemFilterText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/vibrations_only" />
 
                 <CheckBox
                     android:id="@+id/settings_vibrations_only_cB"
                     style="@style/ItemCheckBox"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/vibrations_only" />
-            </LinearLayout>
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
         </LinearLayout>
 
         <TextView
@@ -141,19 +153,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <LinearLayout
+            <RelativeLayout
+                style="@style/ItemSettingsCustomLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/divider_item"
-                android:orientation="vertical" >
+                android:background="@drawable/divider_item" >
+
+                <TextView
+                    style="@style/ItemFilterText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/mobile_data" />
 
                 <CheckBox
                     android:id="@+id/settings_gps_data"
                     style="@style/ItemCheckBox"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/mobile_data" />
-            </LinearLayout>
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/settings_gps_rL"
