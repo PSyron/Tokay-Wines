@@ -54,7 +54,7 @@
                 android:text="@string/address" />
 
             <TextView
-                android:id="@+id/item_restaurant_adress"
+                android:id="@+id/item_restaurant_address"
                 style="@style/ItemTextSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

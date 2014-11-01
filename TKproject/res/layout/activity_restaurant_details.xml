@@ -77,8 +77,8 @@
                     style="@style/DetailsHeader.NormalText.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="url adress"
-                    android:textColor="@color/vpi_blue" />
+                    android:autoLink="web"
+                    android:text="url adress" />
             </LinearLayout>
 
             <ImageView
@@ -90,36 +90,13 @@
                 android:layout_margin="5dp"
                 android:src="@drawable/vpi_ic_navigation" />
         </RelativeLayout>
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
 
         <TextView
-            style="@style/DetailsHeader.Bookmark"
+            android:id="@+id/activity_restaurant_details_description"
+            style="@style/DetailsHeader.NormalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/users_reviews" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <TextView
-                android:id="@+id/activity_restaurant_details_review"
-                style="@style/DetailsHeader.NormalText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Great!" />
-
-            <TextView
-                android:id="@+id/activity_restaurant_details_review_user"
-                style="@style/DetailsHeader.NormalText.Small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_restaurant_details_review"
-                android:gravity="right"
-                android:paddingRight="30dp"
-                android:text="John Winter" />
-        </RelativeLayout>
+            android:text="Description" />
     </LinearLayout>
 
 </ScrollView>

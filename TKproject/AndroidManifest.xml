@@ -67,7 +67,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="pl.tokajiwines.acitivities.ProducerAcitvity"
+            android:name="pl.tokajiwines.acitivities.ProducerActitvity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
@@ -83,6 +83,16 @@
         </activity>
         <activity
             android:name="pl.tokajiwines.acitivities.NavigateToActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="pl.tokajiwines.acitivities.HotelActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="pl.tokajiwines.acitivities.RestaurantActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
