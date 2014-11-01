@@ -95,8 +95,12 @@ public class ProducerActitvity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
+                String tempAddress = mProducerFromBase.mStreetName + " "
+                        + mProducerFromBase.mStreetNumber + " " + mProducerFromBase.mHouseNumber
+                        + " " + mProducerFromBase.mCity + " " + mProducerFromBase.mPostCode;
+
                 Place extraPlace = new Place(mProducerFromBase.mIdProducer,
-                        mProducerFromBase.mName, null, mProducerFromBase.mLng,
+                        mProducerFromBase.mName, tempAddress, mProducerFromBase.mLng,
                         mProducerFromBase.mLat, "Producer");
 
                 Intent intent = new Intent(ProducerActitvity.this, NearPlaceActivity.class);
@@ -110,13 +114,17 @@ public class ProducerActitvity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
+                String tempAddress = mProducerFromBase.mStreetName + " "
+                        + mProducerFromBase.mStreetNumber + " " + mProducerFromBase.mHouseNumber
+                        + " " + mProducerFromBase.mCity + " " + mProducerFromBase.mPostCode;
+
                 Place extraPlace = new Place(mProducerFromBase.mIdProducer,
-                        mProducerFromBase.mName, null, mProducerFromBase.mLng,
+                        mProducerFromBase.mName, tempAddress, mProducerFromBase.mLng,
                         mProducerFromBase.mLat, "Producer");
 
                 Intent intent = new Intent(ProducerActitvity.this, NavigateToActivity.class);
                 intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
-
+                intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE, mProducerFromBase.mImageUrl);
                 startActivityForResult(intent, NavigateToActivity.REQUEST);
 
             }

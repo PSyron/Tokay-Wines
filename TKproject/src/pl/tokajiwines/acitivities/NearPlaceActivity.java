@@ -7,10 +7,14 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
@@ -61,6 +65,14 @@ public class NearPlaceActivity extends BaseActivity {
     static String sUrl;
     private Place[] mNearbyPlaces;
     public static int REQUEST = 112;
+    View mUiPlaceBox;
+    ImageView mUiPlaceImage;
+    TextView mUiPlaceTitle;
+    TextView mUiPlaceAddress;
+
+    TextView mUiPlaceDistance;
+    TextView mUiPlaceDuration;
+    boolean mWithDrawing = true;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -82,7 +94,13 @@ public class NearPlaceActivity extends BaseActivity {
         getActionBar()
                 .setTitle(getResources().getString(R.string.places_near) + " " + mPlace.mName);
         mMapView = (MapView) findViewById(R.id.activity_map_map);
+        mUiPlaceBox = findViewById(R.id.activity_map_box);
+        mUiPlaceImage = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_image);
+        mUiPlaceTitle = (TextView) mUiPlaceBox.findViewById(R.id.item_map_title);
+        mUiPlaceAddress = (TextView) mUiPlaceBox.findViewById(R.id.item_map_address);
 
+        mUiPlaceDistance = (TextView) mUiPlaceBox.findViewById(R.id.item_map_distance);
+        mUiPlaceDuration = (TextView) mUiPlaceBox.findViewById(R.id.item_map_duration);
         mMapView.onCreate(savedInstanceState);
         initView();
 
@@ -138,12 +156,24 @@ public class NearPlaceActivity extends BaseActivity {
 
         // adding marker
         googleMap.addMarker(marker);
+        googleMap.setOnMapClickListener(new OnMapClickListener() {
 
+            @Override
+            public void onMapClick(LatLng arg0) {
+                mUiPlaceBox.setVisibility(View.GONE);
+                if (mRoute != null || mRoute.isVisible()) {
+                    mRoute.remove();
+                }
+
+            }
+        });
         googleMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
             @Override
             public boolean onMarkerClick(final Marker arg0) {
+
                 if (arg0.getPosition() != mPlacePosition) {
+
                     new AlertDialog.Builder(NearPlaceActivity.this)
                             .setTitle("Route to " + arg0.getTitle())
                             .setMessage("Do You want to check route?")
@@ -154,6 +184,7 @@ public class NearPlaceActivity extends BaseActivity {
                                             if (mRoute != null) {
                                                 mRoute.remove();
                                             }
+                                            mWithDrawing = true;
                                             String url = getDirectionsUrl(mPlacePosition,
                                                     arg0.getPosition());
 
@@ -161,12 +192,21 @@ public class NearPlaceActivity extends BaseActivity {
 
                                             // Start downloading json data from Google Directions API
                                             downloadTask.execute(url);
+                                            fillBox(arg0);
                                         }
                                     })
                             .setNegativeButton(android.R.string.no,
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-                                            // do nothing
+                                            mWithDrawing = false;
+                                            String url = getDirectionsUrl(mPlacePosition,
+                                                    arg0.getPosition());
+
+                                            DownloadTask downloadTask = new DownloadTask();
+
+                                            // Start downloading json data from Google Directions API
+                                            downloadTask.execute(url);
+                                            fillBox(arg0);
                                         }
                                     }).setIcon(android.R.drawable.ic_dialog_alert).show();
                 }
@@ -177,6 +217,20 @@ public class NearPlaceActivity extends BaseActivity {
         CameraPosition cameraPosition = new CameraPosition.Builder().target(mPlacePosition)
                 .zoom(13).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+    }
+
+    public void fillBox(Marker arg0) {
+        for (Place pl : mNearbyPlaces) {
+            if (pl.getLatLng().latitude == arg0.getPosition().latitude
+                    && pl.getLatLng().longitude == arg0.getPosition().longitude) {
+                mUiPlaceBox.setVisibility(View.VISIBLE);
+                mUiPlaceTitle.setText(pl.mPlaceType + ": " + pl.mName);
+
+                mUiPlaceAddress.setText(pl.mAddress);
+
+            }
+        }
 
     }
 
@@ -442,14 +496,13 @@ public class NearPlaceActivity extends BaseActivity {
             //            MainActivity.this.tvDistanceDuration.setText("Distance:" + distance + ", Duration:"
             //                    + duration);
 
-            Toast.makeText(
-                    NearPlaceActivity.this,
-                    getResources().getString(R.string.distance) + distance
-                            + getResources().getString(R.string.duration) + duration,
-                    Toast.LENGTH_LONG).show();
-
             // Drawing polyline in the Google Map for the i-th route
-            mRoute = NearPlaceActivity.this.googleMap.addPolyline(lineOptions);
+            if (mWithDrawing) {
+                mRoute = NearPlaceActivity.this.googleMap.addPolyline(lineOptions);
+            }
+            //Brzydko ale dziala
+            mUiPlaceDistance.setText(distance);
+            mUiPlaceDuration.setText(duration);
         }
     }
 

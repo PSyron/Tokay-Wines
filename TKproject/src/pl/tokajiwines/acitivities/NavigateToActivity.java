@@ -5,6 +5,9 @@ import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.koushikdutta.ion.Ion;
 
 import org.json.JSONObject;
 
@@ -40,6 +44,7 @@ import java.util.List;
 public class NavigateToActivity extends BaseActivity {
 
     public static final String TAG_PLACE_TO = "nearPlacefinderTo";
+    public static final String TAG_PLACE_TO_IMAGE = "nearPlacefinderToImage";
     public static final String LOG_TAG = "NearPlaceActivity";
     public static int REQUEST = 113;
 
@@ -56,6 +61,15 @@ public class NavigateToActivity extends BaseActivity {
     private Place[] mNearbyPlaces;
     GPSTracker mGPStrack;
 
+    View mUiPlaceBox;
+    ImageView mUiPlaceImage;
+    TextView mUiPlaceTitle;
+    TextView mUiPlaceAddress;
+
+    TextView mUiPlaceDistance;
+    TextView mUiPlaceDuration;
+    String mUiPlaceImageUrl;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -66,6 +80,8 @@ public class NavigateToActivity extends BaseActivity {
         if (extras != null) {
 
             mPlaceTo = (Place) extras.getSerializable(NavigateToActivity.TAG_PLACE_TO);
+            mUiPlaceImageUrl = extras.getString(NavigateToActivity.TAG_PLACE_TO_IMAGE);
+            Log.e(LOG_TAG, mUiPlaceImageUrl);
         }
 
         if (mPlaceTo == null) {
@@ -80,9 +96,28 @@ public class NavigateToActivity extends BaseActivity {
         getActionBar().setTitle(
                 getResources().getString(R.string.navigation_to) + " " + mPlaceTo.mName);
         mMapView = (MapView) findViewById(R.id.activity_map_map);
+        mUiPlaceBox = findViewById(R.id.activity_map_box);
+        mUiPlaceImage = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_image);
+        mUiPlaceTitle = (TextView) mUiPlaceBox.findViewById(R.id.item_map_title);
+        mUiPlaceAddress = (TextView) mUiPlaceBox.findViewById(R.id.item_map_address);
 
+        mUiPlaceDistance = (TextView) mUiPlaceBox.findViewById(R.id.item_map_distance);
+        mUiPlaceDuration = (TextView) mUiPlaceBox.findViewById(R.id.item_map_duration);
+        fillBox();
         mMapView.onCreate(savedInstanceState);
         initView();
+
+    }
+
+    public void fillBox() {
+
+        mUiPlaceBox.setVisibility(View.VISIBLE);
+        mUiPlaceTitle.setText(mPlaceTo.mPlaceType + ": " + mPlaceTo.mName);
+
+        mUiPlaceAddress.setText(mPlaceTo.mAddress);
+
+        Ion.with(mUiPlaceImage).placeholder(R.drawable.placeholder_image)
+                .error(R.drawable.error_image).load(mUiPlaceImageUrl);
 
     }
 
@@ -319,14 +354,11 @@ public class NavigateToActivity extends BaseActivity {
             //            MainActivity.this.tvDistanceDuration.setText("Distance:" + distance + ", Duration:"
             //                    + duration);
 
-            Toast.makeText(
-                    NavigateToActivity.this,
-                    getResources().getString(R.string.distance) + distance
-                            + getResources().getString(R.string.duration) + duration,
-                    Toast.LENGTH_LONG).show();
-
             // Drawing polyline in the Google Map for the i-th route
             mRoute = NavigateToActivity.this.googleMap.addPolyline(lineOptions);
+            //Brzydko ale dziala
+            mUiPlaceDistance.setText(distance);
+            mUiPlaceDuration.setText(duration);
         }
     }
 
