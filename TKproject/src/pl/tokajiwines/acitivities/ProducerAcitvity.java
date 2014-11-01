@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -13,12 +14,14 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.koushikdutta.ion.Ion;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.adapters.ImagePagerAdapter;
 import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.jsonresponses.ProducerDetails;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
@@ -42,6 +45,8 @@ public class ProducerAcitvity extends BaseActivity {
 
     TextView mUiTitle;
     ImageView mUiImage;
+    ViewPager mUiPager;
+    CirclePageIndicator mUiPageIndicator;
     TextView mUiAddress;
     TextView mUiOpeningHours;
     TextView mUiPhoneNumber;
@@ -67,8 +72,10 @@ public class ProducerAcitvity extends BaseActivity {
     public void initView() {
 
         getActionBar().setTitle(mProducer.mName);
-        mUiTitle = (TextView) findViewById(R.id.activity_news_details_name);
-        mUiImage = (ImageView) findViewById(R.id.activity_news_details_image);
+        mUiTitle = (TextView) findViewById(R.id.activity_producer_details_name);
+        mUiImage = (ImageView) findViewById(R.id.activity_producer_details_image);
+        mUiPager = (ViewPager) findViewById(R.id.activity_producer_details_pager);
+        mUiPageIndicator = (CirclePageIndicator) findViewById(R.id.activity_producer_details_indicator);
         mUiAddress = (TextView) findViewById(R.id.activity_producer_details_adress);
         mUiOpeningHours = (TextView) findViewById(R.id.activity_producer_details_hours);
         mUiPhoneNumber = (TextView) findViewById(R.id.activity_producer_details_phone);
@@ -77,6 +84,13 @@ public class ProducerAcitvity extends BaseActivity {
         mUiNavigate = (ImageView) findViewById(R.id.activity_producer_navigate);
         mUiMoreWines = (TextView) findViewById(R.id.activity_producer_details_wine_button);
         mUiDescription = (TextView) findViewById(R.id.activity_news_details_description);
+
+        int[] images = {
+                R.drawable.placeholder_image, R.drawable.placeholder_image
+        };
+        ImagePagerAdapter adapter = new ImagePagerAdapter(this, images);
+        mUiPager.setAdapter(adapter);
+        mUiPageIndicator.setViewPager(mUiPager);
         mUiNear.setOnClickListener(new OnClickListener() {
 
             @Override

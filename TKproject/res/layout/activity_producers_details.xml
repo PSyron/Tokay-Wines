@@ -9,18 +9,36 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/activity_news_details_name"
+            android:id="@+id/activity_producer_details_name"
             style="@style/DetailsHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Title" />
 
         <ImageView
-            android:id="@+id/activity_news_details_image"
+            android:id="@+id/activity_producer_details_image"
             android:layout_width="@dimen/details_image_width"
             android:layout_height="@dimen/details_image_height"
             android:layout_gravity="center"
             android:src="@drawable/placeholder_image" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical" >
+
+            <com.viewpagerindicator.CirclePageIndicator
+                android:id="@+id/activity_producer_details_indicator"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/activity_producer_details_pager"
+                android:layout_width="@dimen/details_image_width"
+                android:layout_height="@dimen/details_image_height" />
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -98,7 +116,6 @@
                     android:layout_height="wrap_content"
                     android:autoLink="web"
                     android:text="url adress" />
-
             </LinearLayout>
 
             <ImageView
@@ -118,7 +135,6 @@
                 android:layout_alignParentTop="true"
                 android:layout_margin="5dp"
                 android:src="@drawable/ic_navigation" />
-
         </RelativeLayout>
 
         <RelativeLayout
