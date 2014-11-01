@@ -35,7 +35,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProducerAcitvity extends BaseActivity {
+public class ProducerActitvity extends BaseActivity {
     JSONParser mParser;
     public static int REQUEST = 997;
     private static final String sUrl = "http://remzo.usermd.net/zpi/services/producerDetails.php";
@@ -64,7 +64,7 @@ public class ProducerAcitvity extends BaseActivity {
         if (extras != null) {
             mProducer = (ProducerListItem) extras.getSerializable(ProducersFragment.PRODUCER_TAG);
         }
-        Log.e(ProducerAcitvity.class.getName(), mProducer + " ");
+        Log.e(ProducerActitvity.class.getName(), mProducer + " ");
         initView();
 
     }
@@ -99,7 +99,7 @@ public class ProducerAcitvity extends BaseActivity {
                         mProducerFromBase.mName, null, mProducerFromBase.mLng,
                         mProducerFromBase.mLat, "Producer");
 
-                Intent intent = new Intent(ProducerAcitvity.this, NearPlaceActivity.class);
+                Intent intent = new Intent(ProducerActitvity.this, NearPlaceActivity.class);
                 intent.putExtra(NearPlaceActivity.TAG_PLACE, extraPlace);
 
                 startActivityForResult(intent, NearPlaceActivity.REQUEST);
@@ -114,7 +114,7 @@ public class ProducerAcitvity extends BaseActivity {
                         mProducerFromBase.mName, null, mProducerFromBase.mLng,
                         mProducerFromBase.mLat, "Producer");
 
-                Intent intent = new Intent(ProducerAcitvity.this, NavigateToActivity.class);
+                Intent intent = new Intent(ProducerActitvity.this, NavigateToActivity.class);
                 intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
 
                 startActivityForResult(intent, NavigateToActivity.REQUEST);
@@ -126,7 +126,7 @@ public class ProducerAcitvity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(ProducerAcitvity.this, "Not working yet", Toast.LENGTH_LONG).show();
+                Toast.makeText(ProducerActitvity.this, "Not working yet", Toast.LENGTH_LONG).show();
 
             }
 
@@ -153,14 +153,14 @@ public class ProducerAcitvity extends BaseActivity {
 
         // if there is an access to the Internet, try to load data from remote database
 
-        if (App.isOnline(ProducerAcitvity.this)) {
+        if (App.isOnline(ProducerActitvity.this)) {
             new LoadProducerTask().execute();
         }
 
         // otherwise, show message
 
         else {
-            Toast.makeText(ProducerAcitvity.this, "Cannot connect to the Internet",
+            Toast.makeText(ProducerActitvity.this, "Cannot connect to the Internet",
                     Toast.LENGTH_LONG).show();
         }
 
@@ -175,7 +175,7 @@ public class ProducerAcitvity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgDial = new ProgressDialog(ProducerAcitvity.this);
+            mProgDial = new ProgressDialog(ProducerActitvity.this);
             mProgDial.setMessage("Loading producer details...");
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
@@ -200,7 +200,7 @@ public class ProducerAcitvity extends BaseActivity {
             InputStreamReader reader = new InputStreamReader(source);
 
             ProducerDetails response = gson.fromJson(reader, ProducerDetails.class);
-            Log.e(ProducerAcitvity.class.getName(), response.mIdProducer + " ");
+            Log.e(ProducerActitvity.class.getName(), response.mIdProducer + " ");
             if (response != null) {
                 mProducerFromBase = response;
             }
