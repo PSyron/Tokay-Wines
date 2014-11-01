@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.viewpagerindicator.TabPageIndicator;
-import com.viewpagerindicator.UnderlinePageIndicator;
 
 import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.GuideTabsAdapter;
@@ -36,9 +35,12 @@ public class GuideFragment extends BaseFragment {
         TabPageIndicator indicator = (TabPageIndicator) v.findViewById(R.id.guide_indicator);
         indicator.setViewPager(pager);
 
-
-
         return v;
+    }
+
+    public void onResume() {
+        super.onResume();
+
     }
 
 }
