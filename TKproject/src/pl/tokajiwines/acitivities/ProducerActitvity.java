@@ -23,6 +23,8 @@ import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.ImagePagerAdapter;
 import pl.tokajiwines.fragments.ProducersFragment;
+import pl.tokajiwines.jsonresponses.ImagePagerItem;
+import pl.tokajiwines.jsonresponses.ImagesResponse;
 import pl.tokajiwines.jsonresponses.ProducerDetails;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.models.Place;
@@ -39,6 +41,7 @@ public class ProducerActitvity extends BaseActivity {
     JSONParser mParser;
     public static int REQUEST = 997;
     private static final String sUrl = "http://remzo.usermd.net/zpi/services/producerDetails.php";
+    private static final String sUrlImage = "http://remzo.usermd.net/zpi/services/producerImages.php";
     ProgressDialog mProgDial;
     ProducerListItem mProducer;
     ProducerDetails mProducerFromBase;
@@ -55,6 +58,8 @@ public class ProducerActitvity extends BaseActivity {
     ImageView mUiNear;
     ImageView mUiNavigate;
     TextView mUiMoreWines;
+    ImagePagerItem[] mImagesUrl;
+    ImagePagerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +91,10 @@ public class ProducerActitvity extends BaseActivity {
         mUiDescription = (TextView) findViewById(R.id.activity_news_details_description);
 
         int[] images = {
-                R.drawable.placeholder_image, R.drawable.placeholder_image
+            R.drawable.placeholder_image
         };
-        ImagePagerAdapter adapter = new ImagePagerAdapter(this, images);
-        mUiPager.setAdapter(adapter);
+        mAdapter = new ImagePagerAdapter(this, images);
+        mUiPager.setAdapter(mAdapter);
         mUiPageIndicator.setViewPager(mUiPager);
         mUiNear.setOnClickListener(new OnClickListener() {
 
@@ -229,6 +234,65 @@ public class ProducerActitvity extends BaseActivity {
 
             Ion.with(mUiImage).placeholder(R.drawable.placeholder_image)
                     .error(R.drawable.error_image).load(mProducerFromBase.mImageUrl);
+            new LoadProducerImagesTask().execute();
+        }
+
+    }
+
+    class LoadProducerImagesTask extends AsyncTask<Void, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgDial = new ProgressDialog(ProducerActitvity.this);
+            mProgDial.setMessage("Loading producer images...");
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            // mProgDial.show();
+
+        }
+
+        // retrieving producers data
+
+        @Override
+        protected String doInBackground(Void... args) {
+
+            mParser = new JSONParser();
+
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("who", "" + mProducer.mIdProducer));
+
+            InputStream source = mParser.retrieveStream(sUrlImage, Constans.sUsername,
+                    Constans.sPassword, params);
+
+            Gson gson = new Gson();
+            InputStreamReader reader = new InputStreamReader(source);
+
+            ImagesResponse response = gson.fromJson(reader, ImagesResponse.class);
+            Log.e(ProducerActitvity.class.getName(), response.images.length + " ");
+            if (response != null) {
+                mImagesUrl = response.images;
+            }
+
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of producers
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mImagesUrl.length > 0) {
+                mAdapter = new ImagePagerAdapter(ProducerActitvity.this, mImagesUrl);
+                mUiPager.setAdapter(mAdapter);
+                mUiPageIndicator.setViewPager(mUiPager);
+            }
 
         }
 
