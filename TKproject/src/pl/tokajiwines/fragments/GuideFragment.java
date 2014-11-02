@@ -14,6 +14,10 @@ import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.GuideTabsAdapter;
 
 public class GuideFragment extends BaseFragment {
+
+    ViewPager pager;
+    TabPageIndicator indicator;
+
     public static GuideFragment newInstance() {
         GuideFragment fragment = new GuideFragment();
 
@@ -25,20 +29,32 @@ public class GuideFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_guide, container, false);
-        FragmentPagerAdapter adapter = new GuideTabsAdapter(getFragmentManager());
 
-        ViewPager pager = (ViewPager) v.findViewById(R.id.guide_pager);
-        pager.setOffscreenPageLimit(3);
-        pager.setAdapter(adapter);
+        pager = (ViewPager) v.findViewById(R.id.guide_pager);
 
-        TabPageIndicator indicator = (TabPageIndicator) v.findViewById(R.id.guide_indicator);
-        indicator.setViewPager(pager);
+        indicator = (TabPageIndicator) v.findViewById(R.id.guide_indicator);
+        initView();
 
         return v;
     }
 
+    public void initView() {
+        FragmentPagerAdapter adapter = new GuideTabsAdapter(getFragmentManager());
+        pager.setOffscreenPageLimit(3);
+        pager.setAdapter(adapter);
+        indicator.setViewPager(pager);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // TODO Auto-generated method stub
+        super.onSaveInstanceState(outState);
+    }
+
     public void onResume() {
+
         super.onResume();
 
     }

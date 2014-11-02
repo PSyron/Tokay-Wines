@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
+    <string name="title_news">Aktualności</string>
+    <string name="title_wines">Wina</string>
+    <string name="title_wineyards">Producenci</string>
+    <string name="title_map">Mapa</string>
+    <string name="title_tour">Przewodnik</string>
+    <string name="title_settings">Ustawienia</string>
+
 </resources>

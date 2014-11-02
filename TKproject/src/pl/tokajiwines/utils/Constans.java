@@ -79,11 +79,11 @@ public class Constans {
     };
 
     public static final String[] sSettingsRange = {
-            "5km", "10km", "15km", "20km", "25km"
+            "5km = 3.1mil", "10km = 6.2mil", "15km = 9.3mil", "20km = 12.4mil", "25km = 15.5mil"
     };
 
     public static final int[] sSettingsMeasure = {
-            R.string.distance_measure_km, R.string.distance_measure_mph
+            R.string.distance_measure_km, R.string.distance_measure_miles
     };
 
     //Guide 

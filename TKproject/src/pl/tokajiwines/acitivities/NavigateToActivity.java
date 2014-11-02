@@ -68,7 +68,7 @@ public class NavigateToActivity extends BaseActivity {
 
     TextView mUiPlaceDistance;
     TextView mUiPlaceDuration;
-    String mUiPlaceImageUrl;
+    String mUiPlaceImageUrl = "";
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -80,8 +80,10 @@ public class NavigateToActivity extends BaseActivity {
         if (extras != null) {
 
             mPlaceTo = (Place) extras.getSerializable(NavigateToActivity.TAG_PLACE_TO);
-            mUiPlaceImageUrl = extras.getString(NavigateToActivity.TAG_PLACE_TO_IMAGE);
-            Log.e(LOG_TAG, mUiPlaceImageUrl);
+            if (extras.containsKey(NavigateToActivity.TAG_PLACE_TO_IMAGE)) {
+                mUiPlaceImageUrl = extras.getString(NavigateToActivity.TAG_PLACE_TO_IMAGE);
+                Log.e(LOG_TAG, mUiPlaceImageUrl);
+            }
         }
 
         if (mPlaceTo == null) {
@@ -115,9 +117,10 @@ public class NavigateToActivity extends BaseActivity {
         mUiPlaceTitle.setText(mPlaceTo.mPlaceType + ": " + mPlaceTo.mName);
 
         mUiPlaceAddress.setText(mPlaceTo.mAddress);
-
-        Ion.with(mUiPlaceImage).placeholder(R.drawable.placeholder_image)
-                .error(R.drawable.error_image).load(mUiPlaceImageUrl);
+        if (!mUiPlaceImageUrl.equals("")) {
+            Ion.with(mUiPlaceImage).placeholder(R.drawable.placeholder_image)
+                    .error(R.drawable.error_image).load(mUiPlaceImageUrl);
+        }
 
     }
 

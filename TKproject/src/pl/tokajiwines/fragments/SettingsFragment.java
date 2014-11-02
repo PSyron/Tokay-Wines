@@ -4,6 +4,8 @@ package pl.tokajiwines.fragments;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +18,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import pl.tokajiwines.R;
+import pl.tokajiwines.acitivities.MainActivity;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
+
+import java.util.Locale;
 
 public class SettingsFragment extends BaseFragment {
 
@@ -120,7 +125,27 @@ public class SettingsFragment extends BaseFragment {
                         mUiLanguageTV.setText(Constans.sSettingsLanguage[which]);
                         SharedPreferencesHelper.putSharedPreferencesInt(mCtx, SharedKeyLanguage,
                                 which);
+                        Locale locale = new Locale("pl");
 
+                        switch (which) {
+                            case 0:
+                                locale = new Locale("pl");
+                                break;
+                            case 1:
+                                locale = new Locale("en_US");
+                                break;
+
+                        }
+                        Locale.setDefault(locale);
+                        Configuration config = new Configuration();
+                        config.locale = locale;
+                        getActivity().getApplicationContext().getResources()
+                                .updateConfiguration(config, null);
+                        //odswież napisy w menu
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("EXIT", true);
+                        startActivity(intent);
                     }
                 });
 

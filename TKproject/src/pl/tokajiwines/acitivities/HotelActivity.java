@@ -87,12 +87,15 @@ public class HotelActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                Place extraPlace = new Place(mHotelFromBase.mIdHotel, mHotelFromBase.mName, null,
-                        mHotelFromBase.mLng, mHotelFromBase.mLat, "Hotel");
+                Place extraPlace = new Place(mHotelFromBase.mIdHotel, mHotelFromBase.mName,
+                        mHotelFromBase.mStreetName + " " + mHotelFromBase.mStreetNumber + " "
+                                + mHotelFromBase.mHouseNumber + " " + mHotelFromBase.mCity + " "
+                                + mHotelFromBase.mPostCode, mHotelFromBase.mLng,
+                        mHotelFromBase.mLat, "Hotel");
 
                 Intent intent = new Intent(HotelActivity.this, NavigateToActivity.class);
                 intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
-
+                intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE, mHotelFromBase.mImageUrl);
                 startActivityForResult(intent, NavigateToActivity.REQUEST);
             }
         });
@@ -110,6 +113,7 @@ public class HotelActivity extends BaseActivity {
         mUiUrl.setText(mHotelFromBase.mLink);
         mUiDescription.setText(mHotelFromBase.mVast);
         mUiPhoneNumber.setText(mHotelFromBase.mPhone);
+
     }
 
     public void onResume() {

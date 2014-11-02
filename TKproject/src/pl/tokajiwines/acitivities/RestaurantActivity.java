@@ -89,12 +89,16 @@ public class RestaurantActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Place extraPlace = new Place(mRestaurantFromBase.mIdRestaurant,
-                        mRestaurantFromBase.mName, null, mRestaurantFromBase.mLng,
-                        mRestaurantFromBase.mLat, "Restaurant");
+                        mRestaurantFromBase.mName, mRestaurantFromBase.mStreetName + " "
+                                + mRestaurantFromBase.mStreetNumber + " "
+                                + mRestaurantFromBase.mHouseNumber + " "
+                                + mRestaurantFromBase.mCity + " " + mRestaurantFromBase.mPostCode,
+                        mRestaurantFromBase.mLng, mRestaurantFromBase.mLat, "Restaurant");
 
                 Intent intent = new Intent(RestaurantActivity.this, NavigateToActivity.class);
                 intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
-
+                intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE,
+                        mRestaurantFromBase.mImageUrl);
                 startActivityForResult(intent, NavigateToActivity.REQUEST);
             }
         });
