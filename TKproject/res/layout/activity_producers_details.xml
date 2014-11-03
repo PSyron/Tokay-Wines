@@ -17,14 +17,15 @@
 
         <ImageView
             android:id="@+id/activity_producer_details_image"
-            android:layout_width="@dimen/details_image_width"
-            android:layout_height="@dimen/details_image_height"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_gravity="center"
-            android:src="@drawable/placeholder_image" />
+            android:src="@drawable/placeholder_image"
+            android:visibility="invisible" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/details_image_width"
+            android:layout_height="@dimen/details_image_height"
             android:layout_gravity="center"
             android:orientation="vertical" >
 
@@ -36,8 +37,9 @@
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/activity_producer_details_pager"
-                android:layout_width="@dimen/details_image_width"
-                android:layout_height="@dimen/details_image_height" />
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <RelativeLayout
@@ -187,7 +189,8 @@
                     android:layout_below="@+id/activity_producer_details_wine_name"
                     android:layout_centerHorizontal="true"
                     android:padding="8dp"
-                    android:text="@string/show_more_wines" />
+                    android:text="@string/show_more_wines"
+                    android:visibility="invisible" />
             </RelativeLayout>
         </LinearLayout>
 

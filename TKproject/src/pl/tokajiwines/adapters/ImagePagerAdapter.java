@@ -50,7 +50,7 @@ public class ImagePagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(final ViewGroup container, final int position) {
         final ImageView imageView = new ImageView(context);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         if (mUrlOrImage) {
             Ion.with(imageView).placeholder(R.drawable.placeholder_image)
                     .error(R.drawable.error_image).load(mImagesUrl[position].ImageUrl);
