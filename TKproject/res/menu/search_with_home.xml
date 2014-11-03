@@ -6,7 +6,8 @@
         android:id="@+id/action_search"
         android:icon="@drawable/ic_action_search"
         android:showAsAction="ifRoom"
-        android:title="@string/action_search"/>
+        android:title="@string/action_search"
+        android:visible="false"/>
     <item
         android:id="@+id/action_home"
         android:icon="@drawable/ic_action_home"
