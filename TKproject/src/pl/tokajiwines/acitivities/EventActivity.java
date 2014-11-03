@@ -62,6 +62,7 @@ public class EventActivity extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mIdNews = (int) extras.getLong(NewsFragment.TAG_ID_NEWS);
+
         }
     }
 
@@ -138,6 +139,7 @@ public class EventActivity extends BaseActivity {
                 mUiDate.setVisibility(View.INVISIBLE);
                 mUiAddIcon.setVisibility(View.INVISIBLE);
             }
+            getActionBar().setTitle(mNews.mHeader);
 
         }
 
