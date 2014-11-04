@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
+import com.koushikdutta.ion.Ion;
 
 import org.json.JSONObject;
 
@@ -69,7 +70,7 @@ public class NearPlaceActivity extends BaseActivity {
     ImageView mUiPlaceImage;
     TextView mUiPlaceTitle;
     TextView mUiPlaceAddress;
-
+    TextView mUiPhone;
     TextView mUiPlaceDistance;
     TextView mUiPlaceDuration;
     boolean mWithDrawing = true;
@@ -98,7 +99,7 @@ public class NearPlaceActivity extends BaseActivity {
         mUiPlaceImage = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_image);
         mUiPlaceTitle = (TextView) mUiPlaceBox.findViewById(R.id.item_map_title);
         mUiPlaceAddress = (TextView) mUiPlaceBox.findViewById(R.id.item_map_address);
-
+        mUiPhone = (TextView) mUiPlaceBox.findViewById(R.id.item_map_phone);
         mUiPlaceDistance = (TextView) mUiPlaceBox.findViewById(R.id.item_map_distance);
         mUiPlaceDuration = (TextView) mUiPlaceBox.findViewById(R.id.item_map_duration);
         mMapView.onCreate(savedInstanceState);
@@ -161,8 +162,8 @@ public class NearPlaceActivity extends BaseActivity {
             @Override
             public void onMapClick(LatLng arg0) {
                 mUiPlaceBox.setVisibility(View.GONE);
-                if (mRoute != null || mRoute.isVisible()) {
-                    mRoute.remove();
+                if (mRoute != null) {
+                    if (mRoute.isVisible()) mRoute.remove();
                 }
 
             }
@@ -226,9 +227,16 @@ public class NearPlaceActivity extends BaseActivity {
                     && pl.getLatLng().longitude == arg0.getPosition().longitude) {
                 mUiPlaceBox.setVisibility(View.VISIBLE);
                 mUiPlaceTitle.setText(pl.mPlaceType + ": " + pl.mName);
-
+                if (pl.mPhone != null && !pl.mPhone.equals("")) {
+                    mUiPhone.setText(pl.mPhone);
+                } else {
+                    mUiPhone.setText("");
+                }
                 mUiPlaceAddress.setText(pl.mAddress);
 
+                Ion.with(mUiPlaceImage).placeholder(R.drawable.placeholder_image)
+                        .error(R.drawable.error_image).load(pl.mImageUrl);
+                return;
             }
         }
 

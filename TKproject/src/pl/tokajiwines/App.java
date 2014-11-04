@@ -1,11 +1,12 @@
 
 package pl.tokajiwines;
 
+import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-public class App {
+public class App extends Application {
 
     public static boolean isOnline(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context

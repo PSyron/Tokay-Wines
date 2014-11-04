@@ -25,6 +25,10 @@ public class Place implements Serializable {
     public String mLat;
     @SerializedName("placeType")
     public String mPlaceType;
+    @SerializedName("phone")
+    public String mPhone;
+    @SerializedName("imageUrl")
+    public String mImageUrl;
 
     public Place(int idPlace, String name, String address, String lng, String lat, String placeType) {
         super();
