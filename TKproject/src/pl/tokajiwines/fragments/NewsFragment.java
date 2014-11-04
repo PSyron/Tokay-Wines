@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.EventActivity;
+import pl.tokajiwines.acitivities.NewsActivity;
 import pl.tokajiwines.adapters.NewsAdapter;
 import pl.tokajiwines.jsonresponses.NewsListItem;
 import pl.tokajiwines.jsonresponses.NewsResponse;
@@ -128,7 +128,7 @@ public class NewsFragment extends BaseFragment {
 
             mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                    Intent intent = new Intent(mContext, EventActivity.class);
+                    Intent intent = new Intent(mContext, NewsActivity.class);
                     intent.putExtra(TAG_ID_NEWS, mAdapter.getItemId(position));
                     startActivity(intent);
                 }

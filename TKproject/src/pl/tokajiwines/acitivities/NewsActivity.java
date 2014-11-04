@@ -3,9 +3,13 @@ package pl.tokajiwines.acitivities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.CalendarContract;
+import android.provider.CalendarContract.Events;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,10 +30,13 @@ import pl.tokajiwines.utils.JSONParser;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class EventActivity extends BaseActivity {
+public class NewsActivity extends BaseActivity {
 
     private int mIdNews;
     private TextView mUiName;
@@ -51,7 +58,7 @@ public class EventActivity extends BaseActivity {
         setContentView(R.layout.activity_news_details);
 
         mContext = this;
-        
+
         sUrl = getResources().getString(R.string.UrlEventDetails);
 
         mUiName = (TextView) findViewById(R.id.activity_news_details_name);
@@ -66,6 +73,31 @@ public class EventActivity extends BaseActivity {
             mIdNews = (int) extras.getLong(NewsFragment.TAG_ID_NEWS);
 
         }
+        mUiAddIcon.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Date date = new Date();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    date = format.parse(mNews.mStartDate);
+
+                } catch (ParseException e) {
+
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent(Intent.ACTION_INSERT);
+                intent.setType("vnd.android.cursor.item/event");
+                intent.putExtra(Events.DESCRIPTION, mNews.mVast);
+                intent.putExtra("allDay", true);
+                intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, date.getTime());
+                //    intent.putExtra("endTime", cal.getTimeInMillis() + 60 * 60 * 1000);
+                intent.putExtra("title", mNews.mHeader);
+                startActivity(intent);
+
+            }
+        });
     }
 
     public void onResume() {
@@ -140,11 +172,12 @@ public class EventActivity extends BaseActivity {
                 mUiDateLabel.setVisibility(View.INVISIBLE);
                 mUiDate.setVisibility(View.INVISIBLE);
                 mUiAddIcon.setVisibility(View.INVISIBLE);
+            } else {
+                mUiDate.setText(mNews.mStartDate + " - \n" + mNews.mEndDate);
+                mUiDate.setVisibility(View.VISIBLE);
+                mUiAddIcon.setVisibility(View.VISIBLE);
             }
-            else
-            {
-                mUiDate.setText(mNews.mStartDate+" - \n"+mNews.mEndDate);
-            }
+
             getActionBar().setTitle(mNews.mHeader);
 
         }

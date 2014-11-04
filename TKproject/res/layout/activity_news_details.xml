@@ -12,8 +12,7 @@
             android:id="@+id/activity_news_details_name"
             style="@style/DetailsHeader"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Title" />
+            android:layout_height="wrap_content" />
 
         <ImageView
             android:id="@+id/activity_news_details_image"
@@ -39,7 +38,8 @@
                 style="@style/DetailsHeader.NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Data " />
+                android:text="Data "
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/activity_news_details_add_event"
@@ -47,7 +47,8 @@
                 android:layout_height="@dimen/item_menu_height"
                 android:layout_margin="5dp"
                 android:clickable="true"
-                android:src="@drawable/add_event_selector" />
+                android:src="@drawable/add_event_selector"
+                android:visibility="gone" />
         </TableRow>
 
         <TextView
