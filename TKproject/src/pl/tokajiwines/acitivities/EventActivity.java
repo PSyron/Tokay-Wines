@@ -139,6 +139,10 @@ public class EventActivity extends BaseActivity {
                 mUiDate.setVisibility(View.INVISIBLE);
                 mUiAddIcon.setVisibility(View.INVISIBLE);
             }
+            else
+            {
+                mUiDate.setText("Od "+mNews.mStartDate+"\nDo "+mNews.mEndDate);
+            }
             getActionBar().setTitle(mNews.mHeader);
 
         }
