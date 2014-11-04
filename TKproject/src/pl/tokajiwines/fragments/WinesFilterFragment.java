@@ -2,23 +2,38 @@
 package pl.tokajiwines.fragments;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.acitivities.EventActivity;
+import pl.tokajiwines.adapters.NewsAdapter;
+import pl.tokajiwines.fragments.NewsFragment.LoadNewsTask;
+import pl.tokajiwines.jsonresponses.NewsResponse;
+import pl.tokajiwines.jsonresponses.WineFilterResponse;
 import pl.tokajiwines.utils.Constans;
+import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+
+import com.google.gson.Gson;
 
 public class WinesFilterFragment extends BaseFragment {
 
@@ -35,6 +50,14 @@ public class WinesFilterFragment extends BaseFragment {
     LinearLayout mUiPriceLin;
     TextView mUiPrice;
     TextView mUiSearch;
+    
+    private JSONParser mParser;
+    private String sUrl;
+    private WineFilterResponse mWineFilter;
+    private String[] mWineYear = {};
+    private String[] mProducerName = {};
+    private String[] mWineStrains = {};
+    private String[] mWineGrades = {};
 
     AlertDialog dialog;
     String currCurrency;
@@ -56,6 +79,8 @@ public class WinesFilterFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_wine_filter, container, false);
+        
+        sUrl = getResources().getString(R.string.UrlWineFilter);
 
         mUiTaste = (TextView) v.findViewById(R.id.frag_wine_taste_tV);
         mUiTasteLin = (LinearLayout) v.findViewById(R.id.frag_wine_taste_lL);
@@ -88,8 +113,8 @@ public class WinesFilterFragment extends BaseFragment {
         };
 
         //TODO Getting Producers names and wines years from SQLite
-        final String[] mProducerName = {};
-        final String[] mWineYear = {};
+
+
 
         mUiTasteLin.setOnClickListener(new OnClickListener() {
 
@@ -106,7 +131,7 @@ public class WinesFilterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 createDialogCheckBox(getResources().getString(R.string.wine_type),
-                        Constans.sWineType, mUiType);
+                        mWineGrades, mUiType);
 
             }
         });
@@ -116,7 +141,7 @@ public class WinesFilterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 createDialogCheckBox(getResources().getString(R.string.wine_strain),
-                        Constans.sWineStrain, mUiStrain);
+                        mWineStrains, mUiStrain);
 
             }
         });
@@ -222,6 +247,72 @@ public class WinesFilterFragment extends BaseFragment {
             case 2:
                 currCurrencyTab = Constans.sWinePricesForint;
                 break;
+        }
+
+    }
+    
+    public void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+
+        if (App.isOnline(mCtx)) {
+            new LoadFilterTask().execute();
+        }
+
+        // otherwise, show message
+
+        else {
+            Toast.makeText(mCtx, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+        }
+
+    }
+    
+    class LoadFilterTask extends AsyncTask<String, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        // retrieving news data
+
+        @Override
+        protected String doInBackground(String... args) {
+
+            mParser = new JSONParser();
+
+            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
+                    Constans.sPassword, null);
+            Gson gson = new Gson();
+            InputStreamReader reader = new InputStreamReader(source);
+
+            WineFilterResponse response = gson.fromJson(reader, WineFilterResponse.class);
+
+            if (response != null) {
+                mWineFilter = response;
+                mWineYear = mWineFilter.years;
+                mProducerName = mWineFilter.producers;
+                mWineGrades = response.grades;
+                mWineStrains = response.strains;
+            }
+
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of news
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+
+
+
         }
 
     }
