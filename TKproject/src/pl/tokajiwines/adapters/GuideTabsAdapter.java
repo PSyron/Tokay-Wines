@@ -3,6 +3,7 @@ package pl.tokajiwines.adapters;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.support.v13.app.FragmentPagerAdapter;
 
 import com.viewpagerindicator.IconPagerAdapter;
@@ -13,9 +14,11 @@ import pl.tokajiwines.fragments.TabRestaurantsFragment;
 import pl.tokajiwines.utils.Constans;
 
 public class GuideTabsAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
+    Context mCtx;
 
-    public GuideTabsAdapter(FragmentManager fm) {
+    public GuideTabsAdapter(FragmentManager fm, Context ctx) {
         super(fm);
+        mCtx = ctx;
         // TODO Auto-generated constructor stub
     }
 
@@ -25,17 +28,14 @@ public class GuideTabsAdapter extends FragmentPagerAdapter implements IconPagerA
 
         switch (position) {
             case 0:
-                //                return NewsFragment.newInstance(Constans.sGuideTabTitle[position
-                //                        % Constans.sGuideTabTitle.length]);
+
                 return TabCuriositiesFragment.newInstance();
                 // break;
             case 1:
-                //                return NewsFragment.newInstance(Constans.sGuideTabTitle[position
-                //                        % Constans.sGuideTabTitle.length]);
+
                 return TabHotelsFragment.newInstance();
             case 2:
-                //                return NewsFragment.newInstance(Constans.sGuideTabTitle[position
-                //                        % Constans.sGuideTabTitle.length]);
+
                 return TabRestaurantsFragment.newInstance();
 
             default:
@@ -46,7 +46,10 @@ public class GuideTabsAdapter extends FragmentPagerAdapter implements IconPagerA
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return Constans.sGuideTabTitle[position % Constans.sGuideTabTitle.length].toUpperCase();
+
+        return (mCtx.getResources().getString(Constans.sGuideTabTitle[position
+                % Constans.sGuideTabTitle.length])).toUpperCase();
+
     }
 
     @Override

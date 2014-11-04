@@ -86,6 +86,8 @@
     <!-- Guide -->
 
     <string name="curiosities">Curiosities</string>
+    <string name="hotels">Hotels</string>
+    <string name="restaurants">Restaurants</string>
     <string name="history">History of the area</string>
     <string name="points_of_interest">Points of interest</string>
     <string name="about_wine">What you should know about wine</string>

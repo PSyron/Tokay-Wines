@@ -41,7 +41,7 @@ public class GuideFragment extends BaseFragment {
     }
 
     public void initView() {
-        FragmentPagerAdapter adapter = new GuideTabsAdapter(getFragmentManager());
+        FragmentPagerAdapter adapter = new GuideTabsAdapter(getFragmentManager(), getActivity());
         pager.setOffscreenPageLimit(3);
         pager.setAdapter(adapter);
         indicator.setViewPager(pager);

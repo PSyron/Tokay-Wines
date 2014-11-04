@@ -46,10 +46,8 @@
                 android:layout_width="@dimen/item_menu_height"
                 android:layout_height="@dimen/item_menu_height"
                 android:layout_margin="5dp"
-                android:src="@drawable/ic_add_event" />
-
-            <RelativeLayout>
-            </RelativeLayout>
+                android:clickable="true"
+                android:src="@drawable/add_event_selector" />
         </TableRow>
 
         <TextView
