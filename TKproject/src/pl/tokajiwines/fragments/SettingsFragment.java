@@ -242,6 +242,12 @@ public class SettingsFragment extends BaseFragment {
                 SharedKeyNotifVibrat, DefNotifVibrat));
         mUiLanguageTV.setText(Constans.sSettingsLanguage[SharedPreferencesHelper
                 .getSharedPreferencesInt(mCtx, SharedKeyLanguage, DefLanguage)]);
+        if (Locale.getDefault().getDisplayLanguage().contains("polsk")
+                || Locale.getDefault().getDisplayLanguage().contains("pl")) {
+            mUiLanguageTV.setText(Constans.sSettingsLanguage[0]);
+        } else
+            mUiLanguageTV.setText(Constans.sSettingsLanguage[1]);
+
         mUiCurrencyTV.setText(Constans.sSettingsCurrency[SharedPreferencesHelper
                 .getSharedPreferencesInt(mCtx, SharedKeyCurrency, DefCurrency)]);
         mUiDistMeasureTV.setText(getResources().getString(
