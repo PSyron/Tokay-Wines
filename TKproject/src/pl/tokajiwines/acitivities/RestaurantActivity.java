@@ -37,7 +37,7 @@ import java.util.List;
 public class RestaurantActivity extends BaseActivity {
     JSONParser mParser;
     public static int REQUEST = 997;
-    private static final String sUrl = "http://remzo.usermd.net/zpi/services/restaurantDetails.php";
+    private String sUrl;
     ProgressDialog mProgDial;
     RestaurantListItem mRestaurant;
     RestaurantDetails mRestaurantFromBase;
@@ -56,6 +56,8 @@ public class RestaurantActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_details);
+        
+        sUrl = getResources().getString(R.string.UrlRestaurantDetails);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mRestaurant = (RestaurantListItem) extras

@@ -34,7 +34,7 @@ public class NewsFragment extends BaseFragment {
     Context mContext;
     JSONParser mParser;
     ProgressDialog mProgDial;
-    private static final String sUrl = "http://remzo.usermd.net/zpi/services/news.php";
+    private String sUrl;
     public static final String TAG_ID_NEWS = "IdNews";
     private NewsListItem[] mNewsList;
 
@@ -50,6 +50,8 @@ public class NewsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
+        
+        sUrl = getResources().getString(R.string.UrlNewsList);
         mUiList = (ListView) rootView.findViewById(R.id.frag_news_list);
         mContext = getActivity();
 

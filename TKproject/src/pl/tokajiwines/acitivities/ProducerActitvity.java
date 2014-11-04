@@ -40,8 +40,8 @@ import java.util.List;
 public class ProducerActitvity extends BaseActivity {
     JSONParser mParser;
     public static int REQUEST = 997;
-    private static final String sUrl = "http://remzo.usermd.net/zpi/services/producerDetails.php";
-    private static final String sUrlImage = "http://remzo.usermd.net/zpi/services/producerImages.php";
+    private  String sUrl;
+    private  String sUrlImage;
     ProgressDialog mProgDial;
     ProducerListItem mProducer;
     ProducerDetails mProducerFromBase;
@@ -67,6 +67,9 @@ public class ProducerActitvity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_producers_details);
+        
+        sUrl = getResources().getString(R.string.UrlProducerDetails);
+        sUrlImage = getResources().getString(R.string.UrlProducerImages);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mProducer = (ProducerListItem) extras.getSerializable(ProducersFragment.PRODUCER_TAG);

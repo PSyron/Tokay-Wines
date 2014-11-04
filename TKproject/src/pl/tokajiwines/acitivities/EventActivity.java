@@ -43,7 +43,7 @@ public class EventActivity extends BaseActivity {
     ProgressDialog mProgDial;
     Context mContext;
     JSONParser mParser;
-    private static final String sUrl = "http://remzo.usermd.net/zpi/services/newsdetail.php";
+    private String sUrl;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +51,8 @@ public class EventActivity extends BaseActivity {
         setContentView(R.layout.activity_news_details);
 
         mContext = this;
+        
+        sUrl = getResources().getString(R.string.UrlEventDetails);
 
         mUiName = (TextView) findViewById(R.id.activity_news_details_name);
         mUiImage = (ImageView) findViewById(R.id.activity_news_details_image);
@@ -141,7 +143,7 @@ public class EventActivity extends BaseActivity {
             }
             else
             {
-                mUiDate.setText("Od "+mNews.mStartDate+"\nDo "+mNews.mEndDate);
+                mUiDate.setText(mNews.mStartDate+" - \n"+mNews.mEndDate);
             }
             getActionBar().setTitle(mNews.mHeader);
 

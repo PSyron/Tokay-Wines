@@ -38,7 +38,7 @@ public class ProducersFragment extends BaseFragment {
     JSONParser mParser;
     ProgressDialog mProgDial;
     Context mContext;
-    private static final String sUrl = "http://remzo.usermd.net/zpi/services/producers.php";
+    private String sUrl;
     private static final String TAG_ID = "idProducer";
     private static final String TAG_NAME = "name";
     private static final String TAG_SHORT_MESSAGE = "short";
@@ -61,6 +61,8 @@ public class ProducersFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
+        
+        sUrl = getResources().getString(R.string.UrlProducersList);
         mUiList = (ListView) rootView.findViewById(R.id.frag_news_list);
         mContext = getActivity();
         mProducersList = new ProducerListItem[0];

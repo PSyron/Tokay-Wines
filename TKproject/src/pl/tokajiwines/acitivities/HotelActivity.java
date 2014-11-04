@@ -37,7 +37,7 @@ import java.util.List;
 public class HotelActivity extends BaseActivity {
     JSONParser mParser;
     public static int REQUEST = 997;
-    private static final String sUrl = "http://remzo.usermd.net/zpi/services/hotelDetails.php";
+    private String sUrl;
     ProgressDialog mProgDial;
     HotelListItem mHotel;
     HotelDetails mHotelFromBase;
@@ -56,6 +56,8 @@ public class HotelActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hotel_details);
+        
+        sUrl = getResources().getString(R.string.UrlHotelDetails);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mHotel = (HotelListItem) extras.getSerializable(TabHotelsFragment.HOTEL_TAG);

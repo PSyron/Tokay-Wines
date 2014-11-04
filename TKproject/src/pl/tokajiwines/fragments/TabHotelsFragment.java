@@ -34,7 +34,7 @@ public class TabHotelsFragment extends BaseFragment {
     Context mContext;
     JSONParser mParser;
     ProgressDialog mProgDial;
-    private static final String sUrl = "http://remzo.usermd.net/zpi/services/hotels.php";
+    private String sUrl;
     public static final String HOTEL_TAG = "hotel";
     private HotelListItem[] mHotelList;
 
@@ -50,6 +50,8 @@ public class TabHotelsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_hotels, container, false);
+        
+        sUrl = getResources().getString(R.string.UrlHotelsList);
         mUiList = (ListView) rootView.findViewById(R.id.frag_hotels_list);
         mContext = getActivity();
 
