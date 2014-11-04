@@ -64,6 +64,11 @@ public class ProducerDetails implements Serializable {
     public String mLng;
     @SerializedName("postCode")
     public String mPostCode;
+    
+    @SerializedName("wineImage")
+    public String mWineImageUrl;
+    @SerializedName("wineName")
+    public String mWineName;
 
     @SerializedName("LastUpdate")
     public String mLastUpdate;

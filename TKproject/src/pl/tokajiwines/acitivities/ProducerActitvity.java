@@ -55,6 +55,8 @@ public class ProducerActitvity extends BaseActivity {
     TextView mUiPhoneNumber;
     TextView mUiUrl;
     TextView mUiDescription;
+    TextView mUiWineName;
+    ImageView mUiWineImage;
     ImageView mUiNear;
     ImageView mUiNavigate;
     TextView mUiMoreWines;
@@ -89,6 +91,8 @@ public class ProducerActitvity extends BaseActivity {
         mUiNavigate = (ImageView) findViewById(R.id.activity_producer_navigate);
         mUiMoreWines = (TextView) findViewById(R.id.activity_producer_details_wine_button);
         mUiDescription = (TextView) findViewById(R.id.activity_news_details_description);
+        mUiWineName = (TextView) findViewById(R.id.activity_producer_details_wine_name);
+        mUiWineImage = (ImageView) findViewById(R.id.activity_producer_details_wine_image);
 
         int[] images = {
             R.drawable.placeholder_image
@@ -158,6 +162,7 @@ public class ProducerActitvity extends BaseActivity {
         mUiUrl.setText(mProducerFromBase.mLink);
         mUiDescription.setText(mProducerFromBase.mVast);
         mUiPhoneNumber.setText(mProducerFromBase.mPhone);
+        mUiWineName.setText(mProducerFromBase.mWineName);
     }
 
     public void onResume() {
@@ -213,10 +218,12 @@ public class ProducerActitvity extends BaseActivity {
             InputStreamReader reader = new InputStreamReader(source);
 
             ProducerDetails response = gson.fromJson(reader, ProducerDetails.class);
+            
             Log.e(ProducerActitvity.class.getName(), response.mIdProducer + " ");
             if (response != null) {
                 mProducerFromBase = response;
             }
+
 
             return null;
 
@@ -231,9 +238,9 @@ public class ProducerActitvity extends BaseActivity {
             if (mProducerFromBase != null) {
                 fillView();
             }
-
-            Ion.with(mUiImage).placeholder(R.drawable.placeholder_image)
-                    .error(R.drawable.error_image).load(mProducerFromBase.mImageUrl);
+            Ion.with(mUiWineImage).placeholder(R.drawable.placeholder_image)
+            .error(R.drawable.error_image).load(mProducerFromBase.mWineImageUrl);
+            
             new LoadProducerImagesTask().execute();
         }
 
