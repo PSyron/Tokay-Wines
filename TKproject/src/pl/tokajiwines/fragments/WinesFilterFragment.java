@@ -2,10 +2,8 @@
 package pl.tokajiwines.fragments;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,17 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.EventActivity;
-import pl.tokajiwines.adapters.NewsAdapter;
-import pl.tokajiwines.fragments.NewsFragment.LoadNewsTask;
-import pl.tokajiwines.jsonresponses.NewsResponse;
 import pl.tokajiwines.jsonresponses.WineFilterResponse;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
@@ -32,8 +27,6 @@ import pl.tokajiwines.utils.SharedPreferencesHelper;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
-import com.google.gson.Gson;
 
 public class WinesFilterFragment extends BaseFragment {
 
@@ -50,7 +43,7 @@ public class WinesFilterFragment extends BaseFragment {
     LinearLayout mUiPriceLin;
     TextView mUiPrice;
     TextView mUiSearch;
-    
+
     private JSONParser mParser;
     private String sUrl;
     private WineFilterResponse mWineFilter;
@@ -79,7 +72,7 @@ public class WinesFilterFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_wine_filter, container, false);
-        
+
         sUrl = getResources().getString(R.string.UrlWineFilter);
 
         mUiTaste = (TextView) v.findViewById(R.id.frag_wine_taste_tV);
@@ -114,8 +107,6 @@ public class WinesFilterFragment extends BaseFragment {
 
         //TODO Getting Producers names and wines years from SQLite
 
-
-
         mUiTasteLin.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -130,8 +121,8 @@ public class WinesFilterFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                createDialogCheckBox(getResources().getString(R.string.wine_type),
-                        mWineGrades, mUiType);
+                createDialogCheckBox(getResources().getString(R.string.wine_type), mWineGrades,
+                        mUiType);
 
             }
         });
@@ -140,8 +131,8 @@ public class WinesFilterFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                createDialogCheckBox(getResources().getString(R.string.wine_strain),
-                        mWineStrains, mUiStrain);
+                createDialogCheckBox(getResources().getString(R.string.wine_strain), mWineStrains,
+                        mUiStrain);
 
             }
         });
@@ -250,7 +241,7 @@ public class WinesFilterFragment extends BaseFragment {
         }
 
     }
-    
+
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
@@ -266,7 +257,7 @@ public class WinesFilterFragment extends BaseFragment {
         }
 
     }
-    
+
     class LoadFilterTask extends AsyncTask<String, String, String> {
 
         boolean failure = false;
@@ -310,8 +301,6 @@ public class WinesFilterFragment extends BaseFragment {
         protected void onPostExecute(String file_url) {
 
             super.onPostExecute(file_url);
-
-
 
         }
 
