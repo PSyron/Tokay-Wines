@@ -129,5 +129,6 @@
     <string name="UrlProducersList">http://tokajiwines.me/services/producers.php</string>
     <string name="UrlHotelsList">http://tokajiwines.me/services/hotels.php</string>
     <string name="UrlRestaurantsList">http://tokajiwines.me/services/restaurants.php</string>
+    <string name="UrlWineFilter">http://tokajiwines.me/services/wineFilter.php</string>
 
 </resources>
