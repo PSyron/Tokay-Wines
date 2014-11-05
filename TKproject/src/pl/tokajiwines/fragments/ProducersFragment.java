@@ -85,32 +85,36 @@ public class ProducersFragment extends BaseFragment {
         return rootView;
     }
 
-    public void onResume() {
+    public void onStart() {
         // TODO Auto-generated method stub
-        super.onResume();
+        super.onStart();
 
         // if there is an access to the Internet, try to load data from remote database
+        
+        if (mProducersList.length == 0)
+        {
 
-        if (App.isOnline(mContext)) {
-            new LoadProducersTask().execute();
-
-            //            ProducersDataSource pDs = new ProducersDataSource(mContext);
-            //            pDs.open();
-            //
-            //            List<Producer> prodlist = pDs.getAllProducers();
-            //            Log.i("Producent List", prodlist.toString());
-            //            ProducerListItem[] producers = {
-            //                    new ProducerListItem(prodlist.get(0)), new ProducerListItem(prodlist.get(1)),
-            //                    new ProducerListItem(prodlist.get(2))
-            //            };
-            //            ProducersAdapter mAdapter = new ProducersAdapter(getActivity(), producers);
-            //            mUiList.setAdapter(mAdapter);
-        }
-
-        // otherwise, show message
-
-        else {
-            Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+            if (App.isOnline(mContext)) {
+                new LoadProducersTask().execute();
+    
+                //            ProducersDataSource pDs = new ProducersDataSource(mContext);
+                //            pDs.open();
+                //
+                //            List<Producer> prodlist = pDs.getAllProducers();
+                //            Log.i("Producent List", prodlist.toString());
+                //            ProducerListItem[] producers = {
+                //                    new ProducerListItem(prodlist.get(0)), new ProducerListItem(prodlist.get(1)),
+                //                    new ProducerListItem(prodlist.get(2))
+                //            };
+                //            ProducersAdapter mAdapter = new ProducersAdapter(getActivity(), producers);
+                //            mUiList.setAdapter(mAdapter);
+            }
+    
+            // otherwise, show message
+    
+            else {
+                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+            }
         }
 
     }

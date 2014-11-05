@@ -19,6 +19,7 @@ import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.NewsActivity;
 import pl.tokajiwines.adapters.NewsAdapter;
+import pl.tokajiwines.adapters.ProducersAdapter;
 import pl.tokajiwines.jsonresponses.NewsListItem;
 import pl.tokajiwines.jsonresponses.NewsResponse;
 import pl.tokajiwines.utils.Constans;
@@ -53,6 +54,16 @@ public class NewsFragment extends BaseFragment {
         
         sUrl = getResources().getString(R.string.UrlNewsList);
         mUiList = (ListView) rootView.findViewById(R.id.frag_news_list);
+        mNewsList = new NewsListItem[0];
+        mAdapter = new NewsAdapter(getActivity(), mNewsList);
+        mUiList.setAdapter(mAdapter);
+        mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                Intent intent = new Intent(mContext, NewsActivity.class);
+                intent.putExtra(TAG_ID_NEWS, mAdapter.getItemId(position));
+                startActivity(intent);
+            }
+        });
         mContext = getActivity();
 
         return rootView;
@@ -60,21 +71,26 @@ public class NewsFragment extends BaseFragment {
 
     // if there is an access to the Internet, try to load data from remote database
 
-    public void onResume() {
+    public void onStart() {
         // TODO Auto-generated method stub
-        super.onResume();
+        super.onStart();
+        
+        if (mNewsList.length == 0)
+        {
 
-        if (App.isOnline(mContext)) {
-            new LoadNewsTask().execute();
-        }
-
-        // otherwise, show message
-
-        else {
-            Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+            if (App.isOnline(mContext)) {
+                new LoadNewsTask().execute();
+            }
+    
+            // otherwise, show message
+    
+            else {
+                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+            }
         }
 
     }
+
 
     // async task class that loads news data from remote database
 
@@ -126,13 +142,6 @@ public class NewsFragment extends BaseFragment {
             mAdapter = new NewsAdapter(getActivity(), mNewsList);
             mUiList.setAdapter(mAdapter);
 
-            mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                    Intent intent = new Intent(mContext, NewsActivity.class);
-                    intent.putExtra(TAG_ID_NEWS, mAdapter.getItemId(position));
-                    startActivity(intent);
-                }
-            });
 
         }
 
