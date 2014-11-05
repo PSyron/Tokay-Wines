@@ -2,7 +2,6 @@
 package pl.tokajiwines.fragments;
 
 import android.os.Bundle;
-import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +40,8 @@ public class GuideFragment extends BaseFragment {
     }
 
     public void initView() {
-        FragmentPagerAdapter adapter = new GuideTabsAdapter(getFragmentManager(), getActivity());
+        android.support.v13.app.FragmentStatePagerAdapter adapter = new GuideTabsAdapter(
+                getFragmentManager(), getActivity());
         pager.setOffscreenPageLimit(3);
         pager.setAdapter(adapter);
         indicator.setViewPager(pager);
