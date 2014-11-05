@@ -19,8 +19,10 @@ import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.HotelActivity;
 import pl.tokajiwines.adapters.HotelsAdapter;
+import pl.tokajiwines.adapters.RestaurantsAdapter;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.jsonresponses.HotelsResponse;
+import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 
@@ -53,6 +55,18 @@ public class TabHotelsFragment extends BaseFragment {
         
         sUrl = getResources().getString(R.string.UrlHotelsList);
         mUiList = (ListView) rootView.findViewById(R.id.frag_hotels_list);
+        mHotelList = new HotelListItem[0];
+        mAdapter = new HotelsAdapter(getActivity(), mHotelList);
+        mUiList.setAdapter(mAdapter);
+
+        mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                HotelListItem temp = (HotelListItem) mAdapter.getItem(position);
+                Intent intent = new Intent(mContext, HotelActivity.class);
+                intent.putExtra(HOTEL_TAG, temp);
+                startActivityForResult(intent, HotelActivity.REQUEST);
+            }
+        });
         mContext = getActivity();
 
         return rootView;
@@ -63,15 +77,17 @@ public class TabHotelsFragment extends BaseFragment {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-
-        if (App.isOnline(mContext)) {
-            new LoadHotelTask().execute();
-        }
-
-        // otherwise, show message
-
-        else {
-            Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+        if (mHotelList.length == 0)
+        {
+            if (App.isOnline(mContext)) {
+                new LoadHotelTask().execute();
+            }
+    
+            // otherwise, show message
+    
+            else {
+                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+            }
         }
 
     }
@@ -126,14 +142,6 @@ public class TabHotelsFragment extends BaseFragment {
             mAdapter = new HotelsAdapter(getActivity(), mHotelList);
             mUiList.setAdapter(mAdapter);
 
-            mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                    HotelListItem temp = (HotelListItem) mAdapter.getItem(position);
-                    Intent intent = new Intent(mContext, HotelActivity.class);
-                    intent.putExtra(HOTEL_TAG, temp);
-                    startActivityForResult(intent, HotelActivity.REQUEST);
-                }
-            });
 
         }
     }

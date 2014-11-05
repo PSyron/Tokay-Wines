@@ -18,7 +18,9 @@ import com.google.gson.Gson;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.RestaurantActivity;
+import pl.tokajiwines.adapters.NewsAdapter;
 import pl.tokajiwines.adapters.RestaurantsAdapter;
+import pl.tokajiwines.jsonresponses.NewsListItem;
 import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.jsonresponses.RestaurantsResponse;
 import pl.tokajiwines.utils.Constans;
@@ -52,6 +54,19 @@ public class TabRestaurantsFragment extends BaseFragment {
         sUrl = getResources().getString(R.string.UrlRestaurantsList);
         View rootView = inflater.inflate(R.layout.fragment_restaurants, container, false);
         mUiList = (ListView) rootView.findViewById(R.id.frag_restaurants_list);
+        mRestaurantList = new RestaurantListItem[0];
+        mAdapter = new RestaurantsAdapter(getActivity(), mRestaurantList);
+        mUiList.setAdapter(mAdapter);
+
+        mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                RestaurantListItem temp = (RestaurantListItem) mAdapter.getItem(position);
+                Intent intent = new Intent(mContext, RestaurantActivity.class);
+                intent.putExtra(RESTAURANT_TAG, temp);
+                System.out.println(temp.mIdRestaurant);
+                startActivityForResult(intent, RestaurantActivity.REQUEST);
+            }
+        });
         mContext = getActivity();
 
         return rootView;
@@ -62,15 +77,18 @@ public class TabRestaurantsFragment extends BaseFragment {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
+        if (mRestaurantList.length == 0)
+        {
 
-        if (App.isOnline(mContext)) {
-            new LoadRestaurantTask().execute();
-        }
-
-        // otherwise, show message
-
-        else {
-            Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+            if (App.isOnline(mContext)) {
+                new LoadRestaurantTask().execute();
+            }
+    
+            // otherwise, show message
+    
+            else {
+                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+            }
         }
 
     }
@@ -125,15 +143,6 @@ public class TabRestaurantsFragment extends BaseFragment {
             mAdapter = new RestaurantsAdapter(getActivity(), mRestaurantList);
             mUiList.setAdapter(mAdapter);
 
-            mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                    RestaurantListItem temp = (RestaurantListItem) mAdapter.getItem(position);
-                    Intent intent = new Intent(mContext, RestaurantActivity.class);
-                    intent.putExtra(RESTAURANT_TAG, temp);
-                    System.out.println(temp.mIdRestaurant);
-                    startActivityForResult(intent, RestaurantActivity.REQUEST);
-                }
-            });
 
         }
     }
