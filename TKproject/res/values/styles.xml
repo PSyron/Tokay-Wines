@@ -74,6 +74,11 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">start</item>
+        <item name="android:lines">1</item>
+    </style>
+
+    <style name="ItemText.Normal">
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="ItemTextSmall" parent="@android:style/Widget.TextView">
@@ -81,6 +86,11 @@
         <item name="android:textStyle">normal</item>
         <item name="android:paddingLeft">4dp</item>
         <item name="android:gravity">start</item>
+        <item name="android:lines">1</item>
+    </style>
+
+    <style name="ItemTextSmall.Bold">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="ItemCustomLayout">
@@ -130,6 +140,7 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
+        <item name="android:layout_margin">8dp</item>
         <item name="android:background">@color/filter_text</item>
     </style>
 

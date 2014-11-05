@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/item_wine_image"
-        android:layout_width="@dimen/item_lists_height"
-        android:layout_height="@dimen/item_lists_height"
+        android:layout_width="@dimen/item_wines_lists_height"
+        android:layout_height="@dimen/item_wines_lists_height"
         android:layout_margin="5dp"
         android:src="@drawable/ic_launcher" />
 
@@ -16,25 +16,126 @@
         android:layout_height="wrap_content"
         android:gravity="left" >
 
-        <TextView
-            android:id="@+id/item_wine_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:lines="1"
-            android:text="Title"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/item_wine_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/item_wine_title"
-            android:layout_margin="4dp"
-            android:lines="3"
-            android:text="Tekst\n tekst\n tekst"
-            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/item_wine_name"
+                style="@style/ItemText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/name" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/ItemTextSmall.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wine_taste" />
+
+                <TextView
+                    android:id="@+id/item_wine_taste"
+                    style="@style/ItemTextSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/ItemTextSmall.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wine_type" />
+
+                <TextView
+                    android:id="@+id/item_wine_type"
+                    style="@style/ItemTextSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/ItemTextSmall.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wine_strain" />
+
+                <TextView
+                    android:id="@+id/item_wine_strain"
+                    style="@style/ItemTextSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/ItemTextSmall.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wine_year" />
+
+                <TextView
+                    android:id="@+id/item_wine_year"
+                    style="@style/ItemTextSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/ItemTextSmall.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/price" />
+
+                <TextView
+                    android:id="@+id/item_wine_price"
+                    style="@style/ItemTextSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+               <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/ItemTextSmall.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wine_produder" />
+
+                <TextView
+                    android:id="@+id/item_wine_producer"
+                    style="@style/ItemTextSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
 
 </LinearLayout>

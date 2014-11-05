@@ -22,7 +22,7 @@
             style="@style/ItemText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/phone_nb" />
+            android:text="@string/name" />
 
         <LinearLayout
             android:layout_width="match_parent"

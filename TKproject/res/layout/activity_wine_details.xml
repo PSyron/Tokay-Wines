@@ -45,8 +45,8 @@
                     style="@style/DetailsButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Producer"
-                    android:textSize="14dp" />
+                    android:textSize="16dp"
+                    android:text="Producer" />
             </LinearLayout>
 
             <LinearLayout
@@ -139,40 +139,17 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
-
+		
         <TextView
             android:id="@+id/activity_wine_description"
-            style="@style/DetailsHeader.NormalText.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            style="@style/DetailsHeader.Bookmark"
+            style="@style/DetailsHeader.NormalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/users_reviews" />
+            android:text="Desciption" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
 
-            <TextView
-                android:id="@+id/activity_producer_details_review"
-                style="@style/DetailsHeader.NormalText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Great!" />
 
-            <TextView
-                android:id="@+id/activity_producer_details_review_user"
-                style="@style/DetailsHeader.NormalText.Small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_producer_details_review"
-                android:gravity="right"
-                android:paddingRight="30dp"
-                android:text="John Winter" />
-        </RelativeLayout>
+       
     </LinearLayout>
 
 </ScrollView>

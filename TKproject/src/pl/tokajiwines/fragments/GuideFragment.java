@@ -53,10 +53,4 @@ public class GuideFragment extends BaseFragment {
         super.onSaveInstanceState(outState);
     }
 
-    public void onResume() {
-
-        super.onResume();
-
-    }
-
 }

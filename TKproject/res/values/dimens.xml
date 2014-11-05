@@ -10,9 +10,11 @@
     -->
     <dimen name="navigation_drawer_width">240dp</dimen>
     <dimen name="item_lists_height">72dp</dimen>
+    <dimen name="item_wines_lists_height">112dp</dimen>
     <dimen name="item_menu_height">40dp</dimen>
     <dimen name="details_image_height">225dp</dimen>
     <dimen name="details_image_width">300dp</dimen>
     <dimen name="details_icon_height">64dp</dimen>
+    
 
 </resources>

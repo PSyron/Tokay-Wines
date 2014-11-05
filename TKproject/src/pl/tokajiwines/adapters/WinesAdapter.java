@@ -22,8 +22,13 @@ public class WinesAdapter extends BaseAdapter {
     }
 
     public class Holder {
-        TextView title;
-        TextView content;
+        TextView name;
+        TextView taste;
+        TextView type;
+        TextView strain;
+        TextView year;
+        TextView price;
+        TextView producer;
         ImageView img;
     }
 
@@ -51,12 +56,14 @@ public class WinesAdapter extends BaseAdapter {
         Holder holder = new Holder();
         View rowView;
         rowView = inflater.inflate(R.layout.item_wine, null);
-        holder.title = (TextView) rowView.findViewById(R.id.item_wine_title);
-        holder.content = (TextView) rowView.findViewById(R.id.item_wine_content);
+        holder.name = (TextView) rowView.findViewById(R.id.item_wine_name);
+        holder.taste = (TextView) rowView.findViewById(R.id.item_wine_taste);
+        holder.type = (TextView) rowView.findViewById(R.id.item_wine_type);
+        holder.strain = (TextView) rowView.findViewById(R.id.item_wine_strain);
+        holder.price = (TextView) rowView.findViewById(R.id.item_wine_price);
+        holder.producer = (TextView) rowView.findViewById(R.id.item_wine_producer);
         holder.img = (ImageView) rowView.findViewById(R.id.item_wine_image);
-        holder.title.setText("Tytuł " + position);
-        holder.img.setImageResource(R.drawable.ic_launcher);
-        holder.content.setText("Tekst o pozycji " + position + "\n\n ma trzy linijki");
+
         //        rowView.setOnClickListener(new OnClickListener() {
         //            @Override
         //            public void onClick(View v) {
