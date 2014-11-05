@@ -1,12 +1,134 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
+    <!-- General -->
+
     <string name="app_name">Wina Tokaju</string>
+    <string name="name">Nazwa</string>
     <string name="title_news">Aktualności</string>
     <string name="title_wines">Wina</string>
     <string name="title_wineyards">Producenci</string>
+    <string name="title_events">Wydarzenia</string>
     <string name="title_map">Mapa</string>
     <string name="title_tour">Przewodnik</string>
     <string name="title_settings">Ustawienia</string>
+    <string name="search">Wyszukaj</string>
+    <string name="price">Cena</string>
+
+    <!-- Menu -->
+
+    <string name="menu_news">Aktualności</string>
+    <string name="menu_wines">Wina</string>
+    <string name="menu_wineyards">Producenci</string>
+    <string name="menu_map">Znajdź w pobliżu na mapie</string>
+    <string name="menu_tour">Przewodnik po Takaju</string>
+    <string name="menu_settings">Ustawienia</string>
+    <string name="navigation_drawer_open">Otwórz panel nawigacji</string>
+    <string name="navigation_drawer_close">Zamknij panel nawigacji</string>
+    <string name="action_search">Wyszukaj</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="action_home">Home</string>
+
+    <!-- News -->
+
+    <string name="news_details_date">Data tego wydarzenia:</string>
+
+    <!-- Wine -->
+
+    <string name="wine_details_available_manufacturer">Dostępne u producenta:</string>
+    <string name="wine_year">Rok</string>
+    <string name="wine_search">Opcje wyszukiwania</string>
+    <string name="wine_all">Wszystkie</string>
+    <string name="wine_color">Kolor</string>
+    <string name="wine_color_white">Białe</string>
+    <string name="wine_color_pink">Różowe</string>
+    <string name="wine_color_red">Czerwone</string>
+    <string name="wine_taste">Smak</string>
+    <string name="wine_taste_dry">Wytrawne</string>
+    <string name="wine_taste_semidry">Półwytrawne</string>
+    <string name="wine_taste_semisweet">Półsłodkie</string>
+    <string name="wine_taste_sweet">Słodkie</string>
+    <string name="wine_taste_sparkling">Musujące</string>
+    <string name="wine_type">Typ</string>
+    <string name="wine_type_1"></string>
+    <string name="wine_strain">Szczep</string>
+    <string name="wine_price_range">Przedział cenowy</string>
+    <string name="wine_produder">Producent</string>
+    <string name="any">Dowolny (dotknij, aby wybrać)</string>
+    <string name="dialog_wine_taste">Wybierz smak</string>
+    <string name="dialog_wine_type">Wybierz typ</string>
+    <string name="dialog_wine_strain">Wybierz szczep</string>
+    <string name="dialog_wine_producer">Wybierz producenta</string>
+    <string name="dialog_wine_year">Wybierz rocznik</string>
+    <string name="dialog_wine_price">Wybierz przedział cenowy</string>
+    <string name="wine_available">Dostępne u</string>
+    <!-- Producers -->
+
+    <string name="address">Adres:</string>
+    <string name="opening_hours">Godziny otwarcia:</string>
+    <string name="phone_nb">Numer telefonu:</string>
+    <string name="show_more_wines">Pokaż więcej win</string>
+    <string name="users_reviews">Recenje</string>
+
+    <!-- Map -->
+
+    <string name="loading_near">Wczytywanie miejsc w pobliżu...</string>
+    <string name="here_u_are">Jesteś tutaj</string>
+    <string name="distance">Dystans: </string>
+    <string name="duration">\nCzas trwania: </string>
+    <string name="duration_item">Czas trwania: </string>
+    <string name="range">Zasięg: </string>
+    <string name="preffered_tours">Wybierz z pośród zdefiniowanych tras!</string>
+    <string name="here_u_started">Tutaj zacząłeś</string>
+    <string name="navigation_to">Nawiguj do: </string>
+    <string name="places_near">Miejsca w pobliżu: </string>
+
+    <!-- Guide -->
+
+    <string name="curiosities">Ciekawostki</string>
+    <string name="hotels">Hotele</string>
+    <string name="restaurants">Restauracje</string>
+    <string name="history">Historia okolcy</string>
+    <string name="points_of_interest">Miejsca warte uwagi</string>
+    <string name="about_wine">To co powinieneś wiedzieć o winie</string>
+
+    <!-- Settings -->
+
+    <string name="notifications">Powiadomienia</string>
+    <string name="enable_notifications">Włącz powiadomienia</string>
+    <string name="vibrations_only">Tryb wibracyjny</string>
+    <string name="general_settings">Ustawienia ogólne</string>
+    <string name="language">Język</string>
+    <string name="english">Angielski</string>
+    <string name="polish">Polski</string>
+    <string name="currency">Waluta</string>
+    <string name="currency_polish">PLN</string>
+    <string name="currency_euro">€</string>
+    <string name="distance_measure">Jednostka odległości</string>
+    <string name="distance_measure_km">km</string>
+    <string name="distance_measure_miles">mile</string>
+    <string name="gps">GPS</string>
+    <string name="application_range">Zasięg aplikacji</string>
+    <string name="mobile_data">Dane komórkowe</string>
+    <string name="contact">Kontakt</string>
+    <string name="about_the_application">O aplikacji</string>
+    <string name="dialog_title_language">Wybierz język apliacji: </string>
+    <string name="dialog_title_currency">Wybierz walutę w aplikacji: </string>
+    <string name="dialog_title_measure">Wybierz jednostkę odległości w aplikacji: </string>
+    <string name="dialog_title_range">Wybierz zasięg aplikacji: </string>
+
+    <!-- Urls -->
+
+    <string name="UrlNearLatLngPlace">http://tokajiwines.me/services/nearPlaces.php</string>
+    <string name="UrlEventDetails">http://tokajiwines.me/services/newsdetail.php</string>
+    <string name="UrlHotelDetails">http://tokajiwines.me/services/hotelDetails.php</string>
+    <string name="UrlProducerDetails">http://tokajiwines.me/services/producerDetails.php</string>
+    <string name="UrlProducerImages">http://tokajiwines.me/services/producerImages.php</string>
+    <string name="UrlRestaurantDetails">http://tokajiwines.me/services/restaurantDetails.php</string>
+    <string name="UrlNewsList">http://tokajiwines.me/services/news.php</string>
+    <string name="UrlProducersList">http://tokajiwines.me/services/producers.php</string>
+    <string name="UrlHotelsList">http://tokajiwines.me/services/hotels.php</string>
+    <string name="UrlRestaurantsList">http://tokajiwines.me/services/restaurants.php</string>
+    <string name="UrlWineFilter">http://tokajiwines.me/services/wineFilter.php</string>
 
 </resources>
