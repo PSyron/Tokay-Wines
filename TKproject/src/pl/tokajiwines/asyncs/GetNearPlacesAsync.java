@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 
@@ -34,7 +36,7 @@ import java.net.URL;
 public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
 
     static final long ONE_MINUTE_IN_MILLIS = 60000;// millisecs MINUTE
-
+    public static final String SHARED_ARRAY = "shared_array ";
     private Context mContext;
     private static String sUrl;
     private Place[] mNearbyPlaces;
@@ -108,9 +110,11 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
     public void notyfikuj() {
 
         for (Place p : mNearbyPlaces) {
-
-            if (!RepeatServiceNotificationReceiver.wyswietlone.contains(p)) {
-
+            boolean tempBoolean = SharedPreferencesHelper.getSharedPreferencesBoolean(mContext,
+                    SHARED_ARRAY + p.mIdPlace, false);
+            if (!tempBoolean) {
+                SharedPreferencesHelper.putSharedPreferencesBoolean(mContext, SHARED_ARRAY
+                        + p.mIdPlace, true);
                 RepeatServiceNotificationReceiver.wyswietlone.add(p);
                 NotificationManager nm = (NotificationManager) mContext
                         .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -118,6 +122,12 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
                 Intent inter = new Intent(mContext, MainActivity.class);
                 inter.putExtra("dawaj dawaj", p.mIdPlace);
                 inter.setAction(Long.toString(System.currentTimeMillis()));
+                if (!SharedPreferencesHelper.getSharedPreferencesBoolean(mContext,
+                        SettingsFragment.SharedKeyNotifVibrat, SettingsFragment.DefNotifVibrat)) {
+                    Uri alarmSound = RingtoneManager
+                            .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    builder.setSound(alarmSound);
+                }
                 // inter.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP
                 // | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, inter,

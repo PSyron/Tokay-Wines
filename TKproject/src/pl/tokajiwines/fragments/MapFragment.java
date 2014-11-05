@@ -73,8 +73,6 @@ public class MapFragment extends BaseFragment {
 
     private Place[] mNearbyPlaces;
 
-    boolean debug_position_mode = false; // emulating position
-
     private static String sUrl;
     public static final String TAG_ID_PLACE = "IdPlace";
     GPSTracker mGPStrack;
@@ -101,7 +99,7 @@ public class MapFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
 
         mMapView = (MapView) v.findViewById(R.id.map);
-        if (debug_position_mode) {
+        if (App.debug_mode) {
             myPosition = new LatLng(48.1295, 21.4089);
         } else {
             mGPStrack = new GPSTracker(getActivity());
@@ -198,7 +196,7 @@ public class MapFragment extends BaseFragment {
                 mRangePicked = (position + 1) * 5;
                 if (App.isOnline(mCtx)) {
                     if (!mFirstRun) {
-                        if (debug_position_mode) {
+                        if (App.debug_mode) {
                             new LoadNearPlaces().execute(myPosition);
                         } else {
 

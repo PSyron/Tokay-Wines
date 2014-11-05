@@ -8,6 +8,8 @@ import android.net.NetworkInfo;
 
 public class App extends Application {
 
+    public static boolean debug_mode = false;// emulating position
+
     public static boolean isOnline(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
