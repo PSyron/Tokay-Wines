@@ -16,7 +16,7 @@ import java.util.List;
 public class RepeatServiceNotificationReceiver extends BroadcastReceiver {
 
     // restart service every 30 seconds
-    private static final long REPEAT_TIME = 1000 * 15;
+    private static final long REPEAT_TIME = 1000 * 60;
     public static List<Place> wyswietlone = new ArrayList<Place>();
 
     @Override
