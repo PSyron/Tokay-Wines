@@ -74,7 +74,7 @@ public class WinesAdapter extends BaseAdapter {
         holder.name.setText(mWines[position].mName);
         holder.taste.setText(mWines[position].mFlavourName);
         holder.type.setText(mWines[position].mGrade);
-        holder.strain.setText("");
+        holder.strain.setText(mWines[position].mStrains);
         holder.price.setText(mWines[position].mPrice);
         holder.producer.setText(mWines[position].mProducerName);
         holder.year.setText(mWines[position].mYear);

@@ -136,9 +136,9 @@ public class WinesListActivity extends BaseActivity {
             WinesResponse response = gson.fromJson(reader, WinesResponse.class);
 
             if (response != null) {
-                System.out.println("message " +response.message);
                 mWinesList = response.wines;
             }
+
 
             return null;
 

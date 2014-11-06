@@ -28,6 +28,9 @@ public class WineListItem implements Serializable{
     public String mImageUrl;
     @SerializedName("price")
     public String mPrice;
+    @SerializedName("strains")
+    public String mStrains;
+    
 
 
 }
