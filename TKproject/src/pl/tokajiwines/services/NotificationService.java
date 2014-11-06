@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import pl.tokajiwines.App;
 import pl.tokajiwines.asyncs.GetNearPlacesAsync;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.utils.GPSTracker;
@@ -21,7 +22,9 @@ public class NotificationService extends Service {
         if (SharedPreferencesHelper.getSharedPreferencesBoolean(this,
                 SettingsFragment.SharedKeyNotif, SettingsFragment.DefNotif)) {
             Log.e("onStartCommand", "execute ");
-            new GetNearPlacesAsync(this).execute(new GPSTracker(this).getLocationLatLng());
+            if (App.isOnline(this)) {
+                new GetNearPlacesAsync(this).execute(new GPSTracker(this).getLocationLatLng());
+            }
         }
         // Log.e("serwis", "execute " + wyswietlone.size());
 
