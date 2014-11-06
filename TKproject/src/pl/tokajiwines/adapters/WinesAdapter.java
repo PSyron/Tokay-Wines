@@ -1,6 +1,8 @@
 
 package pl.tokajiwines.adapters;
 
+import com.koushikdutta.ion.Ion;
+
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +12,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import pl.tokajiwines.R;
+import pl.tokajiwines.jsonresponses.NewsListItem;
+import pl.tokajiwines.jsonresponses.WineListItem;
 
 public class WinesAdapter extends BaseAdapter {
 
     Activity mActivity;
     private static LayoutInflater inflater = null;
+    private WineListItem[] mWines = null;
 
-    public WinesAdapter(Activity act) {
+    public WinesAdapter(Activity act, WineListItem[] wines) {
         mActivity = act;
+        mWines = wines;
         inflater = (LayoutInflater) mActivity.getSystemService(mActivity.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -35,22 +41,22 @@ public class WinesAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         // TODO zrobic
-        return null;
+        return mWines[position];
     }
 
     @Override
     public int getCount() {
         // TODO po pobraniu
-        return 100;
+        return mWines.length;
     }
 
     @Override
     public long getItemId(int position) {
         // TODO zrobic
-        return 0;
+        return mWines[position].mIdWine;
     }
 
-    // #zmienic #kutwa #zaKodPawłaBaluj
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder = new Holder();
@@ -61,8 +67,21 @@ public class WinesAdapter extends BaseAdapter {
         holder.type = (TextView) rowView.findViewById(R.id.item_wine_type);
         holder.strain = (TextView) rowView.findViewById(R.id.item_wine_strain);
         holder.price = (TextView) rowView.findViewById(R.id.item_wine_price);
+        holder.year = (TextView) rowView.findViewById(R.id.item_wine_year);
         holder.producer = (TextView) rowView.findViewById(R.id.item_wine_producer);
         holder.img = (ImageView) rowView.findViewById(R.id.item_wine_image);
+        
+        holder.name.setText(mWines[position].mName);
+        holder.taste.setText(mWines[position].mFlavourName);
+        holder.type.setText(mWines[position].mGrade);
+        holder.strain.setText("");
+        holder.price.setText(mWines[position].mPrice);
+        holder.producer.setText(mWines[position].mProducerName);
+        holder.year.setText(mWines[position].mYear);
+        Ion.with(holder.img)
+        .placeholder(R.drawable.placeholder_image)
+        .error(R.drawable.error_image)
+        .load(mWines[position].mImageUrl);
 
         //        rowView.setOnClickListener(new OnClickListener() {
         //            @Override
