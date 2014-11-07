@@ -37,6 +37,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+
 public class WinesFilterFragment extends BaseFragment {
 
     LinearLayout mUiTasteLin;
@@ -77,12 +79,11 @@ public class WinesFilterFragment extends BaseFragment {
     String[] currCurrencyTab;
     Context mCtx;
     
-    private static final int TAG_FLAVOURS = 1;
-    private static final int TAG_GRADES = 2; 
-    private static final int TAG_STRAINS = 3; 
-    private static final int TAG_PRODUCERS = 4; 
-    private static final int TAG_YEARS = 5; 
-    public static final String TAG_FILTER_QUERY = "FILTER_QUERY";
+    public static final int TAG_FLAVOURS = 1;
+    public static final int TAG_GRADES = 2; 
+    public static final int TAG_STRAINS = 3; 
+    public static final int TAG_PRODUCERS = 4; 
+    public static final int TAG_YEARS = 5; 
 
     public static WinesFilterFragment newInstance(Context ctx) {
         WinesFilterFragment fragment = new WinesFilterFragment(ctx);
@@ -244,87 +245,21 @@ public class WinesFilterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 
-                StringBuilder sbuilder= new StringBuilder();
-                
-                if (mSelectedTastes.size() > 0 || mSelectedGrades.size() > 0 || mSelectedStrains.size()> 0 || mSelectedProducers.size() > 0 || mSelectedYears.size() > 0)
-                {
-               
-                    if (mSelectedTastes.size() > 0)
-                    {
-                        sbuilder.append("WHERE (tWines.IdFlavour_ = "+ mSelectedTastes.get(0));
-                        
-                        for (int i = 1; i < mSelectedTastes.size(); i++)
-                        {
-                            sbuilder.append(" OR tWines.IdFlavour_ = "+ mSelectedTastes.get(i));
-                        }
-                        
-                        sbuilder.append(")");
-                    }
-                    
-                    if (mSelectedGrades.size() > 0)
-                    {
-                        if (sbuilder.length() > 0)
-                        {
-                            sbuilder.append(" AND (");
-                        }
-                        else
-                        {
-                            sbuilder.append(" WHERE( ");
-                        }
-                        sbuilder.append("tWines.IdGrade_ = "+ mSelectedGrades.get(0));
-                        
-                        for (int i = 1; i < mSelectedGrades.size(); i++)
-                        {
-                            sbuilder.append(" OR tWines.IdGrade_ = "+ mSelectedGrades.get(i));
-                        }
-                        
-                        sbuilder.append(")");
-                    }
-                    
-                    if (mSelectedProducers.size() > 0)
-                    {
-                        if (sbuilder.length() > 0)
-                        {
-                            sbuilder.append(" AND (");
-                        }
-                        else
-                        {
-                            sbuilder.append("WHERE(  ");
-                        }
-                        sbuilder.append("tWines.IdProducer_ = "+ mSelectedProducers.get(0));
-                        
-                        for (int i = 1; i < mSelectedProducers.size(); i++)
-                        {
-                            sbuilder.append(" OR tWines.IdProducer_ = "+ mSelectedProducers.get(i));
-                        }
-                        
-                        sbuilder.append(")");
-                    }
-                    
-                    if (mSelectedYears.size() > 0)
-                    {
-                        if (sbuilder.length() > 0)
-                        {
-                            sbuilder.append(" AND (");
-                        }
-                        else
-                        {
-                            sbuilder.append("WHERE ( ");
-                        }
-                        sbuilder.append("ProdDate = "+ mSelectedYears.get(0));
-                        
-                        for (int i = 1; i < mSelectedYears.size(); i++)
-                        {
-                            sbuilder.append(" OR ProdDate = "+ mSelectedYears.get(i));
-                        }
-                        
-                        sbuilder.append(")");
-                    }
-                    
-
-                }
                 Intent intent = new Intent(mCtx, WinesListActivity.class);
-                intent.putExtra(TAG_FILTER_QUERY, new String(sbuilder));
+                
+                Gson gson = new Gson(); 
+                String tastes = gson.toJson(mSelectedTastes.toArray()); 
+                String grades = gson.toJson(mSelectedGrades.toArray());
+                String strains = gson.toJson(mSelectedStrains.toArray());
+                String producers = gson.toJson(mSelectedProducers.toArray());
+                String years = gson.toJson(mSelectedYears.toArray());
+                
+                intent.putExtra(""+TAG_FLAVOURS, tastes);
+                intent.putExtra(""+TAG_GRADES, grades);
+                intent.putExtra(""+TAG_STRAINS, strains);
+                intent.putExtra(""+TAG_PRODUCERS, producers);
+                intent.putExtra(""+TAG_YEARS, years);
+                
                 startActivity(intent);
 /*                Toast toast = Toast.makeText(mCtx, "Not working yet", 10);
                 toast.show();*/

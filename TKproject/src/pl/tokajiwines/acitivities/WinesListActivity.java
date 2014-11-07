@@ -46,7 +46,11 @@ public class WinesListActivity extends BaseActivity {
     private JSONParser mParser;
     private ProgressDialog mProgDial;
     private String sUrl;
-    private String mFilterQuery = "";
+    private String mFlavours;
+    private String mStrains;
+    private String mGrades;
+    private String mYears;
+    private String mProducers;
     public static String TAG_ID_WINE = "IdWine";
     
 
@@ -58,8 +62,11 @@ public class WinesListActivity extends BaseActivity {
         
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            mFilterQuery = (String) extras.getString(WinesFilterFragment.TAG_FILTER_QUERY);
-            System.out.println(mFilterQuery);
+            mFlavours = (String) extras.getString(WinesFilterFragment.TAG_FLAVOURS+"");
+            mGrades = (String) extras.getString(WinesFilterFragment.TAG_GRADES+"");
+            mStrains = (String) extras.getString(WinesFilterFragment.TAG_STRAINS+"");
+            mProducers = (String) extras.getString(WinesFilterFragment.TAG_PRODUCERS+"");
+            mYears = (String) extras.getString(WinesFilterFragment.TAG_YEARS+"");
 
         }
         
@@ -126,7 +133,11 @@ public class WinesListActivity extends BaseActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("lang", "" + SharedPreferencesHelper.getSharedPreferencesInt(mAct,
                     SettingsFragment.SharedKeyLanguage, SettingsFragment.DefLanguage)));
-            params.add(new BasicNameValuePair("filter", mFilterQuery));
+            params.add(new BasicNameValuePair("flavours", mFlavours));
+            params.add(new BasicNameValuePair("grades", mGrades));
+            params.add(new BasicNameValuePair("strains", mStrains));
+            params.add(new BasicNameValuePair("producers", mProducers));
+            params.add(new BasicNameValuePair("years", mYears));
 
             InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
                     Constans.sPassword, params);
@@ -137,8 +148,8 @@ public class WinesListActivity extends BaseActivity {
 
             if (response != null) {
                 mWinesList = response.wines;
+                System.out.println(response.message);
             }
-
 
             return null;
 
