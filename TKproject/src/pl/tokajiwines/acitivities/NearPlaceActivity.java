@@ -4,9 +4,12 @@ package pl.tokajiwines.acitivities;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +29,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
-import com.koushikdutta.ion.Ion;
 
 import org.json.JSONObject;
 
@@ -42,6 +44,7 @@ import pl.tokajiwines.utils.Log;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -222,7 +225,7 @@ public class NearPlaceActivity extends BaseActivity {
     }
 
     public void fillBox(Marker arg0) {
-        for (Place pl : mNearbyPlaces) {
+        for (final Place pl : mNearbyPlaces) {
             if (pl.getLatLng().latitude == arg0.getPosition().latitude
                     && pl.getLatLng().longitude == arg0.getPosition().longitude) {
                 mUiPlaceBox.setVisibility(View.VISIBLE);
@@ -234,8 +237,25 @@ public class NearPlaceActivity extends BaseActivity {
                 }
                 mUiPlaceAddress.setText(pl.mAddress);
 
-                Ion.with(mUiPlaceImage).placeholder(R.drawable.placeholder_image)
-                        .error(R.drawable.error_image).load(pl.mImageUrl);
+                //                Ion.with(mUiPlaceImage).placeholder(R.drawable.placeholder_image)
+                //                        .error(R.drawable.error_image).load(pl.mImageUrl);
+                Log.e(LOG_TAG, pl.mImageUrl + " ");
+                final File imgFile = new File(App.fileAbsPath
+                        + pl.mImageUrl.substring(pl.mImageUrl.lastIndexOf('/') + 1,
+                                pl.mImageUrl.length()));
+                if (imgFile.exists()) {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+                    mUiPlaceImage.setImageBitmap(myBitmap);
+                } else {
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            App.downloadImagesToSdCard(pl.mImageUrl, NearPlaceActivity.this,
+                                    mUiPlaceImage);
+
+                        }
+                    }, 50);
+                }
                 return;
             }
         }

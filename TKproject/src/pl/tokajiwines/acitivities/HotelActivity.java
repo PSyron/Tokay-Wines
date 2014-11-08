@@ -56,7 +56,7 @@ public class HotelActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hotel_details);
-        
+
         sUrl = getResources().getString(R.string.UrlHotelDetails);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -93,7 +93,7 @@ public class HotelActivity extends BaseActivity {
                         mHotelFromBase.mStreetName + " " + mHotelFromBase.mStreetNumber + " "
                                 + mHotelFromBase.mHouseNumber + " " + mHotelFromBase.mCity + " "
                                 + mHotelFromBase.mPostCode, mHotelFromBase.mLng,
-                        mHotelFromBase.mLat, "Hotel");
+                        mHotelFromBase.mLat, "Hotel", mHotelFromBase.mImageUrl);
 
                 Intent intent = new Intent(HotelActivity.this, NavigateToActivity.class);
                 intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);

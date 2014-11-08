@@ -117,18 +117,4 @@
     <string name="dialog_title_measure">Wybierz jednostkę odległości w aplikacji: </string>
     <string name="dialog_title_range">Wybierz zasięg aplikacji: </string>
 
-    <!-- Urls -->
-
-    <string name="UrlNearLatLngPlace">http://tokajiwines.me/services/nearPlaces.php</string>
-    <string name="UrlEventDetails">http://tokajiwines.me/services/newsdetail.php</string>
-    <string name="UrlHotelDetails">http://tokajiwines.me/services/hotelDetails.php</string>
-    <string name="UrlProducerDetails">http://tokajiwines.me/services/producerDetails.php</string>
-    <string name="UrlProducerImages">http://tokajiwines.me/services/producerImages.php</string>
-    <string name="UrlRestaurantDetails">http://tokajiwines.me/services/restaurantDetails.php</string>
-    <string name="UrlNewsList">http://tokajiwines.me/services/news.php</string>
-    <string name="UrlProducersList">http://tokajiwines.me/services/producers.php</string>
-    <string name="UrlHotelsList">http://tokajiwines.me/services/hotels.php</string>
-    <string name="UrlRestaurantsList">http://tokajiwines.me/services/restaurants.php</string>
-    <string name="UrlWineFilter">http://tokajiwines.me/services/wineFilter.php</string>
-
 </resources>
