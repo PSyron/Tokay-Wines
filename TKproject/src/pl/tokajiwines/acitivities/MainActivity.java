@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.fragments.GuideFragment;
 import pl.tokajiwines.fragments.MapFragment;
@@ -18,6 +19,7 @@ import pl.tokajiwines.fragments.NewsFragment;
 import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.fragments.WinesFilterFragment;
+import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 public class MainActivity extends Activity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -41,7 +43,9 @@ public class MainActivity extends Activity implements
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
-
+        if (App.debug_mode) {
+            SharedPreferencesHelper.clearSharedPreferences(this);
+        }
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));

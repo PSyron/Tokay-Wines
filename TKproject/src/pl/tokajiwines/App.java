@@ -70,4 +70,36 @@ public class App extends Application {
 
     }
 
+    public static Bitmap downloadImagesToSdCardAndReturnBitman(final String downloadUrl, Context ctx) {
+
+        final File direct = new File(Environment.getExternalStorageDirectory() + "/Tokaji Wines");
+
+        if (!direct.exists()) {
+            direct.mkdirs();
+        }
+
+        DownloadManager mgr = (DownloadManager) ctx.getSystemService(Context.DOWNLOAD_SERVICE);
+
+        Uri downloadUri = Uri.parse(downloadUrl);
+        DownloadManager.Request request = new DownloadManager.Request(downloadUri);
+
+        request.setAllowedNetworkTypes(
+                DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
+                .setAllowedOverRoaming(true)
+                .setTitle("Downloading images")
+                .setDescription("Images for Application")
+                .setDestinationInExternalPublicDir(
+                        "/Tokaji Wines",
+                        downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1,
+                                downloadUrl.length()));
+
+        mgr.enqueue(request);
+
+        Bitmap myBitmap = BitmapFactory.decodeFile(direct.getPath() + "/"
+                + downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1, downloadUrl.length()));
+
+        return myBitmap;
+
+    }
+
 }

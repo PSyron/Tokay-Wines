@@ -13,6 +13,13 @@ public class SharedPreferencesHelper {
         public static final String key2 = "key2";
     }
 
+    public static void clearSharedPreferences(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Editor edit = preferences.edit();
+        edit.clear();
+        edit.commit();
+    }
+
     public static void putSharedPreferencesInt(Context context, String key, int value) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         Editor edit = preferences.edit();
