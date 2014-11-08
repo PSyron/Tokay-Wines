@@ -20,7 +20,7 @@ import org.json.JSONArray;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.ProducerActitvity;
+import pl.tokajiwines.acitivities.ProducerActivity;
 import pl.tokajiwines.adapters.ProducersAdapter;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.ProducersResponse;
@@ -73,10 +73,10 @@ public class ProducersFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ProducerListItem temp = (ProducerListItem) mAdapter.getItem(position);
                 Log.e(ProducersFragment.class.getName(), temp + " ");
-                Intent intent = new Intent(mContext, ProducerActitvity.class);
+                Intent intent = new Intent(mContext, ProducerActivity.class);
                 intent.putExtra(PRODUCER_TAG, temp);
 
-                startActivityForResult(intent, ProducerActitvity.REQUEST);
+                startActivityForResult(intent, ProducerActivity.REQUEST);
 
             }
 

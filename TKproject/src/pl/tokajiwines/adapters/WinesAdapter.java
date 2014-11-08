@@ -40,19 +40,16 @@ public class WinesAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        // TODO zrobic
         return mWines[position];
     }
 
     @Override
     public int getCount() {
-        // TODO po pobraniu
         return mWines.length;
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO zrobic
         return mWines[position].mIdWine;
     }
 

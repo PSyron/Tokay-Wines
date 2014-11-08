@@ -31,6 +31,7 @@ import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.fragments.WinesFilterFragment;
 import pl.tokajiwines.jsonresponses.NewsListItem;
 import pl.tokajiwines.jsonresponses.NewsResponse;
+import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.jsonresponses.WinesResponse;
 import pl.tokajiwines.utils.Constans;
@@ -51,7 +52,7 @@ public class WinesListActivity extends BaseActivity {
     private String mGrades;
     private String mYears;
     private String mProducers;
-    public static String TAG_ID_WINE = "IdWine";
+    public static String TAG_WINE = "WINE";
     
 
     @Override
@@ -79,9 +80,9 @@ public class WinesListActivity extends BaseActivity {
 
         mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-           //     Intent intent = new Intent(mAct, NewsActivity.class);
-           //     intent.putExtra(TAG_ID_WINE, mAdapter.getItemId(position));
-            //    startActivity(intent);
+                Intent intent = new Intent(mAct, WineActivity.class);
+                intent.putExtra(TAG_WINE, (WineListItem)mAdapter.getItem(position));
+                startActivity(intent);
             }
         });
     }

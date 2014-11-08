@@ -42,7 +42,7 @@
             android:value="AIzaSyCweB3IdP8HuqaO8TUUviVNfrQQ_exoAz4" />
 
         <activity
-            android:name="pl.tokajiwines.acitivities.MainActivity"
+            android:name=".acitivities.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -52,7 +52,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="pl.tokajiwines.acitivities.NewsActivity"
+            android:name=".acitivities.NewsActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <meta-data
@@ -60,59 +60,68 @@
                 android:value="pl.tokajiwines.MainActivity" />
         </activity>
         <activity
-            android:name="pl.tokajiwines.acitivities.PlaceAcitvity"
+            android:name=".acitivities.PlaceAcitvity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="pl.tokajiwines.acitivities.WinesListActivity"
+            android:name=".acitivities.WinesListActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="pl.tokajiwines.acitivities.ProducerActitvity"
+            android:name=".acitivities.ProducerActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="pl.tokajiwines.acitivities.ProducerWinesActivity"
+            android:name=".acitivities.ProducerWinesActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="pl.tokajiwines.acitivities.NearPlaceActivity"
+            android:name=".acitivities.NearPlaceActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="pl.tokajiwines.acitivities.NavigateToActivity"
+            android:name=".acitivities.NavigateToActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="pl.tokajiwines.acitivities.HotelActivity"
+            android:name=".acitivities.HotelActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="pl.tokajiwines.acitivities.RestaurantActivity"
+            android:name=".acitivities.RestaurantActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
 
         <service
-            android:name="pl.tokajiwines.services.NotificationService"
+            android:name=".services.NotificationService"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name" >
         </service>
 
-        <receiver android:name="pl.tokajiwines.recivers.RepeatServiceNotificationReceiver" >
+        <receiver android:name=".recivers.RepeatServiceNotificationReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name="pl.tokajiwines.recivers.StartServiceReceiver" >
+        <receiver android:name=".recivers.StartServiceReceiver" >
         </receiver>
+
+        <activity
+            android:name="pl.tokajiwines.acitivities.WineActivity"
+            android:label="@string/title_activity_wine"
+            android:parentActivityName=".acitivities.WinesListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.tokajiwines.acitivities.WinesListActivity" />
+        </activity>
     </application>
 
 </manifest>

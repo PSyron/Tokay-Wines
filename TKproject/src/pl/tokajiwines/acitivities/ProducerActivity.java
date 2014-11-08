@@ -37,7 +37,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProducerActitvity extends BaseActivity {
+public class ProducerActivity extends BaseActivity {
     JSONParser mParser;
     public static int REQUEST = 997;
     private  String sUrl;
@@ -74,7 +74,7 @@ public class ProducerActitvity extends BaseActivity {
         if (extras != null) {
             mProducer = (ProducerListItem) extras.getSerializable(ProducersFragment.PRODUCER_TAG);
         }
-        Log.e(ProducerActitvity.class.getName(), mProducer + " ");
+        Log.e(ProducerActivity.class.getName(), mProducer + " ");
         initView();
 
     }
@@ -115,7 +115,7 @@ public class ProducerActitvity extends BaseActivity {
                         mProducerFromBase.mName, tempAddress, mProducerFromBase.mLng,
                         mProducerFromBase.mLat, "Producer");
 
-                Intent intent = new Intent(ProducerActitvity.this, NearPlaceActivity.class);
+                Intent intent = new Intent(ProducerActivity.this, NearPlaceActivity.class);
                 intent.putExtra(NearPlaceActivity.TAG_PLACE, extraPlace);
 
                 startActivityForResult(intent, NearPlaceActivity.REQUEST);
@@ -134,7 +134,7 @@ public class ProducerActitvity extends BaseActivity {
                         mProducerFromBase.mName, tempAddress, mProducerFromBase.mLng,
                         mProducerFromBase.mLat, "Producer");
 
-                Intent intent = new Intent(ProducerActitvity.this, NavigateToActivity.class);
+                Intent intent = new Intent(ProducerActivity.this, NavigateToActivity.class);
                 intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
                 intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE, mProducerFromBase.mImageUrl);
                 startActivityForResult(intent, NavigateToActivity.REQUEST);
@@ -146,7 +146,7 @@ public class ProducerActitvity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(ProducerActitvity.this, "Not working yet", Toast.LENGTH_LONG).show();
+                Toast.makeText(ProducerActivity.this, "Not working yet", Toast.LENGTH_LONG).show();
 
             }
 
@@ -174,14 +174,14 @@ public class ProducerActitvity extends BaseActivity {
 
         // if there is an access to the Internet, try to load data from remote database
 
-        if (App.isOnline(ProducerActitvity.this)) {
+        if (App.isOnline(ProducerActivity.this)) {
             new LoadProducerTask().execute();
         }
 
         // otherwise, show message
 
         else {
-            Toast.makeText(ProducerActitvity.this, "Cannot connect to the Internet",
+            Toast.makeText(ProducerActivity.this, "Cannot connect to the Internet",
                     Toast.LENGTH_LONG).show();
         }
 
@@ -196,11 +196,11 @@ public class ProducerActitvity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgDial = new ProgressDialog(ProducerActitvity.this);
+            mProgDial = new ProgressDialog(ProducerActivity.this);
             mProgDial.setMessage("Loading producer details...");
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
-            // mProgDial.show();
+            mProgDial.show();
 
         }
 
@@ -222,7 +222,7 @@ public class ProducerActitvity extends BaseActivity {
 
             ProducerDetails response = gson.fromJson(reader, ProducerDetails.class);
             
-            Log.e(ProducerActitvity.class.getName(), response.mIdProducer + " ");
+            Log.e(ProducerActivity.class.getName(), response.mIdProducer + " ");
             if (response != null) {
                 mProducerFromBase = response;
             }
@@ -258,7 +258,7 @@ public class ProducerActitvity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgDial = new ProgressDialog(ProducerActitvity.this);
+            mProgDial = new ProgressDialog(ProducerActivity.this);
             mProgDial.setMessage("Loading producer images...");
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
@@ -283,7 +283,7 @@ public class ProducerActitvity extends BaseActivity {
             InputStreamReader reader = new InputStreamReader(source);
 
             ImagesResponse response = gson.fromJson(reader, ImagesResponse.class);
-            Log.e(ProducerActitvity.class.getName(), response.images.length + " ");
+            Log.e(ProducerActivity.class.getName(), response.images.length + " ");
             if (response != null) {
                 mImagesUrl = response.images;
             }
@@ -299,7 +299,7 @@ public class ProducerActitvity extends BaseActivity {
             super.onPostExecute(file_url);
             mProgDial.dismiss();
             if (mImagesUrl.length > 0) {
-                mAdapter = new ImagePagerAdapter(ProducerActitvity.this, mImagesUrl);
+                mAdapter = new ImagePagerAdapter(ProducerActivity.this, mImagesUrl);
                 mUiPager.setAdapter(mAdapter);
                 mUiPageIndicator.setViewPager(mUiPager);
             }

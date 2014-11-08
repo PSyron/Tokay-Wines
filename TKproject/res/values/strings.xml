@@ -131,5 +131,8 @@
     <string name="UrlRestaurantsList">http://tokajiwines.me/services/restaurants.php</string>
     <string name="UrlWineFilter">http://tokajiwines.me/services/wineFilter.php</string>
     <string name="UrlWinesList">http://tokajiwines.me/services/wines.php</string>
+    <string name="UrlWineDetails">http://tokajiwines.me/services/wineDetails.php</string><string name="title_activity_wine">WineActivity</string>
+    <string name="hello_world">Hello world!</string>
+    
 
 </resources>
