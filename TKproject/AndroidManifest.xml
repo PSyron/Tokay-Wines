@@ -116,11 +116,8 @@
 
         <activity
             android:name="pl.tokajiwines.acitivities.WineActivity"
-            android:label="@string/title_activity_wine"
-            android:parentActivityName=".acitivities.WinesListActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.tokajiwines.acitivities.WinesListActivity" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 
