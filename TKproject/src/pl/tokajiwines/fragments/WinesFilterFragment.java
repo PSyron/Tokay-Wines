@@ -69,12 +69,12 @@ public class WinesFilterFragment extends BaseFragment {
     private ArrayList<Integer> mSelectedProducers;
     private ArrayList<String> mSelectedYears;
 
-    private boolean[] mCheckedTastes;
-    private boolean[] mCheckedTypes;
-    private boolean[] mCheckedStrains;
-    private boolean[] mCheckedProducers;
-    private boolean[] mCheckedYears;
-    private boolean[] mCheckedPrices;
+    private boolean[] mCheckedTastes = {};
+    private boolean[] mCheckedTypes = {};
+    private boolean[] mCheckedStrains = {};
+    private boolean[] mCheckedProducers = {};
+    private boolean[] mCheckedYears = {};
+    private boolean[] mCheckedPrices = {};
 
     AlertDialog dialog;
     String currCurrency;
@@ -410,15 +410,19 @@ public class WinesFilterFragment extends BaseFragment {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-
-        if (App.isOnline(mCtx)) {
-            new LoadFilterTask().execute();
-        }
-
-        // otherwise, show message
-
-        else {
-            Toast.makeText(mCtx, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+        
+        if (mWineStrains.length == 0)
+        {
+    
+            if (App.isOnline(mCtx)) {
+                new LoadFilterTask().execute();
+            }
+    
+            // otherwise, show message
+    
+            else {
+                Toast.makeText(mCtx, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+            }
         }
 
     }
