@@ -2,6 +2,9 @@
 package pl.tokajiwines.adapters;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +12,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.koushikdutta.ion.Ion;
-
+import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.jsonresponses.RestaurantListItem;
+
+import java.io.File;
 
 public class RestaurantsAdapter extends BaseAdapter {
 
@@ -52,8 +56,8 @@ public class RestaurantsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Holder holder = new Holder();
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final Holder holder = new Holder();
         View rowView;
         rowView = inflater.inflate(R.layout.item_restaurant, null);
         holder.title = (TextView) rowView.findViewById(R.id.item_restaurant_name);
@@ -66,9 +70,27 @@ public class RestaurantsAdapter extends BaseAdapter {
         holder.address.setText(mRestaurants[position].mStreetName + " "
                 + mRestaurants[position].mStreetNumber + " " + mRestaurants[position].mHouseNumber
                 + " " + mRestaurants[position].mCity + " " + mRestaurants[position].mPostCode);
+        //
+        //        Ion.with(holder.img).placeholder(R.drawable.placeholder_image)
+        //                .error(R.drawable.error_image).load(mRestaurants[position].mImageUrl);
 
-        Ion.with(holder.img).placeholder(R.drawable.placeholder_image)
-                .error(R.drawable.error_image).load(mRestaurants[position].mImageUrl);
+        final File imgFile = new File(App.fileAbsPath
+                + mRestaurants[position].mImageUrl.substring(
+                        mRestaurants[position].mImageUrl.lastIndexOf('/') + 1,
+                        mRestaurants[position].mImageUrl.length()));
+        if (imgFile.exists()) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+            holder.img.setImageBitmap(myBitmap);
+        } else {
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    App.downloadImagesToSdCard(mRestaurants[position].mImageUrl, mActivity,
+                            holder.img);
+
+                }
+            }, 50);
+        }
 
         //   .load("http://remzo.usermd.net/zpi/photos/akt1_thumb.jpg");
 

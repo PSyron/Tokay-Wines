@@ -1,9 +1,10 @@
 
 package pl.tokajiwines.adapters;
 
-import com.koushikdutta.ion.Ion;
-
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.jsonresponses.NewsListItem;
 import pl.tokajiwines.jsonresponses.WineListItem;
+
+import java.io.File;
 
 public class WinesAdapter extends BaseAdapter {
 
@@ -25,6 +28,7 @@ public class WinesAdapter extends BaseAdapter {
         mActivity = act;
         mWines = wines;
         inflater = (LayoutInflater) mActivity.getSystemService(mActivity.LAYOUT_INFLATER_SERVICE);
+
     }
 
     public class Holder {
@@ -53,10 +57,9 @@ public class WinesAdapter extends BaseAdapter {
         return mWines[position].mIdWine;
     }
 
-
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Holder holder = new Holder();
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final Holder holder = new Holder();
         View rowView;
         rowView = inflater.inflate(R.layout.item_wine, null);
         holder.name = (TextView) rowView.findViewById(R.id.item_wine_name);
@@ -67,7 +70,7 @@ public class WinesAdapter extends BaseAdapter {
         holder.year = (TextView) rowView.findViewById(R.id.item_wine_year);
         holder.producer = (TextView) rowView.findViewById(R.id.item_wine_producer);
         holder.img = (ImageView) rowView.findViewById(R.id.item_wine_image);
-        
+
         holder.name.setText(mWines[position].mName);
         holder.taste.setText(mWines[position].mFlavourName);
         holder.type.setText(mWines[position].mGrade);
@@ -75,10 +78,27 @@ public class WinesAdapter extends BaseAdapter {
         holder.price.setText(mWines[position].mPrice);
         holder.producer.setText(mWines[position].mProducerName);
         holder.year.setText(mWines[position].mYear);
-        Ion.with(holder.img)
-        .placeholder(R.drawable.placeholder_image)
-        .error(R.drawable.error_image)
-        .load(mWines[position].mImageUrl);
+        //        Ion.with(holder.img)
+        //        .placeholder(R.drawable.placeholder_image)
+        //        .error(R.drawable.error_image)
+        //        .load(mWines[position].mImageUrl);
+
+        final File imgFile = new File(App.fileAbsPath
+                + mWines[position].mImageUrl.substring(
+                        mWines[position].mImageUrl.lastIndexOf('/') + 1,
+                        mWines[position].mImageUrl.length()));
+        if (imgFile.exists()) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+            holder.img.setImageBitmap(myBitmap);
+        } else {
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    App.downloadImagesToSdCard(mWines[position].mImageUrl, mActivity, holder.img);
+
+                }
+            }, 50);
+        }
 
         //        rowView.setOnClickListener(new OnClickListener() {
         //            @Override

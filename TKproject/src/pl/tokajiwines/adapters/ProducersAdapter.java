@@ -1,9 +1,10 @@
 
 package pl.tokajiwines.adapters;
 
-import com.koushikdutta.ion.Ion;
-
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
+
+import java.io.File;
 
 public class ProducersAdapter extends BaseAdapter {
 
@@ -24,6 +28,7 @@ public class ProducersAdapter extends BaseAdapter {
         mActivity = act;
         inflater = (LayoutInflater) mActivity.getSystemService(mActivity.LAYOUT_INFLATER_SERVICE);
         mProducers = producers;
+
     }
 
     public class Holder {
@@ -52,8 +57,8 @@ public class ProducersAdapter extends BaseAdapter {
 
     //TODO 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Holder holder = new Holder();
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final Holder holder = new Holder();
         View rowView;
         rowView = inflater.inflate(R.layout.item_producer, null);
         holder.title = (TextView) rowView.findViewById(R.id.item_wineyard_title);
@@ -63,11 +68,29 @@ public class ProducersAdapter extends BaseAdapter {
         holder.img.setImageResource(R.drawable.placeholder_image);
         holder.content.setText(mProducers[position].mDescription);
 
-        Ion.with(holder.img)
-        .placeholder(R.drawable.placeholder_image)
-        .error(R.drawable.error_image)
-        .load(mProducers[position].mImageUrl);
-        
+        //        Ion.with(holder.img).placeholder(R.drawable.placeholder_image)
+        //                .error(R.drawable.error_image).load(mProducers[position].mImageUrl);
+
+        final File imgFile = new File(App.fileAbsPath
+                + mProducers[position].mImageUrl.substring(
+                        mProducers[position].mImageUrl.lastIndexOf('/') + 1,
+                        mProducers[position].mImageUrl.length()));
+        if (imgFile.exists()) {
+
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+            holder.img.setImageBitmap(myBitmap);
+        } else {
+
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    App.downloadImagesToSdCard(mProducers[position].mImageUrl, mActivity,
+                            holder.img);
+
+                }
+            }, 50);
+        }
+
         System.out.println(mProducers[position].mImageUrl);
         //        rowView.setOnClickListener(new OnClickListener() {
         //            @Override
@@ -79,5 +102,4 @@ public class ProducersAdapter extends BaseAdapter {
         //        });
         return rowView;
     }
-
 }
