@@ -63,11 +63,13 @@ public class WinesFilterFragment extends BaseFragment {
     private Grade[] mWineGrades = {};
     private ProducerListItem[] mWineProducers = {};
     private String[] mWineYear = {};
+    private String[] mWinePrices = {};
     private ArrayList<Integer> mSelectedTastes;
     private ArrayList<Integer> mSelectedGrades;
     private ArrayList<Integer> mSelectedStrains;
     private ArrayList<Integer> mSelectedProducers;
     private ArrayList<String> mSelectedYears;
+    private ArrayList<String> mSelectedPrices;
 
     private boolean[] mCheckedTastes = {};
     private boolean[] mCheckedTypes = {};
@@ -86,6 +88,7 @@ public class WinesFilterFragment extends BaseFragment {
     public static final int TAG_STRAINS = 3;
     public static final int TAG_PRODUCERS = 4;
     public static final int TAG_YEARS = 5;
+    public static final int TAG_PRICES = 6;
 
     public static WinesFilterFragment newInstance(Context ctx) {
         WinesFilterFragment fragment = new WinesFilterFragment(ctx);
@@ -110,6 +113,9 @@ public class WinesFilterFragment extends BaseFragment {
         mSelectedStrains = new ArrayList<Integer>();
         mSelectedProducers = new ArrayList<Integer>();
         mSelectedYears = new ArrayList<String>();
+        mSelectedPrices = new ArrayList<String>();
+        
+        mWinePrices = Constans.sWinePricesQuery;
 
         mUiTaste = (TextView) v.findViewById(R.id.frag_wine_taste_tV);
         mUiTasteLin = (LinearLayout) v.findViewById(R.id.frag_wine_taste_lL);
@@ -228,7 +234,7 @@ public class WinesFilterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 createDialogCheckBox(getResources().getString(R.string.wine_price_range) + ": "
-                        + currCurrency, currCurrencyTab, mUiPrice, 0, mCheckedPrices);
+                        + currCurrency, currCurrencyTab, mUiPrice, TAG_PRICES, mCheckedPrices);
 
             }
         });
@@ -246,12 +252,14 @@ public class WinesFilterFragment extends BaseFragment {
                 String strains = gson.toJson(mSelectedStrains.toArray());
                 String producers = gson.toJson(mSelectedProducers.toArray());
                 String years = gson.toJson(mSelectedYears.toArray());
+                String prices = gson.toJson(mSelectedPrices.toArray());
 
                 intent.putExtra("" + TAG_FLAVOURS, tastes);
                 intent.putExtra("" + TAG_GRADES, grades);
                 intent.putExtra("" + TAG_STRAINS, strains);
                 intent.putExtra("" + TAG_PRODUCERS, producers);
                 intent.putExtra("" + TAG_YEARS, years);
+                intent.putExtra("" + TAG_PRICES, prices);
 
                 startActivity(intent);
                 /*                Toast toast = Toast.makeText(mCtx, "Not working yet", 10);
@@ -384,6 +392,20 @@ public class WinesFilterFragment extends BaseFragment {
                 }
                 break;
             }
+            
+            case TAG_PRICES: {
+                
+                mSelectedPrices.clear();
+                
+                for (int i = 0; i < checkedItems.length; i++) {
+                    if (checkedItems[i])
+                    {
+                        mSelectedPrices
+                            .add(mWinePrices[i]);
+                    }
+                }
+                break;
+            }
             default: {
                 break;
             }
@@ -490,7 +512,7 @@ public class WinesFilterFragment extends BaseFragment {
             mCheckedStrains = new boolean[mWineStrains.length];
             mCheckedYears = new boolean[mWineYear.length];
             mCheckedProducers = new boolean[mWineProducers.length];
-            mCheckedPrices = new boolean[Constans.sWinePricesForint.length];
+            mCheckedPrices = new boolean[mWinePrices.length];
         }
     }
 }

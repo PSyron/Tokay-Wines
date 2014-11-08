@@ -46,6 +46,7 @@ public class WinesListActivity extends BaseActivity {
     private String mGrades;
     private String mYears;
     private String mProducers;
+    private String mPrices;
     public static String TAG_WINE = "WINE";
 
     @Override
@@ -61,6 +62,8 @@ public class WinesListActivity extends BaseActivity {
             mStrains = (String) extras.getString(WinesFilterFragment.TAG_STRAINS + "");
             mProducers = (String) extras.getString(WinesFilterFragment.TAG_PRODUCERS + "");
             mYears = (String) extras.getString(WinesFilterFragment.TAG_YEARS + "");
+            mPrices = (String) extras.getString(WinesFilterFragment.TAG_PRICES + "");
+
 
         }
 
@@ -132,6 +135,7 @@ public class WinesListActivity extends BaseActivity {
             params.add(new BasicNameValuePair("strains", mStrains));
             params.add(new BasicNameValuePair("producers", mProducers));
             params.add(new BasicNameValuePair("years", mYears));
+            params.add(new BasicNameValuePair("prices", mPrices));
 
             InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
                     Constans.sPassword, params);

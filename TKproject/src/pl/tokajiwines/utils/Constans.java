@@ -61,13 +61,16 @@ public class Constans {
     };
     public static final String[] sWinePricesPLN = {
             "< 10", "10 - 25", "25 - 40", "> 40"
-    };
+    }; 
     public static final String[] sWinePricesEuro = {
             "< 3", "3 - 5", "5 - 10", "> 10"
-    };
+    }; 
     public static final String[] sWinePricesForint = {
-            "< 350", "350 - 2000", "2000 - 3000", "> 3000"
+            "< 2000", "2000 - 4000", "4000 - 8000", "> 8000"
     };
+    
+    public static final String[] sWinePricesQuery = {
+        "Price <= 2000", "(Price > 2000 AND Price <= 4000)", "(Price > 4000 AND Price <= 8000)", "Price > 8000"};
 
     //Settings
     public static final String[] sSettingsLanguage = {
