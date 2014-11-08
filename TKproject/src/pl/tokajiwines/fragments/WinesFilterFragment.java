@@ -149,7 +149,6 @@ public class WinesFilterFragment extends BaseFragment {
             public void onClick(View v) {
 
                 final String[] flavours = new String[mWineFlavours.length];
-
                 for (int i = 0; i < flavours.length; i++) {
                     if (SharedPreferencesHelper.getSharedPreferencesInt(mCtx,
                             SettingsFragment.SharedKeyLanguage, SettingsFragment.DefLanguage) == 0) {
@@ -272,6 +271,7 @@ public class WinesFilterFragment extends BaseFragment {
         builder.setTitle(label);
         builder.setMultiChoiceItems(items, checkedItems,
                 new DialogInterface.OnMultiChoiceClickListener() {
+
                     @Override
                     public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
                         if (isChecked) {
@@ -354,8 +354,12 @@ public class WinesFilterFragment extends BaseFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         //  Your code when user clicked on OK
                         //  You can write the code  to save the selected item here
-                        currText.setText(showChosenOptions(currCheckedItems, currItems));
-                        currText.setTextColor(Color.BLACK);
+                        String text = showChosenOptions(currCheckedItems, currItems);
+                        currText.setText(text);
+                        if (text == getResources().getText(R.string.any))
+                            currText.setTextColor(getResources().getColor(R.color.gray));
+                        else
+                            currText.setTextColor(Color.BLACK);
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
@@ -378,7 +382,10 @@ public class WinesFilterFragment extends BaseFragment {
         for (int i = 0; i < checkedItems.length; i++) {
             if (checkedItems[i]) chosenOptions += opt[Integer.valueOf(i)] + ", ";
         }
-        return chosenOptions;
+        if (chosenOptions == "")
+            return getResources().getString(R.string.any);
+        else
+            return chosenOptions;
     }
 
     private void getSettingFromSharedPreferences() {
@@ -455,12 +462,6 @@ public class WinesFilterFragment extends BaseFragment {
                 mWineStrains = response.strains;
                 mWineFlavours = response.flavours;
 
-                mCheckedTastes = new boolean[mWineFlavours.length];
-                mCheckedTypes = new boolean[mWineGrades.length];
-                mCheckedStrains = new boolean[mWineStrains.length];
-                mCheckedYears = new boolean[mWineYear.length];
-                mCheckedProducers = new boolean[mWineProducers.length];
-                mCheckedPrices = new boolean[Constans.sWinePricesForint.length];
             }
 
             return null;
@@ -474,7 +475,12 @@ public class WinesFilterFragment extends BaseFragment {
             super.onPostExecute(file_url);
             mProgDial.dismiss();
 
+            mCheckedTastes = new boolean[mWineFlavours.length];
+            mCheckedTypes = new boolean[mWineGrades.length];
+            mCheckedStrains = new boolean[mWineStrains.length];
+            mCheckedYears = new boolean[mWineYear.length];
+            mCheckedProducers = new boolean[mWineProducers.length];
+            mCheckedPrices = new boolean[Constans.sWinePricesForint.length];
         }
-
     }
 }
