@@ -17,12 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.google.gson.Gson;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.NewsActivity;
 import pl.tokajiwines.acitivities.WinesListActivity;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.WineFilterResponse;
@@ -36,8 +34,6 @@ import pl.tokajiwines.utils.SharedPreferencesHelper;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
-import org.json.JSONArray;
 
 public class WinesFilterFragment extends BaseFragment {
 
@@ -60,11 +56,11 @@ public class WinesFilterFragment extends BaseFragment {
     private String sUrl;
     private WineFilterResponse mWineFilter;
     private Flavour[] mWineFlavours = {};
-/*    private String[] mProducerName = {};
-    private String[] mWineStrains = {};
-    private String[] mWineGrades = {};*/
+    /*    private String[] mProducerName = {};
+        private String[] mWineStrains = {};
+        private String[] mWineGrades = {};*/
     private Strain[] mWineStrains = {};
-    private Grade[] mWineGrades = {};    
+    private Grade[] mWineGrades = {};
     private ProducerListItem[] mWineProducers = {};
     private String[] mWineYear = {};
     private ArrayList<Integer> mSelectedTastes;
@@ -72,18 +68,24 @@ public class WinesFilterFragment extends BaseFragment {
     private ArrayList<Integer> mSelectedStrains;
     private ArrayList<Integer> mSelectedProducers;
     private ArrayList<String> mSelectedYears;
-    
+
+    private boolean[] mCheckedTastes;
+    private boolean[] mCheckedTypes;
+    private boolean[] mCheckedStrains;
+    private boolean[] mCheckedProducers;
+    private boolean[] mCheckedYears;
+    private boolean[] mCheckedPrices;
 
     AlertDialog dialog;
     String currCurrency;
     String[] currCurrencyTab;
     Context mCtx;
-    
+
     public static final int TAG_FLAVOURS = 1;
-    public static final int TAG_GRADES = 2; 
-    public static final int TAG_STRAINS = 3; 
-    public static final int TAG_PRODUCERS = 4; 
-    public static final int TAG_YEARS = 5; 
+    public static final int TAG_GRADES = 2;
+    public static final int TAG_STRAINS = 3;
+    public static final int TAG_PRODUCERS = 4;
+    public static final int TAG_YEARS = 5;
 
     public static WinesFilterFragment newInstance(Context ctx) {
         WinesFilterFragment fragment = new WinesFilterFragment(ctx);
@@ -102,7 +104,7 @@ public class WinesFilterFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_wine_filter, container, false);
 
         sUrl = getResources().getString(R.string.UrlWineFilter);
-        
+
         mSelectedTastes = new ArrayList<Integer>();
         mSelectedGrades = new ArrayList<Integer>();
         mSelectedStrains = new ArrayList<Integer>();
@@ -130,40 +132,35 @@ public class WinesFilterFragment extends BaseFragment {
     }
 
     private void initResources() {
-/*
-        final String[] mWineTaste = {
-                mCtx.getResources().getString(R.string.wine_taste_dry),
-                mCtx.getResources().getString(R.string.wine_taste_semidry),
-                mCtx.getResources().getString(R.string.wine_taste_sweet),
-                mCtx.getResources().getString(R.string.wine_taste_semisweet),
-                mCtx.getResources().getString(R.string.wine_taste_sparkling)
-        };*/
-
+        /*
+                final String[] mWineTaste = {
+                        mCtx.getResources().getString(R.string.wine_taste_dry),
+                        mCtx.getResources().getString(R.string.wine_taste_semidry),
+                        mCtx.getResources().getString(R.string.wine_taste_sweet),
+                        mCtx.getResources().getString(R.string.wine_taste_semisweet),
+                        mCtx.getResources().getString(R.string.wine_taste_sparkling)
+                };*/
 
         //TODO Getting Producers names and wines years from SQLite
 
         mUiTasteLin.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View v) {           
-                
+            public void onClick(View v) {
+
                 final String[] flavours = new String[mWineFlavours.length];
-                
-                for (int i = 0; i < flavours.length; i++)
-                {
+
+                for (int i = 0; i < flavours.length; i++) {
                     if (SharedPreferencesHelper.getSharedPreferencesInt(mCtx,
-                            SettingsFragment.SharedKeyLanguage, SettingsFragment.DefLanguage) == 0)
-                    {
+                            SettingsFragment.SharedKeyLanguage, SettingsFragment.DefLanguage) == 0) {
                         flavours[i] = mWineFlavours[i].mNamePl;
-                    }
-                    else if (SharedPreferencesHelper.getSharedPreferencesInt(mCtx,
-                            SettingsFragment.SharedKeyLanguage, SettingsFragment.DefLanguage) == 1)
-                    {
-                        flavours[i] = mWineFlavours[i].mNameEng; 
+                    } else if (SharedPreferencesHelper.getSharedPreferencesInt(mCtx,
+                            SettingsFragment.SharedKeyLanguage, SettingsFragment.DefLanguage) == 1) {
+                        flavours[i] = mWineFlavours[i].mNameEng;
                     }
                 }
                 createDialogCheckBox(getResources().getString(R.string.wine_taste), flavours,
-                        mUiTaste, TAG_FLAVOURS);
+                        mUiTaste, TAG_FLAVOURS, mCheckedTastes);
 
             }
         });
@@ -172,16 +169,15 @@ public class WinesFilterFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                
+
                 final String[] grades = new String[mWineGrades.length];
-                
-                for (int i = 0; i < grades.length; i++)
-                {
+
+                for (int i = 0; i < grades.length; i++) {
                     grades[i] = mWineGrades[i].mName;
                 }
-                
-                createDialogCheckBox(getResources().getString(R.string.wine_type), grades,
-                        mUiType, TAG_GRADES);
+
+                createDialogCheckBox(getResources().getString(R.string.wine_type), grades, mUiType,
+                        TAG_GRADES, mCheckedTypes);
 
             }
         });
@@ -190,16 +186,15 @@ public class WinesFilterFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                
+
                 final String[] strains = new String[mWineStrains.length];
-                
-                for (int i = 0; i < strains.length; i++)
-                {
+
+                for (int i = 0; i < strains.length; i++) {
                     strains[i] = mWineStrains[i].mName;
                 }
-                
+
                 createDialogCheckBox(getResources().getString(R.string.wine_strain), strains,
-                        mUiStrain, TAG_STRAINS);
+                        mUiStrain, TAG_STRAINS, mCheckedStrains);
 
             }
         });
@@ -209,7 +204,7 @@ public class WinesFilterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 createDialogCheckBox(getResources().getString(R.string.dialog_wine_year),
-                        mWineYear, mUiYear, TAG_YEARS);
+                        mWineYear, mUiYear, TAG_YEARS, mCheckedYears);
             }
         });
 
@@ -217,16 +212,15 @@ public class WinesFilterFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                
+
                 final String[] producers = new String[mWineProducers.length];
-                
-                for (int i = 0; i < producers.length; i++)
-                {
+
+                for (int i = 0; i < producers.length; i++) {
                     producers[i] = mWineProducers[i].mName;
                 }
-                
-                createDialogCheckBox(getResources().getString(R.string.wine_produder),
-                        producers, mUiProducer, TAG_PRODUCERS);
+
+                createDialogCheckBox(getResources().getString(R.string.wine_produder), producers,
+                        mUiProducer, TAG_PRODUCERS, mCheckedProducers);
 
             }
         });
@@ -235,7 +229,7 @@ public class WinesFilterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 createDialogCheckBox(getResources().getString(R.string.wine_price_range) + ": "
-                        + currCurrency, currCurrencyTab, mUiPrice, 0);
+                        + currCurrency, currCurrencyTab, mUiPrice, 0, mCheckedPrices);
 
             }
         });
@@ -244,79 +238,132 @@ public class WinesFilterFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                
+
                 Intent intent = new Intent(mCtx, WinesListActivity.class);
-                
-                Gson gson = new Gson(); 
-                String tastes = gson.toJson(mSelectedTastes.toArray()); 
+
+                Gson gson = new Gson();
+                String tastes = gson.toJson(mSelectedTastes.toArray());
                 String grades = gson.toJson(mSelectedGrades.toArray());
                 String strains = gson.toJson(mSelectedStrains.toArray());
                 String producers = gson.toJson(mSelectedProducers.toArray());
                 String years = gson.toJson(mSelectedYears.toArray());
-                
-                intent.putExtra(""+TAG_FLAVOURS, tastes);
-                intent.putExtra(""+TAG_GRADES, grades);
-                intent.putExtra(""+TAG_STRAINS, strains);
-                intent.putExtra(""+TAG_PRODUCERS, producers);
-                intent.putExtra(""+TAG_YEARS, years);
-                
+
+                intent.putExtra("" + TAG_FLAVOURS, tastes);
+                intent.putExtra("" + TAG_GRADES, grades);
+                intent.putExtra("" + TAG_STRAINS, strains);
+                intent.putExtra("" + TAG_PRODUCERS, producers);
+                intent.putExtra("" + TAG_YEARS, years);
+
                 startActivity(intent);
-/*                Toast toast = Toast.makeText(mCtx, "Not working yet", 10);
-                toast.show();*/
+                /*                Toast toast = Toast.makeText(mCtx, "Not working yet", 10);
+                                toast.show();*/
             }
         });
     }
 
-    private void createDialogCheckBox(String label, String[] items, TextView options, int tag) {
+    private void createDialogCheckBox(String label, String[] items, TextView options, int tag,
+            boolean[] checkedItems) {
+        final boolean[] currCheckedItems = checkedItems;
         final TextView currText = options;
         final String[] currItems = items;
         final int currTag = tag;
         final ArrayList<Integer> seletedItems = new ArrayList<Integer>();
         AlertDialog.Builder builder = new AlertDialog.Builder(mCtx);
         builder.setTitle(label);
-        builder.setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
-                if (isChecked) {
-                    // If the user checked the item, add it to the selected items
-                    switch(currTag)
-                    {
-                        case TAG_FLAVOURS : { if (!mSelectedTastes.contains(mWineFlavours[indexSelected].mIdFlavour)) mSelectedTastes.add(mWineFlavours[indexSelected].mIdFlavour); break;}
-                        case TAG_GRADES : { if (!mSelectedGrades.contains(mWineGrades[indexSelected].mIdGrade))mSelectedGrades.add(mWineGrades[indexSelected].mIdGrade);break;}
-                        case TAG_STRAINS : { if (!mSelectedStrains.contains(mWineStrains[indexSelected].mIdStrain))mSelectedStrains.add(mWineStrains[indexSelected].mIdStrain);break;}
-                        case TAG_PRODUCERS : { if (!mSelectedProducers.contains(mWineProducers[indexSelected].mIdProducer))mSelectedProducers.add(mWineProducers[indexSelected].mIdProducer);break;}
-                        case TAG_YEARS : { if (!mSelectedYears.contains(currItems[indexSelected]))mSelectedYears.add(currItems[indexSelected]);break;}
-                        default: {break;}
+        builder.setMultiChoiceItems(items, checkedItems,
+                new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
+                        if (isChecked) {
+                            // If the user checked the item, add it to the selected items
+                            switch (currTag) {
+                                case TAG_FLAVOURS: {
+                                    if (!mSelectedTastes
+                                            .contains(mWineFlavours[indexSelected].mIdFlavour))
+                                        mSelectedTastes
+                                                .add(mWineFlavours[indexSelected].mIdFlavour);
+                                    break;
+                                }
+                                case TAG_GRADES: {
+                                    if (!mSelectedGrades
+                                            .contains(mWineGrades[indexSelected].mIdGrade))
+                                        mSelectedGrades.add(mWineGrades[indexSelected].mIdGrade);
+                                    break;
+                                }
+                                case TAG_STRAINS: {
+                                    if (!mSelectedStrains
+                                            .contains(mWineStrains[indexSelected].mIdStrain))
+                                        mSelectedStrains.add(mWineStrains[indexSelected].mIdStrain);
+                                    break;
+                                }
+                                case TAG_PRODUCERS: {
+                                    if (!mSelectedProducers
+                                            .contains(mWineProducers[indexSelected].mIdProducer))
+                                        mSelectedProducers
+                                                .add(mWineProducers[indexSelected].mIdProducer);
+                                    break;
+                                }
+                                case TAG_YEARS: {
+                                    if (!mSelectedYears.contains(currItems[indexSelected]))
+                                        mSelectedYears.add(currItems[indexSelected]);
+                                    break;
+                                }
+                                default: {
+                                    break;
+                                }
+                            }
+                            seletedItems.add(indexSelected);
+                        } else if (seletedItems.contains(indexSelected)) {
+                            // Else, if the item is already in the array, remove it
+                            switch (currTag) {
+                                case TAG_FLAVOURS: {
+                                    mSelectedTastes.remove(Integer
+                                            .valueOf(mWineFlavours[indexSelected].mIdFlavour));
+                                    break;
+                                }
+                                case TAG_GRADES: {
+                                    mSelectedGrades.remove(Integer
+                                            .valueOf(mWineGrades[indexSelected].mIdGrade));
+                                    break;
+                                }
+                                case TAG_STRAINS: {
+                                    mSelectedStrains.remove(Integer
+                                            .valueOf(mWineStrains[indexSelected].mIdStrain));
+                                    break;
+                                }
+                                case TAG_PRODUCERS: {
+                                    mSelectedProducers.remove(Integer
+                                            .valueOf(mWineProducers[indexSelected].mIdProducer));
+                                    break;
+                                }
+                                case TAG_YEARS: {
+                                    mSelectedYears.remove(currItems[indexSelected]);
+                                    break;
+                                }
+                                default: {
+                                    break;
+                                }
+                            }
+                            seletedItems.remove(Integer.valueOf(indexSelected));
+                        }
                     }
-                    seletedItems.add(indexSelected);
-                } else if (seletedItems.contains(indexSelected)) {
-                    // Else, if the item is already in the array, remove it
-                    switch(currTag)
-                    {
-                        case TAG_FLAVOURS : {mSelectedTastes.remove(Integer.valueOf(mWineFlavours[indexSelected].mIdFlavour)); break;}
-                        case TAG_GRADES : {mSelectedGrades.remove(Integer.valueOf(mWineGrades[indexSelected].mIdGrade));break;}
-                        case TAG_STRAINS : {mSelectedStrains.remove(Integer.valueOf(mWineStrains[indexSelected].mIdStrain));break;}
-                        case TAG_PRODUCERS : {mSelectedProducers.remove(Integer.valueOf(mWineProducers[indexSelected].mIdProducer));break;}
-                        case TAG_YEARS : {mSelectedYears.remove(currItems[indexSelected]);break;}
-                        default: {break;}
-                    }
-                    seletedItems.remove(Integer.valueOf(indexSelected));
-                }
-            }
-        })
+                })
         // Set the action buttons
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //  Your code when user clicked on OK
                         //  You can write the code  to save the selected item here
-                        currText.setText(showChosenOptions(seletedItems, currItems));
+                        currText.setText(showChosenOptions(currCheckedItems, currItems));
                         currText.setTextColor(Color.BLACK);
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //  Your code when user clicked on Cancel
+                        for (int i = 0; i < currCheckedItems.length; i++) {
+                            currCheckedItems[i] = false;
+                        }
                         currText.setText(R.string.any);
                         currText.setTextColor(getResources().getColor(R.color.gray));
                     }
@@ -326,10 +373,10 @@ public class WinesFilterFragment extends BaseFragment {
 
     }
 
-    private String showChosenOptions(ArrayList<Integer> list, String[] opt) {
+    private String showChosenOptions(boolean[] checkedItems, String[] opt) {
         String chosenOptions = "";
-        for (Integer a : list) {
-            chosenOptions += opt[Integer.valueOf(a)] + ", ";
+        for (int i = 0; i < checkedItems.length; i++) {
+            if (checkedItems[i]) chosenOptions += opt[Integer.valueOf(i)] + ", ";
         }
         return chosenOptions;
     }
@@ -407,6 +454,13 @@ public class WinesFilterFragment extends BaseFragment {
                 mWineGrades = response.grades;
                 mWineStrains = response.strains;
                 mWineFlavours = response.flavours;
+
+                mCheckedTastes = new boolean[mWineFlavours.length];
+                mCheckedTypes = new boolean[mWineGrades.length];
+                mCheckedStrains = new boolean[mWineStrains.length];
+                mCheckedYears = new boolean[mWineYear.length];
+                mCheckedProducers = new boolean[mWineProducers.length];
+                mCheckedPrices = new boolean[Constans.sWinePricesForint.length];
             }
 
             return null;
