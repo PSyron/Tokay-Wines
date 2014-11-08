@@ -169,9 +169,9 @@ public class NewsActivity extends BaseActivity {
                     .error(R.drawable.error_image).load(mNews.mImage);
 
             if (mNews.mStartDate == null && mNews.mEndDate == null) {
-                mUiDateLabel.setVisibility(View.INVISIBLE);
-                mUiDate.setVisibility(View.INVISIBLE);
-                mUiAddIcon.setVisibility(View.INVISIBLE);
+                mUiDateLabel.setVisibility(View.GONE);
+                mUiDate.setVisibility(View.GONE);
+                mUiAddIcon.setVisibility(View.GONE);
             } else {
                 mUiDate.setText(mNews.mStartDate + " - \n" + mNews.mEndDate);
                 mUiDate.setVisibility(View.VISIBLE);
