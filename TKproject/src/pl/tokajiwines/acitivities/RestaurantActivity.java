@@ -56,7 +56,7 @@ public class RestaurantActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_details);
-        
+
         sUrl = getResources().getString(R.string.UrlRestaurantDetails);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -95,7 +95,8 @@ public class RestaurantActivity extends BaseActivity {
                                 + mRestaurantFromBase.mStreetNumber + " "
                                 + mRestaurantFromBase.mHouseNumber + " "
                                 + mRestaurantFromBase.mCity + " " + mRestaurantFromBase.mPostCode,
-                        mRestaurantFromBase.mLng, mRestaurantFromBase.mLat, "Restaurant");
+                        mRestaurantFromBase.mLng, mRestaurantFromBase.mLat, "Restaurant",
+                        mRestaurantFromBase.mImageUrl);
 
                 Intent intent = new Intent(RestaurantActivity.this, NavigateToActivity.class);
                 intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);

@@ -40,8 +40,8 @@ import java.util.List;
 public class ProducerActivity extends BaseActivity {
     JSONParser mParser;
     public static int REQUEST = 997;
-    private  String sUrl;
-    private  String sUrlImage;
+    private String sUrl;
+    private String sUrlImage;
     ProgressDialog mProgDial;
     ProducerListItem mProducer;
     ProducerDetails mProducerFromBase;
@@ -67,7 +67,7 @@ public class ProducerActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_producers_details);
-        
+
         sUrl = getResources().getString(R.string.UrlProducerDetails);
         sUrlImage = getResources().getString(R.string.UrlProducerImages);
         Bundle extras = getIntent().getExtras();
@@ -113,7 +113,7 @@ public class ProducerActivity extends BaseActivity {
 
                 Place extraPlace = new Place(mProducerFromBase.mIdProducer,
                         mProducerFromBase.mName, tempAddress, mProducerFromBase.mLng,
-                        mProducerFromBase.mLat, "Producer");
+                        mProducerFromBase.mLat, "Producer", mProducerFromBase.mImageUrl);
 
                 Intent intent = new Intent(ProducerActivity.this, NearPlaceActivity.class);
                 intent.putExtra(NearPlaceActivity.TAG_PLACE, extraPlace);
@@ -132,7 +132,7 @@ public class ProducerActivity extends BaseActivity {
 
                 Place extraPlace = new Place(mProducerFromBase.mIdProducer,
                         mProducerFromBase.mName, tempAddress, mProducerFromBase.mLng,
-                        mProducerFromBase.mLat, "Producer");
+                        mProducerFromBase.mLat, "Producer", mProducerFromBase.mImageUrl);
 
                 Intent intent = new Intent(ProducerActivity.this, NavigateToActivity.class);
                 intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
@@ -221,12 +221,11 @@ public class ProducerActivity extends BaseActivity {
             InputStreamReader reader = new InputStreamReader(source);
 
             ProducerDetails response = gson.fromJson(reader, ProducerDetails.class);
-            
+
             Log.e(ProducerActivity.class.getName(), response.mIdProducer + " ");
             if (response != null) {
                 mProducerFromBase = response;
             }
-
 
             return null;
 
@@ -242,8 +241,8 @@ public class ProducerActivity extends BaseActivity {
                 fillView();
             }
             Ion.with(mUiWineImage).placeholder(R.drawable.placeholder_image)
-            .error(R.drawable.error_image).load(mProducerFromBase.mWineImageUrl);
-            
+                    .error(R.drawable.error_image).load(mProducerFromBase.mWineImageUrl);
+
             new LoadProducerImagesTask().execute();
         }
 

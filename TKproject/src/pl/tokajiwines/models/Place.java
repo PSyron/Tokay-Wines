@@ -30,7 +30,8 @@ public class Place implements Serializable {
     @SerializedName("imageUrl")
     public String mImageUrl;
 
-    public Place(int idPlace, String name, String address, String lng, String lat, String placeType) {
+    public Place(int idPlace, String name, String address, String lng, String lat,
+            String placeType, String imageUrl) {
         super();
         mIdPlace = idPlace;
         mName = name;
@@ -38,7 +39,7 @@ public class Place implements Serializable {
         mLng = lng;
         mLat = lat;
         mPlaceType = placeType;
-
+        mImageUrl = imageUrl;
     }
 
     public LatLng getLatLng() {

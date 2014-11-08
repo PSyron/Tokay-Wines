@@ -28,6 +28,7 @@ import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -115,7 +116,7 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
 
     public void notyfikuj() {
 
-        for (Place p : mNearbyPlaces) {
+        for (final Place p : mNearbyPlaces) {
             boolean tempBoolean = SharedPreferencesHelper.getSharedPreferencesBoolean(mContext,
                     SHARED_ARRAY + p.mIdPlace, false);
             if (!tempBoolean) {
@@ -147,6 +148,21 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
 
                 //                    builder.setSound(Uri.parse("android.resource://" + mContext.getPackageName()
                 //                            + "/" + p.getSound()));
+
+                final File imgFile = new File(App.fileAbsPath
+                        + p.mImageUrl.substring(p.mImageUrl.lastIndexOf('/') + 1,
+                                p.mImageUrl.length()));
+                Bitmap myBitmap;
+                if (imgFile.exists()) {
+
+                    myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+                } else {
+
+                    myBitmap = App.downloadImagesToSdCardAndReturnBitman(p.mImageUrl, mContext);
+
+                }
+                builder.setLargeIcon(myBitmap);
 
                 Notification notification = builder.build();
                 nm.notify(p.mIdPlace, notification);

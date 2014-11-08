@@ -88,7 +88,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_margin="5dp"
-                android:src="@drawable/vpi_ic_navigation" />
+                android:src="@drawable/navigate_to_selector" />
         </RelativeLayout>
 
         <TextView
