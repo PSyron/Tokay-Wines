@@ -27,4 +27,8 @@ public class OddityImage implements Serializable {
         mIdImage_ = IdImage_;
         mLastUpdate = LastUpdate;
     }
+
+    public OddityImage() {
+        // TODO Auto-generated constructor stub
+    }
 }

@@ -33,4 +33,8 @@ public class Lookout implements Serializable {
         mIdImageCover_ = IdImageCover_;
         mLastUpdate = LastUpdate;
     }
+
+    public Lookout() {
+        // TODO Auto-generated constructor stub
+    }
 }

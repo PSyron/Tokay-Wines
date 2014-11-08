@@ -30,19 +30,26 @@ public class Hotel implements Serializable {
     public int mIdImageCover_;
     @SerializedName("LastUpdate")
     public String mLastUpdate;
+    @SerializedName("IdDescription_")
+    public int mIdDescription_;
 
-    public Hotel(int IdHotel, String Email, String Link, String Name, String Phone, int IdAddress_,
-            int IdUser_, int IdImageCover_, String LastUpdate) {
+    public Hotel(int IdHotel, String Email, String Link, String Name, String Phone,
+            int IdDescription_, int IdAddress_, int IdUser_, int IdImageCover_, String LastUpdate) {
         super();
         mIdHotel = IdHotel;
         mEmail = Email;
         mLink = Link;
         mName = Name;
         mPhone = Phone;
+        mIdDescription_ = IdDescription_;
         mIdAddress_ = IdAddress_;
         mIdUser_ = IdUser_;
         mIdImageCover_ = IdImageCover_;
         mLastUpdate = LastUpdate;
+    }
+
+    public Hotel() {
+        // TODO Auto-generated constructor stub
     }
 
 }

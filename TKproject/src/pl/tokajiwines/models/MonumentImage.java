@@ -27,4 +27,8 @@ public class MonumentImage implements Serializable {
         mIdImage_ = IdImage_;
         mLastUpdate = LastUpdate;
     }
+
+    public MonumentImage() {
+        // TODO Auto-generated constructor stub
+    }
 }

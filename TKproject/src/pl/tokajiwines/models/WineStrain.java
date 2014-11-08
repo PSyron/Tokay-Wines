@@ -14,22 +14,23 @@ public class WineStrain implements Serializable {
 
     @SerializedName("IdWineStrain")
     public int mIdWineStrain;
-    @SerializedName("IdWine")
-    public int mIdWine;
+    @SerializedName("IdWine_")
+    public int mIdWine_;
     @SerializedName("Content")
     public int mContent;
-    @SerializedName("IdStrain")
-    public int mIdStrain;
-    @SerializedName("Name")
-    public String mName;
+    @SerializedName("IdStrain_")
+    public int mIdStrain_;
 
-    public WineStrain(int IdWineStrain, int Content, int IdWine, int IdStrain, String Name) {
+    public WineStrain(int IdWineStrain, int Content, int IdWine_, int IdStrain_) {
         super();
         mIdWineStrain = IdWineStrain;
         mContent = Content;
-        mIdWine = IdWine;
-        mIdStrain = IdStrain;
-        mName = Name;
+        mIdWine_ = IdWine_;
+        mIdStrain_ = IdStrain_;
+    }
+
+    public WineStrain() {
+        // TODO Auto-generated constructor stub
     }
 
 }

@@ -21,9 +21,7 @@ public class Wine implements Serializable {
     @SerializedName("Price")
     public double mPrice;
     @SerializedName("AvailablePL")
-    public int IdDescription_;
-    @SerializedName("Label")
-    public int mLabel;
+    public int mAvailablePL;
     @SerializedName("Volume")
     public int mVolume;
     @SerializedName("LastUpdate")
@@ -41,7 +39,7 @@ public class Wine implements Serializable {
     @SerializedName("IdImageCover_")
     public int mIdImageCover_;
 
-    public Wine(int IdWine, String Name, int ProdDate, double Price, int Label, int Volume,
+    public Wine(int IdWine, String Name, int ProdDate, double Price, int AvailablePL, int Volume,
             String LastUpdate, int IdColor_, int IdFlavour_, int IdProducer_, int IdDescription_,
             int IdGrade_, int IdImageCover_) {
         super();
@@ -49,7 +47,7 @@ public class Wine implements Serializable {
         mName = Name;
         mProdDate = ProdDate;
         mPrice = Price;
-        mLabel = Label;
+        mAvailablePL = AvailablePL;
         mVolume = Volume;
         mLastUpdate = LastUpdate;
         mIdColor_ = IdColor_;
@@ -58,6 +56,10 @@ public class Wine implements Serializable {
         mIdDescription_ = IdDescription_;
         mIdGrade_ = IdGrade_;
         mIdImageCover_ = IdImageCover_;
+    }
+
+    public Wine() {
+        // TODO Auto-generated constructor stub
     }
 
 }

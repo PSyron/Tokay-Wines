@@ -24,4 +24,8 @@ public class Flavour implements Serializable {
         mNameEng = NameEng;
         mNamePl = NamePl;
     }
+
+    public Flavour() {
+        // TODO Auto-generated constructor stub
+    }
 }

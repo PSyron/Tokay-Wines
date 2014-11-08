@@ -23,4 +23,8 @@ public class Grade implements Serializable {
         mName = Name;
     }
 
+    public Grade() {
+        // TODO Auto-generated constructor stub
+    }
+
 }

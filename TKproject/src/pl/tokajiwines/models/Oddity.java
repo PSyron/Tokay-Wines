@@ -41,4 +41,8 @@ public class Oddity implements Serializable {
         mLastUpdate = LastUpdate;
     }
 
+    public Oddity() {
+        // TODO Auto-generated constructor stub
+    }
+
 }

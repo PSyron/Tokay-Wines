@@ -24,4 +24,8 @@ public class Lang implements Serializable {
         mName = Name;
         mShortName = ShortName;
     }
+
+    public Lang() {
+        // TODO Auto-generated constructor stub
+    }
 }

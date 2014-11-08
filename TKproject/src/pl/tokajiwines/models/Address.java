@@ -43,4 +43,21 @@ public class Address implements Serializable {
         mLongitude = Longitude;
         mLastUpdate = LastUpdate;
     }
+
+    public Address(int IdAddress, String StreetName, int StreetNumber, String City,
+            String Postcode, double Latitude, double Longitude, String LastUpdate) {
+        super();
+        mIdAddress = IdAddress;
+        mStreetName = StreetName;
+        mStreetNumber = StreetNumber;
+        mCity = City;
+        mPostcode = Postcode;
+        mLatitude = Latitude;
+        mLongitude = Longitude;
+        mLastUpdate = LastUpdate;
+    }
+
+    public Address() {
+        // TODO Auto-generated constructor stub
+    }
 }

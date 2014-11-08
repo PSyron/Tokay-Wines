@@ -27,4 +27,8 @@ public class NewsImage implements Serializable {
         mIdImage_ = IdImage_;
         mLastUpdate = LastUpdate;
     }
+
+    public NewsImage() {
+        // TODO Auto-generated constructor stub
+    }
 }

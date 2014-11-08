@@ -23,4 +23,8 @@ public class Strain implements Serializable {
         mName = Name;
     }
 
+    public Strain() {
+        // TODO Auto-generated constructor stub
+    }
+
 }

@@ -27,4 +27,8 @@ public class ProducerImage implements Serializable {
         mIdImage_ = IdImage_;
         mLastUpdate = LastUpdate;
     }
+
+    public ProducerImage() {
+        // TODO Auto-generated constructor stub
+    }
 }

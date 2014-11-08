@@ -27,9 +27,11 @@ public class Image implements Serializable {
     public int mIdUser_;
     @SerializedName("LastUpdate")
     public String mLastUpdate;
+    @SerializedName("Image")
+    public String mImage;
 
     public Image(int IdImage, int Version, int Height, int Width, int Weight, String Author,
-            int IdUser_, String LastUpdate) {
+            String Image, int IdUser_, String LastUpdate) {
         super();
         mIdImage = IdImage;
         mVersion = Version;
@@ -37,7 +39,25 @@ public class Image implements Serializable {
         mWidth = Width;
         mWeight = Weight;
         mAuthor = Author;
+        mImage = Image;
         mIdUser_ = IdUser_;
         mLastUpdate = LastUpdate;
+    }
+
+    public Image(int IdImage, int Version, int Height, int Width, int Weight, String Image,
+            int IdUser_, String LastUpdate) {
+        super();
+        mIdImage = IdImage;
+        mVersion = Version;
+        mHeight = Height;
+        mWidth = Width;
+        mWeight = Weight;
+        mImage = Image;
+        mIdUser_ = IdUser_;
+        mLastUpdate = LastUpdate;
+    }
+
+    public Image() {
+        // TODO Auto-generated constructor stub
     }
 }

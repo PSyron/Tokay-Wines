@@ -29,11 +29,14 @@ public class Producer implements Serializable {
     public int mIdUser_;
     @SerializedName("IdImageCover_")
     public int mIdImageCover_;
+    @SerializedName("IdWineBest_")
+    public int mIdWineBest_;
     @SerializedName("LastUpdate")
     public String mLastUpdate;
 
     public Producer(int IdProducer, String Email, String Link, String Name, String Phone,
-            int IdDescription_, int IdAddress_, int IdUser_, int IdImageCover_, String LastUpdate) {
+            int IdDescription_, int IdAddress_, int IdUser_, int IdImageCover_, int IdWineBest_,
+            String LastUpdate) {
         super();
         mIdProducer = IdProducer;
         mEmail = Email;
@@ -44,6 +47,7 @@ public class Producer implements Serializable {
         mIdAddress_ = IdAddress_;
         mIdUser_ = IdUser_;
         mIdImageCover_ = IdImageCover_;
+        mIdWineBest_ = IdWineBest_;
         mLastUpdate = LastUpdate;
     }
 
