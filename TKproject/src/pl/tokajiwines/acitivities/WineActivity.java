@@ -40,6 +40,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,11 @@ public class WineActivity extends BaseActivity {
     TextView mUiYear;
     TextView mUiPrice;
     TextView mUiDescription;
+    LinearLayout mUiTasteLayout;
+    LinearLayout mUiTypeLayout;
+    LinearLayout mUiStrainLayout;
+    LinearLayout mUiYearLayout;
+    LinearLayout mUiPriceLayout;
     
     WineListItem mWine;
     WineDetails mWineDetails;
@@ -93,13 +99,62 @@ public class WineActivity extends BaseActivity {
         mUiPrice = (TextView) findViewById(R.id.activity_wine_price);
         mUiDescription = (TextView) findViewById(R.id.activity_wine_description);
         
+
+        mUiTasteLayout = (LinearLayout) findViewById(R.id.activity_wine_taste_layout);
+        mUiTypeLayout = (LinearLayout) findViewById(R.id.activity_wine_type_layout);
+        mUiStrainLayout = (LinearLayout) findViewById(R.id.activity_wine_strain_layout);
+        mUiYearLayout = (LinearLayout) findViewById(R.id.activity_wine_year_layout);
+        mUiPriceLayout = (LinearLayout) findViewById(R.id.activity_wine_price_layout);
+        
         mUiName.setText(mWine.mName);
         mUiProducerName.setText(mWine.mProducerName);
-        mUiTaste.setText(mWine.mFlavourName);
-        mUiType.setText(mWine.mGrade);
-        mUiStrain.setText(mWine.mStrains);
-        mUiYear.setText(mWine.mYear);
-        mUiPrice.setText(mWine.mPrice);
+        
+        
+        if (mWine.mFlavourName != null)
+        {
+            mUiTaste.setText(mWine.mFlavourName);
+        }
+        else
+        {
+            mUiTasteLayout.setVisibility(View.GONE);
+        }
+        
+        
+        if (mWine.mGrade != null)
+        {
+            mUiType.setText(mWine.mGrade);
+        }
+        else
+        {
+            mUiTypeLayout.setVisibility(View.GONE);
+        }
+        
+        if (mWine.mStrains != null)
+        {
+            mUiStrain.setText(mWine.mStrains);
+        }
+        else
+        {
+            mUiStrainLayout.setVisibility(View.GONE);
+        }
+        
+        if (mWine.mYear != null)
+        {
+            mUiYear.setText(mWine.mYear);
+        }
+        else
+        {
+            mUiYearLayout.setVisibility(View.GONE);
+        }
+        
+        if (mWine.mPrice != null)
+        {
+            mUiPrice.setText(mWine.mPrice);
+        }
+        else
+        {
+            mUiPriceLayout.setVisibility(View.GONE);
+        }
         
         mUiProducerName.setOnClickListener(new View.OnClickListener() {
             

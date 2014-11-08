@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import pl.tokajiwines.R;
@@ -35,6 +36,11 @@ public class WinesAdapter extends BaseAdapter {
         TextView year;
         TextView price;
         TextView producer;
+        LinearLayout tasteLayout;
+        LinearLayout typeLayout;
+        LinearLayout strainLayout;
+        LinearLayout yearLayout;
+        LinearLayout priceLayout;
         ImageView img;
     }
 
@@ -68,13 +74,61 @@ public class WinesAdapter extends BaseAdapter {
         holder.producer = (TextView) rowView.findViewById(R.id.item_wine_producer);
         holder.img = (ImageView) rowView.findViewById(R.id.item_wine_image);
         
+        holder.tasteLayout = (LinearLayout) rowView.findViewById(R.id.item_wine_taste_layout);
+        holder.typeLayout = (LinearLayout) rowView.findViewById(R.id.item_wine_type_layout);
+        holder.strainLayout = (LinearLayout) rowView.findViewById(R.id.item_wine_strain_layout);
+        holder.priceLayout = (LinearLayout) rowView.findViewById(R.id.item_wine_price_layout);
+        holder.yearLayout = (LinearLayout) rowView.findViewById(R.id.item_wine_year_layout);
+        
         holder.name.setText(mWines[position].mName);
-        holder.taste.setText(mWines[position].mFlavourName);
-        holder.type.setText(mWines[position].mGrade);
-        holder.strain.setText(mWines[position].mStrains);
-        holder.price.setText(mWines[position].mPrice);
+        
+        if (mWines[position].mFlavourName != null)
+        {
+            holder.taste.setText(mWines[position].mFlavourName);
+        }
+        else
+        {
+            holder.tasteLayout.setVisibility(View.GONE);
+        }
+        
+        if (mWines[position].mGrade != null)
+        {
+            holder.type.setText(mWines[position].mGrade);
+        }
+        else
+        {
+            holder.typeLayout.setVisibility(View.GONE);
+        }
+        
+        if (mWines[position].mStrains != null)
+        {
+            holder.strain.setText(mWines[position].mStrains);
+        }
+        else
+        {
+            holder.strainLayout.setVisibility(View.GONE);
+        }
+        
+        if (mWines[position].mPrice != null)
+        {
+            holder.price.setText(mWines[position].mPrice);
+        }
+        else
+        {
+            holder.priceLayout.setVisibility(View.GONE);
+        }
+        
+        if (mWines[position].mYear != null)
+        {
+            holder.year.setText(mWines[position].mYear);
+        }
+        else
+        {
+            holder.yearLayout.setVisibility(View.GONE);
+        }
+        
         holder.producer.setText(mWines[position].mProducerName);
-        holder.year.setText(mWines[position].mYear);
+        
         Ion.with(holder.img)
         .placeholder(R.drawable.placeholder_image)
         .error(R.drawable.error_image)
