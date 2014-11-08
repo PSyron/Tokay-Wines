@@ -276,74 +276,10 @@ public class WinesFilterFragment extends BaseFragment {
                     public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
                         if (isChecked) {
                             // If the user checked the item, add it to the selected items
-                            switch (currTag) {
-                                case TAG_FLAVOURS: {
-                                    if (!mSelectedTastes
-                                            .contains(mWineFlavours[indexSelected].mIdFlavour))
-                                        mSelectedTastes
-                                                .add(mWineFlavours[indexSelected].mIdFlavour);
-                                    break;
-                                }
-                                case TAG_GRADES: {
-                                    if (!mSelectedGrades
-                                            .contains(mWineGrades[indexSelected].mIdGrade))
-                                        mSelectedGrades.add(mWineGrades[indexSelected].mIdGrade);
-                                    break;
-                                }
-                                case TAG_STRAINS: {
-                                    if (!mSelectedStrains
-                                            .contains(mWineStrains[indexSelected].mIdStrain))
-                                        mSelectedStrains.add(mWineStrains[indexSelected].mIdStrain);
-                                    break;
-                                }
-                                case TAG_PRODUCERS: {
-                                    if (!mSelectedProducers
-                                            .contains(mWineProducers[indexSelected].mIdProducer))
-                                        mSelectedProducers
-                                                .add(mWineProducers[indexSelected].mIdProducer);
-                                    break;
-                                }
-                                case TAG_YEARS: {
-                                    if (!mSelectedYears.contains(currItems[indexSelected]))
-                                        mSelectedYears.add(currItems[indexSelected]);
-                                    break;
-                                }
-                                default: {
-                                    break;
-                                }
-                            }
+         
                             seletedItems.add(indexSelected);
                         } else if (seletedItems.contains(indexSelected)) {
                             // Else, if the item is already in the array, remove it
-                            switch (currTag) {
-                                case TAG_FLAVOURS: {
-                                    mSelectedTastes.remove(Integer
-                                            .valueOf(mWineFlavours[indexSelected].mIdFlavour));
-                                    break;
-                                }
-                                case TAG_GRADES: {
-                                    mSelectedGrades.remove(Integer
-                                            .valueOf(mWineGrades[indexSelected].mIdGrade));
-                                    break;
-                                }
-                                case TAG_STRAINS: {
-                                    mSelectedStrains.remove(Integer
-                                            .valueOf(mWineStrains[indexSelected].mIdStrain));
-                                    break;
-                                }
-                                case TAG_PRODUCERS: {
-                                    mSelectedProducers.remove(Integer
-                                            .valueOf(mWineProducers[indexSelected].mIdProducer));
-                                    break;
-                                }
-                                case TAG_YEARS: {
-                                    mSelectedYears.remove(currItems[indexSelected]);
-                                    break;
-                                }
-                                default: {
-                                    break;
-                                }
-                            }
                             seletedItems.remove(Integer.valueOf(indexSelected));
                         }
                     }
@@ -354,7 +290,7 @@ public class WinesFilterFragment extends BaseFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         //  Your code when user clicked on OK
                         //  You can write the code  to save the selected item here
-                        String text = showChosenOptions(currCheckedItems, currItems);
+                        String text = showChosenOptions(currCheckedItems, currItems, currTag);
                         currText.setText(text);
                         if (text == getResources().getText(R.string.any))
                             currText.setTextColor(getResources().getColor(R.color.gray));
@@ -377,10 +313,80 @@ public class WinesFilterFragment extends BaseFragment {
 
     }
 
-    private String showChosenOptions(boolean[] checkedItems, String[] opt) {
+    private String showChosenOptions(boolean[] checkedItems, String[] opt, int tag) {
         String chosenOptions = "";
         for (int i = 0; i < checkedItems.length; i++) {
-            if (checkedItems[i]) chosenOptions += opt[Integer.valueOf(i)] + ", ";
+            if (checkedItems[i]) chosenOptions += opt[i] + ", ";
+        }
+        
+        switch (tag) {
+            case TAG_FLAVOURS: {
+                
+                mSelectedTastes.clear();
+                
+                for (int i = 0; i < checkedItems.length; i++) {
+                    if (checkedItems[i])
+                    {
+                        mSelectedTastes
+                            .add(mWineFlavours[i].mIdFlavour);
+                    }
+                }
+                break;
+            }
+            case TAG_GRADES: {
+                
+                mSelectedGrades.clear();
+                
+                for (int i = 0; i < checkedItems.length; i++) {
+                    if (checkedItems[i])
+                    {
+                        mSelectedGrades
+                            .add(mWineGrades[i].mIdGrade);
+                    }
+                }
+                break;
+            }
+            case TAG_STRAINS: {
+                
+                mSelectedStrains.clear();
+                
+                for (int i = 0; i < checkedItems.length; i++) {
+                    if (checkedItems[i])
+                    {
+                        mSelectedStrains
+                            .add(mWineStrains[i].mIdStrain);
+                    }
+                }
+                break;
+            }
+            case TAG_PRODUCERS: {
+                
+                mSelectedProducers.clear();
+                
+                for (int i = 0; i < checkedItems.length; i++) {
+                    if (checkedItems[i])
+                    {
+                        mSelectedProducers
+                            .add(mWineProducers[i].mIdProducer);
+                    }
+                }
+                break;
+            }
+            case TAG_YEARS: {
+                
+                mSelectedYears.clear();
+                
+                for (int i = 0; i < checkedItems.length; i++) {
+                    if (checkedItems[i])
+                    {
+                        mSelectedYears.add(opt[i]);
+                    }
+                }
+                break;
+            }
+            default: {
+                break;
+            }
         }
         if (chosenOptions == "")
             return getResources().getString(R.string.any);
