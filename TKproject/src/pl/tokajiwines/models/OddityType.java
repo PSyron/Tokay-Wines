@@ -21,4 +21,8 @@ public class OddityType implements Serializable {
         mIdOddityType = IdOddityType;
         mName = Name;
     }
+
+    public OddityType() {
+        // TODO Auto-generated constructor stub
+    }
 }

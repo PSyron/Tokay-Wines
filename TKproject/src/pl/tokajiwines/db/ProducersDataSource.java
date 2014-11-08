@@ -21,11 +21,10 @@ public class ProducersDataSource {
     private DatabaseHelper dbHelper;
     private String[] allColumns = {
             "IdProducer", "Email", "Link", "Name", "Phone", "IdDescription_", "IdAddress_",
-            "IdUser_", "LastUpdate"
+            "IdUser_", "IdImageCover_", "IdWineBest_", "LastUpdate"
     };
 
     public ProducersDataSource(Context context) {
-
         dbHelper = new DatabaseHelper(context);
     }
 
@@ -35,11 +34,13 @@ public class ProducersDataSource {
     }
 
     public void close() {
-        dbHelper.close();
+        if (database != null && database.isOpen()) {
+            dbHelper.close();
+            Log.i(LOG, "database closed");
+        }
     }
 
     public long insertProducer(Producer producer) {
-        Log.i(LOG, "insertProducer()");
         ContentValues values = new ContentValues();
         values.put("IdProducer", producer.mIdProducer);
         values.put("Email", producer.mEmail);
@@ -49,6 +50,8 @@ public class ProducersDataSource {
         values.put("IdDescription_", producer.mIdDescription_);
         values.put("IdAddress_", producer.mIdAddress_);
         values.put("IdUser_", producer.mIdUser_);
+        values.put("IdImageCover_", producer.mIdImageCover_);
+        values.put("IdWineBest_", producer.mIdWineBest_);
         values.put("LastUpdate", producer.mLastUpdate);
         long insertId = database.insert(DatabaseHelper.TABLE_PRODUCERS, null, values);
         Log.i(LOG, "Producer with id: " + producer.mIdProducer + " inserted with id: " + insertId);
@@ -56,14 +59,12 @@ public class ProducersDataSource {
     }
 
     public void deleteProducer(Producer producer) {
-        Log.i(LOG, "deleteProducer()");
         long id = producer.mIdProducer;
-        Log.w(LOG, "Deleted producer with id: " + id);
         database.delete(DatabaseHelper.TABLE_PRODUCERS, "IdProducer" + " = " + id, null);
+        Log.i(LOG, "Deleted producer with id: " + id);
     }
 
     public void updateProducer(Producer producerOld, Producer producerNew) {
-        Log.i(LOG, "updateProducer()");
         ContentValues values = new ContentValues();
         values.put("IdProducer", producerNew.mIdProducer);
         values.put("Email", producerNew.mEmail);
@@ -73,22 +74,27 @@ public class ProducersDataSource {
         values.put("IdDescription_", producerNew.mIdDescription_);
         values.put("IdAddress_", producerNew.mIdAddress_);
         values.put("IdUser_", producerNew.mIdUser_);
+        values.put("IdImageCover_", producerNew.mIdImageCover_);
+        values.put("IdWineBest_", producerNew.mIdWineBest_);
         values.put("LastUpdate", producerNew.mLastUpdate);
-
         int rows = database.update(DatabaseHelper.TABLE_PRODUCERS, values, "'"
                 + producerOld.mIdProducer + "' = '" + producerNew.mIdProducer + "'", null);
         Log.i(LOG, "Updated producer with id: " + producerOld.mIdProducer + " on: " + rows
-                + " rows");
+                + " row(s)");
     }
 
     public List<Producer> getAllProducers() {
         Log.i(LOG, "getAllProducers()");
         List<Producer> producers = new ArrayList<Producer>();
-        /* insertProducer(new Producer(1, "Email", "www.test.pl", "Testowy", "666666666", 1, 1, 1, 1,
-                 "Dawno"));*/
+        /*
+        insertProducer(new Producer(1, "Email", "www.test.pl", "Testowy", "666666666", 1, 1, 1, 1,
+                1, "Dawno"));
+        insertProducer(new Producer(2, "Email", "www.test.pl", "Testowy", "666666666", 1, 1, 1, 1,
+                1, "Dawno"));
+        insertProducer(new Producer(3, "Emailcos", "www.xxx.pl", "cos", "666666666", 4, 2, 1, 3, 5,
+                "omg"));*/
         Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, allColumns, null, null,
                 null, null, null);
-
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Producer producer = cursorToProducer(cursor);
@@ -96,7 +102,7 @@ public class ProducersDataSource {
             cursor.moveToNext();
         }
         cursor.close();
-        if (producers.isEmpty()) Log.e(LOG, "Producers are empty()");
+        if (producers.isEmpty()) Log.w(LOG, "Producers are empty()");
         return producers;
     }
 
@@ -110,7 +116,9 @@ public class ProducersDataSource {
         producer.mIdDescription_ = cursor.getInt(5);
         producer.mIdAddress_ = cursor.getInt(6);
         producer.mIdUser_ = cursor.getInt(7);
-        producer.mLastUpdate = cursor.getString(8);
+        producer.mIdImageCover_ = cursor.getInt(8);
+        producer.mIdWineBest_ = cursor.getInt(9);
+        producer.mLastUpdate = cursor.getString(10);
         return producer;
     }
 }

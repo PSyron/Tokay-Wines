@@ -18,16 +18,20 @@ public class Currency implements Serializable {
     @SerializedName("NameShort")
     public String mNameShort;
     @SerializedName("Ratio")
-    public String mRatio;
+    public float mRatio;
     @SerializedName("LastUpdate")
     public String mLastUpdate;
 
-    public Currency(int IdCurrency, String Name, String NameShort, String Ratio, String LastUpdate) {
+    public Currency(int IdCurrency, String Name, String NameShort, float Ratio, String LastUpdate) {
         super();
         mIdCurrency = IdCurrency;
         mName = Name;
         mNameShort = NameShort;
         mRatio = Ratio;
         mLastUpdate = LastUpdate;
+    }
+
+    public Currency() {
+        // TODO Auto-generated constructor stub
     }
 }

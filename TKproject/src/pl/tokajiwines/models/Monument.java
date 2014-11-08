@@ -33,4 +33,8 @@ public class Monument implements Serializable {
         mIdImageCover_ = IdImageCover_;
         mLastUpdate = LastUpdate;
     }
+
+    public Monument() {
+        // TODO Auto-generated constructor stub
+    }
 }

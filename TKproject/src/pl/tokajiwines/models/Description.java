@@ -37,4 +37,8 @@ public class Description implements Serializable {
         mIdUser_ = IdUser_;
         mLastUpdate = LastUpdate;
     }
+
+    public Description() {
+        // TODO Auto-generated constructor stub
+    }
 }

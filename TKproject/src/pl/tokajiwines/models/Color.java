@@ -25,4 +25,8 @@ public class Color implements Serializable {
         mNameEng = NameEng;
         mNamePl = NamePl;
     }
+
+    public Color() {
+        // TODO Auto-generated constructor stub
+    }
 }

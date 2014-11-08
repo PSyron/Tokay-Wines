@@ -27,4 +27,8 @@ public class HotelImage implements Serializable {
         mIdImage_ = IdImage_;
         mLastUpdate = LastUpdate;
     }
+
+    public HotelImage() {
+        // TODO Auto-generated constructor stub
+    }
 }

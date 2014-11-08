@@ -3,20 +3,25 @@ package pl.tokajiwines.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import pl.tokajiwines.utils.Log;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    // ------------------------ Database settings ----------------//  
+    // ------------------------ Database settings ----------------//
+    private static final String DATABASE_NAME = "1183_release.db";
+    private static final int DATABASE_VERSION = 2;
+    private static String DATABASE_PATH = "/data/data/pl.tokajiwines/databases/";
+    private static final String LOG = "DatabaseHelper"; // LogCat tag
 
-    private static final String DATABASE_NAME = "1183_release";
-    private static final int DATABASE_VERSION = 1;
-    private static final String LOG = "DatabaseHelper"; // LogCat tag       
-
-    // ------------------------ Table names ----------------//  
-
+    // ------------------------ Table names ----------------//
     public static final String TABLE_ADDRESSES = "tAddresses";
     public static final String TABLE_COLORS = "tColors";
     public static final String TABLE_CURRENCIES = "tCurrencies";
@@ -28,37 +33,141 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_IMAGES = "tImages";
     public static final String TABLE_LANGS = "tLangs";
     public static final String TABLE_LOOKOUTS = "tLookouts";
-    public static final String TABLE_LOOKOUTIMAGES = "tLookoutImages";
+    public static final String TABLE_LOOKOUT_IMAGES = "tLookoutImages";
     public static final String TABLE_MONUMENTS = "tMonuments";
-    public static final String TABLE_MONUMENTIMAGES = "tMonumentImages";
+    public static final String TABLE_MONUMENT_IMAGES = "tMonumentImages";
     public static final String TABLE_NEWS = "tNews";
-    public static final String TABLE_NEWSIMAGES = "tNewsImages";
+    public static final String TABLE_NEWS_IMAGES = "tNewsImages";
     public static final String TABLE_ODDITIES = "tOddities";
-    public static final String TABLE_ODDITYIMAGES = "tOddityImages";
-    public static final String TABLE_ODDITYTYPES = "tOddityTypes";
+    public static final String TABLE_ODDITY_IMAGES = "tOddityImages";
+    public static final String TABLE_ODDITY_TYPES = "tOddityTypes";
     public static final String TABLE_PRODUCERS = "tProducers";
-    public static final String TABLE_PRODUCERIMAGES = "tProducerImages";
+    public static final String TABLE_PRODUCER_IMAGES = "tProducerImages";
     public static final String TABLE_RESTAURANTS = "tRestaurants";
-    public static final String TABLE_RESTAURANTIMAGES = "tRestaurantImages";
+    public static final String TABLE_RESTAURANT_IMAGES = "tRestaurantImages";
     public static final String TABLE_STRAINS = "tStrains";
     public static final String TABLE_WINES = "tWines";
-    public static final String TABLE_WINEIMAGES = "tWineImages";
-    public static final String TABLE_WINESTRAINS = "tWineStrains";
+    public static final String TABLE_WINE_IMAGES = "tWineImages";
+    public static final String TABLE_WINE_STRAINS = "tWineStrains";
 
-    // ------------------------ Table create statements ----------------//  
-
+    // ------------------------ Table create statements ----------------//
     private static final String CREATE_TABLE_ADDRESSES = "CREATE TABLE " + "tAddresses" + "("
             + "IdAddress INTEGER PRIMARY KEY," + "StreetName TEXT," + "StreetNumber TEXT,"
             + "HouseNumber TEXT," + "City TEXT," + "Postcode TEXT," + "Latitude FLOAT,"
             + "Longitude FLOAT," + "LastUpdate TEXT" + ")";
 
+    private static final String CREATE_TABLE_COLORS = "CREATE TABLE " + "tColors" + "("
+            + "IdColor INTEGER PRIMARY KEY," + "NameEng TEXT," + "NamePl TEXT" + ")";
+
+    private static final String CREATE_TABLE_CURRENCIES = "CREATE TABLE " + "tCurrencies" + "("
+            + "IdCurrency INTEGER PRIMARY KEY," + "Name TEXT," + "NameShort TEXT," + "Ratio FLOAT,"
+            + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_DESCRIPTIONS = "CREATE TABLE " + "tDescriptions" + "("
+            + "IdDescription INTEGER NOT NULL," + "IdLang_ INTEGER NOT NULL,"
+            + "Version INTEGER NOT NULL," + "Short TEXT," + "Vast TEXT," + "IdUser_ INTEGER,"
+            + "LastUpdate TEXT," + "PRIMARY KEY(IdDescription,IdLang_,Version)" + ")";
+
+    private static final String CREATE_TABLE_FLAVOURS = "CREATE TABLE " + "tFlavours" + "("
+            + "IdFlavour INTEGER PRIMARY KEY," + "NameEng TEXT," + "NamePl TEXT" + ")";
+
+    private static final String CREATE_TABLE_GRADES = "CREATE TABLE " + "tGrades" + "("
+            + "IdGrade INTEGER PRIMARY KEY," + "Name TEXT" + ")";
+
+    private static final String CREATE_TABLE_HOTELS = "CREATE TABLE " + "tHotels" + "("
+            + "IdHotel INTEGER PRIMARY KEY," + "Email TEXT," + "Link TEXT," + "Name TEXT,"
+            + "Phone TEXT," + "IdDescription_ INTEGER," + "IdAddress_ INTEGER,"
+            + "IdUser_ INTEGER," + "IdImageCover_ INTEGER," + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_HOTEL_IMAGES = "CREATE TABLE " + "tHotelImages" + "("
+            + "IdHotelImage INTEGER PRIMARY KEY," + "IdHotel_ INTEGER," + "IdImage_ INTEGER,"
+            + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_IMAGES = "CREATE TABLE " + "tImages" + "("
+            + "IdImage INTEGER PRIMARY KEY," + "Version INTEGER," + "Width INTEGER,"
+            + "Height INTEGER," + "Weight FLOAT," + "Author TEXT," + "Image TEXT,"
+            + "IdUser_ INTEGER," + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_LANGS = "CREATE TABLE " + "tLangs" + "("
+            + "IdLang INTEGER PRIMARY KEY," + "Name TEXT," + "ShortName TEXT" + ")";
+
+    private static final String CREATE_TABLE_LOOKOUTS = "CREATE TABLE " + "tLookouts" + "("
+            + "IdLookout INTEGER PRIMARY KEY," + "Name TEXT," + "IdDescription_ INTEGER,"
+            + "IdAddress_ INTEGER," + "IdImageCover_ INTEGER," + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_LOOKOUT_IMAGES = "CREATE TABLE " + "tLookoutImages"
+            + "(" + "IdLookoutImage INTEGER PRIMARY KEY," + "IdLookout_ INTEGER,"
+            + "IdImage_ INTEGER," + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_MONUMENTS = "CREATE TABLE " + "tMonuments" + "("
+            + "IdMonument INTEGER PRIMARY KEY," + "Name TEXT," + "IdDescription_ INTEGER,"
+            + "IdAddress_ INTEGER," + "IdImageCover_ INTEGER," + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_MONUMENT_IMAGES = "CREATE TABLE " + "tMonumentImages"
+            + "(" + "IdLookoutImage INTEGER PRIMARY KEY," + "IdMonument_ INTEGER,"
+            + "IdImage_ INTEGER," + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_NEWS = "CREATE TABLE " + "tNews" + "("
+            + "IdNews INTEGER PRIMARY KEY," + "Header TEXT," + "HeaderEng TEXT,"
+            + "EntryDate TEXT," + "StartDate TEXT," + "EndDate TEXT," + "IdDescription_ INTEGER,"
+            + "IdAddress_ INTEGER," + "IdImageCover_ INTEGER," + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_NEWS_IMAGES = "CREATE TABLE " + "tNewsImages" + "("
+            + "IdNewsImage INTEGER PRIMARY KEY," + "IdNews_ INTEGER," + "IdImage_ INTEGER,"
+            + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_ODDITIES = "CREATE TABLE " + "tOddities" + "("
+            + "IdOddity INTEGER PRIMARY KEY," + "Name TEXT," + "Header TEXT,"
+            + "IdOddityType_ INTEGER," + "IdDescription_ INTEGER," + "IdAddress_ INTEGER,"
+            + "IdImageCover_ INTEGER" + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_ODDITY_IMAGES = "CREATE TABLE " + "tOddityImages"
+            + "(" + "IdOddityImage INTEGER PRIMARY KEY," + "IdOddity_ INTEGER,"
+            + "IdImage_ INTEGER," + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_ODDITY_TYPES = "CREATE TABLE " + "tOddityTypes" + "("
+            + "IdOddityType INTEGER PRIMARY KEY," + "Name TEXT" + ")";
+
     private static final String CREATE_TABLE_PRODUCERS = "CREATE TABLE " + "tProducers" + "("
             + "IdProducer INTEGER PRIMARY KEY," + "Email TEXT," + "Link TEXT," + "Name TEXT,"
             + "Phone TEXT," + "IdDescription_ INTEGER," + "IdAddress_ INTEGER,"
-            + "IdUser_ INTEGER," + "LastUpdate TEXT" + ")";
+            + "IdUser_ INTEGER," + "IdImageCover_ INTEGER," + "IdWineBest_ INTEGER,"
+            + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_PRODUCER_IMAGES = "CREATE TABLE " + "tProducerImages"
+            + "(" + "IdProducerImage INTEGER PRIMARY KEY," + "IdProducer_ INTEGER,"
+            + "IdImage_ INTEGER," + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_RESTAURANTS = "CREATE TABLE " + "tRestaurants" + "("
+            + "IdRestaurant INTEGER PRIMARY KEY," + "Email TEXT," + "Link TEXT," + "Name TEXT,"
+            + "Phone TEXT," + "IdDescription_ INTEGER," + "IdAddress_ INTEGER,"
+            + "IdUser_ INTEGER," + "IdImageCover_ INTEGER," + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_RESTAURANT_IMAGES = "CREATE TABLE "
+            + "tRestaurantImages" + "(" + "IdRestaurantImage INTEGER PRIMARY KEY,"
+            + "IdRestaurant_ INTEGER," + "IdImage_ INTEGER," + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_STRAINS = "CREATE TABLE " + "tStrains" + "("
+            + "IdStrain INTEGER PRIMARY KEY," + "Name TEXT" + ")";
+
+    private static final String CREATE_TABLE_WINES = "CREATE TABLE " + "tWines" + "("
+            + "IdWine INTEGER PRIMARY KEY," + "Name TEXT," + "ProdDate INTEGER," + "Price FLOAT,"
+            + "Volume INTEGER," + "AvailablePL INTEGER," + "LastUpdate TEXT," + "IdColor_ INTEGER,"
+            + "IdFlavour_ INTEGER," + "IdProducer_ INTEGER," + "IdDescription_ INTEGER,"
+            + "IdGrade_ INTEGER," + "IdImageCover_ INTEGER" + ")";
+
+    private static final String CREATE_TABLE_WINE_IMAGES = "CREATE TABLE " + "tWineImages" + "("
+            + "IdWineImage INTEGER PRIMARY KEY," + "IdWine_ INTEGER," + "IdImage_ INTEGER,"
+            + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_WINE_STRAINS = "CREATE TABLE " + "tWineStrains" + "("
+            + "IdWineStrain INTEGER PRIMARY KEY," + "Content INTEGER," + "IdStrain_ INTEGER ,"
+            + "IdWine_ INTEGER" + ")";
+    Context mContext;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mContext = context;
     }
 
     @Override
@@ -66,7 +175,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // creating required tables
         Log.w(LOG, "Creating tables");
         db.execSQL(CREATE_TABLE_ADDRESSES);
-        /*
         db.execSQL(CREATE_TABLE_COLORS);
         db.execSQL(CREATE_TABLE_CURRENCIES);
         db.execSQL(CREATE_TABLE_DESCRIPTIONS);
@@ -77,25 +185,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_IMAGES);
         db.execSQL(CREATE_TABLE_LANGS);
         db.execSQL(CREATE_TABLE_LOOKOUTS);
-        db.execSQL(CREATE_TABLE_LOOKOUTIMAGES);
+        db.execSQL(CREATE_TABLE_LOOKOUT_IMAGES);
         db.execSQL(CREATE_TABLE_MONUMENTS);
-        db.execSQL(CREATE_TABLE_MONUMENTIMAGES);
+        db.execSQL(CREATE_TABLE_MONUMENT_IMAGES);
         db.execSQL(CREATE_TABLE_NEWS);
-        db.execSQL(CREATE_TABLE_NEWSIMAGES);
+        db.execSQL(CREATE_TABLE_NEWS_IMAGES);
         db.execSQL(CREATE_TABLE_ODDITIES);
-        db.execSQL(CREATE_TABLE_ODDITYIMAGES);
-        db.execSQL(CREATE_TABLE_ODDITYTYPES);
-        */
+        db.execSQL(CREATE_TABLE_ODDITY_IMAGES);
+        db.execSQL(CREATE_TABLE_ODDITY_TYPES);
         db.execSQL(CREATE_TABLE_PRODUCERS);
-        /*
-        db.execSQL(CREATE_TABLE_PRODUCERIMAGES);
+        db.execSQL(CREATE_TABLE_PRODUCER_IMAGES);
         db.execSQL(CREATE_TABLE_RESTAURANTS);
-        db.execSQL(CREATE_TABLE_RESTAURANTIMAGES);
+        db.execSQL(CREATE_TABLE_RESTAURANT_IMAGES);
         db.execSQL(CREATE_TABLE_STRAINS);
         db.execSQL(CREATE_TABLE_WINES);
-        db.execSQL(CREATE_TABLE_WINEIMAGES);
-        db.execSQL(CREATE_TABLE_WINESTRAINS);
-        */
+        db.execSQL(CREATE_TABLE_WINE_IMAGES);
+        db.execSQL(CREATE_TABLE_WINE_STRAINS);
     }
 
     @Override
@@ -114,24 +219,66 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LANGS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOOKOUTS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOOKOUTIMAGES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOOKOUT_IMAGES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MONUMENTS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MONUMENTIMAGES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MONUMENT_IMAGES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NEWS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NEWSIMAGES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NEWS_IMAGES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ODDITIES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ODDITYIMAGES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ODDITYTYPES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ODDITY_IMAGES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ODDITY_TYPES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCERS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCERIMAGES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCER_IMAGES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESTAURANTS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESTAURANTIMAGES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESTAURANT_IMAGES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_STRAINS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_WINES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_WINEIMAGES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_WINESTRAINS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_WINE_IMAGES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_WINE_STRAINS);
         // create new tables
         onCreate(db);
+    }
+
+    public void createDataBase() throws IOException {
+        boolean dbExist = checkDataBase();
+        if (dbExist) {
+        } else {
+            this.getReadableDatabase();
+            try {
+                copyDataBase();
+            } catch (IOException e) {
+                Log.e(LOG, "Error copying databases");
+            }
+        }
+    }
+
+    private boolean checkDataBase() {
+        SQLiteDatabase checkDB = null;
+        try {
+            String myPath = DATABASE_PATH + DATABASE_NAME;
+            checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+        } catch (SQLiteException e) {
+            Log.e(LOG, "Database doesn't exists");
+        }
+        if (checkDB != null) {
+            checkDB.close();
+        }
+        return checkDB != null ? true : false;
+    }
+
+    private void copyDataBase() throws IOException {
+        Log.i(LOG, "Copying database from assets");
+        InputStream myInput = mContext.getAssets().open(DATABASE_NAME);
+        String outFileName = DATABASE_PATH + DATABASE_NAME;
+        OutputStream myOutput = new FileOutputStream(outFileName);
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = myInput.read(buffer)) > 0) {
+            myOutput.write(buffer, 0, length);
+        }
+        myOutput.flush();
+        myOutput.close();
+        myInput.close();
     }
 
     /* HOW TO CHECK DATABASE
@@ -142,5 +289,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     cd /sdcard
     ls -l <– check to make sure database.db is in here
     exit*/
-
 }
