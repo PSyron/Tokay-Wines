@@ -149,7 +149,7 @@ public class WinesListActivity extends BaseActivity {
 
             if (response != null) {
                 mWinesList = response.wines;
-                System.out.println(response.message);
+                System.out.println(response);
             }
 
             return null;

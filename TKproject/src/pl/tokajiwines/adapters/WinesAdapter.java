@@ -104,7 +104,7 @@ public class WinesAdapter extends BaseAdapter {
         }
 
         if (mWines[position].mPrice != null) {
-            holder.price.setText(mWines[position].mPrice);
+            holder.price.setText(mWines[position].mPrice+" ft");
         } else {
             holder.priceLayout.setVisibility(View.GONE);
         }
