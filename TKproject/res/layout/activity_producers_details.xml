@@ -127,7 +127,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_margin="5dp"
-                android:src="@drawable/ic_menu_maps_pressed" />
+                android:src="@drawable/find_near_places_selector" />
 
             <ImageView
                 android:id="@+id/activity_producer_navigate"
@@ -136,7 +136,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_margin="5dp"
-                android:src="@drawable/ic_navigation" />
+                android:src="@drawable/navigate_to_selector" />
         </RelativeLayout>
 
         <RelativeLayout
