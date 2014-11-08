@@ -16,6 +16,7 @@ import android.support.v4.app.NotificationCompat;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
+import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.MainActivity;
 import pl.tokajiwines.fragments.SettingsFragment;
@@ -67,13 +68,18 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
 
     @Override
     protected Void doInBackground(LatLng... args) {
-        LatLng myPosition = new LatLng(48.1295, 21.4089);
+
         mParser = new JSONParser();
         double tempRange = Constans.sMapRadiusInKm[mRangePicked];
-        //        String tempUrl = sUrl + "?lat=" + args[0].latitude + "&lng=" + args[0].longitude
-        //                + "&radius=" + tempRange;
-        String tempUrl = sUrl + "?lat=" + myPosition.latitude + "&lng=" + myPosition.longitude
-                + "&radius=" + tempRange;
+        String tempUrl;
+        if (!App.debug_mode) {
+            tempUrl = sUrl + "?lat=" + args[0].latitude + "&lng=" + args[0].longitude + "&radius="
+                    + tempRange;
+        } else {
+            LatLng myPosition = new LatLng(48.1295, 21.4089);
+            tempUrl = sUrl + "?lat=" + myPosition.latitude + "&lng=" + myPosition.longitude
+                    + "&radius=" + tempRange;
+        }
         //TODO change below sUrl for tempUrl
         Log.e("pobieranie URL", tempUrl + "     ");
         InputStream source = mParser.retrieveStream(tempUrl, Constans.sUsername,
