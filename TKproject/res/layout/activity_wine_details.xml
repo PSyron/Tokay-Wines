@@ -52,6 +52,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/activity_wine_taste_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
@@ -70,9 +71,11 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/activity_wine_type_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:visibility="visible" >
 
                 <TextView
                     style="@style/DetailsHeader.BoldText"
@@ -88,6 +91,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/activity_wine_strain_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
@@ -106,6 +110,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/activity_wine_year_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
@@ -124,6 +129,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/activity_wine_price_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
