@@ -104,7 +104,7 @@ public class WinesAdapter extends BaseAdapter {
         }
 
         if (mWines[position].mPrice != null) {
-            holder.price.setText(mWines[position].mPrice+" ft");
+            holder.price.setText(mWines[position].mPrice + " ft");
         } else {
             holder.priceLayout.setVisibility(View.GONE);
         }
@@ -123,7 +123,8 @@ public class WinesAdapter extends BaseAdapter {
         //        .error(R.drawable.error_image)
         //        .load(mWines[position].mImageUrl);
 
-        final File imgFile = new File(App.fileAbsPath
+        final File imgFile = new File(mActivity.getFilesDir().getAbsolutePath()
+                + "/"
                 + mWines[position].mImageUrl.substring(
                         mWines[position].mImageUrl.lastIndexOf('/') + 1,
                         mWines[position].mImageUrl.length()));
@@ -134,8 +135,8 @@ public class WinesAdapter extends BaseAdapter {
         } else {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-                    App.downloadImagesToSdCard(mWines[position].mImageUrl, mActivity, holder.img);
-
+                    // App.downloadImagesToSdCard(mWines[position].mImageUrl, mActivity, holder.img);
+                    App.downloadAndRun(mWines[position].mImageUrl, mActivity, holder.img);
                 }
             }, 50);
         }

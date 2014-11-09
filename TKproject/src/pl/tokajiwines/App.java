@@ -13,7 +13,17 @@ import android.os.Environment;
 import android.os.Handler;
 import android.widget.ImageView;
 
+import pl.tokajiwines.utils.Log;
+
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class App extends Application {
 
@@ -34,6 +44,7 @@ public class App extends Application {
             final ImageView img) {
 
         final File direct = new File(Environment.getExternalStorageDirectory() + "/Tokaji Wines");
+        String internalPath = ctx.getFilesDir().getAbsolutePath();
 
         if (!direct.exists()) {
             direct.mkdirs();
@@ -49,11 +60,13 @@ public class App extends Application {
                 .setAllowedOverRoaming(true)
                 .setTitle("Downloading images")
                 .setDescription("Images for Application")
-                .setDestinationInExternalPublicDir(
+                .setDestinationInExternalFilesDir(
+                        ctx,
                         "/Tokaji Wines",
                         downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1,
                                 downloadUrl.length()));
 
+        Log.i("App", ctx.getFilesDir().getAbsolutePath());
         mgr.enqueue(request);
 
         new Handler().postDelayed(new Runnable() {
@@ -73,6 +86,7 @@ public class App extends Application {
     public static Bitmap downloadImagesToSdCardAndReturnBitman(final String downloadUrl, Context ctx) {
 
         final File direct = new File(Environment.getExternalStorageDirectory() + "/Tokaji Wines");
+        String internalPath = ctx.getFilesDir().getAbsolutePath();
 
         if (!direct.exists()) {
             direct.mkdirs();
@@ -88,10 +102,14 @@ public class App extends Application {
                 .setAllowedOverRoaming(true)
                 .setTitle("Downloading images")
                 .setDescription("Images for Application")
-                .setDestinationInExternalPublicDir(
+                .setVisibleInDownloadsUi(debug_mode)
+                .setDestinationInExternalFilesDir(
+                        ctx,
                         "/Tokaji Wines",
                         downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1,
                                 downloadUrl.length()));
+
+        Log.i("App", ctx.getFilesDir().getAbsolutePath());
 
         mgr.enqueue(request);
 
@@ -100,6 +118,92 @@ public class App extends Application {
 
         return myBitmap;
 
+    }
+
+    public static void downloadAndRun(final String url, final Context ctx, final ImageView iv) {
+
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    downloadToInternal(url, ctx);
+
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+
+        };
+
+        thread.start();
+
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                // App.downloadImagesToSdCard(mNews[position].mImageUrl, mActivity, holder.img);
+
+                try {
+                    iv.setImageBitmap(getFromInternal(url, ctx));
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            }
+        }, 1500);
+
+    }
+
+    public static void downloadToInternal(String url, Context ctx) throws IOException {
+        URL imageURL = new URL(url);
+
+        URLConnection connection = imageURL.openConnection();
+
+        InputStream inputStream = new BufferedInputStream(imageURL.openStream(), 10240);
+
+        File internalDir = ctx.getFilesDir();
+
+        File cacheFile = new File(internalDir,
+                url.substring(url.lastIndexOf('/') + 1, url.length()));
+
+        FileOutputStream outputStream = new FileOutputStream(cacheFile);
+
+        byte buffer[] = new byte[1024];
+
+        int dataSize;
+
+        //  int loadedSize = 0;
+
+        while ((dataSize = inputStream.read(buffer)) != -1) {
+
+            //loadedSize += dataSize;
+
+            // ctx.publishProgress(loadedSize);
+
+            outputStream.write(buffer, 0, dataSize);
+
+        }
+
+        outputStream.close();
+
+    }
+
+    public static Bitmap getFromInternal(String url, Context ctx) throws FileNotFoundException {
+        File cacheDir = ctx.getFilesDir();
+        String filename = url.substring(url.lastIndexOf('/') + 1, url.length());
+        File cacheFile = new File(cacheDir, filename);
+
+        InputStream fileInputStream = new FileInputStream(cacheFile);
+
+        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+
+        //   bitmapOptions.inSampleSize = scale;
+
+        bitmapOptions.inJustDecodeBounds = false;
+
+        Bitmap wallpaperBitmap = BitmapFactory.decodeStream(fileInputStream, null, bitmapOptions);
+
+        return wallpaperBitmap;
     }
 
 }

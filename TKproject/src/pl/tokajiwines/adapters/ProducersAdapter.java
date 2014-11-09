@@ -71,7 +71,8 @@ public class ProducersAdapter extends BaseAdapter {
         //        Ion.with(holder.img).placeholder(R.drawable.placeholder_image)
         //                .error(R.drawable.error_image).load(mProducers[position].mImageUrl);
 
-        final File imgFile = new File(App.fileAbsPath
+        final File imgFile = new File(mActivity.getFilesDir().getAbsolutePath()
+                + "/"
                 + mProducers[position].mImageUrl.substring(
                         mProducers[position].mImageUrl.lastIndexOf('/') + 1,
                         mProducers[position].mImageUrl.length()));
@@ -84,8 +85,9 @@ public class ProducersAdapter extends BaseAdapter {
 
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-                    App.downloadImagesToSdCard(mProducers[position].mImageUrl, mActivity,
-                            holder.img);
+                    //                    App.downloadImagesToSdCard(mProducers[position].mImageUrl, mActivity,
+                    //                            holder.img);
+                    App.downloadAndRun(mProducers[position].mImageUrl, mActivity, holder.img);
 
                 }
             }, 50);

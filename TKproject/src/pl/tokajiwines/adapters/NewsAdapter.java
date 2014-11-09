@@ -15,6 +15,7 @@ import android.widget.TextView;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.jsonresponses.NewsListItem;
+import pl.tokajiwines.utils.Log;
 
 import java.io.File;
 
@@ -69,10 +70,16 @@ public class NewsAdapter extends BaseAdapter {
         //        Ion.with(holder.img).placeholder(R.drawable.placeholder_image)
         //                .error(R.drawable.error_image).load(mNews[position].mImageUrl);
 
-        final File imgFile = new File(App.fileAbsPath
+        final File imgFile = new File(mActivity.getFilesDir().getAbsolutePath()
+                + "/"
                 + mNews[position].mImageUrl.substring(
                         mNews[position].mImageUrl.lastIndexOf('/') + 1,
                         mNews[position].mImageUrl.length()));
+        Log.i("App",
+                mActivity.getFilesDir().getAbsolutePath()
+                        + mNews[position].mImageUrl.substring(
+                                mNews[position].mImageUrl.lastIndexOf('/') + 1,
+                                mNews[position].mImageUrl.length()));
         if (imgFile.exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -80,11 +87,14 @@ public class NewsAdapter extends BaseAdapter {
         } else {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-                    App.downloadImagesToSdCard(mNews[position].mImageUrl, mActivity, holder.img);
+                    // App.downloadImagesToSdCard(mNews[position].mImageUrl, mActivity, holder.img);
+
+                    App.downloadAndRun(mNews[position].mImageUrl, mActivity, holder.img);
 
                 }
             }, 50);
         }
+
         //   .load("http://remzo.usermd.net/zpi/photos/akt1_thumb.jpg");
         holder.content.setText(mNews[position].mDescription);
 

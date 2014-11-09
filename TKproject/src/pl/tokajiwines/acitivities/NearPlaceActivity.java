@@ -240,7 +240,9 @@ public class NearPlaceActivity extends BaseActivity {
                 //                Ion.with(mUiPlaceImage).placeholder(R.drawable.placeholder_image)
                 //                        .error(R.drawable.error_image).load(pl.mImageUrl);
                 Log.e(LOG_TAG, pl.mImageUrl + " ");
-                final File imgFile = new File(App.fileAbsPath
+                final File imgFile = new File(NearPlaceActivity.this.getFilesDir()
+                        .getAbsolutePath()
+                        + "/"
                         + pl.mImageUrl.substring(pl.mImageUrl.lastIndexOf('/') + 1,
                                 pl.mImageUrl.length()));
                 if (imgFile.exists()) {
@@ -250,9 +252,9 @@ public class NearPlaceActivity extends BaseActivity {
                 } else {
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
-                            App.downloadImagesToSdCard(pl.mImageUrl, NearPlaceActivity.this,
-                                    mUiPlaceImage);
-
+                            //                            App.downloadImagesToSdCard(pl.mImageUrl, NearPlaceActivity.this,
+                            //                                    mUiPlaceImage);
+                            App.downloadAndRun(pl.mImageUrl, NearPlaceActivity.this, mUiPlaceImage);
                         }
                     }, 50);
                 }

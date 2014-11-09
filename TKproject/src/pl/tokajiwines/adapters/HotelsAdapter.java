@@ -73,7 +73,8 @@ public class HotelsAdapter extends BaseAdapter {
 
         //        Ion.with(holder.img).placeholder(R.drawable.placeholder_image)
         //                .error(R.drawable.error_image).load(mHotels[position].mImageUrl);
-        final File imgFile = new File(App.fileAbsPath
+        final File imgFile = new File(mActivity.getFilesDir().getAbsolutePath()
+                + "/"
                 + mHotels[position].mImageUrl.substring(
                         mHotels[position].mImageUrl.lastIndexOf('/') + 1,
                         mHotels[position].mImageUrl.length()));
@@ -84,8 +85,8 @@ public class HotelsAdapter extends BaseAdapter {
         } else {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-                    App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
-
+                    //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
+                    App.downloadAndRun(mHotels[position].mImageUrl, mActivity, holder.img);
                 }
             }, 50);
         }

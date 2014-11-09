@@ -57,7 +57,8 @@ public class ImagePagerAdapter extends PagerAdapter {
         if (mUrlOrImage) {
             //            Ion.with(imageView).placeholder(R.drawable.placeholder_image)
             //                    .error(R.drawable.error_image).load(mImagesUrl[position].ImageUrl);
-            final File imgFile = new File(App.fileAbsPath
+            final File imgFile = new File(context.getFilesDir().getAbsolutePath()
+                    + "/"
                     + mImagesUrl[position].ImageUrl.substring(
                             mImagesUrl[position].ImageUrl.lastIndexOf('/') + 1,
                             mImagesUrl[position].ImageUrl.length()));
@@ -68,8 +69,9 @@ public class ImagePagerAdapter extends PagerAdapter {
             } else {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
-                        App.downloadImagesToSdCard(mImagesUrl[position].ImageUrl, context,
-                                imageView);
+                        //                        App.downloadImagesToSdCard(mImagesUrl[position].ImageUrl, context,
+                        //                                imageView);
+                        App.downloadAndRun(mImagesUrl[position].ImageUrl, context, imageView);
 
                     }
                 }, 50);

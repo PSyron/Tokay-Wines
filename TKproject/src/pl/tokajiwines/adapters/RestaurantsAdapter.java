@@ -74,7 +74,8 @@ public class RestaurantsAdapter extends BaseAdapter {
         //        Ion.with(holder.img).placeholder(R.drawable.placeholder_image)
         //                .error(R.drawable.error_image).load(mRestaurants[position].mImageUrl);
 
-        final File imgFile = new File(App.fileAbsPath
+        final File imgFile = new File(mActivity.getFilesDir().getAbsolutePath()
+                + "/"
                 + mRestaurants[position].mImageUrl.substring(
                         mRestaurants[position].mImageUrl.lastIndexOf('/') + 1,
                         mRestaurants[position].mImageUrl.length()));
@@ -85,9 +86,9 @@ public class RestaurantsAdapter extends BaseAdapter {
         } else {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-                    App.downloadImagesToSdCard(mRestaurants[position].mImageUrl, mActivity,
-                            holder.img);
-
+                    //                    App.downloadImagesToSdCard(mRestaurants[position].mImageUrl, mActivity,
+                    //                            holder.img);
+                    App.downloadAndRun(mRestaurants[position].mImageUrl, mActivity, holder.img);
                 }
             }, 50);
         }
