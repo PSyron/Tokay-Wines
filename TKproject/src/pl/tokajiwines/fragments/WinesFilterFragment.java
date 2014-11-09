@@ -114,7 +114,7 @@ public class WinesFilterFragment extends BaseFragment {
         mSelectedProducers = new ArrayList<Integer>();
         mSelectedYears = new ArrayList<String>();
         mSelectedPrices = new ArrayList<String>();
-        
+
         mWinePrices = Constans.sWinePricesQuery;
 
         mUiTaste = (TextView) v.findViewById(R.id.frag_wine_taste_tV);
@@ -233,8 +233,15 @@ public class WinesFilterFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                createDialogCheckBox(getResources().getString(R.string.wine_price_range) + ": "
-                        + currCurrency, currCurrencyTab, mUiPrice, TAG_PRICES, mCheckedPrices);
+                if (currCurrency == Constans.sSettingsCurrency[2])
+                    createDialogCheckBox(getResources().getString(R.string.wine_price_range) + ": "
+                            + Constans.sSettingsCurrency[2], currCurrencyTab, mUiPrice, TAG_PRICES,
+                            mCheckedPrices);
+                else {
+                    createDialogCheckBox(getResources().getString(R.string.wine_price_range) + ": "
+                            + Constans.sSettingsCurrency[2] + " (" + currCurrency + ")",
+                            currCurrencyTab, mUiPrice, TAG_PRICES, mCheckedPrices);
+                }
 
             }
         });
@@ -284,7 +291,7 @@ public class WinesFilterFragment extends BaseFragment {
                     public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
                         if (isChecked) {
                             // If the user checked the item, add it to the selected items
-         
+
                             seletedItems.add(indexSelected);
                         } else if (seletedItems.contains(indexSelected)) {
                             // Else, if the item is already in the array, remove it
@@ -326,82 +333,71 @@ public class WinesFilterFragment extends BaseFragment {
         for (int i = 0; i < checkedItems.length; i++) {
             if (checkedItems[i]) chosenOptions += opt[i] + ", ";
         }
-        
+
         switch (tag) {
             case TAG_FLAVOURS: {
-                
+
                 mSelectedTastes.clear();
-                
+
                 for (int i = 0; i < checkedItems.length; i++) {
-                    if (checkedItems[i])
-                    {
-                        mSelectedTastes
-                            .add(mWineFlavours[i].mIdFlavour);
+                    if (checkedItems[i]) {
+                        mSelectedTastes.add(mWineFlavours[i].mIdFlavour);
                     }
                 }
                 break;
             }
             case TAG_GRADES: {
-                
+
                 mSelectedGrades.clear();
-                
+
                 for (int i = 0; i < checkedItems.length; i++) {
-                    if (checkedItems[i])
-                    {
-                        mSelectedGrades
-                            .add(mWineGrades[i].mIdGrade);
+                    if (checkedItems[i]) {
+                        mSelectedGrades.add(mWineGrades[i].mIdGrade);
                     }
                 }
                 break;
             }
             case TAG_STRAINS: {
-                
+
                 mSelectedStrains.clear();
-                
+
                 for (int i = 0; i < checkedItems.length; i++) {
-                    if (checkedItems[i])
-                    {
-                        mSelectedStrains
-                            .add(mWineStrains[i].mIdStrain);
+                    if (checkedItems[i]) {
+                        mSelectedStrains.add(mWineStrains[i].mIdStrain);
                     }
                 }
                 break;
             }
             case TAG_PRODUCERS: {
-                
+
                 mSelectedProducers.clear();
-                
+
                 for (int i = 0; i < checkedItems.length; i++) {
-                    if (checkedItems[i])
-                    {
-                        mSelectedProducers
-                            .add(mWineProducers[i].mIdProducer);
+                    if (checkedItems[i]) {
+                        mSelectedProducers.add(mWineProducers[i].mIdProducer);
                     }
                 }
                 break;
             }
             case TAG_YEARS: {
-                
+
                 mSelectedYears.clear();
-                
+
                 for (int i = 0; i < checkedItems.length; i++) {
-                    if (checkedItems[i])
-                    {
+                    if (checkedItems[i]) {
                         mSelectedYears.add(opt[i]);
                     }
                 }
                 break;
             }
-            
+
             case TAG_PRICES: {
-                
+
                 mSelectedPrices.clear();
-                
+
                 for (int i = 0; i < checkedItems.length; i++) {
-                    if (checkedItems[i])
-                    {
-                        mSelectedPrices
-                            .add(mWinePrices[i]);
+                    if (checkedItems[i]) {
+                        mSelectedPrices.add(mWinePrices[i]);
                     }
                 }
                 break;
@@ -438,16 +434,15 @@ public class WinesFilterFragment extends BaseFragment {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        
-        if (mWineStrains.length == 0)
-        {
-    
+
+        if (mWineStrains.length == 0) {
+
             if (App.isOnline(mCtx)) {
                 new LoadFilterTask().execute();
             }
-    
+
             // otherwise, show message
-    
+
             else {
                 Toast.makeText(mCtx, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
             }
