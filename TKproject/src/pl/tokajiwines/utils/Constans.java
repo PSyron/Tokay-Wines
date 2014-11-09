@@ -60,17 +60,21 @@ public class Constans {
             "Furmint", "Hárslevelű", "Sárga Muskotály", "Zéta", "Kabar", "Kövérszőlő"
     };
     public static final String[] sWinePricesPLN = {
-            "< 10", "10 - 25", "25 - 40", "> 40"
-    }; 
-    public static final String[] sWinePricesEuro = {
-            "< 3", "3 - 5", "5 - 10", "> 10"
-    }; 
-    public static final String[] sWinePricesForint = {
-            "< 2000", "2000 - 4000", "4000 - 8000", "> 8000"
+            "< 2000 HUF (30 PLN)", "2000 - 4000 HUF (30 - 60 PLN)",
+            "4000 - 8000 HUF (60 - 120 PLN)", "> 8000 HUF (120 PLN)"
     };
-    
+    public static final String[] sWinePricesEuro = {
+            "< 2000 HUF (7 EUR)", "2000 - 4000 HUF (7 - 14 EUR)", "4000 - 8000 HUF (14 - 28 EUR)",
+            "> 8000 HUF (28 EUR)"
+    };
+    public static final String[] sWinePricesForint = {
+            "< 2000 HUF", "2000 - 4000 HUF", "4000 - 8000 HUF", "> 8000 HUF"
+    };
+
     public static final String[] sWinePricesQuery = {
-        "Price <= 2000", "(Price > 2000 AND Price <= 4000)", "(Price > 4000 AND Price <= 8000)", "Price > 8000"};
+            "Price <= 2000", "(Price > 2000 AND Price <= 4000)",
+            "(Price > 4000 AND Price <= 8000)", "Price > 8000"
+    };
 
     //Settings
     public static final String[] sSettingsLanguage = {
