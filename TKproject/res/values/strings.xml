@@ -116,6 +116,7 @@
     <string name="dialog_title_currency">Select currency in application: </string>
     <string name="dialog_title_measure">Select distance measure in application: </string>
     <string name="dialog_title_range">Select distance range in application: </string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus et lectus eget leo mattis tristique ut at tortor. Phasellus tempus nibh quis magna efficitur luctus sed non nulla. Cras et magna eu nisl fringilla malesuada. Nulla turpis justo, posuere in porta eget, mattis eu orci. Fusce sollicitudin sapien nisl. Proin elit velit, posuere in bibendum sit amet, auctor quis lacus. Aliquam vitae luctus sapien. Aenean laoreet eros non nisl vulputate luctus. Phasellus porttitor massa vel quam molestie, vitae lobortis sapien feugiat. Aliquam posuere mi non mi sagittis ultricies. Nam efficitur non lectus nec lacinia. Fusce pharetra, diam at sagittis gravida.</string>
 
     <!-- Urls -->
 
@@ -132,6 +133,4 @@
     <string name="UrlWineFilter">http://tokajiwines.me/services/wineFilter.php</string>
     <string name="UrlWinesList">http://tokajiwines.me/services/wines.php</string>
     <string name="UrlWineDetails">http://tokajiwines.me/services/wineDetails.php</string>
-    <string name="title_activity_wine">WineActivity</string>
-
-</resources>
+    <string name="title_activity_wine">WineActivity</string></resources>

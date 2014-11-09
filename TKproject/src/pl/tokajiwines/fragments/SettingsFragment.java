@@ -53,7 +53,7 @@ public class SettingsFragment extends BaseFragment {
     RelativeLayout mUiGPSRangeRel;
     TextView mUiGPSRangeTV;
     CheckBox mUiGPSData;
-
+    TextView mUiAbout;
     Context mCtx;
 
     public static SettingsFragment newInstance(Context ctx) {
@@ -83,6 +83,7 @@ public class SettingsFragment extends BaseFragment {
         mUiGPSRangeRel = (RelativeLayout) v.findViewById(R.id.settings_gps_rL);
         mUiGPSRangeTV = (TextView) v.findViewById(R.id.settings_gps_small_tV);
         mUiGPSData = (CheckBox) v.findViewById(R.id.settings_gps_data);
+        mUiAbout = (TextView) v.findViewById(R.id.settings_about_application_tV);
         initFromShared();
         initListeners();
         return v;
@@ -229,6 +230,23 @@ public class SettingsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 rangeDialog.show();
+
+            }
+        });
+        mUiAbout.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(getActivity())
+                        .setMessage(getResources().getString(R.string.lorem_ipsum))
+                        .setPositiveButton(android.R.string.ok,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                })
+
+                        .setIcon(android.R.drawable.ic_dialog_alert).show();
 
             }
         });
