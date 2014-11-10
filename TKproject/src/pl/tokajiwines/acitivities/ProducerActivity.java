@@ -146,10 +146,12 @@ public class ProducerActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                Intent intent = new Intent(ProducerActivity.this, WinesGridViewActivity.class);
+               /* Intent intent = new Intent(ProducerActivity.this, WinesGridViewActivity.class);
                 intent.putExtra(ProducersFragment.PRODUCER_TAG, mProducer);
 
-                startActivity(intent);
+                startActivity(intent);*/
+                Toast.makeText(ProducerActivity.this, "not working yet",
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
