@@ -68,6 +68,8 @@ public class NavigateToActivity extends BaseActivity {
 
     TextView mUiPlaceDistance;
     TextView mUiPlaceDuration;
+    ImageView mUiNavigateTo;
+    ImageView mUiInfo;
     String mUiPlaceImageUrl = "";
 
     @Override
@@ -105,6 +107,11 @@ public class NavigateToActivity extends BaseActivity {
 
         mUiPlaceDistance = (TextView) mUiPlaceBox.findViewById(R.id.item_map_distance);
         mUiPlaceDuration = (TextView) mUiPlaceBox.findViewById(R.id.item_map_duration);
+        mUiNavigateTo = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_navigate);
+        mUiNavigateTo.setVisibility(View.GONE);
+        mUiInfo = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_info);
+        mUiInfo.setVisibility(View.GONE);
+
         fillBox();
         mMapView.onCreate(savedInstanceState);
         initView();
@@ -161,7 +168,7 @@ public class NavigateToActivity extends BaseActivity {
         googleMap = mMapView.getMap();
 
         // create marker
-        googleMap.setMyLocationEnabled(true);
+        googleMap.setMyLocationEnabled(false);
 
         MarkerOptions markerFrom = new MarkerOptions().position(mStartPosition).title(
                 getResources().getString(R.string.here_u_started));

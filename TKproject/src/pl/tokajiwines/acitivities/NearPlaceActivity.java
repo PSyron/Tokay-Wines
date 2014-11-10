@@ -1,9 +1,8 @@
 
 package pl.tokajiwines.acitivities;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -11,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,8 +34,14 @@ import org.json.JSONObject;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.fragments.SettingsFragment;
+import pl.tokajiwines.fragments.TabHotelsFragment;
+import pl.tokajiwines.fragments.TabRestaurantsFragment;
+import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.jsonresponses.NearPlacesResponse;
+import pl.tokajiwines.jsonresponses.ProducerListItem;
+import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.models.Place;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.DirectionsJSONParser;
@@ -59,6 +65,8 @@ public class NearPlaceActivity extends BaseActivity {
     public static final String TAG_PLACE = "nearPlacefinder";
     public static final String LOG_TAG = "NearPlaceActivity";
     Place mPlace;
+    Marker mSelectedPlacePosition;
+    Place mSelectedPlace;
     Polyline mRoute;
     MapView mMapView;
     LatLng mPlacePosition;
@@ -76,6 +84,8 @@ public class NearPlaceActivity extends BaseActivity {
     TextView mUiPhone;
     TextView mUiPlaceDistance;
     TextView mUiPlaceDuration;
+    ImageView mUiNavigateTo;
+    ImageView mUiInfo;
     boolean mWithDrawing = true;
 
     @Override
@@ -105,6 +115,8 @@ public class NearPlaceActivity extends BaseActivity {
         mUiPhone = (TextView) mUiPlaceBox.findViewById(R.id.item_map_phone);
         mUiPlaceDistance = (TextView) mUiPlaceBox.findViewById(R.id.item_map_distance);
         mUiPlaceDuration = (TextView) mUiPlaceBox.findViewById(R.id.item_map_duration);
+        mUiNavigateTo = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_navigate);
+        mUiInfo = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_info);
         mMapView.onCreate(savedInstanceState);
         initView();
 
@@ -151,7 +163,7 @@ public class NearPlaceActivity extends BaseActivity {
         googleMap = mMapView.getMap();
 
         // create marker
-        googleMap.setMyLocationEnabled(true);
+        googleMap.setMyLocationEnabled(false);
 
         MarkerOptions marker = new MarkerOptions().position(mPlacePosition).title(mPlace.mName);
 
@@ -177,46 +189,67 @@ public class NearPlaceActivity extends BaseActivity {
             public boolean onMarkerClick(final Marker arg0) {
 
                 if (arg0.getPosition() != mPlacePosition) {
-
-                    new AlertDialog.Builder(NearPlaceActivity.this)
-                            .setTitle("Route to " + arg0.getTitle())
-                            .setMessage("Do You want to check route?")
-                            .setPositiveButton(android.R.string.yes,
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // Getting URL to the Google Directions API
-                                            if (mRoute != null) {
-                                                mRoute.remove();
-                                            }
-                                            mWithDrawing = true;
-                                            String url = getDirectionsUrl(mPlacePosition,
-                                                    arg0.getPosition());
-
-                                            DownloadTask downloadTask = new DownloadTask();
-
-                                            // Start downloading json data from Google Directions API
-                                            downloadTask.execute(url);
-                                            fillBox(arg0);
-                                        }
-                                    })
-                            .setNegativeButton(android.R.string.no,
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            mWithDrawing = false;
-                                            String url = getDirectionsUrl(mPlacePosition,
-                                                    arg0.getPosition());
-
-                                            DownloadTask downloadTask = new DownloadTask();
-
-                                            // Start downloading json data from Google Directions API
-                                            downloadTask.execute(url);
-                                            fillBox(arg0);
-                                        }
-                                    }).setIcon(android.R.drawable.ic_dialog_alert).show();
+                    mSelectedPlacePosition = arg0;
+                    mWithDrawing = false;
+                    String url = getDirectionsUrl(mPlacePosition, arg0.getPosition());
+                    DownloadTask downloadTask = new DownloadTask();
+                    // Start downloading json data from Google Directions API
+                    downloadTask.execute(url);
+                    fillBox(arg0);
                 }
                 return false;
             }
+        });
+        mUiNavigateTo.setOnClickListener(new OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                if (mRoute != null) {
+                    mRoute.remove();
+                }
+                mWithDrawing = true;
+                String url = getDirectionsUrl(mPlacePosition, mSelectedPlacePosition.getPosition());
+
+                DownloadTask downloadTask = new DownloadTask();
+
+                // Start downloading json data from Google Directions API
+                downloadTask.execute(url);
+                fillBox(mSelectedPlacePosition);
+
+            }
+        });
+        mUiInfo.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (mSelectedPlace.mName.equals(mPlace.mName)) {
+                    finish();
+                } else {
+                    if (mSelectedPlace.mPlaceType.contains("Hotel")) {
+                        HotelListItem temp = new HotelListItem(mSelectedPlace.mIdPlace,
+                                mSelectedPlace.mName, mSelectedPlace.mPhone, "",
+                                mSelectedPlace.mImageUrl, "", "", "", "");
+                        Intent intent = new Intent(NearPlaceActivity.this, HotelActivity.class);
+                        intent.putExtra(TabHotelsFragment.HOTEL_TAG, temp);
+                        startActivityForResult(intent, HotelActivity.REQUEST);
+                    } else if (mSelectedPlace.mPlaceType.contains("Restaurant")) {
+                        RestaurantListItem temp = new RestaurantListItem(mSelectedPlace.mIdPlace,
+                                mSelectedPlace.mName, mSelectedPlace.mPhone, "",
+                                mSelectedPlace.mImageUrl, "", "", "", "");
+                        Intent intent = new Intent(NearPlaceActivity.this, RestaurantActivity.class);
+                        intent.putExtra(TabRestaurantsFragment.RESTAURANT_TAG, temp);
+
+                        startActivityForResult(intent, RestaurantActivity.REQUEST);
+                    } else if (mSelectedPlace.mPlaceType.contains("Producer")) {
+                        Intent intent = new Intent(NearPlaceActivity.this, ProducerActivity.class);
+                        intent.putExtra(ProducersFragment.PRODUCER_TAG, new ProducerListItem(
+                                mSelectedPlace.mIdPlace, mSelectedPlace.mName, ""));
+
+                        startActivityForResult(intent, ProducerActivity.REQUEST);
+                    }
+                    finish();
+                }
+            }
         });
         CameraPosition cameraPosition = new CameraPosition.Builder().target(mPlacePosition)
                 .zoom(13).build();
@@ -228,6 +261,7 @@ public class NearPlaceActivity extends BaseActivity {
         for (final Place pl : mNearbyPlaces) {
             if (pl.getLatLng().latitude == arg0.getPosition().latitude
                     && pl.getLatLng().longitude == arg0.getPosition().longitude) {
+                mSelectedPlace = pl;
                 mUiPlaceBox.setVisibility(View.VISIBLE);
                 mUiPlaceTitle.setText(pl.mPlaceType + ": " + pl.mName);
                 if (pl.mPhone != null && !pl.mPhone.equals("")) {
@@ -295,13 +329,16 @@ public class NearPlaceActivity extends BaseActivity {
 
             // Changing marker icon
             if (pozycja.mPlaceType.contains("Hotel")) {
-                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+                //marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_hotels));
             } else if (pozycja.mPlaceType.contains("Restaurant")) {
-                marker.icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                //                marker.icon(BitmapDescriptorFactory
+                //                        .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_restaurants));
             } else if (pozycja.mPlaceType.contains("Producer")) {
-                marker.icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                //                marker.icon(BitmapDescriptorFactory
+                //                        .defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_producers));
             } else {//Producer
                 marker.icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));

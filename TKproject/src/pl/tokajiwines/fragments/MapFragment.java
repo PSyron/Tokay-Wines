@@ -267,13 +267,16 @@ public class MapFragment extends BaseFragment {
 
             // Changing marker icon
             if (pozycja.mPlaceType.contains("Hotel")) {
-                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+                //marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_hotels));
             } else if (pozycja.mPlaceType.contains("Restaurant")) {
-                marker.icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                //                marker.icon(BitmapDescriptorFactory
+                //                        .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_restaurants));
             } else if (pozycja.mPlaceType.contains("Producer")) {
-                marker.icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                //                marker.icon(BitmapDescriptorFactory
+                //                        .defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_producers));
             } else {//Producer
                 marker.icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));

@@ -12,7 +12,7 @@
         android:id="@+id/activity_map_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         layout="@layout/item_map"
         android:visibility="gone" >
     </include>
