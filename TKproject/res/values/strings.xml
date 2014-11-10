@@ -133,4 +133,5 @@
     <string name="UrlWineFilter">http://tokajiwines.me/services/wineFilter.php</string>
     <string name="UrlWinesList">http://tokajiwines.me/services/wines.php</string>
     <string name="UrlWineDetails">http://tokajiwines.me/services/wineDetails.php</string>
+    <string name="UrlWinesGridViewList">http://tokajiwines.me/services/winesGridView.php</string>
     <string name="title_activity_wine">WineActivity</string></resources>

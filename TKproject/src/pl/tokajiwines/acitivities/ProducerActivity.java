@@ -141,15 +141,16 @@ public class ProducerActivity extends BaseActivity {
 
             }
         });
-        mUiMoreWines.setOnClickListener(new OnClickListener() {
-
+        mUiMoreWines.setOnClickListener(new View.OnClickListener() {
+            
             @Override
             public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Intent intent = new Intent(ProducerActivity.this, WinesGridViewActivity.class);
+                intent.putExtra(ProducersFragment.PRODUCER_TAG, mProducer);
 
-                Toast.makeText(ProducerActivity.this, "Not working yet", Toast.LENGTH_LONG).show();
-
+                startActivity(intent);
             }
-
         });
     }
 

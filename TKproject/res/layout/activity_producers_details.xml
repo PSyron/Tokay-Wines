@@ -189,8 +189,7 @@
                     android:layout_below="@+id/activity_producer_details_wine_name"
                     android:layout_centerHorizontal="true"
                     android:padding="8dp"
-                    android:text="@string/show_more_wines"
-                    android:visibility="invisible" />
+                    android:text="@string/show_more_wines"/>
             </RelativeLayout>
         </LinearLayout>
 

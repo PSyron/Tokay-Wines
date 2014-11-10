@@ -55,7 +55,7 @@ public class WinesGridViewAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         final Holder holder = new Holder();
         View rowView;
-        rowView = inflater.inflate(R.layout.item_wine, null);
+        rowView = inflater.inflate(R.layout.item_wine_gridview, null);
         holder.name = (TextView) rowView.findViewById(R.id.item_wine_gridView_tV);
         holder.img = (ImageView) rowView.findViewById(R.id.item_wine_gridView_image);
         holder.name.setText(mWines[position].mName);
