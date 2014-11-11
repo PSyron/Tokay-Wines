@@ -87,12 +87,19 @@ public class NearPlaceActivity extends BaseActivity {
     ImageView mUiNavigateTo;
     ImageView mUiInfo;
     boolean mWithDrawing = true;
+    private String sUsername;
+    private String sPassword;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        
+        sUsername = getResources().getString(R.string.Username);
+        sPassword = getResources().getString(R.string.Password);
+        
+        
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mPlace = (Place) extras.getSerializable(NearPlaceActivity.TAG_PLACE);
@@ -383,8 +390,8 @@ public class NearPlaceActivity extends BaseActivity {
                     + "&radius=" + tempRange;
             //TODO change below sUrl for tempUrl
             Log.e("pobieranie URL", tempUrl + "     " + sUrl);
-            InputStream source = mParser.retrieveStream(tempUrl, Constans.sUsername,
-                    Constans.sPassword, null);
+            InputStream source = mParser.retrieveStream(tempUrl, sUsername,
+                    sPassword, null);
 
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);

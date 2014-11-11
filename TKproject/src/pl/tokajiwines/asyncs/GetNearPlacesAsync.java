@@ -40,7 +40,10 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
     static final long ONE_MINUTE_IN_MILLIS = 60000;// millisecs MINUTE
     public static final String SHARED_ARRAY = "shared_array ";
     private Context mContext;
+    
     private static String sUrl;
+    private String sUsername;
+    private String sPassword;
     private Place[] mNearbyPlaces;
 
     JSONParser mParser;
@@ -60,6 +63,8 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
         super.onPreExecute();
         // myPosition = new GPSTracker(mContext).getLocationLatLng();
         sUrl = mContext.getResources().getString(R.string.UrlNearLatLngPlace);
+        sUsername = mContext.getResources().getString(R.string.Username);
+        sPassword = mContext.getResources().getString(R.string.Password);
         mRangePicked = SharedPreferencesHelper.getSharedPreferencesInt(mContext,
                 SettingsFragment.SharedKeyGPSRange, SettingsFragment.DefGPSRange);
 
@@ -83,8 +88,8 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
         }
         //TODO change below sUrl for tempUrl
         Log.e("pobieranie URL", tempUrl + "     ");
-        InputStream source = mParser.retrieveStream(tempUrl, Constans.sUsername,
-                Constans.sPassword, null);
+        InputStream source = mParser.retrieveStream(tempUrl, sUsername,
+                sPassword, null);
 
         Gson gson = new Gson();
         InputStreamReader reader = new InputStreamReader(source);

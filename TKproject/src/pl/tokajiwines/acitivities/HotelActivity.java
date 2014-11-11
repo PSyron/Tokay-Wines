@@ -51,6 +51,8 @@ public class HotelActivity extends BaseActivity {
     TextView mUiUrl;
     TextView mUiDescription;
     ImageView mUiNavigate;
+    private String sUsername;
+    private String sPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,8 @@ public class HotelActivity extends BaseActivity {
         setContentView(R.layout.activity_hotel_details);
 
         sUrl = getResources().getString(R.string.UrlHotelDetails);
+        sUsername = getResources().getString(R.string.Username);
+        sPassword = getResources().getString(R.string.Password);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mHotel = (HotelListItem) extras.getSerializable(TabHotelsFragment.HOTEL_TAG);
@@ -164,8 +168,8 @@ public class HotelActivity extends BaseActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("who", "" + mHotel.mIdHotel));
 
-            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
-                    Constans.sPassword, params);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername,
+                    sPassword, params);
 
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);

@@ -74,6 +74,8 @@ public class MapFragment extends BaseFragment {
     private Place[] mNearbyPlaces;
 
     private static String sUrl;
+    private String sUsername;
+    private String sPassword;
     public static final String TAG_ID_PLACE = "IdPlace";
     GPSTracker mGPStrack;
 
@@ -96,6 +98,8 @@ public class MapFragment extends BaseFragment {
             return null;
         }
         sUrl = getResources().getString(R.string.UrlNearLatLngPlace);
+        sUsername = getResources().getString(R.string.Username);
+        sPassword = getResources().getString(R.string.Password);
         View v = inflater.inflate(R.layout.fragment_map, container, false);
 
         mMapView = (MapView) v.findViewById(R.id.map);
@@ -365,8 +369,8 @@ public class MapFragment extends BaseFragment {
                     + "&radius=" + tempRange;
             //TODO change below sUrl for tempUrl
             Log.e("pobieranie URL", tempUrl + "     " + sUrl);
-            InputStream source = mParser.retrieveStream(tempUrl, Constans.sUsername,
-                    Constans.sPassword, null);
+            InputStream source = mParser.retrieveStream(tempUrl, sUsername,
+                    sPassword, null);
 
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);

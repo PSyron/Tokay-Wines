@@ -51,6 +51,8 @@ public class NewsActivity extends BaseActivity {
     Context mContext;
     JSONParser mParser;
     private String sUrl;
+    private String sUsername;
+    private String sPassword;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +62,8 @@ public class NewsActivity extends BaseActivity {
         mContext = this;
 
         sUrl = getResources().getString(R.string.UrlEventDetails);
+        sUsername = getResources().getString(R.string.Username);
+        sPassword = getResources().getString(R.string.Password);
 
         mUiName = (TextView) findViewById(R.id.activity_news_details_name);
         mUiImage = (ImageView) findViewById(R.id.activity_news_details_image);
@@ -145,8 +149,8 @@ public class NewsActivity extends BaseActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("idNews", "" + mIdNews));
 
-            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
-                    Constans.sPassword, params);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername,
+                    sPassword, params);
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
 

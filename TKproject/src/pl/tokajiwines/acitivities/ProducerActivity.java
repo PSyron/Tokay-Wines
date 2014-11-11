@@ -41,6 +41,8 @@ public class ProducerActivity extends BaseActivity {
     JSONParser mParser;
     public static int REQUEST = 997;
     private String sUrl;
+    private String sUsername;
+    private String sPassword;
     private String sUrlImage;
     ProgressDialog mProgDial;
     ProducerListItem mProducer;
@@ -69,6 +71,8 @@ public class ProducerActivity extends BaseActivity {
         setContentView(R.layout.activity_producers_details);
 
         sUrl = getResources().getString(R.string.UrlProducerDetails);
+        sUsername = getResources().getString(R.string.Username);
+        sPassword = getResources().getString(R.string.Password);
         sUrlImage = getResources().getString(R.string.UrlProducerImages);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -217,8 +221,8 @@ public class ProducerActivity extends BaseActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("who", "" + mProducer.mIdProducer));
 
-            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
-                    Constans.sPassword, params);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername,
+                    sPassword, params);
 
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
@@ -278,8 +282,8 @@ public class ProducerActivity extends BaseActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("who", "" + mProducer.mIdProducer));
 
-            InputStream source = mParser.retrieveStream(sUrlImage, Constans.sUsername,
-                    Constans.sPassword, params);
+            InputStream source = mParser.retrieveStream(sUrlImage, sUsername,
+                    sPassword, params);
 
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);

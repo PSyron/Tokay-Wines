@@ -37,6 +37,8 @@ public class TabHotelsFragment extends BaseFragment {
     JSONParser mParser;
     ProgressDialog mProgDial;
     private String sUrl;
+    private String sUsername;
+    private String sPassword;
     public static final String HOTEL_TAG = "hotel";
     private HotelListItem[] mHotelList;
 
@@ -54,6 +56,9 @@ public class TabHotelsFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_hotels, container, false);
         
         sUrl = getResources().getString(R.string.UrlHotelsList);
+        sUsername = getResources().getString(R.string.Username);
+        sPassword = getResources().getString(R.string.Password);
+        
         mUiList = (ListView) rootView.findViewById(R.id.frag_hotels_list);
         mHotelList = new HotelListItem[0];
         mAdapter = new HotelsAdapter(getActivity(), mHotelList);
@@ -118,8 +123,8 @@ public class TabHotelsFragment extends BaseFragment {
 
             mParser = new JSONParser();
 
-            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
-                    Constans.sPassword, null);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername,
+                    sPassword, null);
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
 

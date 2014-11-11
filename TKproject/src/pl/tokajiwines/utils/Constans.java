@@ -45,10 +45,6 @@ public class Constans {
     public static double sMilToLong = 0.005125;
     public static double sMilInDegreeAvg = 0.0444375;
 
-    public static final String sUsername = "zpi";
-
-    public static final String sPassword = "OEmGie";
-
     //WineFilter
 
     public static final String[] sWineType = {

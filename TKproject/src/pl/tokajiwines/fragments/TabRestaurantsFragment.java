@@ -37,6 +37,9 @@ public class TabRestaurantsFragment extends BaseFragment {
     JSONParser mParser;
     ProgressDialog mProgDial;
     private String sUrl;
+    private String sUsername;
+    private String sPassword;
+    
     public static final String RESTAURANT_TAG = "restaurant";
     private RestaurantListItem[] mRestaurantList;
 
@@ -52,6 +55,9 @@ public class TabRestaurantsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         sUrl = getResources().getString(R.string.UrlRestaurantsList);
+        sUsername = getResources().getString(R.string.Username);
+        sPassword = getResources().getString(R.string.Password);
+        
         View rootView = inflater.inflate(R.layout.fragment_restaurants, container, false);
         mUiList = (ListView) rootView.findViewById(R.id.frag_restaurants_list);
         mRestaurantList = new RestaurantListItem[0];
@@ -119,8 +125,8 @@ public class TabRestaurantsFragment extends BaseFragment {
 
             mParser = new JSONParser();
 
-            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
-                    Constans.sPassword, null);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername,
+                    sPassword, null);
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
 

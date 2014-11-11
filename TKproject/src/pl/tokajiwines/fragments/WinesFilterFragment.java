@@ -54,6 +54,9 @@ public class WinesFilterFragment extends BaseFragment {
     private JSONParser mParser;
     ProgressDialog mProgDial;
     private String sUrl;
+    private String sUsername;
+    private String sPassword;
+    
     private WineFilterResponse mWineFilter;
     private Flavour[] mWineFlavours = {};
     /*    private String[] mProducerName = {};
@@ -107,6 +110,8 @@ public class WinesFilterFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_wine_filter, container, false);
 
         sUrl = getResources().getString(R.string.UrlWineFilter);
+        sUsername = getResources().getString(R.string.Username);
+        sPassword = getResources().getString(R.string.Password);
 
         mSelectedTastes = new ArrayList<Integer>();
         mSelectedGrades = new ArrayList<Integer>();
@@ -474,8 +479,8 @@ public class WinesFilterFragment extends BaseFragment {
 
             mParser = new JSONParser();
 
-            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
-                    Constans.sPassword, null);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername,
+                    sPassword, null);
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
 

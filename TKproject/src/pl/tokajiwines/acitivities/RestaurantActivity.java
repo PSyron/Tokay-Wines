@@ -37,7 +37,11 @@ import java.util.List;
 public class RestaurantActivity extends BaseActivity {
     JSONParser mParser;
     public static int REQUEST = 997;
+    
     private String sUrl;
+    private String sUsername;
+    private String sPassword;
+    
     ProgressDialog mProgDial;
     RestaurantListItem mRestaurant;
     RestaurantDetails mRestaurantFromBase;
@@ -58,6 +62,9 @@ public class RestaurantActivity extends BaseActivity {
         setContentView(R.layout.activity_restaurant_details);
 
         sUrl = getResources().getString(R.string.UrlRestaurantDetails);
+        sUsername = getResources().getString(R.string.Username);
+        sPassword = getResources().getString(R.string.Password);
+        
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mRestaurant = (RestaurantListItem) extras
@@ -167,8 +174,8 @@ public class RestaurantActivity extends BaseActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("who", "" + mRestaurant.mIdRestaurant));
 
-            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
-                    Constans.sPassword, params);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername,
+                    sPassword, params);
 
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);

@@ -65,7 +65,11 @@ public class WineActivity extends BaseActivity {
     
     WineListItem mWine;
     WineDetails mWineDetails;
+    
     private String sUrl;
+    private String sUsername;
+    private String sPassword;
+    
     ProgressDialog mProgDial;
     JSONParser mParser;
     
@@ -76,6 +80,9 @@ public class WineActivity extends BaseActivity {
         setContentView(R.layout.activity_wine_details);
         
         sUrl = getResources().getString(R.string.UrlWineDetails);
+        sUsername = getResources().getString(R.string.Username);
+        sPassword = getResources().getString(R.string.Password);
+        
         mContext = this;
         
         Bundle extras = getIntent().getExtras();
@@ -216,8 +223,8 @@ public class WineActivity extends BaseActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("idWine", "" + mWine.mIdWine));
 
-            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
-                    Constans.sPassword, params);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername,
+                    sPassword, params);
 
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);

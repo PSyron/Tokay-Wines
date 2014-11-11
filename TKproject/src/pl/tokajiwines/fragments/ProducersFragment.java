@@ -39,6 +39,8 @@ public class ProducersFragment extends BaseFragment {
     ProgressDialog mProgDial;
     Context mContext;
     private String sUrl;
+    private String sUsername;
+    private String sPassword;
     private static final String TAG_ID = "idProducer";
     private static final String TAG_NAME = "name";
     private static final String TAG_SHORT_MESSAGE = "short";
@@ -63,6 +65,9 @@ public class ProducersFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
         
         sUrl = getResources().getString(R.string.UrlProducersList);
+        sUsername = getResources().getString(R.string.Username);
+        sPassword = getResources().getString(R.string.Password);
+        
         mUiList = (ListView) rootView.findViewById(R.id.frag_news_list);
         mContext = getActivity();
         mProducersList = new ProducerListItem[0];
@@ -145,8 +150,8 @@ public class ProducersFragment extends BaseFragment {
 
             mParser = new JSONParser();
 
-            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
-                    Constans.sPassword, null);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername,
+                    sPassword, null);
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
 

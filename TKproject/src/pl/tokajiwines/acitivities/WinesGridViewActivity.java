@@ -45,7 +45,11 @@ public class WinesGridViewActivity extends BaseActivity {
     private Activity mAct;
     private JSONParser mParser;
     private ProgressDialog mProgDial;
+    
     private String sUrl;
+    private String sUsername;
+    private String sPassword;
+    
     private String mFlavours;
     private String mStrains;
     private String mGrades;
@@ -67,7 +71,11 @@ public class WinesGridViewActivity extends BaseActivity {
         }
         getActionBar().setTitle(mProducer.mName);
         mAct = this;
+        
         sUrl = getResources().getString(R.string.UrlWinesGridViewList);
+        sUsername = getResources().getString(R.string.Username);
+        sPassword = getResources().getString(R.string.Password);
+        
         mWinesList = new WineListItem[0];
         mUiList = (GridView) findViewById(R.id.activity_wines_gridView);
         mAdapter = new WinesGridViewAdapter(this, mWinesList);
@@ -136,8 +144,8 @@ public class WinesGridViewActivity extends BaseActivity {
             params.add(new BasicNameValuePair("years", mYears));
             params.add(new BasicNameValuePair("prices", mPrices));
 
-            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
-                    Constans.sPassword, params);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername,
+                    sPassword, params);
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
 

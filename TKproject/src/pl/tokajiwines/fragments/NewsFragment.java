@@ -36,6 +36,8 @@ public class NewsFragment extends BaseFragment {
     JSONParser mParser;
     ProgressDialog mProgDial;
     private String sUrl;
+    private String sUsername;
+    private String sPassword;
     public static final String TAG_ID_NEWS = "IdNews";
     private NewsListItem[] mNewsList;
 
@@ -53,6 +55,9 @@ public class NewsFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
         
         sUrl = getResources().getString(R.string.UrlNewsList);
+        sUsername = getResources().getString(R.string.Username);
+        sPassword = getResources().getString(R.string.Password);
+        
         mUiList = (ListView) rootView.findViewById(R.id.frag_news_list);
         mNewsList = new NewsListItem[0];
         mAdapter = new NewsAdapter(getActivity(), mNewsList);
@@ -118,8 +123,8 @@ public class NewsFragment extends BaseFragment {
 
             mParser = new JSONParser();
 
-            InputStream source = mParser.retrieveStream(sUrl, Constans.sUsername,
-                    Constans.sPassword, null);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername,
+                    sPassword, null);
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
 
