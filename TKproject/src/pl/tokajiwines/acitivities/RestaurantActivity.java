@@ -204,7 +204,7 @@ public class RestaurantActivity extends BaseActivity {
                 fillView();
             }
 
-            Ion.with(mUiImage).placeholder(R.drawable.placeholder_image)
+            Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
                     .error(R.drawable.error_image).load(mRestaurantFromBase.mImageUrl);
 
         }

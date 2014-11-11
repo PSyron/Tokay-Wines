@@ -256,7 +256,7 @@ public class WineActivity extends BaseActivity {
             
             if (mWineDetails.mImageUrl != null)
             {
-                Ion.with(mUiImage).placeholder(R.drawable.placeholder_image)
+                Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
                 .error(R.drawable.error_image).load(mWineDetails.mImageUrl);
             }
         }

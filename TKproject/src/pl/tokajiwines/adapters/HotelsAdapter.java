@@ -65,7 +65,7 @@ public class HotelsAdapter extends BaseAdapter {
         holder.address = (TextView) rowView.findViewById(R.id.item_hotel_address);
         holder.img = (ImageView) rowView.findViewById(R.id.item_hotel_image);
         holder.title.setText(mHotels[position].mName);
-        holder.img.setImageResource(R.drawable.placeholder_image);
+        holder.img.setImageResource(R.drawable.no_image);
         holder.phone.setText(mHotels[position].mPhone);
         holder.address.setText(mHotels[position].mStreetName + " "
                 + mHotels[position].mStreetNumber + " " + mHotels[position].mHouseNumber + " "

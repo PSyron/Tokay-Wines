@@ -9,7 +9,7 @@
         android:layout_width="@dimen/item_wines_lists_height"
         android:layout_height="@dimen/item_wines_lists_height"
         android:layout_margin="5dp"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/no_image" />
 
     <RelativeLayout
         android:layout_width="match_parent"
