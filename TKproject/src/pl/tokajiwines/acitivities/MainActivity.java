@@ -4,6 +4,8 @@ package pl.tokajiwines.acitivities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
@@ -20,6 +22,8 @@ import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.fragments.WinesFilterFragment;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
+
+import java.util.Locale;
 
 public class MainActivity extends Activity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -50,6 +54,45 @@ public class MainActivity extends Activity implements
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
         onNavigationDrawerItemSelected(1);
+
+        initLanguage();
+
+    }
+
+    public void initLanguage() {
+        int language;
+        if (Locale.getDefault().getDisplayLanguage().contains("polsk")
+                || Locale.getDefault().getDisplayLanguage().contains("pl")) {
+            language = SharedPreferencesHelper.getSharedPreferencesInt(this,
+                    SettingsFragment.SharedKeyLanguage, 0);
+            if (language == 1) {
+                Locale locale = new Locale("en_US");
+                Locale.setDefault(locale);
+                Configuration config = new Configuration();
+                config.locale = locale;
+                this.getApplicationContext().getResources().updateConfiguration(config, null);
+                //odswież napisy w menu
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("EXIT", true);
+                startActivity(intent);
+            }
+        } else {
+            language = SharedPreferencesHelper.getSharedPreferencesInt(this,
+                    SettingsFragment.SharedKeyLanguage, 0);
+            if (language == 0) {
+                Locale locale = new Locale("pl");
+                Locale.setDefault(locale);
+                Configuration config = new Configuration();
+                config.locale = locale;
+                this.getApplicationContext().getResources().updateConfiguration(config, null);
+                //odswież napisy w menu
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("EXIT", true);
+                startActivity(intent);
+            }
+        }
 
     }
 
