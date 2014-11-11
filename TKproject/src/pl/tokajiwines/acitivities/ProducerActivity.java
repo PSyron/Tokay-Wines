@@ -28,7 +28,6 @@ import pl.tokajiwines.jsonresponses.ImagesResponse;
 import pl.tokajiwines.jsonresponses.ProducerDetails;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.models.Place;
-import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
@@ -64,6 +63,8 @@ public class ProducerActivity extends BaseActivity {
     TextView mUiMoreWines;
     ImagePagerItem[] mImagesUrl;
     ImagePagerAdapter mAdapter;
+
+    public static final String TAG_ID_PRODUCER = "IdProducer";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,16 +147,15 @@ public class ProducerActivity extends BaseActivity {
             }
         });
         mUiMoreWines.setOnClickListener(new View.OnClickListener() {
-            
+
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-               /* Intent intent = new Intent(ProducerActivity.this, WinesGridViewActivity.class);
-                intent.putExtra(ProducersFragment.PRODUCER_TAG, mProducer);
+                Intent intent = new Intent(ProducerActivity.this, WinesGridViewActivity.class);
+                intent.putExtra(TAG_ID_PRODUCER, mProducer);
 
-                startActivity(intent);*/
-                Toast.makeText(ProducerActivity.this, "not working yet",
-                        Toast.LENGTH_LONG).show();
+                startActivity(intent);
+                //  Toast.makeText(ProducerActivity.this, "not working yet", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -221,8 +221,7 @@ public class ProducerActivity extends BaseActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("who", "" + mProducer.mIdProducer));
 
-            InputStream source = mParser.retrieveStream(sUrl, sUsername,
-                    sPassword, params);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
 
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
@@ -282,8 +281,7 @@ public class ProducerActivity extends BaseActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("who", "" + mProducer.mIdProducer));
 
-            InputStream source = mParser.retrieveStream(sUrlImage, sUsername,
-                    sPassword, params);
+            InputStream source = mParser.retrieveStream(sUrlImage, sUsername, sPassword, params);
 
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);

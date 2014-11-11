@@ -75,7 +75,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".acitivities.ProducerWinesActivity"
+            android:name=".acitivities.WinesGridViewActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>

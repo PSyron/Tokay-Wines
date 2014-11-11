@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -19,17 +18,11 @@ import org.apache.http.message.BasicNameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.adapters.WinesAdapter;
 import pl.tokajiwines.adapters.WinesGridViewAdapter;
-import pl.tokajiwines.fragments.ProducersFragment;
-import pl.tokajiwines.fragments.SettingsFragment;
-import pl.tokajiwines.fragments.WinesFilterFragment;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.jsonresponses.WinesResponse;
-import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
-import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -45,37 +38,36 @@ public class WinesGridViewActivity extends BaseActivity {
     private Activity mAct;
     private JSONParser mParser;
     private ProgressDialog mProgDial;
-    
+
     private String sUrl;
     private String sUsername;
     private String sPassword;
-    
+
     private String mFlavours;
     private String mStrains;
     private String mGrades;
     private String mYears;
     private String mProducers;
     private String mPrices;
-    public static String TAG_WINE = "WINE";
+    public static final String TAG_ID_WINE = "IdWine";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wines);
-        getActionBar().setTitle(getResources().getString(R.string.title_wines));
+        setContentView(R.layout.activity_wines_gridview);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            mProducer = (ProducerListItem) extras.getSerializable(ProducersFragment.PRODUCER_TAG);
+            mProducer = (ProducerListItem) extras.getSerializable(ProducerActivity.TAG_ID_PRODUCER);
         }
         getActionBar().setTitle(mProducer.mName);
         mAct = this;
-        
+
         sUrl = getResources().getString(R.string.UrlWinesGridViewList);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
-        
+
         mWinesList = new WineListItem[0];
         mUiList = (GridView) findViewById(R.id.activity_wines_gridView);
         mAdapter = new WinesGridViewAdapter(this, mWinesList);
@@ -84,7 +76,7 @@ public class WinesGridViewActivity extends BaseActivity {
         mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(mAct, WineActivity.class);
-                intent.putExtra(TAG_WINE, (WineListItem) mAdapter.getItem(position));
+                intent.putExtra(TAG_ID_WINE, mAdapter.getItemId(position));
                 startActivity(intent);
             }
         });
@@ -132,20 +124,10 @@ public class WinesGridViewActivity extends BaseActivity {
         protected String doInBackground(String... args) {
 
             mParser = new JSONParser();
-
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("lang", ""
-                    + SharedPreferencesHelper.getSharedPreferencesInt(mAct,
-                            SettingsFragment.SharedKeyLanguage, SettingsFragment.DefLanguage)));
-            params.add(new BasicNameValuePair("flavours", mFlavours));
-            params.add(new BasicNameValuePair("grades", mGrades));
-            params.add(new BasicNameValuePair("strains", mStrains));
-            params.add(new BasicNameValuePair("producers", mProducers));
-            params.add(new BasicNameValuePair("years", mYears));
-            params.add(new BasicNameValuePair("prices", mPrices));
+            params.add(new BasicNameValuePair("idProducer", "" + mProducer.mIdProducer));
 
-            InputStream source = mParser.retrieveStream(sUrl, sUsername,
-                    sPassword, params);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
 
