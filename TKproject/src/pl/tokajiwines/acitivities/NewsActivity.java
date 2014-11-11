@@ -107,15 +107,19 @@ public class NewsActivity extends BaseActivity {
     public void onResume() {
 
         super.onResume();
+        
+        if (mNews == null)
+        {
 
-        if (App.isOnline(mContext)) {
-            new LoadNewsDetailsTask().execute();
-        }
-
-        // otherwise, show message
-
-        else {
-            Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+            if (App.isOnline(mContext)) {
+                new LoadNewsDetailsTask().execute();
+            }
+    
+            // otherwise, show message
+    
+            else {
+                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+            }
         }
 
     }

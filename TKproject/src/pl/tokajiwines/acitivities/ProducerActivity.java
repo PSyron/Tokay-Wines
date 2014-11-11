@@ -178,18 +178,22 @@ public class ProducerActivity extends BaseActivity {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
+        
+        if (mProducerFromBase == null)
+        {
 
-        // if there is an access to the Internet, try to load data from remote database
-
-        if (App.isOnline(ProducerActivity.this)) {
-            new LoadProducerTask().execute();
-        }
-
-        // otherwise, show message
-
-        else {
-            Toast.makeText(ProducerActivity.this, "Cannot connect to the Internet",
-                    Toast.LENGTH_LONG).show();
+            // if there is an access to the Internet, try to load data from remote database
+    
+            if (App.isOnline(ProducerActivity.this)) {
+                new LoadProducerTask().execute();
+            }
+    
+            // otherwise, show message
+    
+            else {
+                Toast.makeText(ProducerActivity.this, "Cannot connect to the Internet",
+                        Toast.LENGTH_LONG).show();
+            }
         }
 
     }
