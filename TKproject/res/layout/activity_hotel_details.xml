@@ -21,7 +21,7 @@
             android:layout_height="@dimen/details_image_height"
             android:layout_gravity="center"
             android:layout_margin="5dp"
-            android:src="@drawable/placeholder_image" />
+            android:src="@drawable/no_image_big" />
 
         <RelativeLayout
             android:layout_width="match_parent"

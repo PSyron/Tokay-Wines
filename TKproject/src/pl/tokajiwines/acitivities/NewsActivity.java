@@ -173,7 +173,7 @@ public class NewsActivity extends BaseActivity {
             mProgDial.dismiss();
             mUiName.setText(mNews.mHeader);
             mUiDescription.setText(mNews.mVast);
-            Ion.with(mUiImage).placeholder(R.drawable.placeholder_image)
+            Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
                     .error(R.drawable.error_image).load(mNews.mImage);
 
             if (mNews.mStartDate == null && mNews.mEndDate == null) {

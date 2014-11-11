@@ -65,7 +65,7 @@ public class NewsAdapter extends BaseAdapter {
         holder.content = (TextView) rowView.findViewById(R.id.item_news_content);
         holder.img = (ImageView) rowView.findViewById(R.id.item_news_image);
         holder.title.setText(mNews[position].mHeader);
-        holder.img.setImageResource(R.drawable.placeholder_image);
+        holder.img.setImageResource(R.drawable.no_image);
 
         //        Ion.with(holder.img).placeholder(R.drawable.placeholder_image)
         //                .error(R.drawable.error_image).load(mNews[position].mImageUrl);

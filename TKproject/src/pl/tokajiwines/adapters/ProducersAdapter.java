@@ -65,7 +65,7 @@ public class ProducersAdapter extends BaseAdapter {
         holder.content = (TextView) rowView.findViewById(R.id.item_wineyard_content);
         holder.img = (ImageView) rowView.findViewById(R.id.item_wineyard_image);
         holder.title.setText(mProducers[position].mName);
-        holder.img.setImageResource(R.drawable.placeholder_image);
+        holder.img.setImageResource(R.drawable.no_image);
         holder.content.setText(mProducers[position].mDescription);
 
         //        Ion.with(holder.img).placeholder(R.drawable.placeholder_image)

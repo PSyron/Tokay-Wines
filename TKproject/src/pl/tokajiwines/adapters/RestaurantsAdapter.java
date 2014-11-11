@@ -65,7 +65,7 @@ public class RestaurantsAdapter extends BaseAdapter {
         holder.address = (TextView) rowView.findViewById(R.id.item_restaurant_address);
         holder.img = (ImageView) rowView.findViewById(R.id.item_restaurant_image);
         holder.title.setText(mRestaurants[position].mName);
-        holder.img.setImageResource(R.drawable.placeholder_image);
+        holder.img.setImageResource(R.drawable.no_image);
         holder.phone.setText(mRestaurants[position].mPhone);
         holder.address.setText(mRestaurants[position].mStreetName + " "
                 + mRestaurants[position].mStreetNumber + " " + mRestaurants[position].mHouseNumber
