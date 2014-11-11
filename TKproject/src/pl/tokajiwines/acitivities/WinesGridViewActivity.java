@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -19,10 +20,12 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.WinesGridViewAdapter;
+import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.jsonresponses.WinesResponse;
 import pl.tokajiwines.utils.JSONParser;
+import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -42,14 +45,14 @@ public class WinesGridViewActivity extends BaseActivity {
     private String sUrl;
     private String sUsername;
     private String sPassword;
-
     private String mFlavours;
     private String mStrains;
     private String mGrades;
     private String mYears;
     private String mProducers;
     private String mPrices;
-    public static final String TAG_ID_WINE = "IdWine";
+
+    public static String TAG_WINE = "WINE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +64,8 @@ public class WinesGridViewActivity extends BaseActivity {
         if (extras != null) {
             mProducer = (ProducerListItem) extras.getSerializable(ProducerActivity.TAG_ID_PRODUCER);
         }
-        getActionBar().setTitle(mProducer.mName);
+        getActionBar().setTitle(
+                mProducer.mName + " - " + getResources().getString(R.string.all_wines_from));
         mAct = this;
 
         sUrl = getResources().getString(R.string.UrlWinesGridViewList);
@@ -73,10 +77,12 @@ public class WinesGridViewActivity extends BaseActivity {
         mAdapter = new WinesGridViewAdapter(this, mWinesList);
         mUiList.setAdapter(mAdapter);
 
-        mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+        mUiList.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(mAct, WineActivity.class);
-                intent.putExtra(TAG_ID_WINE, mAdapter.getItemId(position));
+                intent.putExtra(TAG_WINE, (WineListItem) mAdapter.getItem(position));
+                System.out.println(mAdapter.getItemId(position));
                 startActivity(intent);
             }
         });
@@ -125,6 +131,9 @@ public class WinesGridViewActivity extends BaseActivity {
 
             mParser = new JSONParser();
             List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("lang", ""
+                    + SharedPreferencesHelper.getSharedPreferencesInt(mAct,
+                            SettingsFragment.SharedKeyLanguage, SettingsFragment.DefLanguage)));
             params.add(new BasicNameValuePair("idProducer", "" + mProducer.mIdProducer));
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);

@@ -13,7 +13,6 @@
         android:gravity="center"
         android:numColumns="2"
         android:verticalSpacing="5dp"
-        android:drawSelectorOnTop="true"
         android:stretchMode="columnWidth" >
     </GridView>
 
