@@ -167,7 +167,7 @@
                 android:layout_width="@dimen/item_menu_height"
                 android:layout_height="@dimen/item_menu_height"
                 android:layout_margin="5dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/no_image" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -179,7 +179,7 @@
                     style="@style/DetailsHeader.NormalText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Name" />
+                    android:text="No wines" />
 
                 <TextView
                     android:id="@+id/activity_producer_details_wine_button"
@@ -209,14 +209,14 @@
                 android:layout_width="@dimen/item_menu_height"
                 android:layout_height="@dimen/item_menu_height"
                 android:layout_margin="5dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/no_image" />
 
             <TextView
                 android:id="@+id/activity_producer_details_event_name"
                 style="@style/DetailsHeader.NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name" />
+                android:text="No events" />
         </LinearLayout>
 
         <TextView

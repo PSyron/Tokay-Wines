@@ -250,7 +250,7 @@ public class ProducerActivity extends BaseActivity {
             if (mProducerFromBase != null) {
                 fillView();
             }
-            Ion.with(mUiWineImage).placeholder(R.drawable.placeholder_image)
+            Ion.with(mUiWineImage).placeholder(R.drawable.no_image)
                     .error(R.drawable.error_image).load(mProducerFromBase.mWineImageUrl);
 
             new LoadProducerImagesTask().execute();
