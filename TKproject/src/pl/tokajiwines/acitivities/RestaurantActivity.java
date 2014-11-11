@@ -131,18 +131,22 @@ public class RestaurantActivity extends BaseActivity {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
+        
+        if (mRestaurantFromBase == null)
+        {
 
-        // if there is an access to the Internet, try to load data from remote database
-
-        if (App.isOnline(RestaurantActivity.this)) {
-            new LoadRestaurantTask().execute();
-        }
-
-        // otherwise, show message
-
-        else {
-            Toast.makeText(RestaurantActivity.this, "Cannot connect to the Internet",
-                    Toast.LENGTH_LONG).show();
+            // if there is an access to the Internet, try to load data from remote database
+    
+            if (App.isOnline(RestaurantActivity.this)) {
+                new LoadRestaurantTask().execute();
+            }
+    
+            // otherwise, show message
+    
+            else {
+                Toast.makeText(RestaurantActivity.this, "Cannot connect to the Internet",
+                        Toast.LENGTH_LONG).show();
+            }
         }
 
     }

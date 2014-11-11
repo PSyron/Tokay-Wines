@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -114,18 +113,14 @@ public class MapFragment extends BaseFragment {
         mUiTours = (TextView) v.findViewById(R.id.map_tours);
         //To laguje wlaczanie
 
-        new CountDownTimer(100, 100) {
-
-            public void onTick(long millisUntilFinished) {
-            }
-
-            public void onFinish() {
-                mMapView.onCreate(savedInstanceState);
-
-            }
-
-        }.start();
         return v;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        mMapView.onCreate(savedInstanceState);
+        initView();
+        super.onViewCreated(view, savedInstanceState);
     }
 
     public void initView() {
@@ -302,21 +297,11 @@ public class MapFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        new CountDownTimer(150, 150) {
+        mMapView.onResume();
 
-            public void onTick(long millisUntilFinished) {
-            }
-
-            public void onFinish() {
-                mMapView.onResume();
-                initView();
-                if (App.isOnline(mCtx)) {
-                    new LoadNearPlaces().execute(myPosition);
-                }
-
-            }
-
-        }.start();
+        if (App.isOnline(mCtx)) {
+            new LoadNearPlaces().execute(myPosition);
+        }
 
     }
 
@@ -369,8 +354,7 @@ public class MapFragment extends BaseFragment {
                     + "&radius=" + tempRange;
             //TODO change below sUrl for tempUrl
             Log.e("pobieranie URL", tempUrl + "     " + sUrl);
-            InputStream source = mParser.retrieveStream(tempUrl, sUsername,
-                    sPassword, null);
+            InputStream source = mParser.retrieveStream(tempUrl, sUsername, sPassword, null);
 
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);

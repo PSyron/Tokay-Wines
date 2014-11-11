@@ -179,18 +179,22 @@ public class WineActivity extends BaseActivity {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-
-        // if there is an access to the Internet, try to load data from remote database
-
-        if (App.isOnline(WineActivity.this)) {
-            new LoadWineTask().execute();
-        }
-
-        // otherwise, show message
-
-        else {
-            Toast.makeText(WineActivity.this, "Cannot connect to the Internet",
-                    Toast.LENGTH_LONG).show();
+        
+        if (mWineDetails == null)
+        {
+    
+            // if there is an access to the Internet, try to load data from remote database
+    
+            if (App.isOnline(WineActivity.this)) {
+                new LoadWineTask().execute();
+            }
+    
+            // otherwise, show message
+    
+            else {
+                Toast.makeText(WineActivity.this, "Cannot connect to the Internet",
+                        Toast.LENGTH_LONG).show();
+            }
         }
 
     }
