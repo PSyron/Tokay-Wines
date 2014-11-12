@@ -84,6 +84,7 @@ public class WinesListActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(mAct, WineActivity.class);
                 intent.putExtra(TAG_WINE, (WineListItem) mAdapter.getItem(position));
+                intent.putExtra(WineActivity.TAG_CALLED_FROM_PRODUCER, false);
                 startActivity(intent);
             }
         });

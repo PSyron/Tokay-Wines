@@ -34,6 +34,7 @@ import java.util.List;
 public class WineActivity extends BaseActivity {
 
     Context mContext;
+    BaseActivity mWinesGridViewActivity;
 
     TextView mUiName;
     ImageView mUiImage;
@@ -59,6 +60,9 @@ public class WineActivity extends BaseActivity {
 
     ProgressDialog mProgDial;
     JSONParser mParser;
+    
+    public static String TAG_CALLED_FROM_PRODUCER = "called_from_producer";
+    private boolean mIsFromProducer = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +76,10 @@ public class WineActivity extends BaseActivity {
         mContext = this;
 
         Bundle extras = getIntent().getExtras();
+
         if (extras != null) {
             mWine = (WineListItem) extras.getSerializable(WinesListActivity.TAG_WINE);
+            mIsFromProducer = extras.getBoolean(WineActivity.TAG_CALLED_FROM_PRODUCER);
         }
 
         initView();
@@ -135,11 +141,20 @@ public class WineActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                Intent intent = new Intent(mContext, ProducerActivity.class);
-                intent.putExtra(ProducersFragment.PRODUCER_TAG, new ProducerListItem(
-                        mWine.mIdProducer, mWine.mProducerName, ""));
-
-                startActivity(intent);
+                if (mIsFromProducer)
+                {
+                    Intent returnIntent = new Intent();
+                    setResult(RESULT_OK, returnIntent);
+                    finish();
+                }
+                else
+                {
+                    Intent intent = new Intent(mContext, ProducerActivity.class);
+                    intent.putExtra(ProducersFragment.PRODUCER_TAG, new ProducerListItem(
+                            mWine.mIdProducer, mWine.mProducerName, ""));
+    
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -176,7 +191,7 @@ public class WineActivity extends BaseActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             mProgDial = new ProgressDialog(WineActivity.this);
-            mProgDial.setMessage("Loading random wine...");
+            mProgDial.setMessage("Loading wine details...");
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
             mProgDial.show();

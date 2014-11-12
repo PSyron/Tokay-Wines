@@ -45,12 +45,6 @@ public class WinesGridViewActivity extends BaseActivity {
     private String sUrl;
     private String sUsername;
     private String sPassword;
-    private String mFlavours;
-    private String mStrains;
-    private String mGrades;
-    private String mYears;
-    private String mProducers;
-    private String mPrices;
 
     public static String TAG_WINE = "WINE";
 
@@ -82,8 +76,8 @@ public class WinesGridViewActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(mAct, WineActivity.class);
                 intent.putExtra(TAG_WINE, (WineListItem) mAdapter.getItem(position));
-                System.out.println(mAdapter.getItemId(position));
-                startActivity(intent);
+                intent.putExtra(WineActivity.TAG_CALLED_FROM_PRODUCER, true);
+                startActivityForResult(intent, 1);
             }
         });
     }
@@ -105,6 +99,17 @@ public class WinesGridViewActivity extends BaseActivity {
             }
         }
 
+    }
+    
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                Intent returnIntent = new Intent();
+                setResult(RESULT_OK, returnIntent);
+                finish();
+            }
+        }
     }
 
     class LoadWinesTask extends AsyncTask<String, String, String> {
@@ -144,7 +149,6 @@ public class WinesGridViewActivity extends BaseActivity {
 
             if (response != null) {
                 mWinesList = response.wines;
-                System.out.println(response);
             }
 
             return null;

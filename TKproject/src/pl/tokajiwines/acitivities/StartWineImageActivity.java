@@ -125,7 +125,7 @@ public class StartWineImageActivity extends BaseActivity {
             super.onPreExecute();
             Log.e("StartWineImage", "onPreExecute");
             mProgDial = new ProgressDialog(StartWineImageActivity.this);
-            mProgDial.setMessage("Loading wines data...");
+            mProgDial.setMessage("Loading random wine data...");
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(false);
             mProgDial.show();

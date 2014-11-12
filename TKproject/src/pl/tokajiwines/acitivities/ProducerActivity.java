@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +62,7 @@ public class ProducerActivity extends BaseActivity {
     ImageView mUiNear;
     ImageView mUiNavigate;
     TextView mUiMoreWines;
+    ScrollView mUiScroll;
     ImagePagerItem[] mImagesUrl;
     ImagePagerAdapter mAdapter;
 
@@ -101,6 +103,7 @@ public class ProducerActivity extends BaseActivity {
         mUiDescription = (TextView) findViewById(R.id.activity_news_details_description);
         mUiWineName = (TextView) findViewById(R.id.activity_producer_details_wine_name);
         mUiWineImage = (ImageView) findViewById(R.id.activity_producer_details_wine_image);
+        mUiScroll = (ScrollView) findViewById(R.id.activity_producer_details_scrollview);
 
         int[] images = {
             R.drawable.placeholder_image
@@ -154,7 +157,7 @@ public class ProducerActivity extends BaseActivity {
                 Intent intent = new Intent(ProducerActivity.this, WinesGridViewActivity.class);
                 intent.putExtra(TAG_ID_PRODUCER, mProducer);
 
-                startActivity(intent);
+                startActivityForResult(intent, 1);
                 //  Toast.makeText(ProducerActivity.this, "not working yet", Toast.LENGTH_LONG).show();
             }
         });
@@ -178,7 +181,7 @@ public class ProducerActivity extends BaseActivity {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        
+
         if (mProducerFromBase == null)
         {
 
@@ -196,6 +199,15 @@ public class ProducerActivity extends BaseActivity {
             }
         }
 
+    }
+    
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){               
+                mUiScroll.setScrollY(0);     
+            }
+        }
     }
 
     class LoadProducerTask extends AsyncTask<Void, String, String> {
