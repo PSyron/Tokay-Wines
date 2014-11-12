@@ -25,7 +25,6 @@ import pl.tokajiwines.R;
 import pl.tokajiwines.fragments.NewsFragment;
 import pl.tokajiwines.jsonresponses.NewsDetails;
 import pl.tokajiwines.jsonresponses.NewsDetailsResponse;
-import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 
 import java.io.InputStream;
@@ -46,7 +45,7 @@ public class NewsActivity extends BaseActivity {
     private TextView mUiDateLabel;
     private TextView mUiDate;
     private NewsDetails mNews;
-
+    LoadNewsDetailsTask mTask;
     ProgressDialog mProgDial;
     Context mContext;
     JSONParser mParser;
@@ -60,6 +59,7 @@ public class NewsActivity extends BaseActivity {
         setContentView(R.layout.activity_news_details);
 
         mContext = this;
+        mTask = new LoadNewsDetailsTask();
 
         sUrl = getResources().getString(R.string.UrlEventDetails);
         sUsername = getResources().getString(R.string.Username);
@@ -107,21 +107,30 @@ public class NewsActivity extends BaseActivity {
     public void onResume() {
 
         super.onResume();
-        
-        if (mNews == null)
-        {
+
+        if (mNews == null) {
 
             if (App.isOnline(mContext)) {
-                new LoadNewsDetailsTask().execute();
+
+                mTask.execute();
             }
-    
+
             // otherwise, show message
-    
+
             else {
-                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG)
+                        .show();
             }
         }
 
+    }
+
+    @Override
+    protected void onPause() {
+        if (mTask != null) {
+            mTask.cancel(true);
+        }
+        super.onPause();
     }
 
     // async task class that loads news data from remote database
@@ -153,8 +162,7 @@ public class NewsActivity extends BaseActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("idNews", "" + mIdNews));
 
-            InputStream source = mParser.retrieveStream(sUrl, sUsername,
-                    sPassword, params);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
 
@@ -173,8 +181,8 @@ public class NewsActivity extends BaseActivity {
             mProgDial.dismiss();
             mUiName.setText(mNews.mHeader);
             mUiDescription.setText(mNews.mVast);
-            Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
-                    .error(R.drawable.error_image).load(mNews.mImage);
+            Ion.with(mUiImage).placeholder(R.drawable.no_image_big).error(R.drawable.error_image)
+                    .load(mNews.mImage);
 
             if (mNews.mStartDate == null && mNews.mEndDate == null) {
                 mUiDateLabel.setVisibility(View.GONE);

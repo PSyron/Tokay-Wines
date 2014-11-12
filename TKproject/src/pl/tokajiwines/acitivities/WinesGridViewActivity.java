@@ -119,7 +119,7 @@ public class WinesGridViewActivity extends BaseActivity {
             mProgDial = new ProgressDialog(mAct);
             mProgDial.setMessage("Loading wines data...");
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }

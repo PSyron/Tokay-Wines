@@ -14,6 +14,7 @@
     <string name="title_settings">Ustawienia</string>
     <string name="search">Wyszukaj</string>
     <string name="price">Cena</string>
+    <string name="go_to_apk">Przejdź do aplikacji</string>
 
     <!-- Menu -->
 
@@ -79,7 +80,7 @@
     <string name="duration">\nCzas trwania: </string>
     <string name="duration_item">Czas trwania: </string>
     <string name="range">Zasięg: </string>
-    <string name="preffered_tours">Wybierz z pośród zdefiniowanych tras!</string>
+    <string name="preffered_tours">Wybierz z proponowanych tras!</string>
     <string name="here_u_started">Tutaj zacząłeś</string>
     <string name="navigation_to">Nawiguj do: </string>
     <string name="places_near">Miejsca w pobliżu: </string>

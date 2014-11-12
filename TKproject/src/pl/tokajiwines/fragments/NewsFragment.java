@@ -19,10 +19,8 @@ import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.NewsActivity;
 import pl.tokajiwines.adapters.NewsAdapter;
-import pl.tokajiwines.adapters.ProducersAdapter;
 import pl.tokajiwines.jsonresponses.NewsListItem;
 import pl.tokajiwines.jsonresponses.NewsResponse;
-import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 
 import java.io.InputStream;
@@ -53,11 +51,11 @@ public class NewsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
-        
+
         sUrl = getResources().getString(R.string.UrlNewsList);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
-        
+
         mUiList = (ListView) rootView.findViewById(R.id.frag_news_list);
         mNewsList = new NewsListItem[0];
         mAdapter = new NewsAdapter(getActivity(), mNewsList);
@@ -79,23 +77,22 @@ public class NewsFragment extends BaseFragment {
     public void onStart() {
         // TODO Auto-generated method stub
         super.onStart();
-        
-        if (mNewsList.length == 0)
-        {
+
+        if (mNewsList.length == 0) {
 
             if (App.isOnline(mContext)) {
                 new LoadNewsTask().execute();
             }
-    
+
             // otherwise, show message
-    
+
             else {
-                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG)
+                        .show();
             }
         }
 
     }
-
 
     // async task class that loads news data from remote database
 
@@ -111,7 +108,7 @@ public class NewsFragment extends BaseFragment {
             mProgDial = new ProgressDialog(mContext);
             mProgDial.setMessage("Loading news data...");
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -123,8 +120,7 @@ public class NewsFragment extends BaseFragment {
 
             mParser = new JSONParser();
 
-            InputStream source = mParser.retrieveStream(sUrl, sUsername,
-                    sPassword, null);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
 
@@ -146,7 +142,6 @@ public class NewsFragment extends BaseFragment {
             mProgDial.dismiss();
             mAdapter = new NewsAdapter(getActivity(), mNewsList);
             mUiList.setAdapter(mAdapter);
-
 
         }
 
