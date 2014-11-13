@@ -96,6 +96,13 @@ public class NearPlaceActivity extends BaseActivity {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        
+        if (App.sMapAct != null)
+        {
+            App.sMapAct.finish();
+        }
+        
+        App.sMapAct = this;
 
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
@@ -135,7 +142,7 @@ public class NearPlaceActivity extends BaseActivity {
 
         mMapView.onResume();
 
-        if (App.isOnline(NearPlaceActivity.this)) {
+        if (App.isOnline(NearPlaceActivity.this) && mFirstRun) {
             new LoadNearPlaces().execute(mPlacePosition);
         }
 
@@ -151,6 +158,12 @@ public class NearPlaceActivity extends BaseActivity {
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
+    }
+    
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        App.sMapAct = null;
     }
 
     @Override
@@ -254,7 +267,6 @@ public class NearPlaceActivity extends BaseActivity {
 
                         startActivityForResult(intent, ProducerActivity.REQUEST);
                     }
-                    finish();
                 }
             }
         });

@@ -24,6 +24,7 @@ import com.koushikdutta.ion.Ion;
 
 import org.json.JSONObject;
 
+import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.models.Place;
 import pl.tokajiwines.utils.DirectionsJSONParser;
@@ -77,6 +78,14 @@ public class NavigateToActivity extends BaseActivity {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        
+        if (App.sMapAct != null)
+        {
+            App.sMapAct.finish();
+        }
+        
+        App.sMapAct = this;
+        
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
@@ -149,6 +158,12 @@ public class NavigateToActivity extends BaseActivity {
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
+    }
+    
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        App.sMapAct = null;
     }
 
     @Override

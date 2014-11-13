@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.widget.ImageView;
 
+import pl.tokajiwines.acitivities.BaseActivity;
 import pl.tokajiwines.utils.Log;
 
 import java.io.BufferedInputStream;
@@ -29,6 +30,7 @@ public class App extends Application {
 
     public static boolean debug_mode = false;// emulating position
     public static String fileAbsPath = Environment.getExternalStorageDirectory() + "/Tokaji Wines/";
+    public static BaseActivity sMapAct = null;
 
     public static boolean isOnline(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
