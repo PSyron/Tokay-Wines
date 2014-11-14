@@ -4,11 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <TextView
+        android:id="@+id/frag_wine_search_btn"
+        style="@style/DetailsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="0dp"
+        android:padding="8dp"
+        android:text="@string/search"
+        android:textSize="24sp" />
+
     <ScrollView
         android:id="@+id/ScrollView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/frag_wine_search_btn"
+        android:layout_above="@id/frag_wine_search_btn"
         android:layout_alignParentTop="true" >
 
         <LinearLayout
@@ -150,16 +161,5 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-    <TextView
-        android:id="@+id/frag_wine_search_btn"
-        style="@style/DetailsButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="0dp"
-        android:padding="8dp"
-        android:text="@string/search"
-        android:textSize="24sp" />
 
 </RelativeLayout>
