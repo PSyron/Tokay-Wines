@@ -59,7 +59,7 @@ public class WinesGridViewActivity extends BaseActivity {
             mProducer = (ProducerListItem) extras.getSerializable(ProducerActivity.TAG_ID_PRODUCER);
         }
         getActionBar().setTitle(
-                mProducer.mName + " - " + getResources().getString(R.string.all_wines_from));
+                mProducer.mName + " - " + getResources().getString(R.string.all_wines_available));
         mAct = this;
 
         sUrl = getResources().getString(R.string.UrlWinesGridViewList);
@@ -100,11 +100,11 @@ public class WinesGridViewActivity extends BaseActivity {
         }
 
     }
-    
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 1) {
-            if(resultCode == RESULT_OK){
+            if (resultCode == RESULT_OK) {
                 Intent returnIntent = new Intent();
                 setResult(RESULT_OK, returnIntent);
                 finish();
