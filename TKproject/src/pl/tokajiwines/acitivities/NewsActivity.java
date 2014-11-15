@@ -189,7 +189,7 @@ public class NewsActivity extends BaseActivity {
                 mUiDate.setVisibility(View.GONE);
                 mUiAddIcon.setVisibility(View.GONE);
             } else {
-                mUiDate.setText(mNews.mStartDate + " - \n" + mNews.mEndDate);
+                mUiDate.setText(mNews.mStartDate + " - " + mNews.mEndDate);
                 mUiDate.setVisibility(View.VISIBLE);
                 mUiAddIcon.setVisibility(View.VISIBLE);
             }

@@ -22,41 +22,62 @@
             android:layout_margin="5dp"
             android:src="@drawable/no_image_big" />
 
-        <TableRow
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" >
 
-            <TextView
-                android:id="@+id/activity_news_details_datelabel"
-                style="@style/DetailsHeader.BoldText"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/news_details_date" />
+                android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/activity_news_details_date"
-                style="@style/DetailsHeader.NormalText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Data "
-                android:visibility="gone" />
+                <TextView
+                    android:id="@+id/activity_news_details_datelabel"
+                    style="@style/DetailsHeader.BoldText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/news_details_date" />
+
+                <TextView
+                    android:id="@+id/activity_news_details_date"
+                    style="@style/DetailsHeader.NormalText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Data "
+                    android:visibility="gone" />
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/activity_news_details_add_event"
                 android:layout_width="@dimen/item_menu_height"
                 android:layout_height="@dimen/item_menu_height"
+                android:layout_alignParentRight="true"
                 android:layout_margin="5dp"
                 android:clickable="true"
                 android:src="@drawable/add_event_selector"
                 android:visibility="gone" />
-        </TableRow>
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/activity_news_details_description"
-            style="@style/DetailsHeader.NormalText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Description" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/DetailsHeader.Bookmark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/description" />
+
+            <TextView
+                android:id="@+id/activity_news_details_description"
+                style="@style/DetailsHeader.NormalText.Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

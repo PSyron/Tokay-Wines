@@ -50,7 +50,6 @@
                     android:paddingRight="3dp"
                     android:text="Producer"
                     android:textSize="16dp" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -149,17 +148,25 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
-		
-        <TextView
-            android:id="@+id/activity_wine_description"
-            style="@style/DetailsHeader.NormalText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Desciption" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
+            <TextView
+                style="@style/DetailsHeader.Bookmark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/description" />
 
-       
+            <TextView
+                android:id="@+id/activity_wine_description"
+                style="@style/DetailsHeader.NormalText.Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

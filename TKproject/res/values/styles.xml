@@ -112,19 +112,25 @@
     </style>
 
     <style name="DetailsHeader.BoldText">
+        <item name="android:layout_margin">4dp</item>
         <item name="android:textSize">14sp</item>
         <item name="android:gravity">start</item>
     </style>
 
     <style name="DetailsHeader.NormalText">
+        <item name="android:layout_margin">4dp</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:gravity">start</item>
     </style>
 
+    <style name="DetailsHeader.NormalText.Description">
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+    </style>
+
     <style name="DetailsHeader.NormalText.Small">
         <item name="android:textSize">12sp</item>
-        <item name="android:layout_margin">4dp</item>
     </style>
 
     <style name="DetailsHeader.Bookmark">
@@ -140,7 +146,7 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_margin">4dp</item>
         <item name="android:background">@color/filter_text</item>
     </style>
 

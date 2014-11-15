@@ -61,14 +61,14 @@
                     android:orientation="horizontal" >
 
                     <TextView
-                        style="@style/DetailsHeader.NormalText.Small"
+                        style="@style/DetailsHeader.BoldText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/address" />
 
                     <TextView
                         android:id="@+id/activity_producer_details_adress"
-                        style="@style/DetailsHeader.NormalText.Small"
+                        style="@style/DetailsHeader.NormalText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="taste" />
@@ -80,14 +80,14 @@
                     android:orientation="horizontal" >
 
                     <TextView
-                        style="@style/DetailsHeader.NormalText.Small"
+                        style="@style/DetailsHeader.BoldText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/opening_hours" />
 
                     <TextView
                         android:id="@+id/activity_producer_details_hours"
-                        style="@style/DetailsHeader.NormalText.Small"
+                        style="@style/DetailsHeader.NormalText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="NO INFORMATION" />
@@ -99,14 +99,14 @@
                     android:orientation="horizontal" >
 
                     <TextView
-                        style="@style/DetailsHeader.NormalText.Small"
+                        style="@style/DetailsHeader.BoldText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/phone_nb" />
 
                     <TextView
                         android:id="@+id/activity_producer_details_phone"
-                        style="@style/DetailsHeader.NormalText.Small"
+                        style="@style/DetailsHeader.NormalText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="phone number" />
@@ -114,7 +114,7 @@
 
                 <TextView
                     android:id="@+id/activity_producer_details_url"
-                    style="@style/DetailsHeader.NormalText.Small"
+                    style="@style/DetailsHeader.BoldText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="web"
@@ -140,17 +140,24 @@
                 android:src="@drawable/navigate_to_selector" />
         </RelativeLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent" 
+            android:orientation="vertical">
+            
+            <TextView
+            style="@style/DetailsHeader.Bookmark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description" />
 
             <TextView
-                android:id="@+id/activity_news_details_description"
-                style="@style/DetailsHeader.NormalText"
+                android:id="@+id/activity_producer_details_description"
+                style="@style/DetailsHeader.NormalText.Description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Description" />
-        </RelativeLayout>
+        </LinearLayout>
 
         <TextView
             style="@style/DetailsHeader.Bookmark"
