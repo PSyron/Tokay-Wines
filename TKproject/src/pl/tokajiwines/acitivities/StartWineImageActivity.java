@@ -34,7 +34,7 @@ import java.util.Random;
 public class StartWineImageActivity extends BaseActivity {
 
     TextView mUiSkipBtn;
-    TextView mUiHeader;
+
     ImageView mUiImage;
     ProgressDialog mProgDial;
     JSONParser mParser;
@@ -56,11 +56,14 @@ public class StartWineImageActivity extends BaseActivity {
         setContentView(R.layout.activity_starting_image);
         mUiSkipBtn = (TextView) findViewById(R.id.start_button);
         mUiImage = (ImageView) findViewById(R.id.start_image);
-        mUiHeader = (TextView) findViewById(R.id.start_header);
+
         mUiSkipBtn.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+
+                startActivity(intent);
                 finish();
 
             }
@@ -79,7 +82,6 @@ public class StartWineImageActivity extends BaseActivity {
             Log.e("StartWineImage", "image " + winesList[randomNum].mImageUrl);
             if (!(winesList[randomNum].mImageUrl).contains("no_image")) {
                 mChosedItem = winesList[randomNum];
-                mUiHeader.setText(winesList[randomNum].mName);
 
                 final File imgFile = new File(this.getFilesDir().getAbsolutePath()
                         + "/"
@@ -101,9 +103,14 @@ public class StartWineImageActivity extends BaseActivity {
 
                     @Override
                     public void onClick(View v) {
+                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(i);
+
                         Intent intent = new Intent(StartWineImageActivity.this, WineActivity.class);
                         intent.putExtra(WinesListActivity.TAG_WINE, mChosedItem);
                         startActivity(intent);
+
                         finish();
                     }
                 });

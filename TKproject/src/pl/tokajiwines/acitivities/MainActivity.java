@@ -43,9 +43,9 @@ public class MainActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (App.isOnline(this)) {
-            startActivity(new Intent(MainActivity.this, StartWineImageActivity.class));
-        }
+        //        if (App.isOnline(this)) {
+        //            startActivity(new Intent(MainActivity.this, StartWineImageActivity.class));
+        //        }
         // new RepeatServiceNotificationReceiver().onReceive(this, null);
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);

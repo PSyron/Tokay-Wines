@@ -11,28 +11,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="0dp"
+        android:drawableRight="@drawable/ic_launcher"
         android:gravity="center"
         android:padding="16dp"
         android:text="@string/go_to_apk"
         android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/start_header"
-        style="@style/DetailsButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_margin="0dp"
-        android:gravity="center"
-        android:padding="16dp"
-        android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/start_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/start_button"
-        android:layout_below="@id/start_header"
         android:contentDescription="@string/app_name" />
 
 </RelativeLayout>
