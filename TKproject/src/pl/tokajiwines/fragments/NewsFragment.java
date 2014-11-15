@@ -105,11 +105,11 @@ public class NewsFragment extends BaseFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgDial = new ProgressDialog(mContext);
-            mProgDial.setMessage("Loading news data...");
-            mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(false);
-            mProgDial.show();
+            //            mProgDial = new ProgressDialog(mContext);
+            //            mProgDial.setMessage("Loading news data...");
+            //            mProgDial.setIndeterminate(false);
+            //            mProgDial.setCancelable(false);
+            //            mProgDial.show();
 
         }
 
@@ -139,7 +139,7 @@ public class NewsFragment extends BaseFragment {
         protected void onPostExecute(String file_url) {
 
             super.onPostExecute(file_url);
-            mProgDial.dismiss();
+            //  mProgDial.dismiss();
             mAdapter = new NewsAdapter(getActivity(), mNewsList);
             mUiList.setAdapter(mAdapter);
 

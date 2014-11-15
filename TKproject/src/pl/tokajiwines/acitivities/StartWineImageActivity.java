@@ -20,11 +20,15 @@ import org.apache.http.NameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.jsonresponses.DownloadImagesRespons;
 import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.jsonresponses.WinesResponse;
+import pl.tokajiwines.models.Image;
 import pl.tokajiwines.utils.JSONParser;
+import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -39,11 +43,14 @@ public class StartWineImageActivity extends BaseActivity {
     ProgressDialog mProgDial;
     JSONParser mParser;
     private WineListItem[] mWinesList;
+    public static final String DOWNLOAD = "learnedAlready";
     //WineDetails mWineDetails;
     WineListItem mChosedItem;
     private String sUrl;
+    private String sImagesUrl;
     private String sUsername;
     private String sPassword;
+    Image[] mImagesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +58,7 @@ public class StartWineImageActivity extends BaseActivity {
         getActionBar().hide();
 
         sUrl = getResources().getString(R.string.UrlRandomWine);
+        sImagesUrl = getResources().getString(R.string.UrlAllImagesDownload);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
         setContentView(R.layout.activity_starting_image);
@@ -70,6 +78,11 @@ public class StartWineImageActivity extends BaseActivity {
         });
 
         new LoadWineImageTask().execute();
+        boolean learned = SharedPreferencesHelper
+                .getSharedPreferencesBoolean(this, DOWNLOAD, false);
+        if (!learned) {
+            new LoadImages().execute();
+        }
     }
 
     public void initView(final WineListItem[] winesList) {
@@ -116,6 +129,65 @@ public class StartWineImageActivity extends BaseActivity {
                 });
                 return;
             }
+
+        }
+
+    }
+
+    class LoadImages extends AsyncTask<String, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        // retrieving news data
+
+        @Override
+        protected String doInBackground(String... args) {
+
+            mParser = new JSONParser();
+
+            InputStream source = mParser.retrieveStream(sImagesUrl, sUsername, sPassword, null);
+            Gson gson = new Gson();
+            InputStreamReader reader = new InputStreamReader(source);
+
+            DownloadImagesRespons response = gson.fromJson(reader, DownloadImagesRespons.class);
+
+            if (response != null) {
+                mImagesList = response.images;
+                for (Image i : mImagesList) {
+                    final File imgFile = new File(StartWineImageActivity.this.getFilesDir()
+                            .getAbsolutePath()
+                            + "/"
+                            + i.mImage.substring(i.mImage.lastIndexOf('/') + 1, i.mImage.length()));
+                    if (!imgFile.exists()) {
+                        try {
+                            App.downloadToInternal(i.mImage, StartWineImageActivity.this);
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                SharedPreferencesHelper.putSharedPreferencesBoolean(StartWineImageActivity.this,
+                        DOWNLOAD, true);
+            }
+
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of news
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
 
         }
 
