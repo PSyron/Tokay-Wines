@@ -100,7 +100,7 @@ public class ProducerActivity extends BaseActivity {
         mUiNear = (ImageView) findViewById(R.id.activity_producer_neighborhood);
         mUiNavigate = (ImageView) findViewById(R.id.activity_producer_navigate);
         mUiMoreWines = (TextView) findViewById(R.id.activity_producer_details_wine_button);
-        mUiDescription = (TextView) findViewById(R.id.activity_news_details_description);
+        mUiDescription = (TextView) findViewById(R.id.activity_producer_details_description);
         mUiWineName = (TextView) findViewById(R.id.activity_producer_details_wine_name);
         mUiWineImage = (ImageView) findViewById(R.id.activity_producer_details_wine_image);
         mUiScroll = (ScrollView) findViewById(R.id.activity_producer_details_scrollview);
@@ -182,17 +182,16 @@ public class ProducerActivity extends BaseActivity {
         // TODO Auto-generated method stub
         super.onResume();
 
-        if (mProducerFromBase == null)
-        {
+        if (mProducerFromBase == null) {
 
             // if there is an access to the Internet, try to load data from remote database
-    
+
             if (App.isOnline(ProducerActivity.this)) {
                 new LoadProducerTask().execute();
             }
-    
+
             // otherwise, show message
-    
+
             else {
                 Toast.makeText(ProducerActivity.this, "Cannot connect to the Internet",
                         Toast.LENGTH_LONG).show();
@@ -200,12 +199,12 @@ public class ProducerActivity extends BaseActivity {
         }
 
     }
-    
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 1) {
-            if(resultCode == RESULT_OK){               
-                mUiScroll.setScrollY(0);     
+            if (resultCode == RESULT_OK) {
+                mUiScroll.setScrollY(0);
             }
         }
     }
@@ -262,8 +261,8 @@ public class ProducerActivity extends BaseActivity {
             if (mProducerFromBase != null) {
                 fillView();
             }
-            Ion.with(mUiWineImage).placeholder(R.drawable.no_image)
-                    .error(R.drawable.error_image).load(mProducerFromBase.mWineImageUrl);
+            Ion.with(mUiWineImage).placeholder(R.drawable.no_image).error(R.drawable.error_image)
+                    .load(mProducerFromBase.mWineImageUrl);
 
             new LoadProducerImagesTask().execute();
         }
