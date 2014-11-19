@@ -60,8 +60,8 @@ public class MainActivity extends Activity implements
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
         onNavigationDrawerItemSelected(1);
-
-        initLanguage();
+        // Moved to StartWineImageActivity
+        //initLanguage();
 
     }
 

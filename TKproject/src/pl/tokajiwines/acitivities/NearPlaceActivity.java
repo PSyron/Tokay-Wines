@@ -96,12 +96,11 @@ public class NearPlaceActivity extends BaseActivity {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        
-        if (App.sMapAct != null)
-        {
+
+        if (App.sMapAct != null) {
             App.sMapAct.finish();
         }
-        
+
         App.sMapAct = this;
 
         sUsername = getResources().getString(R.string.Username);
@@ -159,7 +158,7 @@ public class NearPlaceActivity extends BaseActivity {
         super.onDestroy();
         mMapView.onDestroy();
     }
-    
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -192,6 +191,7 @@ public class NearPlaceActivity extends BaseActivity {
 
         // adding marker
         googleMap.addMarker(marker);
+
         googleMap.setOnMapClickListener(new OnMapClickListener() {
 
             @Override
@@ -342,29 +342,53 @@ public class NearPlaceActivity extends BaseActivity {
     public void addMarkers(Place[] pozycje) {
 
         for (Place pozycja : pozycje) {
+            if (!pozycja.mName.equals(mPlace.mName)) {
+                MarkerOptions marker = new MarkerOptions().position(pozycja.getLatLng()).title(
+                        pozycja.mPlaceType + ": " + pozycja.mName);
 
-            MarkerOptions marker = new MarkerOptions().position(pozycja.getLatLng()).title(
-                    pozycja.mPlaceType + ": " + pozycja.mName);
+                // Changing marker icon
+                if (pozycja.mPlaceType.contains("Hotel")) {
+                    //marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+                    marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_hotels));
+                } else if (pozycja.mPlaceType.contains("Restaurant")) {
+                    //                marker.icon(BitmapDescriptorFactory
+                    //                        .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    marker.icon(BitmapDescriptorFactory
+                            .fromResource(R.drawable.ic_maps_restaurants));
+                } else if (pozycja.mPlaceType.contains("Producer")) {
+                    //                marker.icon(BitmapDescriptorFactory
+                    //                        .defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                    marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_producers));
+                } else {//Producer
+                    marker.icon(BitmapDescriptorFactory
+                            .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                }
 
-            // Changing marker icon
-            if (pozycja.mPlaceType.contains("Hotel")) {
-                //marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_hotels));
-            } else if (pozycja.mPlaceType.contains("Restaurant")) {
-                //                marker.icon(BitmapDescriptorFactory
-                //                        .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_restaurants));
-            } else if (pozycja.mPlaceType.contains("Producer")) {
-                //                marker.icon(BitmapDescriptorFactory
-                //                        .defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_producers));
-            } else {//Producer
-                marker.icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                // adding marker
+                googleMap.addMarker(marker);
+            } else {
+                MarkerOptions marker = new MarkerOptions().position(pozycja.getLatLng()).title(
+                        pozycja.mPlaceType + ": " + pozycja.mName);
+
+                if (pozycja.mPlaceType.contains("Hotel")) {
+
+                    marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_hotels));
+                } else if (pozycja.mPlaceType.contains("Restaurant")) {
+
+                    marker.icon(BitmapDescriptorFactory
+                            .fromResource(R.drawable.ic_maps_restaurants));
+                } else if (pozycja.mPlaceType.contains("Producer")) {
+
+                    marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_producers));
+                } else {
+                    marker.icon(BitmapDescriptorFactory
+                            .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                }
+
+                Marker temp = googleMap.addMarker(marker);
+                temp.showInfoWindow();
+
             }
-
-            // adding marker
-            googleMap.addMarker(marker);
         }
     }
 
@@ -588,6 +612,7 @@ public class NearPlaceActivity extends BaseActivity {
             //Brzydko ale dziala
             mUiPlaceDistance.setText(distance);
             mUiPlaceDuration.setText(duration);
+
         }
     }
 

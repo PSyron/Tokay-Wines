@@ -3,6 +3,7 @@ package pl.tokajiwines.acitivities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import org.apache.http.NameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.DownloadImagesRespons;
 import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.jsonresponses.WinesResponse;
@@ -33,6 +35,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class StartWineImageActivity extends BaseActivity {
@@ -64,7 +67,7 @@ public class StartWineImageActivity extends BaseActivity {
         setContentView(R.layout.activity_starting_image);
         mUiSkipBtn = (TextView) findViewById(R.id.start_button);
         mUiImage = (ImageView) findViewById(R.id.start_image);
-
+        initLanguage();
         mUiSkipBtn.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -89,6 +92,43 @@ public class StartWineImageActivity extends BaseActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    public void initLanguage() {
+        int language;
+        if (Locale.getDefault().getDisplayLanguage().contains("polsk")
+                || Locale.getDefault().getDisplayLanguage().contains("pl")) {
+            language = SharedPreferencesHelper.getSharedPreferencesInt(this,
+                    SettingsFragment.SharedKeyLanguage, 0);
+            if (language == 1) {
+                Locale locale = new Locale("en_US");
+                Locale.setDefault(locale);
+                Configuration config = new Configuration();
+                config.locale = locale;
+                this.getApplicationContext().getResources().updateConfiguration(config, null);
+                //odswież napisy w menu
+                Intent intent = new Intent(this, StartWineImageActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("EXIT", true);
+                startActivity(intent);
+            }
+        } else {
+            language = SharedPreferencesHelper.getSharedPreferencesInt(this,
+                    SettingsFragment.SharedKeyLanguage, 0);
+            if (language == 0) {
+                Locale locale = new Locale("pl");
+                Locale.setDefault(locale);
+                Configuration config = new Configuration();
+                config.locale = locale;
+                this.getApplicationContext().getResources().updateConfiguration(config, null);
+                //odswież napisy w menu
+                Intent intent = new Intent(this, StartWineImageActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("EXIT", true);
+                startActivity(intent);
+            }
+        }
+
     }
 
     public void initView(final WineListItem[] winesList) {

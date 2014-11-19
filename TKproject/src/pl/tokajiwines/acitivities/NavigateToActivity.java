@@ -78,14 +78,13 @@ public class NavigateToActivity extends BaseActivity {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        
-        if (App.sMapAct != null)
-        {
+
+        if (App.sMapAct != null) {
             App.sMapAct.finish();
         }
-        
+
         App.sMapAct = this;
-        
+
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
@@ -159,7 +158,7 @@ public class NavigateToActivity extends BaseActivity {
         super.onDestroy();
         mMapView.onDestroy();
     }
-    
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
