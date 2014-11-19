@@ -9,7 +9,7 @@
         android:id="@+id/menu_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_menu_height"
-        android:layout_margin="4dp"
+        android:layout_margin="2dp"
         android:gravity="center"
         android:textSize="20sp" />
 
