@@ -54,6 +54,8 @@ public class StartWineImageActivity extends BaseActivity {
     private String sUsername;
     private String sPassword;
     Image[] mImagesList;
+    LoadImages mDownloadImagesTask;
+    LoadWineImageTask mLoadWine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,15 @@ public class StartWineImageActivity extends BaseActivity {
         mUiSkipBtn = (TextView) findViewById(R.id.start_button);
         mUiImage = (ImageView) findViewById(R.id.start_image);
         initLanguage();
+        mDownloadImagesTask = new LoadImages();
+        mLoadWine = new LoadWineImageTask();
+        if (!App.isOnline(this)) {
+
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+
+            startActivity(intent);
+            finish();
+        }
         mUiSkipBtn.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -79,19 +90,43 @@ public class StartWineImageActivity extends BaseActivity {
 
             }
         });
+
+    }
+
+    public void onResume() {
+
+        super.onResume();
+
         if (App.isOnline(this)) {
-            new LoadWineImageTask().execute();
+
+            mLoadWine.execute();
             boolean learned = SharedPreferencesHelper.getSharedPreferencesBoolean(this, DOWNLOAD,
                     false);
             if (!learned) {
-                new LoadImages().execute();
+                mDownloadImagesTask.execute();
             }
-        } else {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
-            startActivity(intent);
-            finish();
+            // otherwise, show message
+
+            else {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+
+                startActivity(intent);
+                finish();
+            }
         }
+
+    }
+
+    @Override
+    protected void onPause() {
+        if (mLoadWine != null) {
+            mLoadWine.cancel(true);
+        }
+        if (mDownloadImagesTask != null) {
+            mDownloadImagesTask.cancel(true);
+        }
+        super.onPause();
     }
 
     public void initLanguage() {
@@ -189,6 +224,12 @@ public class StartWineImageActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            mProgDial = new ProgressDialog(StartWineImageActivity.this);
+            mProgDial.setMessage("Downloading content");
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(false);
+            mProgDial.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgDial.show();
 
         }
 
@@ -207,6 +248,9 @@ public class StartWineImageActivity extends BaseActivity {
 
             if (response != null) {
                 mImagesList = response.images;
+                mProgDial.setMax(mImagesList.length);
+                int value = 0;
+                mProgDial.setProgress(value);
                 for (Image i : mImagesList) {
                     final File imgFile = new File(StartWineImageActivity.this.getFilesDir()
                             .getAbsolutePath()
@@ -220,6 +264,7 @@ public class StartWineImageActivity extends BaseActivity {
                             e.printStackTrace();
                         }
                     }
+                    mProgDial.setProgress(++value);
                 }
                 SharedPreferencesHelper.putSharedPreferencesBoolean(StartWineImageActivity.this,
                         DOWNLOAD, true);
@@ -234,6 +279,7 @@ public class StartWineImageActivity extends BaseActivity {
         protected void onPostExecute(String file_url) {
 
             super.onPostExecute(file_url);
+            mProgDial.dismiss();
 
         }
 
@@ -249,11 +295,11 @@ public class StartWineImageActivity extends BaseActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.e("StartWineImage", "onPreExecute");
-            mProgDial = new ProgressDialog(StartWineImageActivity.this);
-            mProgDial.setMessage("Loading random wine data...");
-            mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(false);
-            mProgDial.show();
+            //            mProgDial = new ProgressDialog(StartWineImageActivity.this);
+            //            mProgDial.setMessage("Loading random wine data...");
+            //            mProgDial.setIndeterminate(false);
+            //            mProgDial.setCancelable(false);
+            //            mProgDial.show();
 
         }
 
@@ -266,13 +312,12 @@ public class StartWineImageActivity extends BaseActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
-            if (source != null)
-            {
+            if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
-    
+
                 WinesResponse response = gson.fromJson(reader, WinesResponse.class);
-    
+
                 if (response != null) {
                     mWinesList = response.wines;
                 }
@@ -287,7 +332,7 @@ public class StartWineImageActivity extends BaseActivity {
         protected void onPostExecute(String file_url) {
             Log.e("StartWineImage", "onPostExecute" + mWinesList.length);
             super.onPostExecute(file_url);
-            mProgDial.dismiss();
+            //      mProgDial.dismiss();
             if (mWinesList != null) {
                 //                mAdapter = new WinesGridViewAdapter(mAct, mWinesList);
                 //                mUiList.setAdapter(mAdapter);
