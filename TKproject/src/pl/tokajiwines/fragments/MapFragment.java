@@ -358,16 +358,24 @@ public class MapFragment extends BaseFragment {
 
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
-
-            NearPlacesResponse response = gson.fromJson(reader, NearPlacesResponse.class);
-
-            if (response != null) {
-
-                if (response.success == 1)
-                    mNearbyPlaces = response.places;
-
-                else
-                    mNearbyPlaces = new Place[0];
+            
+            if (source !=null)
+            {
+    
+                NearPlacesResponse response = gson.fromJson(reader, NearPlacesResponse.class);
+    
+                if (response != null) {
+    
+                    if (response.success == 1)
+                        mNearbyPlaces = response.places;
+    
+                    else
+                        mNearbyPlaces = new Place[0];
+                }
+            }
+            else
+            {
+                mNearbyPlaces = new Place[0];
             }
             return null;
 
