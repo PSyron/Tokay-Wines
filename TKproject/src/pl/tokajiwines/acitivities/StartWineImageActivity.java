@@ -56,12 +56,7 @@ public class StartWineImageActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActionBar().hide();
-        if (App.isOnline(this)) {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
-            startActivity(intent);
-            finish();
-        }
         sUrl = getResources().getString(R.string.UrlRandomWine);
         sImagesUrl = getResources().getString(R.string.UrlAllImagesDownload);
         sUsername = getResources().getString(R.string.Username);
@@ -81,12 +76,18 @@ public class StartWineImageActivity extends BaseActivity {
 
             }
         });
+        if (App.isOnline(this)) {
+            new LoadWineImageTask().execute();
+            boolean learned = SharedPreferencesHelper.getSharedPreferencesBoolean(this, DOWNLOAD,
+                    false);
+            if (!learned) {
+                new LoadImages().execute();
+            }
+        } else {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
-        new LoadWineImageTask().execute();
-        boolean learned = SharedPreferencesHelper
-                .getSharedPreferencesBoolean(this, DOWNLOAD, false);
-        if (!learned) {
-            new LoadImages().execute();
+            startActivity(intent);
+            finish();
         }
     }
 
