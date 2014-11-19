@@ -59,9 +59,6 @@ public class WinesFilterFragment extends BaseFragment {
     
     private WineFilterResponse mWineFilter;
     private Flavour[] mWineFlavours = {};
-    /*    private String[] mProducerName = {};
-        private String[] mWineStrains = {};
-        private String[] mWineGrades = {};*/
     private Strain[] mWineStrains = {};
     private Grade[] mWineGrades = {};
     private ProducerListItem[] mWineProducers = {};
@@ -481,19 +478,22 @@ public class WinesFilterFragment extends BaseFragment {
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername,
                     sPassword, null);
-            Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
-
-            WineFilterResponse response = gson.fromJson(reader, WineFilterResponse.class);
-
-            if (response != null) {
-                mWineFilter = response;
-                mWineYear = mWineFilter.years;
-                mWineProducers = mWineFilter.producers;
-                mWineGrades = response.grades;
-                mWineStrains = response.strains;
-                mWineFlavours = response.flavours;
-
+            if (source != null)
+            {
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+    
+                WineFilterResponse response = gson.fromJson(reader, WineFilterResponse.class);
+    
+                if (response != null) {
+                    mWineFilter = response;
+                    mWineYear = mWineFilter.years;
+                    mWineProducers = mWineFilter.producers;
+                    mWineGrades = response.grades;
+                    mWineStrains = response.strains;
+                    mWineFlavours = response.flavours;
+    
+                }
             }
 
             return null;
@@ -506,13 +506,19 @@ public class WinesFilterFragment extends BaseFragment {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-
-            mCheckedTastes = new boolean[mWineFlavours.length];
-            mCheckedTypes = new boolean[mWineGrades.length];
-            mCheckedStrains = new boolean[mWineStrains.length];
-            mCheckedYears = new boolean[mWineYear.length];
-            mCheckedProducers = new boolean[mWineProducers.length];
-            mCheckedPrices = new boolean[mWinePrices.length];
+            
+            if (mWineFlavours != null)
+                mCheckedTastes = new boolean[mWineFlavours.length];
+            if (mWineGrades != null)
+                mCheckedTypes = new boolean[mWineGrades.length];
+            if (mWineStrains != null)
+                mCheckedStrains = new boolean[mWineStrains.length];
+            if (mWineYear != null)
+                mCheckedYears = new boolean[mWineYear.length];
+            if (mWineProducers != null)
+                mCheckedProducers = new boolean[mWineProducers.length];
+            if (mWinePrices != null)
+                mCheckedPrices = new boolean[mWinePrices.length];
         }
     }
 }

@@ -105,12 +105,11 @@ public class NewsFragment extends BaseFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //            mProgDial = new ProgressDialog(mContext);
-            //            mProgDial.setMessage("Loading news data...");
-            //            mProgDial.setIndeterminate(false);
-            //            mProgDial.setCancelable(false);
-            //            mProgDial.show();
-
+                        mProgDial = new ProgressDialog(mContext);
+                        mProgDial.setMessage("Loading news data...");
+                        mProgDial.setIndeterminate(false);
+                        mProgDial.setCancelable(false);
+                        mProgDial.show();
         }
 
         // retrieving news data
@@ -121,13 +120,16 @@ public class NewsFragment extends BaseFragment {
             mParser = new JSONParser();
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
-            Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
-
-            NewsResponse response = gson.fromJson(reader, NewsResponse.class);
-
-            if (response != null) {
-                mNewsList = response.news;
+            if (source != null)
+            {
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+    
+                NewsResponse response = gson.fromJson(reader, NewsResponse.class);
+    
+                if (response != null) {
+                    mNewsList = response.news;
+                }
             }
 
             return null;
@@ -139,10 +141,12 @@ public class NewsFragment extends BaseFragment {
         protected void onPostExecute(String file_url) {
 
             super.onPostExecute(file_url);
-            //  mProgDial.dismiss();
-            mAdapter = new NewsAdapter(getActivity(), mNewsList);
-            mUiList.setAdapter(mAdapter);
-
+              mProgDial.dismiss();
+            if (mNewsList != null)
+            {
+                mAdapter = new NewsAdapter(getActivity(), mNewsList);
+                mUiList.setAdapter(mAdapter);
+            }
         }
 
     }

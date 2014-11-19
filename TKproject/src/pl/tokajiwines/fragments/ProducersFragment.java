@@ -152,47 +152,20 @@ public class ProducersFragment extends BaseFragment {
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername,
                     sPassword, null);
-            Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
-
-            ProducersResponse response = gson.fromJson(reader, ProducersResponse.class);
-
-            if (response != null) {
-                System.out.println(response.producers[0].mName);
-                mProducersList = response.producers;
+            if (source != null)
+            {
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+    
+                ProducersResponse response = gson.fromJson(reader, ProducersResponse.class);
+    
+                if (response != null) {
+                    mProducersList = response.producers;
+                }
             }
 
             return null;
-            /*       // TODO Auto-generated method stub
-                   
-                   mParser = new JSONParser();
-                   JSONObject json = mParser.getJSONFromUrl(sUrl, Constans.sUsername, Constans.sPassword);
-                   
-                   
-                   try
-                   {
-                       mProducersJSON = json.getJSONArray(TAG_PRODUCERS);
-                       
-                       mProducersList = new ProducerListItem[mProducersJSON.length()];
-                       
-                       System.out.println(mProducersJSON.length());
-                       
-                       for (int i = 0; i < mProducersJSON.length(); i++)
-                       {
-                           JSONObject  p = mProducersJSON.getJSONObject(i);
-                           mProducersList[i] = new ProducerListItem(p.getInt(TAG_ID), p.getString(TAG_NAME), p.getString(TAG_SHORT_MESSAGE));
-                           
-                       }
-                   }
-                   
-                   catch(JSONException e)
-                   {
-                       e.printStackTrace();
-                   }
 
-
-                   return null;
-            */
         }
 
         // create adapter that contains loaded data and show list of producers
@@ -201,8 +174,11 @@ public class ProducersFragment extends BaseFragment {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            mAdapter = new ProducersAdapter(getActivity(), mProducersList);
-            mUiList.setAdapter(mAdapter);
+            if (mProducersList != null)
+            {
+                mAdapter = new ProducersAdapter(getActivity(), mProducersList);
+                mUiList.setAdapter(mAdapter);
+            }
 
         }
 

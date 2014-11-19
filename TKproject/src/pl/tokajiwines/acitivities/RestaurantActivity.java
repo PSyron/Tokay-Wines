@@ -180,14 +180,16 @@ public class RestaurantActivity extends BaseActivity {
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername,
                     sPassword, params);
-
-            Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
-
-            RestaurantDetails response = gson.fromJson(reader, RestaurantDetails.class);
-            Log.e(RestaurantActivity.class.getName(), response.mIdRestaurant + " ");
-            if (response != null) {
-                mRestaurantFromBase = response;
+            if (source != null)
+            {
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+    
+                RestaurantDetails response = gson.fromJson(reader, RestaurantDetails.class);
+                Log.e(RestaurantActivity.class.getName(), response.mIdRestaurant + " ");
+                if (response != null) {
+                    mRestaurantFromBase = response;
+                }
             }
 
             return null;
@@ -202,10 +204,10 @@ public class RestaurantActivity extends BaseActivity {
             mProgDial.dismiss();
             if (mRestaurantFromBase != null) {
                 fillView();
-            }
 
             Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
                     .error(R.drawable.error_image).load(mRestaurantFromBase.mImageUrl);
+            }
 
         }
 

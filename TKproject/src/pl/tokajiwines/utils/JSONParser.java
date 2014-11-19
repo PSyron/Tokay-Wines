@@ -4,6 +4,7 @@ package pl.tokajiwines.utils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -100,10 +101,15 @@ public class JSONParser {
             }
 
             HttpResponse httpResponse = httpClient.execute(httpPost);
+            
+            StatusLine statusLine = httpResponse.getStatusLine();
+            if(statusLine.getStatusCode() == 200) {
 
-            HttpEntity httpEntity = httpResponse.getEntity();
-
-            return httpEntity.getContent();
+                HttpEntity httpEntity = httpResponse.getEntity();
+    
+                return httpEntity.getContent();
+            }
+            
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

@@ -174,14 +174,17 @@ public class HotelActivity extends BaseActivity {
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername,
                     sPassword, params);
+            if (source != null)
+            {
 
-            Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
-
-            HotelDetails response = gson.fromJson(reader, HotelDetails.class);
-            Log.e(HotelActivity.class.getName(), response.mIdHotel + " ");
-            if (response != null) {
-                mHotelFromBase = response;
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+    
+                HotelDetails response = gson.fromJson(reader, HotelDetails.class);
+                Log.e(HotelActivity.class.getName(), response.mIdHotel + " ");
+                if (response != null) {
+                    mHotelFromBase = response;
+                }
             }
 
             return null;

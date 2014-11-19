@@ -163,11 +163,14 @@ public class NewsActivity extends BaseActivity {
             params.add(new BasicNameValuePair("idNews", "" + mIdNews));
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
-            Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
-
-            NewsDetailsResponse response = gson.fromJson(reader, NewsDetailsResponse.class);
-            mNews = response.news;
+            if (source != null)
+            {
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+    
+                NewsDetailsResponse response = gson.fromJson(reader, NewsDetailsResponse.class);
+                mNews = response.news;
+            }
 
             return null;
 
@@ -179,22 +182,25 @@ public class NewsActivity extends BaseActivity {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            mUiName.setText(mNews.mHeader);
-            mUiDescription.setText(mNews.mVast);
-            Ion.with(mUiImage).placeholder(R.drawable.no_image_big).error(R.drawable.error_image)
-                    .load(mNews.mImage);
-
-            if (mNews.mStartDate == null && mNews.mEndDate == null) {
-                mUiDateLabel.setVisibility(View.GONE);
-                mUiDate.setVisibility(View.GONE);
-                mUiAddIcon.setVisibility(View.GONE);
-            } else {
-                mUiDate.setText(mNews.mStartDate + " - " + mNews.mEndDate);
-                mUiDate.setVisibility(View.VISIBLE);
-                mUiAddIcon.setVisibility(View.VISIBLE);
+            if (mNews !=null)
+            {
+                    mUiName.setText(mNews.mHeader);
+                    mUiDescription.setText(mNews.mVast);
+                    Ion.with(mUiImage).placeholder(R.drawable.no_image_big).error(R.drawable.error_image)
+                            .load(mNews.mImage);
+    
+                if (mNews.mStartDate == null && mNews.mEndDate == null) {
+                    mUiDateLabel.setVisibility(View.GONE);
+                    mUiDate.setVisibility(View.GONE);
+                    mUiAddIcon.setVisibility(View.GONE);
+                } else {
+                    mUiDate.setText(mNews.mStartDate + " - " + mNews.mEndDate);
+                    mUiDate.setVisibility(View.VISIBLE);
+                    mUiAddIcon.setVisibility(View.VISIBLE);
+                }
+    
+                getActionBar().setTitle(mNews.mHeader);
             }
-
-            getActionBar().setTitle(mNews.mHeader);
 
         }
 

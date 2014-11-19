@@ -146,14 +146,17 @@ public class WinesListActivity extends BaseActivity {
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername,
                     sPassword, params);
-            Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
-
-            WinesResponse response = gson.fromJson(reader, WinesResponse.class);
-
-            if (response != null) {
-                mWinesList = response.wines;
-                System.out.println(response);
+            if (source != null)
+            {
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+    
+                WinesResponse response = gson.fromJson(reader, WinesResponse.class);
+    
+                if (response != null) {
+                    mWinesList = response.wines;
+                    System.out.println(response);
+                }
             }
 
             return null;

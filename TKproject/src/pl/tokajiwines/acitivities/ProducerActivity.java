@@ -237,15 +237,17 @@ public class ProducerActivity extends BaseActivity {
             params.add(new BasicNameValuePair("who", "" + mProducer.mIdProducer));
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
-
-            Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
-
-            ProducerDetails response = gson.fromJson(reader, ProducerDetails.class);
-
-            Log.e(ProducerActivity.class.getName(), response.mIdProducer + " ");
-            if (response != null) {
-                mProducerFromBase = response;
+            if (source != null)
+            {
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+    
+                ProducerDetails response = gson.fromJson(reader, ProducerDetails.class);
+    
+                Log.e(ProducerActivity.class.getName(), response.mIdProducer + " ");
+                if (response != null) {
+                    mProducerFromBase = response;
+                }
             }
 
             return null;
@@ -260,9 +262,9 @@ public class ProducerActivity extends BaseActivity {
             mProgDial.dismiss();
             if (mProducerFromBase != null) {
                 fillView();
-            }
             Ion.with(mUiWineImage).placeholder(R.drawable.no_image).error(R.drawable.error_image)
                     .load(mProducerFromBase.mWineImageUrl);
+            }
 
             new LoadProducerImagesTask().execute();
         }
@@ -282,7 +284,7 @@ public class ProducerActivity extends BaseActivity {
             mProgDial.setMessage("Loading producer images...");
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
-            // mProgDial.show();
+             mProgDial.show();
 
         }
 
@@ -297,14 +299,16 @@ public class ProducerActivity extends BaseActivity {
             params.add(new BasicNameValuePair("who", "" + mProducer.mIdProducer));
 
             InputStream source = mParser.retrieveStream(sUrlImage, sUsername, sPassword, params);
-
-            Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
-
-            ImagesResponse response = gson.fromJson(reader, ImagesResponse.class);
-            Log.e(ProducerActivity.class.getName(), response.images.length + " ");
-            if (response != null) {
-                mImagesUrl = response.images;
+            if (source != null)
+            {
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+    
+                ImagesResponse response = gson.fromJson(reader, ImagesResponse.class);
+                Log.e(ProducerActivity.class.getName(), response.images.length + " ");
+                if (response != null) {
+                    mImagesUrl = response.images;
+                }
             }
 
             return null;
@@ -317,7 +321,7 @@ public class ProducerActivity extends BaseActivity {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            if (mImagesUrl.length > 0) {
+            if (mImagesUrl !=null && mImagesUrl.length > 0) {
                 mAdapter = new ImagePagerAdapter(ProducerActivity.this, mImagesUrl);
                 mUiPager.setAdapter(mAdapter);
                 mUiPageIndicator.setViewPager(mUiPager);

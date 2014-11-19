@@ -142,13 +142,16 @@ public class WinesGridViewActivity extends BaseActivity {
             params.add(new BasicNameValuePair("idProducer", "" + mProducer.mIdProducer));
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
-            Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
-
-            WinesResponse response = gson.fromJson(reader, WinesResponse.class);
-
-            if (response != null) {
-                mWinesList = response.wines;
+            if (source != null)
+            {
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+    
+                WinesResponse response = gson.fromJson(reader, WinesResponse.class);
+    
+                if (response != null) {
+                    mWinesList = response.wines;
+                }
             }
 
             return null;
