@@ -16,14 +16,17 @@ import java.io.OutputStream;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // ------------------------ Database settings ----------------//
-    private static final String DATABASE_NAME = "1183_release.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final String DATABASE_NAME = "tokaji_release.db";
+    private static final int DATABASE_VERSION = 1;
     private static String DATABASE_PATH = "/data/data/pl.tokajiwines/databases/";
     private static final String LOG = "DatabaseHelper"; // LogCat tag
 
     // ------------------------ Table names ----------------//
     public static final String TABLE_ADDRESSES = "tAddresses";
     public static final String TABLE_COLORS = "tColors";
+    public static final String TABLE_CURIOSITIES = "tCuriosities";
+    public static final String TABLE_CURIOSITY_IMAGES = "tCuriosityImages";
+    public static final String TABLE_CURIOSITY_TYPES = "tCuriosityTypes";
     public static final String TABLE_CURRENCIES = "tCurrencies";
     public static final String TABLE_DESCRIPTIONS = "tDescriptions";
     public static final String TABLE_FLAVOURS = "tFlavours";
@@ -32,15 +35,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_HOTEL_IMAGES = "tHotelImages";
     public static final String TABLE_IMAGES = "tImages";
     public static final String TABLE_LANGS = "tLangs";
-    public static final String TABLE_LOOKOUTS = "tLookouts";
-    public static final String TABLE_LOOKOUT_IMAGES = "tLookoutImages";
-    public static final String TABLE_MONUMENTS = "tMonuments";
-    public static final String TABLE_MONUMENT_IMAGES = "tMonumentImages";
     public static final String TABLE_NEWS = "tNews";
     public static final String TABLE_NEWS_IMAGES = "tNewsImages";
-    public static final String TABLE_ODDITIES = "tOddities";
-    public static final String TABLE_ODDITY_IMAGES = "tOddityImages";
-    public static final String TABLE_ODDITY_TYPES = "tOddityTypes";
+    public static final String TABLE_PLACES = "tPlaces";
     public static final String TABLE_PRODUCERS = "tProducers";
     public static final String TABLE_PRODUCER_IMAGES = "tProducerImages";
     public static final String TABLE_RESTAURANTS = "tRestaurants";
@@ -58,6 +55,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_COLORS = "CREATE TABLE " + "tColors" + "("
             + "IdColor INTEGER PRIMARY KEY," + "NameEng TEXT," + "NamePl TEXT" + ")";
+
+    private static final String CREATE_TABLE_CURIOSITIES = "CREATE TABLE " + "tCuriosities" + "("
+            + "IdCuriosity INTEGER PRIMARY KEY," + "Name TEXT," + "IdCuriosityType_ INTEGER,"
+            + "IdDescription_ INTEGER," + "IdAddress_ INTEGER," + "IdImageCover_ INTEGER,"
+            + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_CURIOSITY_IMAGES = "CREATE TABLE "
+            + "tCuriosityImages" + "(" + "IdCuriosityImage INTEGER PRIMARY KEY,"
+            + "IdCuriosity_ INTEGER," + "IdImage_ INTEGER," + "LastUpdate TEXT" + ")";
+
+    private static final String CREATE_TABLE_CURIOSITY_TYPES = "CREATE TABLE " + "tCuriosityTypes"
+            + "(" + "IdCuriosityType INTEGER PRIMARY KEY," + "Name TEXT" + ")";
 
     private static final String CREATE_TABLE_CURRENCIES = "CREATE TABLE " + "tCurrencies" + "("
             + "IdCurrency INTEGER PRIMARY KEY," + "Name TEXT," + "NameShort TEXT," + "Ratio FLOAT,"
@@ -91,24 +100,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_LANGS = "CREATE TABLE " + "tLangs" + "("
             + "IdLang INTEGER PRIMARY KEY," + "Name TEXT," + "ShortName TEXT" + ")";
 
-    private static final String CREATE_TABLE_LOOKOUTS = "CREATE TABLE " + "tLookouts" + "("
-            + "IdLookout INTEGER PRIMARY KEY," + "Name TEXT," + "IdDescription_ INTEGER,"
-            + "IdAddress_ INTEGER," + "IdImageCover_ INTEGER," + "LastUpdate TEXT" + ")";
-
-    private static final String CREATE_TABLE_LOOKOUT_IMAGES = "CREATE TABLE " + "tLookoutImages"
-            + "(" + "IdLookoutImage INTEGER PRIMARY KEY," + "IdLookout_ INTEGER,"
-            + "IdImage_ INTEGER," + "LastUpdate TEXT" + ")";
-
-    private static final String CREATE_TABLE_MONUMENTS = "CREATE TABLE " + "tMonuments" + "("
-            + "IdMonument INTEGER PRIMARY KEY," + "Name TEXT," + "IdDescription_ INTEGER,"
-            + "IdAddress_ INTEGER," + "IdImageCover_ INTEGER," + "LastUpdate TEXT" + ")";
-
-    private static final String CREATE_TABLE_MONUMENT_IMAGES = "CREATE TABLE " + "tMonumentImages"
-            + "(" + "IdLookoutImage INTEGER PRIMARY KEY," + "IdMonument_ INTEGER,"
-            + "IdImage_ INTEGER," + "LastUpdate TEXT" + ")";
-
     private static final String CREATE_TABLE_NEWS = "CREATE TABLE " + "tNews" + "("
-            + "IdNews INTEGER PRIMARY KEY," + "Header TEXT," + "HeaderEng TEXT,"
+            + "IdNews INTEGER PRIMARY KEY," + "HeaderPl TEXT," + "HeaderEng TEXT,"
             + "EntryDate TEXT," + "StartDate TEXT," + "EndDate TEXT," + "IdDescription_ INTEGER,"
             + "IdAddress_ INTEGER," + "IdImageCover_ INTEGER," + "LastUpdate TEXT" + ")";
 
@@ -116,17 +109,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "IdNewsImage INTEGER PRIMARY KEY," + "IdNews_ INTEGER," + "IdImage_ INTEGER,"
             + "LastUpdate TEXT" + ")";
 
-    private static final String CREATE_TABLE_ODDITIES = "CREATE TABLE " + "tOddities" + "("
-            + "IdOddity INTEGER PRIMARY KEY," + "Name TEXT," + "Header TEXT,"
-            + "IdOddityType_ INTEGER," + "IdDescription_ INTEGER," + "IdAddress_ INTEGER,"
-            + "IdImageCover_ INTEGER" + "LastUpdate TEXT" + ")";
-
-    private static final String CREATE_TABLE_ODDITY_IMAGES = "CREATE TABLE " + "tOddityImages"
-            + "(" + "IdOddityImage INTEGER PRIMARY KEY," + "IdOddity_ INTEGER,"
-            + "IdImage_ INTEGER," + "LastUpdate TEXT" + ")";
-
-    private static final String CREATE_TABLE_ODDITY_TYPES = "CREATE TABLE " + "tOddityTypes" + "("
-            + "IdOddityType INTEGER PRIMARY KEY," + "Name TEXT" + ")";
+    private static final String CREATE_TABLE_PLACES = "CREATE TABLE " + "tPlaces" + "("
+            + "Id INTEGER PRIMARY KEY," + "IdPlace INTEGER," + "Name TEXT," + "Address TEXT,"
+            + "Latitude TEXT," + "Longitude TEXT," + "PlaceType TEXT," + "Phone TEXT,"
+            + "Image TEXT," + "LastUpdate TEXT" + ")";
 
     private static final String CREATE_TABLE_PRODUCERS = "CREATE TABLE " + "tProducers" + "("
             + "IdProducer INTEGER PRIMARY KEY," + "Email TEXT," + "Link TEXT," + "Name TEXT,"
@@ -176,6 +162,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.w(LOG, "Creating tables");
         db.execSQL(CREATE_TABLE_ADDRESSES);
         db.execSQL(CREATE_TABLE_COLORS);
+        db.execSQL(CREATE_TABLE_CURIOSITIES);
+        db.execSQL(CREATE_TABLE_CURIOSITY_IMAGES);
+        db.execSQL(CREATE_TABLE_CURIOSITY_TYPES);
         db.execSQL(CREATE_TABLE_CURRENCIES);
         db.execSQL(CREATE_TABLE_DESCRIPTIONS);
         db.execSQL(CREATE_TABLE_FLAVOURS);
@@ -184,16 +173,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_HOTEL_IMAGES);
         db.execSQL(CREATE_TABLE_IMAGES);
         db.execSQL(CREATE_TABLE_LANGS);
-        db.execSQL(CREATE_TABLE_LOOKOUTS);
-        db.execSQL(CREATE_TABLE_LOOKOUT_IMAGES);
-        db.execSQL(CREATE_TABLE_MONUMENTS);
-        db.execSQL(CREATE_TABLE_MONUMENT_IMAGES);
         db.execSQL(CREATE_TABLE_NEWS);
         db.execSQL(CREATE_TABLE_NEWS_IMAGES);
-        db.execSQL(CREATE_TABLE_ODDITIES);
-        db.execSQL(CREATE_TABLE_ODDITY_IMAGES);
-        db.execSQL(CREATE_TABLE_ODDITY_TYPES);
         db.execSQL(CREATE_TABLE_PRODUCERS);
+        db.execSQL(CREATE_TABLE_PLACES);
         db.execSQL(CREATE_TABLE_PRODUCER_IMAGES);
         db.execSQL(CREATE_TABLE_RESTAURANTS);
         db.execSQL(CREATE_TABLE_RESTAURANT_IMAGES);
@@ -210,6 +193,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // on upgrade drop older tables
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ADDRESSES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_COLORS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CURIOSITIES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CURIOSITY_IMAGES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CURIOSITY_TYPES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CURRENCIES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_DESCRIPTIONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FLAVOURS);
@@ -218,15 +204,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOTEL_IMAGES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LANGS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOOKOUTS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOOKOUT_IMAGES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MONUMENTS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MONUMENT_IMAGES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NEWS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NEWS_IMAGES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ODDITIES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ODDITY_IMAGES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ODDITY_TYPES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLACES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCER_IMAGES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESTAURANTS);
@@ -284,9 +264,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /* HOW TO CHECK DATABASE
     adb -d shell
     run-as pl.tokajiwines
-    cat databases/1183_release > /sdcard/database.db
-    exit
-    cd /sdcard
-    ls -l <– check to make sure database.db is in here
-    exit*/
+    cat databases/tokaji_release.db > /sdcard/tokaji_release.db  */
 }

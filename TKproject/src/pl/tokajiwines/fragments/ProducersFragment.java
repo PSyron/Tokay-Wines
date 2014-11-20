@@ -24,7 +24,6 @@ import pl.tokajiwines.acitivities.ProducerActivity;
 import pl.tokajiwines.adapters.ProducersAdapter;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.ProducersResponse;
-import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
@@ -63,11 +62,11 @@ public class ProducersFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
-        
+
         sUrl = getResources().getString(R.string.UrlProducersList);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
-        
+
         mUiList = (ListView) rootView.findViewById(R.id.frag_news_list);
         mContext = getActivity();
         mProducersList = new ProducerListItem[0];
@@ -95,30 +94,31 @@ public class ProducersFragment extends BaseFragment {
         super.onStart();
 
         // if there is an access to the Internet, try to load data from remote database
-        
-        if (mProducersList.length == 0)
-        {
+
+        if (mProducersList.length == 0) {
 
             if (App.isOnline(mContext)) {
                 new LoadProducersTask().execute();
-    
-                //            ProducersDataSource pDs = new ProducersDataSource(mContext);
-                //            pDs.open();
-                //
-                //            List<Producer> prodlist = pDs.getAllProducers();
-                //            Log.i("Producent List", prodlist.toString());
-                //            ProducerListItem[] producers = {
-                //                    new ProducerListItem(prodlist.get(0)), new ProducerListItem(prodlist.get(1)),
-                //                    new ProducerListItem(prodlist.get(2))
-                //            };
-                //            ProducersAdapter mAdapter = new ProducersAdapter(getActivity(), producers);
-                //            mUiList.setAdapter(mAdapter);
+                /*DatabaseHelper dbh = new DatabaseHelper(mContext);
+
+                try {
+                    dbh.createDataBase();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                ProducersDataSource pDs = new ProducersDataSource(mContext);
+                pDs.open();
+                ProducersAdapter mAdapter = new ProducersAdapter(getActivity(),
+                        pDs.getProducerList());
+                mUiList.setAdapter(mAdapter);*/
             }
-    
+
             // otherwise, show message
-    
+
             else {
-                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG)
+                        .show();
             }
         }
 
@@ -150,15 +150,13 @@ public class ProducersFragment extends BaseFragment {
 
             mParser = new JSONParser();
 
-            InputStream source = mParser.retrieveStream(sUrl, sUsername,
-                    sPassword, null);
-            if (source != null)
-            {
+            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
+            if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
-    
+
                 ProducersResponse response = gson.fromJson(reader, ProducersResponse.class);
-    
+
                 if (response != null) {
                     mProducersList = response.producers;
                 }
@@ -174,8 +172,7 @@ public class ProducersFragment extends BaseFragment {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            if (mProducersList != null)
-            {
+            if (mProducersList != null) {
                 mAdapter = new ProducersAdapter(getActivity(), mProducersList);
                 mUiList.setAdapter(mAdapter);
             }

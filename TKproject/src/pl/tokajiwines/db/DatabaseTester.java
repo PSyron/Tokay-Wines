@@ -9,7 +9,6 @@ import pl.tokajiwines.models.Description;
 import pl.tokajiwines.models.Flavour;
 import pl.tokajiwines.models.Grade;
 import pl.tokajiwines.models.Image;
-import pl.tokajiwines.models.Monument;
 import pl.tokajiwines.models.News;
 import pl.tokajiwines.models.Producer;
 import pl.tokajiwines.models.ProducerImage;
@@ -28,7 +27,6 @@ public class DatabaseTester {
     DescriptionsDataSource dDs;
     FlavoursDataSource fDs;
     GradesDataSource gDs;
-    MonumentsDataSource mDs;
     ImagesDataSource iDs;
     NewsDataSource nDs;
     WinesDataSource wDs;
@@ -42,7 +40,6 @@ public class DatabaseTester {
         dDs = new DescriptionsDataSource(context);
         fDs = new FlavoursDataSource(context);
         gDs = new GradesDataSource(context);
-        mDs = new MonumentsDataSource(context);
         iDs = new ImagesDataSource(context);
         nDs = new NewsDataSource(context);
         wDs = new WinesDataSource(context);
@@ -126,17 +123,7 @@ public class DatabaseTester {
         List<News> nL = nDs.getAllNews();
         nDs.close();
         Log.i("News", nL.get(0).mHeaderEng);
-        Log.i("News", nL.get(1).mHeader);
-    }
-
-    public void testMonuments() {
-        mDs.open();
-        mDs.insertMonument(new Monument(1, "Testowy", 1, 1, 1, "Dawno"));
-        mDs.insertMonument(new Monument(2, "Test2", 1, 1, 1, "Bd"));
-        List<Monument> mL = mDs.getAllMonuments();
-        mDs.close();
-        Log.i("Monuments", mL.get(0).mName);
-        Log.i("Monuments", mL.get(1).mName);
+        Log.i("News", nL.get(1).mHeaderPl);
     }
 
     public void testCurrencies() {
@@ -187,7 +174,6 @@ public class DatabaseTester {
         testWines();
         testWineStrains();
         testNews();
-        testMonuments();
         testCurrencies();
         testGrades();
         testFlavours();

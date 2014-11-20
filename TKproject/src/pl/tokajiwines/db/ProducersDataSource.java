@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.models.Producer;
 import pl.tokajiwines.utils.Log;
 
@@ -19,6 +20,7 @@ public class ProducersDataSource {
     // Database fields
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
+    private Context mContext;
     private String[] allColumns = {
             "IdProducer", "Email", "Link", "Name", "Phone", "IdDescription_", "IdAddress_",
             "IdUser_", "IdImageCover_", "IdWineBest_", "LastUpdate"
@@ -26,6 +28,7 @@ public class ProducersDataSource {
 
     public ProducersDataSource(Context context) {
         dbHelper = new DatabaseHelper(context);
+        mContext = context;
     }
 
     public void open() throws SQLException {
@@ -83,16 +86,23 @@ public class ProducersDataSource {
                 + " row(s)");
     }
 
+    public Producer getProducer(int id) {
+        Log.i(LOG, "getProducer(id=" + id + ")");
+        Producer producer = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, allColumns, "IdProducer"
+                + "=" + id, null, null, null, null);
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Producer with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            producer = cursorToProducer(cursor);
+        }
+        return producer;
+    }
+
     public List<Producer> getAllProducers() {
         Log.i(LOG, "getAllProducers()");
         List<Producer> producers = new ArrayList<Producer>();
-        /*
-        insertProducer(new Producer(1, "Email", "www.test.pl", "Testowy", "666666666", 1, 1, 1, 1,
-                1, "Dawno"));
-        insertProducer(new Producer(2, "Email", "www.test.pl", "Testowy", "666666666", 1, 1, 1, 1,
-                1, "Dawno"));
-        insertProducer(new Producer(3, "Emailcos", "www.xxx.pl", "cos", "666666666", 4, 2, 1, 3, 5,
-                "omg"));*/
         Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, allColumns, null, null,
                 null, null, null);
         cursor.moveToFirst();
@@ -103,6 +113,27 @@ public class ProducersDataSource {
         }
         cursor.close();
         if (producers.isEmpty()) Log.w(LOG, "Producers are empty()");
+        return producers;
+    }
+
+    public ProducerListItem[] getProducerList() {
+        Log.i(LOG, "getProducerList()");
+        Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, new String[] {
+                "IdProducer", "Name", "IdDescription_", "IdImageCover_"
+        }, null, null, null, null, null);
+        cursor.moveToFirst();
+        ProducerListItem[] producers = new ProducerListItem[cursor.getCount()];
+        int i = 0;
+        while (!cursor.isAfterLast()) {
+            ProducerListItem producer = cursorToProducerListItem(cursor);
+            producers[i] = producer;
+            ;
+            cursor.moveToNext();
+            i++;
+        }
+        cursor.close();
+        if (producers.length == 0) Log.w(LOG, "Producers are empty()");
+
         return producers;
     }
 
@@ -121,4 +152,20 @@ public class ProducersDataSource {
         producer.mLastUpdate = cursor.getString(10);
         return producer;
     }
+
+    private ProducerListItem cursorToProducerListItem(Cursor cursor) {
+        Producer p = new Producer();
+        p.mIdProducer = cursor.getInt(0);
+        p.mName = cursor.getString(1);
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        iDs.open();
+        p.imageCover = iDs.getImageUrl(cursor.getInt(3));
+        iDs.close();
+        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+        dDs.open();
+        p.description = dDs.getDescriptionShort(cursor.getInt(2));
+        dDs.close();
+        return new ProducerListItem(p);
+    }
+
 }

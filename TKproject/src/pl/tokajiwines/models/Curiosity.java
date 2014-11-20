@@ -5,36 +5,41 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Monument implements Serializable {
+public class Curiosity implements Serializable {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -5336768746291707454L;
-    @SerializedName("IdMonument")
-    public int mIdMonument;
+    private static final long serialVersionUID = 2835563831165747338L;
+    @SerializedName("IdCuriosity")
+    public int mIdCuriosity;
     @SerializedName("Name")
     public String mName;
+    @SerializedName("IdCuriosityType_")
+    public int mIdCuriosityType_;
     @SerializedName("IdDescription_")
     public int mIdDescription_;
-    @SerializedName("IdAddress_")
+    @SerializedName("IdAddress")
     public int mIdAddress_;
     @SerializedName("IdImageCover_")
     public int mIdImageCover_;
     @SerializedName("LastUpdate")
     public String mLastUpdate;
 
-    public Monument(int IdMonument, String Name, int IdAddress_, int IdUser_, int IdImageCover_,
-            String LastUpdate) {
+    public Curiosity(int IdCuriosity, String Name, int IdCuriosityType_, int IdDescription_,
+            int IdAddress_, int IdImageCover_, String LastUpdate) {
         super();
-        mIdMonument = IdMonument;
+        mIdCuriosity = IdCuriosity;
         mName = Name;
+        mIdCuriosityType_ = IdCuriosityType_;
+        mIdDescription_ = IdDescription_;
         mIdAddress_ = IdAddress_;
         mIdImageCover_ = IdImageCover_;
         mLastUpdate = LastUpdate;
     }
 
-    public Monument() {
+    public Curiosity() {
         // TODO Auto-generated constructor stub
     }
+
 }

@@ -75,6 +75,21 @@ public class ImagesDataSource {
         Log.i(LOG, "Updated image with id: " + imageOld.mIdImage + " on: " + rows + " row(s)");
     }
 
+    public Image getImageUrl(int id) {
+        Log.i(LOG, "getImageURL(id=" + id + ")");
+        Image image = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_IMAGES, new String[] {
+                "IdImage", "Image"
+        }, "IdImage" + "=" + id, null, null, null, null);
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Image with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            image = cursorToImageUrl(cursor);
+        }
+        return image;
+    }
+
     public List<Image> getAllImages() {
         Log.i(LOG, "getAllImages()");
         List<Image> images = new ArrayList<Image>();
@@ -102,6 +117,13 @@ public class ImagesDataSource {
         image.mImage = cursor.getString(6);
         image.mIdUser_ = cursor.getInt(7);
         image.mLastUpdate = cursor.getString(8);
+        return image;
+    }
+
+    private Image cursorToImageUrl(Cursor cursor) {
+        Image image = new Image();
+        image.mIdImage = cursor.getInt(0);
+        image.mImage = cursor.getString(1);
         return image;
     }
 }
