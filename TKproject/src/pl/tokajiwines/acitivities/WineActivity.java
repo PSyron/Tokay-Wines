@@ -172,9 +172,9 @@ public class WineActivity extends BaseActivity {
         if (mWineDetails.mImageUrl != null) {
             final File imgFile = new File(WineActivity.this.getFilesDir().getAbsolutePath()
                     + "/"
-                    + mWine.mImageUrl.substring(
-                            mWine.mImageUrl.lastIndexOf('/') + 1,
-                            mWine.mImageUrl.length()));
+                    + mWineDetails.mImageUrl.substring(
+                            mWineDetails.mImageUrl.lastIndexOf('/') + 1,
+                            mWineDetails.mImageUrl.length()));
             if (imgFile.exists()) {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -183,7 +183,7 @@ public class WineActivity extends BaseActivity {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
-                        App.downloadAndRun(mWine.mImageUrl, WineActivity.this, mUiImage);
+                        App.downloadAndRun(mWineDetails.mImageUrl, WineActivity.this, mUiImage);
                     }
                 }, 50);
             }
