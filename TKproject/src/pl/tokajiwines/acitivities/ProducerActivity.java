@@ -106,7 +106,7 @@ public class ProducerActivity extends BaseActivity {
         mUiScroll = (ScrollView) findViewById(R.id.activity_producer_details_scrollview);
 
         int[] images = {
-            R.drawable.placeholder_image
+            R.drawable.no_image_big
         };
         mAdapter = new ImagePagerAdapter(this, images);
         mUiPager.setAdapter(mAdapter);
