@@ -74,7 +74,7 @@
     <string name="dialog_wine_year">Wybierz rocznik</string>
     <string name="dialog_wine_price">Wybierz przedział cenowy</string>
     <string name="wine_available">Dostępne u</string>
-    
+
     <!-- Producers -->
 
     <string name="address">Adres:</string>
@@ -133,5 +133,9 @@
     <string name="dialog_title_currency">Wybierz walutę w aplikacji: </string>
     <string name="dialog_title_measure">Wybierz jednostkę odległości w aplikacji: </string>
     <string name="dialog_title_range">Wybierz zasięg aplikacji: </string>
+
+    <!-- Developers -->
+
+    <string name="pawel_cyron">Paweł Cyroń</string>
 
 </resources>

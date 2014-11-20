@@ -16,7 +16,5 @@
     <dimen name="details_image_width">300dp</dimen>
     <dimen name="details_icon_height">64dp</dimen>
     <dimen name="map_icon_height">32dp</dimen>
-    <dimen name="about_icon_height">110dp</dimen>
-    <dimen name="about_icon_width">150dp</dimen>
 
 </resources>

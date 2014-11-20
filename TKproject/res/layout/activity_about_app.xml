@@ -1,86 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <TextView
-        style="@style/DetailsHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:text="@string/app_name" />
-
-    <ImageView
-        android:layout_width="@dimen/about_icon_width"
-        android:layout_height="@dimen/about_icon_height"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        android:src="@drawable/ic_launcher" />
-
-    <LinearLayout
-        style="@style/ItemCustomLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <TextView
-            style="@style/DetailsHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="@string/app_version" />
-
-        <TextView
-            android:id="@+id/activity_about_app_version_tV"
-            style="@style/DetailsHeader.NormalText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:gravity="end"
-            android:textColor="@color/gray"
-            android:text="version" />
-    </LinearLayout>
-
-    <TextView
-        style="@style/DetailsHeader.Bookmark"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/developers" />
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/ItemCustomLayout"
         android:orientation="vertical" >
 
         <TextView
             style="@style/DetailsHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="Paulina Konieczna" />
+            android:text="@string/app_name"
+            android:textSize="24dp" />
 
-        <TextView
-            style="@style/DetailsHeader"
+        <ImageView
+            android:layout_width="@dimen/details_image_width"
+            android:layout_height="@dimen/details_image_height"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_launcher_app" />
+
+        <LinearLayout
+            style="@style/ItemCustomLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="Paweł Cyron" />
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/DetailsHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/app_version" />
+
+            <TextView
+                android:id="@+id/activity_about_app_version_tV"
+                style="@style/DetailsHeader.NormalText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="end"
+                android:text="version"
+                android:textColor="@color/gray" />
+        </LinearLayout>
 
         <TextView
-            style="@style/DetailsHeader"
+            style="@style/DetailsHeader.Bookmark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="Tomasz Kluza" />
+            android:text="@string/developers" />
 
-        <TextView
-            style="@style/DetailsHeader"
+        <LinearLayout
+            style="@style/ItemCustomLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="Wojciech Klimczyk" />
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                style="@style/DetailsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/divider_item"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/DetailsHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/paulina_konieczna" />
+
+                <TextView
+                    style="@style/DetailsHeader.NormalText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/paulina_konieczna_email"
+                    android:textColor="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/DetailsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/divider_item"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/DetailsHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pawel_cyron" />
+
+                <TextView
+                    style="@style/DetailsHeader.NormalText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/pawel_cyron_email"
+                    android:textColor="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/DetailsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/divider_item"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/DetailsHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tomasz_kluza" />
+
+                <TextView
+                    style="@style/DetailsHeader.NormalText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/tomasz_kluza_email"
+                    android:textColor="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/DetailsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/divider_item"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/DetailsHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wojciech_klimczyk" />
+
+                <TextView
+                    style="@style/DetailsHeader.NormalText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/wojciech_klimczyk_email"
+                    android:textColor="@color/gray" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
