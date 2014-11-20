@@ -123,13 +123,16 @@ public class TabRestaurantsFragment extends BaseFragment {
             mParser = new JSONParser();
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
-            Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
-
-            RestaurantsResponse response = gson.fromJson(reader, RestaurantsResponse.class);
-
-            if (response != null) {
-                mRestaurantList = response.restaurants;
+            if (source != null)
+            {
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+    
+                RestaurantsResponse response = gson.fromJson(reader, RestaurantsResponse.class);
+    
+                if (response != null) {
+                    mRestaurantList = response.restaurants;
+                }
             }
 
             return null;
@@ -142,8 +145,11 @@ public class TabRestaurantsFragment extends BaseFragment {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            mAdapter = new RestaurantsAdapter(getActivity(), mRestaurantList);
-            mUiList.setAdapter(mAdapter);
+            if (mRestaurantList != null)
+            {
+                mAdapter = new RestaurantsAdapter(getActivity(), mRestaurantList);
+                mUiList.setAdapter(mAdapter);
+            }
 
         }
     }
