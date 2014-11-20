@@ -31,10 +31,10 @@ public class GuideTabsAdapter extends FragmentStatePagerAdapter implements IconP
                         return TabCuriositiesFragment.newInstance();
                         */
         // break;
-            case 1:
+            case 0:
 
                 return TabHotelsFragment.newInstance();
-            case 2:
+            case 1:
 
                 return TabRestaurantsFragment.newInstance();
 
