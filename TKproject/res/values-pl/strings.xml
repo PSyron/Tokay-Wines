@@ -25,7 +25,7 @@
     <!-- Main -->
 
     <string name="downloading_content">Pobieranie zawartości</string>
-    <string name="exit_msg">Proszę ponownie nacisnąć przycisk WSTECZ, aby wyjść</string>
+    <string name="exit_msg">Naciśnij ponownie przycisk WSTECZ, aby wyjść</string>
 
     <!-- Menu -->
 
