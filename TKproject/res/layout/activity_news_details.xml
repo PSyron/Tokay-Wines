@@ -22,23 +22,26 @@
             android:layout_margin="5dp"
             android:src="@drawable/no_image_big" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp" >
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:layout_weight="0.7" >
 
                 <TextView
                     android:id="@+id/activity_news_details_datelabel"
                     style="@style/DetailsHeader.BoldText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/news_details_date" />
+                    android:text="@string/news_details_date" 
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/activity_news_details_date"
@@ -52,14 +55,13 @@
 
             <ImageView
                 android:id="@+id/activity_news_details_add_event"
-                android:layout_width="@dimen/item_menu_height"
-                android:layout_height="@dimen/item_menu_height"
-                android:layout_alignParentRight="true"
+                android:layout_width="@dimen/details_icon_height"
+                android:layout_height="@dimen/details_icon_height"
                 android:layout_margin="5dp"
                 android:clickable="true"
                 android:src="@drawable/add_event_selector"
                 android:visibility="gone" />
-        </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

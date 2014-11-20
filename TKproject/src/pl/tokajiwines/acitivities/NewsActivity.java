@@ -195,13 +195,13 @@ public class NewsActivity extends BaseActivity {
                     mUiDate.setText(mNews.mStartDate + "\n" + mNews.mEndDate);
                     mUiDate.setVisibility(View.VISIBLE);
                     mUiAddIcon.setVisibility(View.VISIBLE);
+                    mUiDateLabel.setVisibility(View.VISIBLE);
                 }
 
                 getActionBar().setTitle(mNews.mHeader);
             }
 
         }
-
     }
 
 }
