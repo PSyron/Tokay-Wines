@@ -353,7 +353,6 @@ public class MapFragment extends BaseFragment {
 
             mParser = new JSONParser();
             double tempRange = Constans.sMapRadiusInKm[(mRangePicked / 5) - 1];
-            System.out.println(tempRange);
             String tempUrl = sUrl + "?lat=" + args[0].latitude + "&lng=" + args[0].longitude
                     + "&radius=" + tempRange;
             //TODO change below sUrl for tempUrl
