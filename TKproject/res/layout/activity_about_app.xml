@@ -72,12 +72,10 @@
                     android:text="@string/paulina_konieczna" />
 
                 <TextView
-                    style="@style/DetailsHeader.NormalText"
+                    style="@style/DetailsHeader.NormalTextAbout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/paulina_konieczna_email"
-                    android:textColor="@color/gray" />
+                    android:text="@string/paulina_konieczna_email" />
             </LinearLayout>
 
             <LinearLayout
@@ -94,12 +92,10 @@
                     android:text="@string/pawel_cyron" />
 
                 <TextView
-                    style="@style/DetailsHeader.NormalText"
+                    style="@style/DetailsHeader.NormalTextAbout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/pawel_cyron_email"
-                    android:textColor="@color/gray" />
+                    android:text="@string/pawel_cyron_email" />
             </LinearLayout>
 
             <LinearLayout
@@ -116,12 +112,10 @@
                     android:text="@string/tomasz_kluza" />
 
                 <TextView
-                    style="@style/DetailsHeader.NormalText"
+                    style="@style/DetailsHeader.NormalTextAbout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/tomasz_kluza_email"
-                    android:textColor="@color/gray" />
+                    android:text="@string/tomasz_kluza_email"/>
             </LinearLayout>
 
             <LinearLayout
@@ -138,12 +132,10 @@
                     android:text="@string/wojciech_klimczyk" />
 
                 <TextView
-                    style="@style/DetailsHeader.NormalText"
+                    style="@style/DetailsHeader.NormalTextAbout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/wojciech_klimczyk_email"
-                    android:textColor="@color/gray" />
+                    android:text="@string/wojciech_klimczyk_email" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
