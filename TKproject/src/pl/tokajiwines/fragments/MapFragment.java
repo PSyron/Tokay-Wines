@@ -151,8 +151,10 @@ public class MapFragment extends BaseFragment {
             public boolean onMarkerClick(final Marker arg0) {
                 if (arg0.getPosition() != myPosition) {
                     new AlertDialog.Builder(getActivity())
-                            .setTitle("Route to " + arg0.getTitle())
-                            .setMessage("Do You want to check route?")
+                            .setTitle(
+                                    getResources().getString(R.string.route_to) + " "
+                                            + arg0.getTitle())
+                            .setMessage(getResources().getString(R.string.check_route))
                             .setPositiveButton(android.R.string.yes,
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {

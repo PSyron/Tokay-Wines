@@ -97,6 +97,8 @@
     <string name="navigation_to">Nawiguj do: </string>
     <string name="places_near">Miejsca w pobliżu: </string>
     <string name="no_points">Brak punktów</string>
+    <string name="route_to">Nawiguj do</string>
+    <string name="check_route">Czy chcesz wyznaczyć trasę?</string>
 
     <!-- Guide -->
 

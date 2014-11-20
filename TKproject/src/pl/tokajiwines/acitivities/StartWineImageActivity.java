@@ -119,28 +119,26 @@ public class StartWineImageActivity extends BaseActivity {
             }
         }
 
-            // otherwise, show message
+        // otherwise, show message
 
-            else {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        else {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
-                startActivity(intent);
-                finish();
-            }
+            startActivity(intent);
+            finish();
+        }
 
     }
 
     @Override
     protected void onPause() {
-        
         if (mLoadWine != null) {
             mLoadWine.cancel(true);
             mLoadWine = null;
         }
         if (mDownloadImagesTask != null) {
             mDownloadImagesTask.cancel(true);
-            if (mProgDial != null)
-            {
+            if (mProgDial != null) {
                 mProgDial.dismiss();
             }
         }
@@ -245,8 +243,7 @@ public class StartWineImageActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (mProgDial == null)
-            {
+            if (mProgDial == null) {
                 mProgDial = new ProgressDialog(StartWineImageActivity.this);
             }
                 mProgDial.setMessage(getResources().getString(R.string.downloading_content));
@@ -265,13 +262,12 @@ public class StartWineImageActivity extends BaseActivity {
             mParser = new JSONParser();
 
             InputStream source = mParser.retrieveStream(sImagesUrl, sUsername, sPassword, null);
-            if (source != null)
-            {
+            if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
-    
+
                 DownloadImagesRespons response = gson.fromJson(reader, DownloadImagesRespons.class);
-    
+
                 if (response != null) {
                     mImagesList = response.images;
                     mProgDial.setMax(mImagesList.length);
@@ -281,7 +277,8 @@ public class StartWineImageActivity extends BaseActivity {
                         final File imgFile = new File(StartWineImageActivity.this.getFilesDir()
                                 .getAbsolutePath()
                                 + "/"
-                                + i.mImage.substring(i.mImage.lastIndexOf('/') + 1, i.mImage.length()));
+                                + i.mImage.substring(i.mImage.lastIndexOf('/') + 1,
+                                        i.mImage.length()));
                         if (!imgFile.exists()) {
                             try {
                                 App.downloadToInternal(i.mImage, StartWineImageActivity.this);
@@ -292,8 +289,7 @@ public class StartWineImageActivity extends BaseActivity {
                         }
                         mProgDial.setProgress(++value);
                     }
-                    SharedPreferencesHelper.putSharedPreferencesBoolean(StartWineImageActivity.this,
-                            DOWNLOAD, true);
+
                 }
             }
 
@@ -307,6 +303,8 @@ public class StartWineImageActivity extends BaseActivity {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
+            SharedPreferencesHelper.putSharedPreferencesBoolean(StartWineImageActivity.this,
+                    DOWNLOAD, true);
 
         }
 
