@@ -76,6 +76,7 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">start</item>
+        <item name="android:lines">1</item>
     </style>
 
     <style name="ItemText.Normal">
