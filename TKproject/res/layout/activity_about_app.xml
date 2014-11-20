@@ -22,7 +22,7 @@
         style="@style/ItemCustomLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="horizontal" >
 
         <TextView
             style="@style/DetailsHeader"
@@ -37,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:gravity="end"
             android:textColor="@color/gray"
             android:text="version" />
     </LinearLayout>

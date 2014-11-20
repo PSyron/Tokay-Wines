@@ -18,7 +18,7 @@
     <string name="description">Description</string>
     <string name="cannot_connect">Cannot connect to the Internet</string>
     <string name="not_working">Not working yet</string>
-    <string name="app_version">Aplication version</string>
+    <string name="app_version">Aplication version:</string>
     <string name="developers">Developers</string>
     <string name="version_problem">Cannot get version name</string>
 
