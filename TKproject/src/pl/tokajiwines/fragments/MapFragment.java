@@ -217,7 +217,8 @@ public class MapFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(MapFragment.this.mCtx, "Not working yet", Toast.LENGTH_LONG).show();
+                Toast.makeText(MapFragment.this.mCtx,
+                        getResources().getString(R.string.not_working), Toast.LENGTH_LONG).show();
 
             }
         });
@@ -500,7 +501,8 @@ public class MapFragment extends BaseFragment {
             String duration = "";
 
             if (result.size() < 1) {
-                Toast.makeText(MapFragment.this.mCtx, "No Points", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapFragment.this.mCtx, getResources().getString(R.string.no_points),
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
 

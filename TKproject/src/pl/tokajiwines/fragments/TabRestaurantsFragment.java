@@ -18,12 +18,9 @@ import com.google.gson.Gson;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.RestaurantActivity;
-import pl.tokajiwines.adapters.NewsAdapter;
 import pl.tokajiwines.adapters.RestaurantsAdapter;
-import pl.tokajiwines.jsonresponses.NewsListItem;
 import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.jsonresponses.RestaurantsResponse;
-import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 
 import java.io.InputStream;
@@ -39,7 +36,7 @@ public class TabRestaurantsFragment extends BaseFragment {
     private String sUrl;
     private String sUsername;
     private String sPassword;
-    
+
     public static final String RESTAURANT_TAG = "restaurant";
     private RestaurantListItem[] mRestaurantList;
 
@@ -57,7 +54,7 @@ public class TabRestaurantsFragment extends BaseFragment {
         sUrl = getResources().getString(R.string.UrlRestaurantsList);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
-        
+
         View rootView = inflater.inflate(R.layout.fragment_restaurants, container, false);
         mUiList = (ListView) rootView.findViewById(R.id.frag_restaurants_list);
         mRestaurantList = new RestaurantListItem[0];
@@ -83,17 +80,17 @@ public class TabRestaurantsFragment extends BaseFragment {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        if (mRestaurantList.length == 0)
-        {
+        if (mRestaurantList.length == 0) {
 
             if (App.isOnline(mContext)) {
                 new LoadRestaurantTask().execute();
             }
-    
+
             // otherwise, show message
-    
+
             else {
-                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
+                        Toast.LENGTH_LONG).show();
             }
         }
 
@@ -125,8 +122,7 @@ public class TabRestaurantsFragment extends BaseFragment {
 
             mParser = new JSONParser();
 
-            InputStream source = mParser.retrieveStream(sUrl, sUsername,
-                    sPassword, null);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
 
@@ -148,7 +144,6 @@ public class TabRestaurantsFragment extends BaseFragment {
             mProgDial.dismiss();
             mAdapter = new RestaurantsAdapter(getActivity(), mRestaurantList);
             mUiList.setAdapter(mAdapter);
-
 
         }
     }

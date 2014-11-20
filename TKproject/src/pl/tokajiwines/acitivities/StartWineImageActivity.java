@@ -225,7 +225,7 @@ public class StartWineImageActivity extends BaseActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             mProgDial = new ProgressDialog(StartWineImageActivity.this);
-            mProgDial.setMessage("Downloading content");
+            mProgDial.setMessage(getResources().getString(R.string.downloading_content));
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(false);
             mProgDial.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);

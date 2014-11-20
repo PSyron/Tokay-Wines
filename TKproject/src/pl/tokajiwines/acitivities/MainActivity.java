@@ -110,7 +110,8 @@ public class MainActivity extends Activity implements
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.exit_msg), Toast.LENGTH_SHORT)
+                .show();
 
         new Handler().postDelayed(new Runnable() {
 
@@ -206,7 +207,8 @@ public class MainActivity extends Activity implements
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_search) {
-            Toast.makeText(MainActivity.this, "Not working yet", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, getResources().getString(R.string.not_working),
+                    Toast.LENGTH_LONG).show();
             return true;
         }
         return super.onOptionsItemSelected(item);

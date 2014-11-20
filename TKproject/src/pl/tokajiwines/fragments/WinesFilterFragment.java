@@ -56,7 +56,7 @@ public class WinesFilterFragment extends BaseFragment {
     private String sUrl;
     private String sUsername;
     private String sPassword;
-    
+
     private WineFilterResponse mWineFilter;
     private Flavour[] mWineFlavours = {};
     private Strain[] mWineStrains = {};
@@ -446,7 +446,8 @@ public class WinesFilterFragment extends BaseFragment {
             // otherwise, show message
 
             else {
-                Toast.makeText(mCtx, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+                Toast.makeText(mCtx, getResources().getString(R.string.cannot_connect),
+                        Toast.LENGTH_LONG).show();
             }
         }
 
@@ -476,15 +477,13 @@ public class WinesFilterFragment extends BaseFragment {
 
             mParser = new JSONParser();
 
-            InputStream source = mParser.retrieveStream(sUrl, sUsername,
-                    sPassword, null);
-            if (source != null)
-            {
+            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
+            if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
-    
+
                 WineFilterResponse response = gson.fromJson(reader, WineFilterResponse.class);
-    
+
                 if (response != null) {
                     mWineFilter = response;
                     mWineYear = mWineFilter.years;
@@ -492,7 +491,7 @@ public class WinesFilterFragment extends BaseFragment {
                     mWineGrades = response.grades;
                     mWineStrains = response.strains;
                     mWineFlavours = response.flavours;
-    
+
                 }
             }
 
@@ -506,19 +505,13 @@ public class WinesFilterFragment extends BaseFragment {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            
-            if (mWineFlavours != null)
-                mCheckedTastes = new boolean[mWineFlavours.length];
-            if (mWineGrades != null)
-                mCheckedTypes = new boolean[mWineGrades.length];
-            if (mWineStrains != null)
-                mCheckedStrains = new boolean[mWineStrains.length];
-            if (mWineYear != null)
-                mCheckedYears = new boolean[mWineYear.length];
-            if (mWineProducers != null)
-                mCheckedProducers = new boolean[mWineProducers.length];
-            if (mWinePrices != null)
-                mCheckedPrices = new boolean[mWinePrices.length];
+
+            if (mWineFlavours != null) mCheckedTastes = new boolean[mWineFlavours.length];
+            if (mWineGrades != null) mCheckedTypes = new boolean[mWineGrades.length];
+            if (mWineStrains != null) mCheckedStrains = new boolean[mWineStrains.length];
+            if (mWineYear != null) mCheckedYears = new boolean[mWineYear.length];
+            if (mWineProducers != null) mCheckedProducers = new boolean[mWineProducers.length];
+            if (mWinePrices != null) mCheckedPrices = new boolean[mWinePrices.length];
         }
     }
 }
