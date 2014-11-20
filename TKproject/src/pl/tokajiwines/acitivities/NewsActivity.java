@@ -118,8 +118,8 @@ public class NewsActivity extends BaseActivity {
             // otherwise, show message
 
             else {
-                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG)
-                        .show();
+                Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
+                        Toast.LENGTH_LONG).show();
             }
         }
 
@@ -163,11 +163,10 @@ public class NewsActivity extends BaseActivity {
             params.add(new BasicNameValuePair("idNews", "" + mIdNews));
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
-            if (source != null)
-            {
+            if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
-    
+
                 NewsDetailsResponse response = gson.fromJson(reader, NewsDetailsResponse.class);
                 mNews = response.news;
             }
@@ -182,23 +181,22 @@ public class NewsActivity extends BaseActivity {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            if (mNews !=null)
-            {
-                    mUiName.setText(mNews.mHeader);
-                    mUiDescription.setText(mNews.mVast);
-                    Ion.with(mUiImage).placeholder(R.drawable.no_image_big).error(R.drawable.error_image)
-                            .load(mNews.mImage);
-    
+            if (mNews != null) {
+                mUiName.setText(mNews.mHeader);
+                mUiDescription.setText(mNews.mVast);
+                Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
+                        .error(R.drawable.error_image).load(mNews.mImage);
+
                 if (mNews.mStartDate == null && mNews.mEndDate == null) {
                     mUiDateLabel.setVisibility(View.GONE);
                     mUiDate.setVisibility(View.GONE);
                     mUiAddIcon.setVisibility(View.GONE);
                 } else {
-                    mUiDate.setText(mNews.mStartDate + " - " + mNews.mEndDate);
+                    mUiDate.setText(mNews.mStartDate + "\n" + mNews.mEndDate);
                     mUiDate.setVisibility(View.VISIBLE);
                     mUiAddIcon.setVisibility(View.VISIBLE);
                 }
-    
+
                 getActionBar().setTitle(mNews.mHeader);
             }
 

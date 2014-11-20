@@ -68,7 +68,8 @@
                 android:id="@+id/settings_general_distance_rL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/divider_item" >
+                android:background="@drawable/divider_item"
+                android:visibility="gone" >
 
                 <TextView
                     android:id="@+id/settings_general_distance_main_tV"
@@ -206,7 +207,9 @@
             style="@style/ItemCustomLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp" >
 
             <TextView
                 android:id="@+id/settings_about_application_tV"

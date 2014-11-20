@@ -187,8 +187,8 @@ public class MapFragment extends BaseFragment {
                 android.R.layout.simple_spinner_item, Constans.sMapRangeKm);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mUiRange.setAdapter(dataAdapter);
+        mRangePicked = 20;
         mUiRange.setOnItemSelectedListener(new OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -217,7 +217,8 @@ public class MapFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(MapFragment.this.mCtx, "Not working yet", Toast.LENGTH_LONG).show();
+                Toast.makeText(MapFragment.this.mCtx,
+                        getResources().getString(R.string.not_working), Toast.LENGTH_LONG).show();
 
             }
         });
@@ -358,23 +359,20 @@ public class MapFragment extends BaseFragment {
 
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
-            
-            if (source !=null)
-            {
-    
+
+            if (source != null) {
+
                 NearPlacesResponse response = gson.fromJson(reader, NearPlacesResponse.class);
-    
+
                 if (response != null) {
-    
+
                     if (response.success == 1)
                         mNearbyPlaces = response.places;
-    
+
                     else
                         mNearbyPlaces = new Place[0];
                 }
-            }
-            else
-            {
+            } else {
                 mNearbyPlaces = new Place[0];
             }
             return null;
@@ -503,7 +501,8 @@ public class MapFragment extends BaseFragment {
             String duration = "";
 
             if (result.size() < 1) {
-                Toast.makeText(MapFragment.this.mCtx, "No Points", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapFragment.this.mCtx, getResources().getString(R.string.no_points),
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
 

@@ -117,8 +117,8 @@ public class ProducersFragment extends BaseFragment {
             // otherwise, show message
 
             else {
-                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG)
-                        .show();
+                Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
+                        Toast.LENGTH_LONG).show();
             }
         }
 

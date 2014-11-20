@@ -193,8 +193,9 @@ public class ProducerActivity extends BaseActivity {
             // otherwise, show message
 
             else {
-                Toast.makeText(ProducerActivity.this, "Cannot connect to the Internet",
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(ProducerActivity.this,
+                        getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG)
+                        .show();
             }
         }
 
@@ -237,13 +238,12 @@ public class ProducerActivity extends BaseActivity {
             params.add(new BasicNameValuePair("who", "" + mProducer.mIdProducer));
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
-            if (source != null)
-            {
+            if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
-    
+
                 ProducerDetails response = gson.fromJson(reader, ProducerDetails.class);
-    
+
                 Log.e(ProducerActivity.class.getName(), response.mIdProducer + " ");
                 if (response != null) {
                     mProducerFromBase = response;
@@ -262,8 +262,8 @@ public class ProducerActivity extends BaseActivity {
             mProgDial.dismiss();
             if (mProducerFromBase != null) {
                 fillView();
-            Ion.with(mUiWineImage).placeholder(R.drawable.no_image).error(R.drawable.error_image)
-                    .load(mProducerFromBase.mWineImageUrl);
+                Ion.with(mUiWineImage).placeholder(R.drawable.no_image)
+                        .error(R.drawable.error_image).load(mProducerFromBase.mWineImageUrl);
             }
 
             new LoadProducerImagesTask().execute();
@@ -284,7 +284,7 @@ public class ProducerActivity extends BaseActivity {
             mProgDial.setMessage("Loading producer images...");
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
-             mProgDial.show();
+            mProgDial.show();
 
         }
 
@@ -299,11 +299,10 @@ public class ProducerActivity extends BaseActivity {
             params.add(new BasicNameValuePair("who", "" + mProducer.mIdProducer));
 
             InputStream source = mParser.retrieveStream(sUrlImage, sUsername, sPassword, params);
-            if (source != null)
-            {
+            if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
-    
+
                 ImagesResponse response = gson.fromJson(reader, ImagesResponse.class);
                 Log.e(ProducerActivity.class.getName(), response.images.length + " ");
                 if (response != null) {
@@ -321,7 +320,7 @@ public class ProducerActivity extends BaseActivity {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            if (mImagesUrl !=null && mImagesUrl.length > 0) {
+            if (mImagesUrl != null && mImagesUrl.length > 0) {
                 mAdapter = new ImagePagerAdapter(ProducerActivity.this, mImagesUrl);
                 mUiPager.setAdapter(mAdapter);
                 mUiPageIndicator.setViewPager(mUiPager);

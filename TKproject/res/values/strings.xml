@@ -16,6 +16,16 @@
     <string name="price">Price</string>
     <string name="go_to_apk">Go to application</string>
     <string name="description">Description</string>
+    <string name="cannot_connect">Cannot connect to the Internet</string>
+    <string name="not_working">Not working yet</string>
+    <string name="app_version">Aplication version:</string>
+    <string name="developers">Developers</string>
+    <string name="version_problem">Cannot get version name</string>
+
+    <!-- Main -->
+
+    <string name="downloading_content">Downloading content</string>
+    <string name="exit_msg">Please click BACK again to exit</string>
 
     <!-- Menu -->
 
@@ -64,6 +74,7 @@
     <string name="dialog_wine_year">Select year</string>
     <string name="dialog_wine_price">Select price range</string>
     <string name="wine_available">Available from</string>
+
     <!-- Producers -->
 
     <string name="address">Address:</string>
@@ -85,6 +96,7 @@
     <string name="here_u_started">Here You started</string>
     <string name="navigation_to">Navigation to: </string>
     <string name="places_near">Places near: </string>
+    <string name="no_points">No points</string>
 
     <!-- Guide -->
 

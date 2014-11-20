@@ -19,11 +19,8 @@ import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.HotelActivity;
 import pl.tokajiwines.adapters.HotelsAdapter;
-import pl.tokajiwines.adapters.RestaurantsAdapter;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.jsonresponses.HotelsResponse;
-import pl.tokajiwines.jsonresponses.RestaurantListItem;
-import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 
 import java.io.InputStream;
@@ -54,11 +51,11 @@ public class TabHotelsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_hotels, container, false);
-        
+
         sUrl = getResources().getString(R.string.UrlHotelsList);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
-        
+
         mUiList = (ListView) rootView.findViewById(R.id.frag_hotels_list);
         mHotelList = new HotelListItem[0];
         mAdapter = new HotelsAdapter(getActivity(), mHotelList);
@@ -82,16 +79,16 @@ public class TabHotelsFragment extends BaseFragment {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        if (mHotelList.length == 0)
-        {
+        if (mHotelList.length == 0) {
             if (App.isOnline(mContext)) {
                 new LoadHotelTask().execute();
             }
-    
+
             // otherwise, show message
-    
+
             else {
-                Toast.makeText(mContext, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
+                        Toast.LENGTH_LONG).show();
             }
         }
 
@@ -123,15 +120,17 @@ public class TabHotelsFragment extends BaseFragment {
 
             mParser = new JSONParser();
 
-            InputStream source = mParser.retrieveStream(sUrl, sUsername,
-                    sPassword, null);
-            Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
-
-            HotelsResponse response = gson.fromJson(reader, HotelsResponse.class);
-
-            if (response != null) {
-                mHotelList = response.hotels;
+            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
+            if (source != null)
+            {
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+    
+                HotelsResponse response = gson.fromJson(reader, HotelsResponse.class);
+    
+                if (response != null) {
+                    mHotelList = response.hotels;
+                }
             }
 
             return null;
@@ -144,9 +143,11 @@ public class TabHotelsFragment extends BaseFragment {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            mAdapter = new HotelsAdapter(getActivity(), mHotelList);
-            mUiList.setAdapter(mAdapter);
-
+            if (mHotelList != null)
+            {
+                mAdapter = new HotelsAdapter(getActivity(), mHotelList);
+                mUiList.setAdapter(mAdapter);
+            }
 
         }
     }

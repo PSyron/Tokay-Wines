@@ -92,11 +92,12 @@ public class Constans {
     //Guide 
     //TODO do stringow
     public static final int[] sGuideTabTitle = new int[] {
-            R.string.curiosities, R.string.hotels, R.string.restaurants
+            //        R.string.curiosities, 
+            R.string.hotels, R.string.restaurants
     };
     public static final int[] sGuideTabIcons = new int[] {
-            R.drawable.guide_curiosities_selector, R.drawable.guide_hotels_selector,
-            R.drawable.guide_restaurants_selector
+            //        R.drawable.guide_curiosities_selector, 
+            R.drawable.guide_hotels_selector, R.drawable.guide_restaurants_selector
 
     };
 

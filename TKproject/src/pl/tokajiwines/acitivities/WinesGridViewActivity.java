@@ -95,7 +95,8 @@ public class WinesGridViewActivity extends BaseActivity {
             // otherwise, show message
 
             else {
-                Toast.makeText(mAct, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+                Toast.makeText(mAct, getResources().getString(R.string.cannot_connect),
+                        Toast.LENGTH_LONG).show();
             }
         }
 
@@ -142,13 +143,12 @@ public class WinesGridViewActivity extends BaseActivity {
             params.add(new BasicNameValuePair("idProducer", "" + mProducer.mIdProducer));
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
-            if (source != null)
-            {
+            if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
-    
+
                 WinesResponse response = gson.fromJson(reader, WinesResponse.class);
-    
+
                 if (response != null) {
                     mWinesList = response.wines;
                 }

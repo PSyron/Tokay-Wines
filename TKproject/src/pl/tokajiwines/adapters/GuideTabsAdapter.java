@@ -8,7 +8,6 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 
 import com.viewpagerindicator.IconPagerAdapter;
 
-import pl.tokajiwines.fragments.TabCuriositiesFragment;
 import pl.tokajiwines.fragments.TabHotelsFragment;
 import pl.tokajiwines.fragments.TabRestaurantsFragment;
 import pl.tokajiwines.utils.Constans;
@@ -27,14 +26,15 @@ public class GuideTabsAdapter extends FragmentStatePagerAdapter implements IconP
         //TODO przerobic na wlasciwe
 
         switch (position) {
+        /*            case 0:
+
+                        return TabCuriositiesFragment.newInstance();
+                        */
+        // break;
             case 0:
 
-                return TabCuriositiesFragment.newInstance();
-                // break;
-            case 1:
-
                 return TabHotelsFragment.newInstance();
-            case 2:
+            case 1:
 
                 return TabRestaurantsFragment.newInstance();
 

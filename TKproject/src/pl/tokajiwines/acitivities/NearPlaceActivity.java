@@ -427,25 +427,22 @@ public class NearPlaceActivity extends BaseActivity {
             //TODO change below sUrl for tempUrl
             Log.e("pobieranie URL", tempUrl + "     " + sUrl);
             InputStream source = mParser.retrieveStream(tempUrl, sUsername, sPassword, null);
-            if (source != null)
-            {
+            if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
-    
+
                 NearPlacesResponse response = gson.fromJson(reader, NearPlacesResponse.class);
-    
+
                 if (response != null) {
-    
+
                     if (response.success == 1)
                         mNearbyPlaces = response.places;
-    
+
                     else
                         mNearbyPlaces = new Place[0];
                 }
-            }
-            else
-            {
-                mNearbyPlaces = new Place[0]; 
+            } else {
+                mNearbyPlaces = new Place[0];
             }
 
             return null;
@@ -574,7 +571,8 @@ public class NearPlaceActivity extends BaseActivity {
             String duration = "";
 
             if (result.size() < 1) {
-                Toast.makeText(NearPlaceActivity.this, "No Points", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NearPlaceActivity.this,
+                        getResources().getString(R.string.no_points), Toast.LENGTH_SHORT).show();
                 return;
             }
 

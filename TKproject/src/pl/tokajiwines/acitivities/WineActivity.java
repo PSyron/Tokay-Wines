@@ -60,7 +60,7 @@ public class WineActivity extends BaseActivity {
 
     ProgressDialog mProgDial;
     JSONParser mParser;
-    
+
     public static String TAG_CALLED_FROM_PRODUCER = "called_from_producer";
     private boolean mIsFromProducer = false;
 
@@ -141,18 +141,15 @@ public class WineActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                if (mIsFromProducer)
-                {
+                if (mIsFromProducer) {
                     Intent returnIntent = new Intent();
                     setResult(RESULT_OK, returnIntent);
                     finish();
-                }
-                else
-                {
+                } else {
                     Intent intent = new Intent(mContext, ProducerActivity.class);
                     intent.putExtra(ProducersFragment.PRODUCER_TAG, new ProducerListItem(
                             mWine.mIdProducer, mWine.mProducerName, ""));
-    
+
                     startActivity(intent);
                 }
             }
@@ -174,8 +171,9 @@ public class WineActivity extends BaseActivity {
             // otherwise, show message
 
             else {
-                Toast.makeText(WineActivity.this, "Cannot connect to the Internet",
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(WineActivity.this,
+                        getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG)
+                        .show();
             }
         }
 
@@ -210,13 +208,12 @@ public class WineActivity extends BaseActivity {
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
 
-            if (source != null)
-            {
+            if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
-    
+
                 WineDetails response = gson.fromJson(reader, WineDetails.class);
-    
+
                 if (response != null) {
                     mWineDetails = response;
                 }

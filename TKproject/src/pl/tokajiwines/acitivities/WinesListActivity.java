@@ -23,7 +23,6 @@ import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.fragments.WinesFilterFragment;
 import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.jsonresponses.WinesResponse;
-import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
 
@@ -66,15 +65,14 @@ public class WinesListActivity extends BaseActivity {
             mYears = (String) extras.getString(WinesFilterFragment.TAG_YEARS + "");
             mPrices = (String) extras.getString(WinesFilterFragment.TAG_PRICES + "");
 
-
         }
 
         mAct = this;
-        
+
         sUrl = getResources().getString(R.string.UrlWinesList);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
-        
+
         mWinesList = new WineListItem[0];
         mUiList = (ListView) findViewById(R.id.activity_wines_list);
         mAdapter = new WinesAdapter(this, mWinesList);
@@ -103,7 +101,8 @@ public class WinesListActivity extends BaseActivity {
             // otherwise, show message
 
             else {
-                Toast.makeText(mAct, "Cannot connect to the Internet", Toast.LENGTH_LONG).show();
+                Toast.makeText(mAct, getResources().getString(R.string.cannot_connect),
+                        Toast.LENGTH_LONG).show();
             }
         }
 
@@ -144,15 +143,13 @@ public class WinesListActivity extends BaseActivity {
             params.add(new BasicNameValuePair("years", mYears));
             params.add(new BasicNameValuePair("prices", mPrices));
 
-            InputStream source = mParser.retrieveStream(sUrl, sUsername,
-                    sPassword, params);
-            if (source != null)
-            {
+            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
+            if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
-    
+
                 WinesResponse response = gson.fromJson(reader, WinesResponse.class);
-    
+
                 if (response != null) {
                     mWinesList = response.wines;
                     System.out.println(response);

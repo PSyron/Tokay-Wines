@@ -340,7 +340,8 @@ public class NavigateToActivity extends BaseActivity {
             String duration = "";
 
             if (result.size() < 1) {
-                Toast.makeText(NavigateToActivity.this, "No Points", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NavigateToActivity.this,
+                        getResources().getString(R.string.no_points), Toast.LENGTH_SHORT).show();
                 return;
             }
 

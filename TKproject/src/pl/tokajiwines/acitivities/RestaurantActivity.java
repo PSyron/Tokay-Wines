@@ -25,7 +25,6 @@ import pl.tokajiwines.fragments.TabRestaurantsFragment;
 import pl.tokajiwines.jsonresponses.RestaurantDetails;
 import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.models.Place;
-import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
@@ -37,11 +36,11 @@ import java.util.List;
 public class RestaurantActivity extends BaseActivity {
     JSONParser mParser;
     public static int REQUEST = 997;
-    
+
     private String sUrl;
     private String sUsername;
     private String sPassword;
-    
+
     ProgressDialog mProgDial;
     RestaurantListItem mRestaurant;
     RestaurantDetails mRestaurantFromBase;
@@ -64,7 +63,7 @@ public class RestaurantActivity extends BaseActivity {
         sUrl = getResources().getString(R.string.UrlRestaurantDetails);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
-        
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mRestaurant = (RestaurantListItem) extras
@@ -131,21 +130,21 @@ public class RestaurantActivity extends BaseActivity {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        
-        if (mRestaurantFromBase == null)
-        {
+
+        if (mRestaurantFromBase == null) {
 
             // if there is an access to the Internet, try to load data from remote database
-    
+
             if (App.isOnline(RestaurantActivity.this)) {
                 new LoadRestaurantTask().execute();
             }
-    
+
             // otherwise, show message
-    
+
             else {
-                Toast.makeText(RestaurantActivity.this, "Cannot connect to the Internet",
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(RestaurantActivity.this,
+                        getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG)
+                        .show();
             }
         }
 
@@ -178,13 +177,11 @@ public class RestaurantActivity extends BaseActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("who", "" + mRestaurant.mIdRestaurant));
 
-            InputStream source = mParser.retrieveStream(sUrl, sUsername,
-                    sPassword, params);
-            if (source != null)
-            {
+            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
+            if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
-    
+
                 RestaurantDetails response = gson.fromJson(reader, RestaurantDetails.class);
                 Log.e(RestaurantActivity.class.getName(), response.mIdRestaurant + " ");
                 if (response != null) {
@@ -205,8 +202,8 @@ public class RestaurantActivity extends BaseActivity {
             if (mRestaurantFromBase != null) {
                 fillView();
 
-            Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
-                    .error(R.drawable.error_image).load(mRestaurantFromBase.mImageUrl);
+                Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
+                        .error(R.drawable.error_image).load(mRestaurantFromBase.mImageUrl);
             }
 
         }
