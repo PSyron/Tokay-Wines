@@ -15,7 +15,7 @@ import java.util.List;
 
 public class HotelImagesDataSource {
     // LogCat tag
-    private static final String LOG = "ImagesDataSource";
+    private static final String LOG = "HotelImagesDataSource";
     // Database fields
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;

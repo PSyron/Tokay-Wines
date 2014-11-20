@@ -5,24 +5,24 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class OddityType implements Serializable {
+public class CuriosityType implements Serializable {
 
     /**
      * 
      */
     private static final long serialVersionUID = -7153072856653782324L;
-    @SerializedName("IdOddityType")
-    public int mIdOddityType;
+    @SerializedName("IdCuriosityType")
+    public int mIdCuriosityType;
     @SerializedName("Name")
     public String mName;
 
-    public OddityType(int IdOddityType, String Name) {
+    public CuriosityType(int IdCuriosityType, String Name) {
         super();
-        mIdOddityType = IdOddityType;
+        mIdCuriosityType = IdCuriosityType;
         mName = Name;
     }
 
-    public OddityType() {
+    public CuriosityType() {
         // TODO Auto-generated constructor stub
     }
 }

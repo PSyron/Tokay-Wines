@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import pl.tokajiwines.jsonresponses.ImagePagerItem;
 import pl.tokajiwines.models.ProducerImage;
 import pl.tokajiwines.utils.Log;
 
@@ -19,12 +20,14 @@ public class ProducerImagesDataSource {
     // Database fields
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
+    private Context mContext;
     private String[] allColumns = {
             "IdProducerImage", "IdProducer_", "IdImage_", "LastUpdate"
     };
 
     public ProducerImagesDataSource(Context context) {
         dbHelper = new DatabaseHelper(context);
+        mContext = context;
     }
 
     public void open() throws SQLException {
@@ -69,11 +72,10 @@ public class ProducerImagesDataSource {
         List<ProducerImage> images = new ArrayList<ProducerImage>();
         Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCER_IMAGES, allColumns, null,
                 null, null, null, null);
-        cursor.moveToFirst();
+
         while (!cursor.isAfterLast()) {
             ProducerImage pi = cursorToImage(cursor);
             images.add(pi);
-            cursor.moveToNext();
         }
         cursor.close();
         if (images.isEmpty()) Log.w(LOG, "Images are empty()");
@@ -87,5 +89,29 @@ public class ProducerImagesDataSource {
         pi.mIdImage_ = cursor.getInt(2);
         pi.mLastUpdate = cursor.getString(3);
         return pi;
+    }
+
+    public ImagePagerItem[] getProducerImagesPager(int idProducer) {
+        Log.i(LOG, "getProducerImagesPager");
+        Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCER_IMAGES, new String[] {
+            "IdImage_"
+        }, "IdProducer_" + "=" + idProducer, null, null, null, null);
+        cursor.moveToFirst();
+        ImagePagerItem[] pImages = new ImagePagerItem[cursor.getCount()];
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        iDs.open();
+        int i = 0;
+        while (!cursor.isAfterLast()) {
+            pImages[i] = new ImagePagerItem(iDs.getImageUrl(cursorToImageId(cursor)));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        iDs.close();
+        if (pImages.length == 0) Log.w(LOG, "Producer images are empty()");
+        return pImages;
+    }
+
+    private int cursorToImageId(Cursor cursor) {
+        return cursor.getInt(0);
     }
 }

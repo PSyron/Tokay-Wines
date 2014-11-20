@@ -21,8 +21,8 @@ public class NewsDataSource {
     private DatabaseHelper dbHelper;
 
     private String[] allColumns = {
-            "IdNews", "Header", "HeaderEng", "EntryDate", "StartDate", "EndDate", "IdDescription_",
-            "IdAddress_", "IdImageCover_", "LastUpdate"
+            "IdNews", "HeaderPl", "HeaderEng", "EntryDate", "StartDate", "EndDate",
+            "IdDescription_", "IdAddress_", "IdImageCover_", "LastUpdate"
     };
 
     public NewsDataSource(Context context) {
@@ -42,7 +42,7 @@ public class NewsDataSource {
         Log.i(LOG, "insertNews()");
         ContentValues values = new ContentValues();
         values.put("IdNews", news.mIdNews);
-        values.put("Header", news.mHeader);
+        values.put("Header", news.mHeaderPl);
         values.put("HeaderEng", news.mHeaderEng);
         values.put("EntryDate", news.mEntryDate);
         values.put("StartDate", news.mStartDate);
@@ -65,7 +65,7 @@ public class NewsDataSource {
     public void updateNews(News newsOld, News newsNew) {
         ContentValues values = new ContentValues();
         values.put("IdNews", newsOld.mIdNews);
-        values.put("Header", newsNew.mHeader);
+        values.put("Header", newsNew.mHeaderPl);
         values.put("HeaderEng", newsNew.mHeaderEng);
         values.put("EntryDate", newsNew.mEntryDate);
         values.put("StartDate", newsNew.mStartDate);
@@ -98,7 +98,7 @@ public class NewsDataSource {
     private News cursorToNews(Cursor cursor) {
         News news = new News();
         news.mIdNews = cursor.getInt(0);
-        news.mHeader = cursor.getString(1);
+        news.mHeaderPl = cursor.getString(1);
         news.mHeaderEng = cursor.getString(2);
         news.mEntryDate = cursor.getString(3);
         news.mStartDate = cursor.getString(4);

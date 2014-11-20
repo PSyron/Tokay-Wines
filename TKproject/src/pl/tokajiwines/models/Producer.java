@@ -33,6 +33,11 @@ public class Producer implements Serializable {
     public int mIdWineBest_;
     @SerializedName("LastUpdate")
     public String mLastUpdate;
+    public Image imageCover;
+    public Image[] images;
+    public Description description;
+    public Address address;
+    public Wine wineBest;
 
     public Producer(int IdProducer, String Email, String Link, String Name, String Phone,
             int IdDescription_, int IdAddress_, int IdUser_, int IdImageCover_, int IdWineBest_,

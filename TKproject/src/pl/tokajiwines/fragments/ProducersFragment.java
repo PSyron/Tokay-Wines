@@ -99,18 +99,19 @@ public class ProducersFragment extends BaseFragment {
 
             if (App.isOnline(mContext)) {
                 new LoadProducersTask().execute();
+                /*DatabaseHelper dbh = new DatabaseHelper(mContext);
 
-                //            ProducersDataSource pDs = new ProducersDataSource(mContext);
-                //            pDs.open();
-                //
-                //            List<Producer> prodlist = pDs.getAllProducers();
-                //            Log.i("Producent List", prodlist.toString());
-                //            ProducerListItem[] producers = {
-                //                    new ProducerListItem(prodlist.get(0)), new ProducerListItem(prodlist.get(1)),
-                //                    new ProducerListItem(prodlist.get(2))
-                //            };
-                //            ProducersAdapter mAdapter = new ProducersAdapter(getActivity(), producers);
-                //            mUiList.setAdapter(mAdapter);
+                try {
+                    dbh.createDataBase();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                ProducersDataSource pDs = new ProducersDataSource(mContext);
+                pDs.open();
+                ProducersAdapter mAdapter = new ProducersAdapter(getActivity(),
+                        pDs.getProducerList());
+                mUiList.setAdapter(mAdapter);*/
             }
 
             // otherwise, show message

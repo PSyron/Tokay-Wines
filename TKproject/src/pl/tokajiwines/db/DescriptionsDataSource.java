@@ -75,6 +75,21 @@ public class DescriptionsDataSource {
                 + " row(s)");
     }
 
+    public Description getDescriptionShort(int id) {
+        Log.i(LOG, "getDescriptionShort(id=" + id + ")");
+        Description description = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_DESCRIPTIONS, new String[] {
+                "IdLang_", "Short"
+        }, "IdDescription" + "=" + id, null, null, null, null);
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Description with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            description = cursorToDescriptionShort(cursor);
+        }
+        return description;
+    }
+
     public List<Description> getAllDescriptions() {
         Log.i(LOG, "getAllDescriptions()");
         List<Description> descriptions = new ArrayList<Description>();
@@ -100,6 +115,20 @@ public class DescriptionsDataSource {
         description.mVast = cursor.getString(4);
         description.mIdUser_ = cursor.getInt(5);
         description.mLastUpdate = cursor.getString(6);
+        return description;
+    }
+
+    private Description cursorToDescriptionShort(Cursor cursor) {
+        Description description = new Description();
+        description.mIdLang_ = cursor.getInt(0);
+        description.mShort = cursor.getString(1);
+        return description;
+    }
+
+    private Description cursorToDescriptionUpdate(Cursor cursor) {
+        Description description = new Description();
+        description.mIdDescription = cursor.getInt(0);
+        description.mLastUpdate = cursor.getString(1);
         return description;
     }
 }

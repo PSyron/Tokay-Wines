@@ -13,7 +13,7 @@ public class News implements Serializable {
     public String image; // W CELACH TESTOWYCH NIECH NA RAZIE ZOSTANIE
     public String vast; // W CELACH TESTOWYCH NIECH NA RAZIE ZOSTANIE
     public int mIdNews;
-    public String mHeader;
+    public String mHeaderPl;
     public String mHeaderEng;
     public String mEntryDate;
     public String mStartDate;
@@ -23,11 +23,11 @@ public class News implements Serializable {
     public int mIdImageCover_;
     public String mLastUpdate;
 
-    public News(int IdNews, String Header, String HeaderEng, String EntryDate, String StartDate,
+    public News(int IdNews, String HeaderPl, String HeaderEng, String EntryDate, String StartDate,
             String EndDate, int IdAddress_, int IdImageCover_, String LastUpdate) {
         super();
         mIdNews = IdNews;
-        mHeader = Header;
+        mHeaderPl = HeaderPl;
         mHeaderEng = HeaderEng;
         mEntryDate = EntryDate;
         mStartDate = StartDate;
@@ -41,7 +41,7 @@ public class News implements Serializable {
             int IdImageCover_, String LastUpdate) {
         super();
         mIdNews = IdNews;
-        mHeader = Header;
+        mHeaderPl = Header;
         mHeaderEng = HeaderEng;
         mEntryDate = EntryDate;
         mIdAddress_ = IdAddress_;
