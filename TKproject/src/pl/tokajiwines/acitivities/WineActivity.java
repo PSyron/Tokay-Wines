@@ -25,6 +25,7 @@ import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.WineDetails;
 import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.utils.JSONParser;
+import pl.tokajiwines.utils.Log;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,6 +37,7 @@ public class WineActivity extends BaseActivity {
     Context mContext;
     BaseActivity mWinesGridViewActivity;
 
+    boolean mIsViewFilled;
     TextView mUiName;
     ImageView mUiImage;
     TextView mUiProducerName;
@@ -60,6 +62,7 @@ public class WineActivity extends BaseActivity {
 
     ProgressDialog mProgDial;
     JSONParser mParser;
+    LoadWineTask mLoadWineTask;
 
     public static String TAG_CALLED_FROM_PRODUCER = "called_from_producer";
     private boolean mIsFromProducer = false;
@@ -83,6 +86,7 @@ public class WineActivity extends BaseActivity {
         }
 
         initView();
+        mIsViewFilled = false;
     }
 
     public void initView() {
@@ -155,6 +159,13 @@ public class WineActivity extends BaseActivity {
             }
         });
     }
+    
+    public void fillView()
+    {
+        Log.e("fillView", "View filled");
+        mUiDescription.setText(mWineDetails.mDescription);
+        mIsViewFilled = true;
+    }
 
     public void onResume() {
         // TODO Auto-generated method stub
@@ -165,7 +176,8 @@ public class WineActivity extends BaseActivity {
             // if there is an access to the Internet, try to load data from remote database
 
             if (App.isOnline(WineActivity.this)) {
-                new LoadWineTask().execute();
+                mLoadWineTask = new LoadWineTask();
+                mLoadWineTask.execute();
             }
 
             // otherwise, show message
@@ -176,7 +188,31 @@ public class WineActivity extends BaseActivity {
                         .show();
             }
         }
+        
+        else
+        {
+            if (!mIsViewFilled)
+            {
+                fillView();
+            }
+        }
 
+    }
+    
+    @Override
+    protected void onPause() {
+
+        if (mLoadWineTask != null) {
+
+            mLoadWineTask.cancel(true);
+            if (mProgDial != null)
+            {
+                mProgDial.dismiss();
+            }
+            
+            mLoadWineTask = null;
+        }
+        super.onPause();
     }
 
     class LoadWineTask extends AsyncTask<Void, String, String> {
@@ -188,10 +224,13 @@ public class WineActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgDial = new ProgressDialog(WineActivity.this);
-            mProgDial.setMessage("Loading wine details...");
-            mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            if (mProgDial == null)
+            {
+                mProgDial = new ProgressDialog(WineActivity.this);
+            }
+                mProgDial.setMessage("Loading wine details...");
+                mProgDial.setIndeterminate(false);
+                mProgDial.setCancelable(true);
             mProgDial.show();
 
         }
@@ -229,13 +268,15 @@ public class WineActivity extends BaseActivity {
             super.onPostExecute(file_url);
             mProgDial.dismiss();
             if (mWineDetails != null) {
-                mUiDescription.setText(mWineDetails.mDescription);
+                fillView();
             }
 
             if (mWineDetails.mImageUrl != null) {
                 Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
                         .error(R.drawable.error_image).load(mWineDetails.mImageUrl);
             }
+            
+            mLoadWineTask = null;
         }
 
     }

@@ -45,6 +45,7 @@ public class RestaurantActivity extends BaseActivity {
     RestaurantListItem mRestaurant;
     RestaurantDetails mRestaurantFromBase;
 
+    boolean mIsViewFilled;
     TextView mUiTitle;
     ImageView mUiImage;
     ViewPager mUiPager;
@@ -54,6 +55,8 @@ public class RestaurantActivity extends BaseActivity {
     TextView mUiUrl;
     TextView mUiDescription;
     ImageView mUiNavigate;
+    
+    LoadRestaurantTask mLoadRestaurantTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,7 @@ public class RestaurantActivity extends BaseActivity {
 
         Log.e(RestaurantActivity.class.getName(), mRestaurant + " ");
         initView();
+        mIsViewFilled = false;
 
     }
 
@@ -125,6 +129,7 @@ public class RestaurantActivity extends BaseActivity {
         mUiUrl.setText(mRestaurantFromBase.mLink);
         mUiDescription.setText(mRestaurantFromBase.mVast);
         mUiPhoneNumber.setText(mRestaurantFromBase.mPhone);
+        mIsViewFilled = true;
     }
 
     public void onResume() {
@@ -136,7 +141,8 @@ public class RestaurantActivity extends BaseActivity {
             // if there is an access to the Internet, try to load data from remote database
 
             if (App.isOnline(RestaurantActivity.this)) {
-                new LoadRestaurantTask().execute();
+                mLoadRestaurantTask = new LoadRestaurantTask();
+                mLoadRestaurantTask.execute();
             }
 
             // otherwise, show message
@@ -147,7 +153,33 @@ public class RestaurantActivity extends BaseActivity {
                         .show();
             }
         }
+        
+        else
+        {
+            if (!mIsViewFilled)
+            {
+                fillView();
+            }
+        }
 
+    }
+    
+    @Override
+    protected void onPause() {
+
+        if (mLoadRestaurantTask != null) {
+            
+            System.out.println("TASK NOT NULL");
+
+            mLoadRestaurantTask.cancel(true);
+            if (mProgDial != null)
+            {
+                mProgDial.dismiss();
+            }
+            
+            mLoadRestaurantTask = null;
+        }
+        super.onPause();
     }
 
     class LoadRestaurantTask extends AsyncTask<Void, String, String> {
@@ -159,11 +191,14 @@ public class RestaurantActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgDial = new ProgressDialog(RestaurantActivity.this);
-            mProgDial.setMessage("Loading restaurant details...");
-            mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
-            // mProgDial.show();
+            if (mProgDial == null)
+            {
+                mProgDial = new ProgressDialog(RestaurantActivity.this);
+            }
+                mProgDial.setMessage("Loading restaurant details...");
+                mProgDial.setIndeterminate(false);
+                mProgDial.setCancelable(true);
+             mProgDial.show();
 
         }
 
@@ -205,6 +240,8 @@ public class RestaurantActivity extends BaseActivity {
                 Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
                         .error(R.drawable.error_image).load(mRestaurantFromBase.mImageUrl);
             }
+            
+            mLoadRestaurantTask = null;
 
         }
 

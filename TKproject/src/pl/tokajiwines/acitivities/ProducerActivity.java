@@ -48,6 +48,8 @@ public class ProducerActivity extends BaseActivity {
     ProducerListItem mProducer;
     ProducerDetails mProducerFromBase;
 
+    boolean mIsViewFilled;
+    boolean mIsPagerFilled;
     TextView mUiTitle;
     ImageView mUiImage;
     ViewPager mUiPager;
@@ -65,6 +67,9 @@ public class ProducerActivity extends BaseActivity {
     ScrollView mUiScroll;
     ImagePagerItem[] mImagesUrl;
     ImagePagerAdapter mAdapter;
+    
+    LoadProducerTask mLoadProducerTask;
+    LoadProducerImagesTask mLoadProducerImagesTask;
 
     public static final String TAG_ID_PRODUCER = "IdProducer";
 
@@ -83,6 +88,8 @@ public class ProducerActivity extends BaseActivity {
         }
         Log.e(ProducerActivity.class.getName(), mProducer + " ");
         initView();
+        mIsViewFilled = false;
+        mIsPagerFilled = false;
 
     }
 
@@ -176,18 +183,54 @@ public class ProducerActivity extends BaseActivity {
         mUiDescription.setText(mProducerFromBase.mVast);
         mUiPhoneNumber.setText(mProducerFromBase.mPhone);
         mUiWineName.setText(mProducerFromBase.mWineName);
+        mIsViewFilled = true;
+    }
+    
+    public void fillPager(){
+        Log.e("fillPager", "Pager filled");
+        if (mImagesUrl.length > 0)
+        {
+            mAdapter = new ImagePagerAdapter(ProducerActivity.this, mImagesUrl);
+            mUiPager.setAdapter(mAdapter);
+            mUiPageIndicator.setViewPager(mUiPager);
+            mIsPagerFilled = true;
+        }
     }
 
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
 
-        if (mProducerFromBase == null) {
 
             // if there is an access to the Internet, try to load data from remote database
 
             if (App.isOnline(ProducerActivity.this)) {
-                new LoadProducerTask().execute();
+                
+                if (mProducerFromBase == null) {
+                    mLoadProducerTask = new LoadProducerTask();
+                    mLoadProducerTask.execute();
+                }
+                
+                else
+                {
+                    if (!mIsViewFilled)
+                    {
+                        fillView();
+                    }
+                }
+                
+                if (mImagesUrl == null) {
+                    mLoadProducerImagesTask = new LoadProducerImagesTask();
+                    mLoadProducerImagesTask.execute();
+                }
+                
+                else
+                {
+                    if (!mIsPagerFilled)
+                    {
+                        fillPager();
+                    }
+                }
             }
 
             // otherwise, show message
@@ -197,8 +240,29 @@ public class ProducerActivity extends BaseActivity {
                         getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG)
                         .show();
             }
-        }
+        
+        
 
+    }
+    
+    @Override
+    protected void onPause() {
+
+        if (mLoadProducerTask != null) {
+            mLoadProducerTask.cancel(true);
+            if (mProgDial != null)
+            {
+                mProgDial.dismiss();
+            }
+            
+            mLoadProducerTask = null;
+        }
+        
+        if (mLoadProducerImagesTask != null) {
+            mLoadProducerImagesTask.cancel(true);
+            mLoadProducerImagesTask = null;
+        }
+        super.onPause();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -219,10 +283,13 @@ public class ProducerActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgDial = new ProgressDialog(ProducerActivity.this);
-            mProgDial.setMessage("Loading producer details...");
-            mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            if (mProgDial == null)
+            {
+                mProgDial = new ProgressDialog(ProducerActivity.this);
+            }
+                mProgDial.setMessage("Loading producer details...");
+                mProgDial.setIndeterminate(false);
+                mProgDial.setCancelable(true);
             mProgDial.show();
 
         }
@@ -265,8 +332,7 @@ public class ProducerActivity extends BaseActivity {
                 Ion.with(mUiWineImage).placeholder(R.drawable.no_image)
                         .error(R.drawable.error_image).load(mProducerFromBase.mWineImageUrl);
             }
-
-            new LoadProducerImagesTask().execute();
+            mLoadProducerTask = null;
         }
 
     }
@@ -280,11 +346,11 @@ public class ProducerActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgDial = new ProgressDialog(ProducerActivity.this);
+/*            mProgDial = new ProgressDialog(ProducerActivity.this);
             mProgDial.setMessage("Loading producer images...");
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
-            mProgDial.show();
+            mProgDial.show();*/
 
         }
 
@@ -319,12 +385,12 @@ public class ProducerActivity extends BaseActivity {
         protected void onPostExecute(String file_url) {
 
             super.onPostExecute(file_url);
-            mProgDial.dismiss();
+       //     mProgDial.dismiss();
             if (mImagesUrl != null && mImagesUrl.length > 0) {
-                mAdapter = new ImagePagerAdapter(ProducerActivity.this, mImagesUrl);
-                mUiPager.setAdapter(mAdapter);
-                mUiPageIndicator.setViewPager(mUiPager);
+                fillPager();
             }
+            
+            mLoadProducerImagesTask = null;
 
         }
 

@@ -90,19 +90,27 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
         Log.e("pobieranie URL", tempUrl + "     ");
         InputStream source = mParser.retrieveStream(tempUrl, sUsername,
                 sPassword, null);
-
-        Gson gson = new Gson();
-        InputStreamReader reader = new InputStreamReader(source);
-
-        NearPlacesResponse response = gson.fromJson(reader, NearPlacesResponse.class);
-
-        if (response != null) {
-
-            if (response.success == 1)
-                mNearbyPlaces = response.places;
-
-            else
-                mNearbyPlaces = new Place[0];
+        if (source != null)
+        {
+    
+            Gson gson = new Gson();
+            InputStreamReader reader = new InputStreamReader(source);
+    
+            NearPlacesResponse response = gson.fromJson(reader, NearPlacesResponse.class);
+    
+            if (response != null) {
+    
+                if (response.success == 1)
+                    mNearbyPlaces = response.places;
+    
+                else
+                    mNearbyPlaces = new Place[0];
+            }
+        }
+        
+        else
+        {
+            mNearbyPlaces = new Place[0];
         }
         return null;
 

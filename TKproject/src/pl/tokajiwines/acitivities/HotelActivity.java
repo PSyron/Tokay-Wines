@@ -41,7 +41,8 @@ public class HotelActivity extends BaseActivity {
     ProgressDialog mProgDial;
     HotelListItem mHotel;
     HotelDetails mHotelFromBase;
-
+    
+    boolean mIsViewFilled;
     TextView mUiTitle;
     ImageView mUiImage;
     ViewPager mUiPager;
@@ -51,6 +52,7 @@ public class HotelActivity extends BaseActivity {
     TextView mUiUrl;
     TextView mUiDescription;
     ImageView mUiNavigate;
+    LoadHotelTask mLoadHotelTask;
     private String sUsername;
     private String sPassword;
 
@@ -69,6 +71,7 @@ public class HotelActivity extends BaseActivity {
 
         Log.e(HotelActivity.class.getName(), mHotel + " ");
         initView();
+        mIsViewFilled = false;
 
     }
 
@@ -119,6 +122,8 @@ public class HotelActivity extends BaseActivity {
         mUiUrl.setText(mHotelFromBase.mLink);
         mUiDescription.setText(mHotelFromBase.mVast);
         mUiPhoneNumber.setText(mHotelFromBase.mPhone);
+        
+        mIsViewFilled = true;
 
     }
 
@@ -132,7 +137,8 @@ public class HotelActivity extends BaseActivity {
             // if there is an access to the Internet, try to load data from remote database
     
             if (App.isOnline(HotelActivity.this)) {
-                new LoadHotelTask().execute();
+                mLoadHotelTask = new LoadHotelTask();
+                mLoadHotelTask.execute();
             }
     
             // otherwise, show message
@@ -142,7 +148,31 @@ public class HotelActivity extends BaseActivity {
                         .show();
             }
         }
+        
+        else
+        {
+            if (!mIsViewFilled)
+            {
+                fillView();
+            }
+        }
 
+    }
+    
+    @Override
+    protected void onPause() {
+
+        if (mLoadHotelTask != null) {
+
+            mLoadHotelTask.cancel(true);
+            if (mProgDial != null)
+            {
+                mProgDial.dismiss();
+            }
+            
+            mLoadHotelTask = null;
+        }
+        super.onPause();
     }
 
     class LoadHotelTask extends AsyncTask<Void, String, String> {
@@ -154,10 +184,13 @@ public class HotelActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgDial = new ProgressDialog(HotelActivity.this);
-            mProgDial.setMessage("Loading hotel details...");
-            mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            if (mProgDial == null)
+            {
+                mProgDial = new ProgressDialog(HotelActivity.this);
+            }
+                mProgDial.setMessage("Loading hotel details...");
+                mProgDial.setIndeterminate(false);
+                mProgDial.setCancelable(true);
              mProgDial.show();
 
         }
@@ -203,6 +236,8 @@ public class HotelActivity extends BaseActivity {
 
             Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
                     .error(R.drawable.error_image).load(mHotelFromBase.mImageUrl);
+            
+            mLoadHotelTask = null;
 
         }
 

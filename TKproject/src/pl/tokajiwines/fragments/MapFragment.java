@@ -65,6 +65,7 @@ public class MapFragment extends BaseFragment {
     int mRangePicked = 5;
     TextView mUiTours;
     ProgressDialog mProgDial;
+    LoadNearPlaces mLoadNearPlaces;
     Polyline mRoute;
     Boolean mFirstRun = true;
     JSONParser mParser;
@@ -300,14 +301,24 @@ public class MapFragment extends BaseFragment {
 
         mMapView.onResume();
 
-        if (App.isOnline(mCtx)) {
+        if (App.isOnline(mCtx) && mFirstRun) {
             new LoadNearPlaces().execute(myPosition);
         }
 
     }
 
     @Override
-    public void onPause() {
+    public void onPause() {       
+        if (mLoadNearPlaces != null) {
+
+            mLoadNearPlaces.cancel(true);
+            if (mProgDial != null)
+            {
+                mProgDial.dismiss();
+            }
+            
+            mLoadNearPlaces = null;
+        }
         super.onPause();
         mMapView.onPause();
     }
@@ -334,7 +345,10 @@ public class MapFragment extends BaseFragment {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.e("Async on PreExecute", "Executing create progress bar");
-            mProgDial = new ProgressDialog(mCtx);
+            if (mProgDial == null)
+            {
+                mProgDial = new ProgressDialog(mCtx);
+            }
             mProgDial.setMessage(getResources().getString(R.string.loading_near));
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
@@ -548,6 +562,8 @@ public class MapFragment extends BaseFragment {
 
             // Drawing polyline in the Google Map for the i-th route
             mRoute = MapFragment.this.googleMap.addPolyline(lineOptions);
+            
+            mLoadNearPlaces = null;
         }
     }
 

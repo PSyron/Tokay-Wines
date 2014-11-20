@@ -86,6 +86,7 @@ public class NearPlaceActivity extends BaseActivity {
     TextView mUiPlaceDuration;
     ImageView mUiNavigateTo;
     ImageView mUiInfo;
+    LoadNearPlaces mLoadNearPlaces;
     boolean mWithDrawing = true;
 
     private String sUsername;
@@ -142,13 +143,24 @@ public class NearPlaceActivity extends BaseActivity {
         mMapView.onResume();
 
         if (App.isOnline(NearPlaceActivity.this) && mFirstRun) {
-            new LoadNearPlaces().execute(mPlacePosition);
+            mLoadNearPlaces = new LoadNearPlaces();
+            mLoadNearPlaces.execute(mPlacePosition);
         }
 
     }
 
     @Override
     public void onPause() {
+        if (mLoadNearPlaces != null) {
+
+            mLoadNearPlaces.cancel(true);
+            if (mProgDial != null)
+            {
+                mProgDial.dismiss();
+            }
+            
+            mLoadNearPlaces = null;
+        }
         super.onPause();
         mMapView.onPause();
     }
@@ -402,10 +414,13 @@ public class NearPlaceActivity extends BaseActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.e("Async on PreExecute", "Executing create progress bar");
-            mProgDial = new ProgressDialog(NearPlaceActivity.this);
-            mProgDial.setMessage(getResources().getString(R.string.loading_near));
-            mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            if (mProgDial == null)
+            {
+                mProgDial = new ProgressDialog(NearPlaceActivity.this);
+            }
+                mProgDial.setMessage(getResources().getString(R.string.loading_near));
+                mProgDial.setIndeterminate(false);
+                mProgDial.setCancelable(true);
             mProgDial.show();
             // clearing markers
             googleMap.clear();
@@ -461,6 +476,7 @@ public class NearPlaceActivity extends BaseActivity {
                 Log.e("async", "brak punktow blisko");
             }
             mFirstRun = false;
+            mLoadNearPlaces = null;
 
         }
 

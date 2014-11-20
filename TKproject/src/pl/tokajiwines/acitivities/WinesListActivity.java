@@ -24,6 +24,7 @@ import pl.tokajiwines.fragments.WinesFilterFragment;
 import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.jsonresponses.WinesResponse;
 import pl.tokajiwines.utils.JSONParser;
+import pl.tokajiwines.utils.Log;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 import java.io.InputStream;
@@ -36,6 +37,7 @@ public class WinesListActivity extends BaseActivity {
     ListView mUiList;
     WinesAdapter mAdapter;
     private WineListItem[] mWinesList;
+    boolean mIsViewFilled;
     private Activity mAct;
     private JSONParser mParser;
     private ProgressDialog mProgDial;
@@ -49,6 +51,7 @@ public class WinesListActivity extends BaseActivity {
     private String mProducers;
     private String mPrices;
     public static String TAG_WINE = "WINE";
+    LoadWinesTask mLoadWinesTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,16 +89,26 @@ public class WinesListActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        mIsViewFilled = false;
+    }
+    
+    public void fillView(){
+        
+        Log.e("fillView", "View filled");     
+        mAdapter = new WinesAdapter(mAct, mWinesList);
+        mUiList.setAdapter(mAdapter);
+        mIsViewFilled = true;
     }
 
-    public void onStart() {
+    public void onResume() {
         // TODO Auto-generated method stub
-        super.onStart();
+        super.onResume();
 
         if (mWinesList.length == 0) {
 
             if (App.isOnline(mAct)) {
-                new LoadWinesTask().execute();
+                mLoadWinesTask = new LoadWinesTask();
+                mLoadWinesTask.execute();
             }
 
             // otherwise, show message
@@ -105,8 +118,32 @@ public class WinesListActivity extends BaseActivity {
                         Toast.LENGTH_LONG).show();
             }
         }
+        else
+        {
+            if (!mIsViewFilled)
+            {
+                fillView();
+            }
+        }
 
     }
+    
+    @Override
+    protected void onPause() {
+
+        if (mLoadWinesTask != null) {
+
+            mLoadWinesTask.cancel(true);
+            if (mProgDial != null)
+            {
+                mProgDial.dismiss();
+            }
+            
+            mLoadWinesTask = null;
+        }
+        super.onPause();
+    }
+
 
     class LoadWinesTask extends AsyncTask<String, String, String> {
 
@@ -117,7 +154,10 @@ public class WinesListActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgDial = new ProgressDialog(mAct);
+            if (mProgDial == null)
+            {
+                mProgDial = new ProgressDialog(mAct);
+            }
             mProgDial.setMessage("Loading wines data...");
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
@@ -167,9 +207,10 @@ public class WinesListActivity extends BaseActivity {
             super.onPostExecute(file_url);
             mProgDial.dismiss();
             if (mWinesList != null) {
-                mAdapter = new WinesAdapter(mAct, mWinesList);
-                mUiList.setAdapter(mAdapter);
+                fillView();
             }
+            
+            mLoadWinesTask = null;
 
         }
 

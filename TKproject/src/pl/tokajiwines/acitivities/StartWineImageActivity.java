@@ -40,8 +40,8 @@ import java.util.Random;
 
 public class StartWineImageActivity extends BaseActivity {
 
+    boolean mIsViewFilled;
     TextView mUiSkipBtn;
-
     ImageView mUiImage;
     ProgressDialog mProgDial;
     JSONParser mParser;
@@ -70,7 +70,8 @@ public class StartWineImageActivity extends BaseActivity {
         mUiSkipBtn = (TextView) findViewById(R.id.start_button);
         mUiImage = (ImageView) findViewById(R.id.start_image);
         initLanguage();
-        mLoadWine = new LoadWineImageTask();
+        mIsViewFilled = false;
+
         if (!App.isOnline(this)) {
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -98,9 +99,17 @@ public class StartWineImageActivity extends BaseActivity {
 
         if (App.isOnline(this)) {
             
-            if (mChosedItem == null)
+            if (mWinesList == null)
             {
+                mLoadWine = new LoadWineImageTask();
                 mLoadWine.execute();
+            }
+            else
+            {
+                if (!mIsViewFilled)
+                {
+                    initView(mWinesList);
+                }               
             }
             boolean learned = SharedPreferencesHelper.getSharedPreferencesBoolean(this, DOWNLOAD,
                     false);
@@ -124,9 +133,9 @@ public class StartWineImageActivity extends BaseActivity {
     @Override
     protected void onPause() {
         
-        System.out.println("PAUSE");
         if (mLoadWine != null) {
             mLoadWine.cancel(true);
+            mLoadWine = null;
         }
         if (mDownloadImagesTask != null) {
             mDownloadImagesTask.cancel(true);
@@ -217,6 +226,9 @@ public class StartWineImageActivity extends BaseActivity {
                         finish();
                     }
                 });
+                
+                Log.e("StartWineImage", "Start wine view filled");
+                mIsViewFilled = true;
                 return;
             }
 
@@ -236,11 +248,11 @@ public class StartWineImageActivity extends BaseActivity {
             if (mProgDial == null)
             {
                 mProgDial = new ProgressDialog(StartWineImageActivity.this);
+            }
                 mProgDial.setMessage(getResources().getString(R.string.downloading_content));
                 mProgDial.setIndeterminate(false);
                 mProgDial.setCancelable(false);
                 mProgDial.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            }
             mProgDial.show();
 
         }
@@ -353,6 +365,8 @@ public class StartWineImageActivity extends BaseActivity {
                 //                mUiList.setAdapter(mAdapter);
                 initView(mWinesList);
             }
+            
+            mLoadWine = null;
 
         }
 

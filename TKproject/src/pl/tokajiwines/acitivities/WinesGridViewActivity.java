@@ -25,6 +25,7 @@ import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.jsonresponses.WinesResponse;
 import pl.tokajiwines.utils.JSONParser;
+import pl.tokajiwines.utils.Log;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 import java.io.InputStream;
@@ -41,6 +42,8 @@ public class WinesGridViewActivity extends BaseActivity {
     private Activity mAct;
     private JSONParser mParser;
     private ProgressDialog mProgDial;
+    LoadWinesTask mLoadWinesTask;
+    boolean mIsViewFilled;
 
     private String sUrl;
     private String sUsername;
@@ -80,16 +83,26 @@ public class WinesGridViewActivity extends BaseActivity {
                 startActivityForResult(intent, 1);
             }
         });
+        mIsViewFilled = false;
+    }
+    
+    public void fillView()
+    {
+        Log.e("fillView", "View filled");
+        mAdapter = new WinesGridViewAdapter(mAct, mWinesList);
+        mUiList.setAdapter(mAdapter);
+        mIsViewFilled = true;
     }
 
-    public void onStart() {
+    public void onResume() {
         // TODO Auto-generated method stub
-        super.onStart();
+        super.onResume();
 
         if (mWinesList.length == 0) {
 
             if (App.isOnline(mAct)) {
-                new LoadWinesTask().execute();
+                mLoadWinesTask = new LoadWinesTask();
+                mLoadWinesTask.execute();
             }
 
             // otherwise, show message
@@ -99,7 +112,30 @@ public class WinesGridViewActivity extends BaseActivity {
                         Toast.LENGTH_LONG).show();
             }
         }
+        else
+        {
+            if (!mIsViewFilled)
+            {
+                fillView();
+            }
+        }
 
+    }
+    
+    @Override
+    protected void onPause() {
+
+        if (mLoadWinesTask != null) {
+
+            mLoadWinesTask.cancel(true);
+            if (mProgDial != null)
+            {
+                mProgDial.dismiss();
+            }
+            
+            mLoadWinesTask = null;
+        }
+        super.onPause();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -122,10 +158,13 @@ public class WinesGridViewActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgDial = new ProgressDialog(mAct);
-            mProgDial.setMessage("Loading wines data...");
-            mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(false);
+            if (mProgDial == null)
+            {
+                mProgDial = new ProgressDialog(mAct);
+            }
+                mProgDial.setMessage("Loading wines data...");
+                mProgDial.setIndeterminate(false);
+                mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -165,9 +204,10 @@ public class WinesGridViewActivity extends BaseActivity {
             super.onPostExecute(file_url);
             mProgDial.dismiss();
             if (mWinesList != null) {
-                mAdapter = new WinesGridViewAdapter(mAct, mWinesList);
-                mUiList.setAdapter(mAdapter);
+                fillView();
             }
+            
+            mLoadWinesTask = null;
 
         }
 

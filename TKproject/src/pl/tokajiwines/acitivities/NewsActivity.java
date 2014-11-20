@@ -26,6 +26,7 @@ import pl.tokajiwines.fragments.NewsFragment;
 import pl.tokajiwines.jsonresponses.NewsDetails;
 import pl.tokajiwines.jsonresponses.NewsDetailsResponse;
 import pl.tokajiwines.utils.JSONParser;
+import pl.tokajiwines.utils.Log;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -44,6 +45,7 @@ public class NewsActivity extends BaseActivity {
     private TextView mUiDescription;
     private TextView mUiDateLabel;
     private TextView mUiDate;
+    boolean mIsViewFilled;
     private NewsDetails mNews;
     LoadNewsDetailsTask mTask;
     ProgressDialog mProgDial;
@@ -59,7 +61,6 @@ public class NewsActivity extends BaseActivity {
         setContentView(R.layout.activity_news_details);
 
         mContext = this;
-        mTask = new LoadNewsDetailsTask();
 
         sUrl = getResources().getString(R.string.UrlEventDetails);
         sUsername = getResources().getString(R.string.Username);
@@ -102,6 +103,32 @@ public class NewsActivity extends BaseActivity {
 
             }
         });
+        
+        mIsViewFilled = false;
+    }
+    
+    public void fillView() {
+
+        mUiName.setText(mNews.mHeader);
+        mUiDescription.setText(mNews.mVast);
+        Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
+                .error(R.drawable.error_image).load(mNews.mImage);
+
+        if (mNews.mStartDate == null && mNews.mEndDate == null) {
+            mUiDateLabel.setVisibility(View.GONE);
+            mUiDate.setVisibility(View.GONE);
+            mUiAddIcon.setVisibility(View.GONE);
+        } else {
+            mUiDate.setText(mNews.mStartDate + "\n" + mNews.mEndDate);
+            mUiDate.setVisibility(View.VISIBLE);
+            mUiAddIcon.setVisibility(View.VISIBLE);
+            mUiDateLabel.setVisibility(View.VISIBLE);
+        }
+
+        getActionBar().setTitle(mNews.mHeader);
+        mIsViewFilled = true;
+        
+        Log.e("fillView","View filled");
     }
 
     public void onResume() {
@@ -111,7 +138,7 @@ public class NewsActivity extends BaseActivity {
         if (mNews == null) {
 
             if (App.isOnline(mContext)) {
-
+                mTask = new LoadNewsDetailsTask();
                 mTask.execute();
             }
 
@@ -122,13 +149,29 @@ public class NewsActivity extends BaseActivity {
                         Toast.LENGTH_LONG).show();
             }
         }
+        else
+        {
+            if (!mIsViewFilled)
+            {
+                fillView();
+            }
+        }
 
     }
 
     @Override
     protected void onPause() {
         if (mTask != null) {
+            
+            System.out.println("TASK NOT NULL!");
+
             mTask.cancel(true);
+            if (mProgDial != null)
+            {
+                mProgDial.dismiss();
+            }
+            
+            mTask = null;
         }
         super.onPause();
     }
@@ -144,10 +187,13 @@ public class NewsActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgDial = new ProgressDialog(mContext);
-            mProgDial.setMessage("Loading news data...");
-            mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            if (mProgDial == null)
+            {
+                mProgDial = new ProgressDialog(mContext);
+            }
+                mProgDial.setMessage("Loading news data...");
+                mProgDial.setIndeterminate(false);
+                mProgDial.setCancelable(true);
             mProgDial.show();
 
         }
@@ -182,24 +228,10 @@ public class NewsActivity extends BaseActivity {
             super.onPostExecute(file_url);
             mProgDial.dismiss();
             if (mNews != null) {
-                mUiName.setText(mNews.mHeader);
-                mUiDescription.setText(mNews.mVast);
-                Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
-                        .error(R.drawable.error_image).load(mNews.mImage);
-
-                if (mNews.mStartDate == null && mNews.mEndDate == null) {
-                    mUiDateLabel.setVisibility(View.GONE);
-                    mUiDate.setVisibility(View.GONE);
-                    mUiAddIcon.setVisibility(View.GONE);
-                } else {
-                    mUiDate.setText(mNews.mStartDate + "\n" + mNews.mEndDate);
-                    mUiDate.setVisibility(View.VISIBLE);
-                    mUiAddIcon.setVisibility(View.VISIBLE);
-                    mUiDateLabel.setVisibility(View.VISIBLE);
-                }
-
-                getActionBar().setTitle(mNews.mHeader);
+                fillView();
             }
+            
+            mTask = null;
 
         }
     }

@@ -22,6 +22,7 @@ import pl.tokajiwines.adapters.RestaurantsAdapter;
 import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.jsonresponses.RestaurantsResponse;
 import pl.tokajiwines.utils.JSONParser;
+import pl.tokajiwines.utils.Log;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,6 +31,8 @@ public class TabRestaurantsFragment extends BaseFragment {
 
     ListView mUiList;
     RestaurantsAdapter mAdapter;
+    boolean mIsViewFilled;
+    LoadRestaurantTask mLoadRestaurantTask;
     Context mContext;
     JSONParser mParser;
     ProgressDialog mProgDial;
@@ -71,8 +74,16 @@ public class TabRestaurantsFragment extends BaseFragment {
             }
         });
         mContext = getActivity();
+        mIsViewFilled = false;
 
         return rootView;
+    }
+    
+    public void fillView(){
+        Log.e("fillView", "Restaurant view filled");
+        mAdapter = new RestaurantsAdapter(getActivity(), mRestaurantList);
+        mUiList.setAdapter(mAdapter);
+        mIsViewFilled = true;
     }
 
     // if there is an access to the Internet, try to load data from remote database
@@ -83,7 +94,8 @@ public class TabRestaurantsFragment extends BaseFragment {
         if (mRestaurantList.length == 0) {
 
             if (App.isOnline(mContext)) {
-                new LoadRestaurantTask().execute();
+                mLoadRestaurantTask = new LoadRestaurantTask();
+                mLoadRestaurantTask.execute();
             }
 
             // otherwise, show message
@@ -93,7 +105,30 @@ public class TabRestaurantsFragment extends BaseFragment {
                         Toast.LENGTH_LONG).show();
             }
         }
+        else
+        {
+            if (!mIsViewFilled)
+            {
+                fillView();
+            }
+        }
 
+    }
+    
+    @Override
+    public void onPause() {
+
+        if (mLoadRestaurantTask != null) {
+
+            mLoadRestaurantTask.cancel(true);
+            if (mProgDial != null)
+            {
+                mProgDial.dismiss();
+            }
+            
+            mLoadRestaurantTask = null;
+        }
+        super.onPause();
     }
 
     // async task class that loads Hotel data from remote database
@@ -107,7 +142,10 @@ public class TabRestaurantsFragment extends BaseFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgDial = new ProgressDialog(mContext);
+            if (mProgDial == null)
+            {
+                mProgDial = new ProgressDialog(mContext);
+            }
             mProgDial.setMessage("Loading restaurants data...");
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
@@ -147,9 +185,9 @@ public class TabRestaurantsFragment extends BaseFragment {
             mProgDial.dismiss();
             if (mRestaurantList != null)
             {
-                mAdapter = new RestaurantsAdapter(getActivity(), mRestaurantList);
-                mUiList.setAdapter(mAdapter);
+                fillView();
             }
+            mLoadRestaurantTask = null;
 
         }
     }

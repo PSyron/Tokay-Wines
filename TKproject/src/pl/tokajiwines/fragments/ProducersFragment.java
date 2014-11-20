@@ -32,10 +32,12 @@ import java.io.InputStreamReader;
 
 public class ProducersFragment extends BaseFragment {
 
+    boolean mIsViewFilled;
     ListView mUiList;
     ProducersAdapter mAdapter;
     JSONParser mParser;
     ProgressDialog mProgDial;
+    LoadProducersTask mLoadProducersTask;
     Context mContext;
     private String sUrl;
     private String sUsername;
@@ -85,20 +87,29 @@ public class ProducersFragment extends BaseFragment {
             }
 
         });
-
+        mIsViewFilled = false;
+        
         return rootView;
     }
+    
+    public void fillView(){
+        Log.e("fillView", "View filled");
+        mAdapter = new ProducersAdapter(getActivity(), mProducersList);
+        mUiList.setAdapter(mAdapter);
+        mIsViewFilled = true;
+    }
 
-    public void onStart() {
+    public void onResume() {
         // TODO Auto-generated method stub
-        super.onStart();
+        super.onResume();
 
         // if there is an access to the Internet, try to load data from remote database
 
         if (mProducersList.length == 0) {
 
             if (App.isOnline(mContext)) {
-                new LoadProducersTask().execute();
+                mLoadProducersTask = new LoadProducersTask();
+                mLoadProducersTask.execute();
                 /*DatabaseHelper dbh = new DatabaseHelper(mContext);
 
                 try {
@@ -121,7 +132,31 @@ public class ProducersFragment extends BaseFragment {
                         Toast.LENGTH_LONG).show();
             }
         }
+        
+        else
+        {
+            if (!mIsViewFilled)
+            {
+                fillView();
+            }
+        }
 
+    }
+    
+    @Override
+    public void onPause() {
+
+        if (mLoadProducersTask != null) {
+
+            mLoadProducersTask.cancel(true);
+            if (mProgDial != null)
+            {
+                mProgDial.dismiss();
+            }
+            
+            mLoadProducersTask = null;
+        }
+        super.onPause();
     }
 
     // async task class that loads producers data from remote database
@@ -135,7 +170,10 @@ public class ProducersFragment extends BaseFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgDial = new ProgressDialog(mContext);
+            if (mProgDial == null)
+            {
+                mProgDial = new ProgressDialog(mContext);
+            }
             mProgDial.setMessage("Loading producers data...");
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
@@ -173,9 +211,10 @@ public class ProducersFragment extends BaseFragment {
             super.onPostExecute(file_url);
             mProgDial.dismiss();
             if (mProducersList != null) {
-                mAdapter = new ProducersAdapter(getActivity(), mProducersList);
-                mUiList.setAdapter(mAdapter);
+                fillView();
             }
+            
+            mLoadProducersTask = null;
 
         }
 
