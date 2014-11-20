@@ -121,13 +121,16 @@ public class TabHotelsFragment extends BaseFragment {
             mParser = new JSONParser();
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
-            Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
-
-            HotelsResponse response = gson.fromJson(reader, HotelsResponse.class);
-
-            if (response != null) {
-                mHotelList = response.hotels;
+            if (source != null)
+            {
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+    
+                HotelsResponse response = gson.fromJson(reader, HotelsResponse.class);
+    
+                if (response != null) {
+                    mHotelList = response.hotels;
+                }
             }
 
             return null;
@@ -140,8 +143,11 @@ public class TabHotelsFragment extends BaseFragment {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            mAdapter = new HotelsAdapter(getActivity(), mHotelList);
-            mUiList.setAdapter(mAdapter);
+            if (mHotelList != null)
+            {
+                mAdapter = new HotelsAdapter(getActivity(), mHotelList);
+                mUiList.setAdapter(mAdapter);
+            }
 
         }
     }
