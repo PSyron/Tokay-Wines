@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import pl.tokajiwines.R;
+import pl.tokajiwines.acitivities.AboutAppActivity;
 import pl.tokajiwines.acitivities.MainActivity;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
@@ -237,16 +238,8 @@ public class SettingsFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(getActivity())
-                        .setMessage(getResources().getString(R.string.lorem_ipsum))
-                        .setPositiveButton(android.R.string.ok,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.cancel();
-                                    }
-                                })
-
-                        .setIcon(android.R.drawable.ic_dialog_alert).show();
+                Intent intent = new Intent(mCtx, AboutAppActivity.class);
+                startActivity(intent);
 
             }
         });

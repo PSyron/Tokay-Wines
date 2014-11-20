@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        style="@style/DetailsHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:text="@string/app_name" />
+
+    <ImageView
+        android:layout_width="@dimen/about_icon_width"
+        android:layout_height="@dimen/about_icon_height"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:src="@drawable/ic_launcher" />
+
+    <LinearLayout
+        style="@style/ItemCustomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            style="@style/DetailsHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/app_version" />
+
+        <TextView
+            android:id="@+id/activity_about_app_version_tV"
+            style="@style/DetailsHeader.NormalText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textColor="@color/gray"
+            android:text="version" />
+    </LinearLayout>
+
+    <TextView
+        style="@style/DetailsHeader.Bookmark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/developers" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/ItemCustomLayout"
+        android:orientation="vertical" >
+
+        <TextView
+            style="@style/DetailsHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="Paulina Konieczna" />
+
+        <TextView
+            style="@style/DetailsHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="Paweł Cyron" />
+
+        <TextView
+            style="@style/DetailsHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="Tomasz Kluza" />
+
+        <TextView
+            style="@style/DetailsHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="Wojciech Klimczyk" />
+    </LinearLayout>
+
+</LinearLayout>

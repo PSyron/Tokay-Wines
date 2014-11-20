@@ -18,6 +18,9 @@
     <string name="description">Opis</string>
     <string name="cannot_connect">Brak połączenia z Internetem</string>
     <string name="not_working">Ta funkcjonalność jeszcze nie działa</string>
+    <string name="app_version">Wersja aplikacji</string>
+    <string name="developers">Twórcy</string>
+    <string name="version_problem">Nie można odczytać wersji</string>
 
     <!-- Main -->
 
