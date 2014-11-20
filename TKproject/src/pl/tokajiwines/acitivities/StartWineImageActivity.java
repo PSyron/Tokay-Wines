@@ -70,7 +70,6 @@ public class StartWineImageActivity extends BaseActivity {
         mUiSkipBtn = (TextView) findViewById(R.id.start_button);
         mUiImage = (ImageView) findViewById(R.id.start_image);
         initLanguage();
-        mDownloadImagesTask = new LoadImages();
         mLoadWine = new LoadWineImageTask();
         if (!App.isOnline(this)) {
 
@@ -98,11 +97,15 @@ public class StartWineImageActivity extends BaseActivity {
         super.onResume();
 
         if (App.isOnline(this)) {
-
-            mLoadWine.execute();
+            
+            if (mChosedItem == null)
+            {
+                mLoadWine.execute();
+            }
             boolean learned = SharedPreferencesHelper.getSharedPreferencesBoolean(this, DOWNLOAD,
                     false);
             if (!learned) {
+                mDownloadImagesTask = new LoadImages();
                 mDownloadImagesTask.execute();
             }
         }
@@ -120,11 +123,17 @@ public class StartWineImageActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
+        
+        System.out.println("PAUSE");
         if (mLoadWine != null) {
             mLoadWine.cancel(true);
         }
         if (mDownloadImagesTask != null) {
             mDownloadImagesTask.cancel(true);
+            if (mProgDial != null)
+            {
+                mProgDial.dismiss();
+            }
         }
         super.onPause();
     }
@@ -224,11 +233,14 @@ public class StartWineImageActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgDial = new ProgressDialog(StartWineImageActivity.this);
-            mProgDial.setMessage(getResources().getString(R.string.downloading_content));
-            mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(false);
-            mProgDial.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            if (mProgDial == null)
+            {
+                mProgDial = new ProgressDialog(StartWineImageActivity.this);
+                mProgDial.setMessage(getResources().getString(R.string.downloading_content));
+                mProgDial.setIndeterminate(false);
+                mProgDial.setCancelable(false);
+                mProgDial.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            }
             mProgDial.show();
 
         }
