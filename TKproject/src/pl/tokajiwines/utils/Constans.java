@@ -23,7 +23,7 @@ public class Constans {
     };
 
     public static final String[] sMapRangeKm = {
-            "5 km", "10 km", "15 km", "20 km"
+            "5 km", "10 km", "15 km", "20 km", "25 km"
     };
 
     public static final String[] sMapRangeMil = {

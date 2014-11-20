@@ -187,7 +187,7 @@ public class MapFragment extends BaseFragment {
                 android.R.layout.simple_spinner_item, Constans.sMapRangeKm);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mUiRange.setAdapter(dataAdapter);
-        mRangePicked = 20;
+        mRangePicked = 25;
         mUiRange.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
