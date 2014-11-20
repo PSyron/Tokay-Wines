@@ -4,8 +4,11 @@ package pl.tokajiwines.acitivities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.view.View;
@@ -28,6 +31,7 @@ import pl.tokajiwines.jsonresponses.NewsDetailsResponse;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
@@ -111,8 +115,23 @@ public class NewsActivity extends BaseActivity {
 
         mUiName.setText(mNews.mHeader);
         mUiDescription.setText(mNews.mVast);
-        Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
-                .error(R.drawable.error_image).load(mNews.mImage);
+        final File imgFile = new File(NewsActivity.this.getFilesDir().getAbsolutePath()
+                + "/"
+                + mNews.mImage.substring(
+                        mNews.mImage.lastIndexOf('/') + 1,
+                        mNews.mImage.length()));
+        if (imgFile.exists()) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+            mUiImage.setImageBitmap(myBitmap);
+        } else {
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
+                    App.downloadAndRun(mNews.mImage, NewsActivity.this, mUiImage);
+                }
+            }, 50);
+        }
 
         if (mNews.mStartDate == null && mNews.mEndDate == null) {
             mUiDateLabel.setVisibility(View.GONE);

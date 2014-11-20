@@ -3,8 +3,11 @@ package pl.tokajiwines.acitivities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +32,7 @@ import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -122,6 +126,24 @@ public class HotelActivity extends BaseActivity {
         mUiUrl.setText(mHotelFromBase.mLink);
         mUiDescription.setText(mHotelFromBase.mVast);
         mUiPhoneNumber.setText(mHotelFromBase.mPhone);
+        
+        final File imgFile = new File(HotelActivity.this.getFilesDir().getAbsolutePath()
+                + "/"
+                + mHotelFromBase.mImageUrl.substring(
+                        mHotelFromBase.mImageUrl.lastIndexOf('/') + 1,
+                        mHotelFromBase.mImageUrl.length()));
+        if (imgFile.exists()) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+            mUiImage.setImageBitmap(myBitmap);
+        } else {
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
+                    App.downloadAndRun(mHotelFromBase.mImageUrl, HotelActivity.this, mUiImage);
+                }
+            }, 50);
+        }
         
         mIsViewFilled = true;
 
@@ -233,9 +255,6 @@ public class HotelActivity extends BaseActivity {
             if (mHotelFromBase != null) {
                 fillView();
             }
-
-            Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
-                    .error(R.drawable.error_image).load(mHotelFromBase.mImageUrl);
             
             mLoadHotelTask = null;
 

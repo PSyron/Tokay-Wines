@@ -2,9 +2,12 @@
 package pl.tokajiwines.acitivities;
 
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +36,7 @@ import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -135,6 +139,23 @@ public class NavigateToActivity extends BaseActivity {
         if (!mUiPlaceImageUrl.equals("")) {
             Ion.with(mUiPlaceImage).placeholder(R.drawable.placeholder_image)
                     .error(R.drawable.error_image).load(mUiPlaceImageUrl);
+            final File imgFile = new File(NavigateToActivity.this.getFilesDir().getAbsolutePath()
+                    + "/"
+                    + mUiPlaceImageUrl.substring(
+                            mUiPlaceImageUrl.lastIndexOf('/') + 1,
+                            mUiPlaceImageUrl.length()));
+            if (imgFile.exists()) {
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+                mUiPlaceImage.setImageBitmap(myBitmap);
+            } else {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
+                        App.downloadAndRun(mUiPlaceImageUrl, NavigateToActivity.this, mUiPlaceImage);
+                    }
+                }, 50);
+            }
         }
 
     }

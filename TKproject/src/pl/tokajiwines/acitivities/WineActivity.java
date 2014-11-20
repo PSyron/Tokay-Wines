@@ -4,8 +4,11 @@ package pl.tokajiwines.acitivities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +30,7 @@ import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -164,6 +168,26 @@ public class WineActivity extends BaseActivity {
     {
         Log.e("fillView", "View filled");
         mUiDescription.setText(mWineDetails.mDescription);
+
+        if (mWineDetails.mImageUrl != null) {
+            final File imgFile = new File(WineActivity.this.getFilesDir().getAbsolutePath()
+                    + "/"
+                    + mWine.mImageUrl.substring(
+                            mWine.mImageUrl.lastIndexOf('/') + 1,
+                            mWine.mImageUrl.length()));
+            if (imgFile.exists()) {
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+                mUiImage.setImageBitmap(myBitmap);
+            } else {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
+                        App.downloadAndRun(mWine.mImageUrl, WineActivity.this, mUiImage);
+                    }
+                }, 50);
+            }
+        }
         mIsViewFilled = true;
     }
 
@@ -271,10 +295,6 @@ public class WineActivity extends BaseActivity {
                 fillView();
             }
 
-            if (mWineDetails.mImageUrl != null) {
-                Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
-                        .error(R.drawable.error_image).load(mWineDetails.mImageUrl);
-            }
             
             mLoadWineTask = null;
         }

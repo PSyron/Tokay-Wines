@@ -3,8 +3,11 @@ package pl.tokajiwines.acitivities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +31,7 @@ import pl.tokajiwines.models.Place;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -129,6 +133,24 @@ public class RestaurantActivity extends BaseActivity {
         mUiUrl.setText(mRestaurantFromBase.mLink);
         mUiDescription.setText(mRestaurantFromBase.mVast);
         mUiPhoneNumber.setText(mRestaurantFromBase.mPhone);
+        
+        final File imgFile = new File(RestaurantActivity.this.getFilesDir().getAbsolutePath()
+                + "/"
+                + mRestaurantFromBase.mImageUrl.substring(
+                        mRestaurantFromBase.mImageUrl.lastIndexOf('/') + 1,
+                        mRestaurantFromBase.mImageUrl.length()));
+        if (imgFile.exists()) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+            mUiImage.setImageBitmap(myBitmap);
+        } else {
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
+                    App.downloadAndRun(mRestaurantFromBase.mImageUrl, RestaurantActivity.this, mUiImage);
+                }
+            }, 50);
+        }
         mIsViewFilled = true;
     }
 
@@ -236,9 +258,6 @@ public class RestaurantActivity extends BaseActivity {
             mProgDial.dismiss();
             if (mRestaurantFromBase != null) {
                 fillView();
-
-                Ion.with(mUiImage).placeholder(R.drawable.no_image_big)
-                        .error(R.drawable.error_image).load(mRestaurantFromBase.mImageUrl);
             }
             
             mLoadRestaurantTask = null;

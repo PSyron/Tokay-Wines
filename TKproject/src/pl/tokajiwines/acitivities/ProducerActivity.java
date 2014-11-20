@@ -3,8 +3,11 @@ package pl.tokajiwines.acitivities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,6 +35,7 @@ import pl.tokajiwines.models.Place;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -183,6 +187,24 @@ public class ProducerActivity extends BaseActivity {
         mUiDescription.setText(mProducerFromBase.mVast);
         mUiPhoneNumber.setText(mProducerFromBase.mPhone);
         mUiWineName.setText(mProducerFromBase.mWineName);
+        
+        final File imgFile = new File(ProducerActivity.this.getFilesDir().getAbsolutePath()
+                + "/"
+                + mProducerFromBase.mWineImageUrl.substring(
+                        mProducerFromBase.mWineImageUrl.lastIndexOf('/') + 1,
+                        mProducerFromBase.mWineImageUrl.length()));
+        if (imgFile.exists()) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+            mUiWineImage.setImageBitmap(myBitmap);
+        } else {
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
+                    App.downloadAndRun(mProducerFromBase.mWineImageUrl, ProducerActivity.this, mUiWineImage);
+                }
+            }, 50);
+        }
         mIsViewFilled = true;
     }
     
@@ -329,8 +351,8 @@ public class ProducerActivity extends BaseActivity {
             mProgDial.dismiss();
             if (mProducerFromBase != null) {
                 fillView();
-                Ion.with(mUiWineImage).placeholder(R.drawable.no_image)
-                        .error(R.drawable.error_image).load(mProducerFromBase.mWineImageUrl);
+               /* Ion.with(mUiWineImage).placeholder(R.drawable.no_image)
+                        .error(R.drawable.error_image).load(mProducerFromBase.mWineImageUrl);*/
             }
             mLoadProducerTask = null;
         }
