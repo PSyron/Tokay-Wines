@@ -137,5 +137,6 @@
     <!-- Developers -->
 
     <string name="pawel_cyron">Paweł Cyroń</string>
+    <string name="search_hint">Wpisz szukaną nazwę</string>
 
 </resources>

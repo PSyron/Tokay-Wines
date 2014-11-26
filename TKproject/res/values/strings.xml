@@ -156,9 +156,9 @@
     <string name="title_activity_wine">WineActivity</string>
     <string name="Username">zpi</string>
     <string name="Password">OEmGie</string>
-    
+
     <!-- Developers -->
-    
+
     <string name="paulina_konieczna">Paulina Konieczna</string>
     <string name="paulina_konieczna_email">konieczna.paulina00@gmail.com</string>
     <string name="pawel_cyron">Pawel Cyron</string>
@@ -167,5 +167,8 @@
     <string name="tomasz_kluza_email">kluza.tomasz@gmail.com</string>
     <string name="wojciech_klimczyk">Wojciech Klimczyk</string>
     <string name="wojciech_klimczyk_email">boberjunior@gmail.com</string>
+    <string name="search_hint">Type name to search</string>
+    <string name="title_activity_searchable">SearchableActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

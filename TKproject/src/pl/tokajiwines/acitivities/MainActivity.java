@@ -4,6 +4,9 @@ package pl.tokajiwines.acitivities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import pl.tokajiwines.App;
@@ -64,7 +68,8 @@ public class MainActivity extends Activity implements
         //initLanguage();
 
     }
-
+    
+    
     public void initLanguage() {
         int language;
         if (Locale.getDefault().getDisplayLanguage().contains("polsk")
@@ -192,6 +197,12 @@ public class MainActivity extends Activity implements
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.main, menu);
+            SearchManager searchManager =
+                    (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+             SearchView searchView =
+                     (SearchView) menu.findItem(R.id.action_search).getActionView();
+             searchView.setSearchableInfo(
+                     searchManager.getSearchableInfo(getComponentName()));
             restoreActionBar();
             return true;
         }
@@ -206,11 +217,11 @@ public class MainActivity extends Activity implements
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
-        } else if (id == R.id.action_search) {
-            Toast.makeText(MainActivity.this, getResources().getString(R.string.not_working),
+        } /*else if (id == R.id.action_search) {
+            .makeText(MainActivity.this, getResources().getString(R.string.not_working),
                     Toast.LENGTH_LONG).show();
             return true;
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 
