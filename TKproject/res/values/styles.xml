@@ -130,7 +130,6 @@
         <item name="android:layout_margin">2dp</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/gray</item>
-
     </style>
 
     <style name="DetailsHeader.NormalText.Description">
@@ -157,6 +156,31 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_margin">4dp</item>
         <item name="android:background">@color/filter_text</item>
+    </style>
+
+    <style name="SearchBookmark" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/filter_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">start</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="SearchBookmark.Button">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/filter_text</item>
+        <item name="android:padding">2dp</item>
+    </style>
+
+    <style name="SearchLayout">
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <style name="SearchLayout.Header">
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:background">@drawable/divider_filter</item>
     </style>
 
     <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
