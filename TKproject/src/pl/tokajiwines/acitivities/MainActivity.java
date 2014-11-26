@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.asyncs.GetSearchItemsAsync;
 import pl.tokajiwines.fragments.GuideFragment;
 import pl.tokajiwines.fragments.MapFragment;
 import pl.tokajiwines.fragments.NavigationDrawerFragment;
@@ -27,6 +28,7 @@ import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.fragments.WinesFilterFragment;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
+import pl.tokajiwines.utils.SuggestionProvider;
 
 import java.util.Locale;
 
@@ -39,6 +41,7 @@ public class MainActivity extends Activity implements
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
     boolean doubleBackToExitPressedOnce = false;
+    public GetSearchItemsAsync mLoadSearchItemsTask;
     /**
      * Used to store the last screen title. For use in
      * {@link #restoreActionBar()}.
@@ -68,6 +71,18 @@ public class MainActivity extends Activity implements
         //initLanguage();
 
     }
+    
+    @Override
+    protected void onPause() {
+
+        if (mLoadSearchItemsTask != null) {
+
+            mLoadSearchItemsTask.cancel(true);            
+            mLoadSearchItemsTask = null;
+        }
+        super.onPause();
+    }
+
     
     
     public void initLanguage() {
@@ -217,11 +232,14 @@ public class MainActivity extends Activity implements
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
-        } /*else if (id == R.id.action_search) {
-            .makeText(MainActivity.this, getResources().getString(R.string.not_working),
-                    Toast.LENGTH_LONG).show();
+        } else if (id == R.id.action_search) {
+            if (SuggestionProvider.sSearchItems == null)
+            {
+                mLoadSearchItemsTask = new GetSearchItemsAsync(MainActivity.this);
+                mLoadSearchItemsTask.execute();
+            }
             return true;
-        }*/
+        }
         return super.onOptionsItemSelected(item);
     }
 

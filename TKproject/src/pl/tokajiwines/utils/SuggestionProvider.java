@@ -11,13 +11,13 @@ import android.provider.BaseColumns;
 
 public class SuggestionProvider extends ContentProvider{
     
-    public static SearchItem[] sSearchItems = {new SearchItem(1, 1, "test")};
+    public static SearchItem[] sSearchItems = null; //= {new SearchItem(1, "hotel", "Toldi Fagado")};
     
     
     public Cursor query (Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
     {
-        System.out.println("GET!");
-        String query = uri.getLastPathSegment().toLowerCase();    
+        String query = uri.getLastPathSegment().toLowerCase();  
+
         String[] columns = {
                 BaseColumns._ID, 
                 SearchManager.SUGGEST_COLUMN_TEXT_1, 
@@ -29,8 +29,12 @@ public class SuggestionProvider extends ContentProvider{
          {
              for (int i = 0; i < sSearchItems.length; i++)
              {
-               String[] tmp = {Integer.toString(i), sSearchItems[i].mName};
-               cursor.addRow(tmp);
+                 if (sSearchItems[i].mName.toLowerCase().contains(query))
+                 {
+                   String[] tmp = {Integer.toString(i), sSearchItems[i].mName};
+                   cursor.addRow(tmp);
+                   System.out.println("QUERY IS "+query+", Name is "+sSearchItems[i].mName);
+                 }
              }
          }
          return cursor;

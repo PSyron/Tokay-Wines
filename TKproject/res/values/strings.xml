@@ -153,7 +153,7 @@
     <string name="UrlWinesGridViewList">http://tokajiwines.me/services/winesGridView.php</string>
     <string name="UrlRandomWine">http://tokajiwines.me/services/randomWine.php</string>
     <string name="UrlAllImagesDownload">http://tokajiwines.me/services/downloadImages.php</string>
-    <string name="title_activity_wine">WineActivity</string>
+    <string name="UrlSearchItems" >http://tokajiwines.me/services/searchItems.php</string><string name="UrlSearchResults" >http://tokajiwines.me/services/searchResults.php</string><string name="title_activity_wine">WineActivity</string>
     <string name="Username">zpi</string>
     <string name="Password">OEmGie</string>
 
@@ -170,5 +170,7 @@
     <string name="search_hint">Type name to search</string>
     <string name="title_activity_searchable">SearchableActivity</string>
     <string name="hello_world">Hello world!</string>
+    
+    
 
 </resources>

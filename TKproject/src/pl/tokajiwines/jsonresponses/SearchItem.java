@@ -7,12 +7,12 @@ public class SearchItem {
     @SerializedName("id")
     public int mId;
     @SerializedName("type")
-    public int mItemType;
+    public String mItemType;
     @SerializedName("name")
     public String mName;
     
     
-    public SearchItem(int i, int t, String n)
+    public SearchItem(int i, String t, String n)
     {
         mId = i;
         mItemType = t;
