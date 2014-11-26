@@ -1,15 +1,13 @@
 
 package pl.tokajiwines.acitivities;
 
-import pl.tokajiwines.R;
-import pl.tokajiwines.R.id;
-import pl.tokajiwines.R.layout;
-import pl.tokajiwines.R.menu;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import pl.tokajiwines.R;
 
 public class SearchableActivity extends BaseActivity {
 
@@ -23,7 +21,7 @@ public class SearchableActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.searchable, menu);
+        getMenuInflater().inflate(R.menu.search_with_home, menu);
         return true;
     }
 
@@ -38,13 +36,12 @@ public class SearchableActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    
-    
+
     @Override
     protected void onNewIntent(Intent intent) {
         handleIntent(intent);
     }
-    
+
     private void handleIntent(Intent intent) {
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
