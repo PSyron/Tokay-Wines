@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.koushikdutta.ion.Ion;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import org.apache.http.NameValuePair;
@@ -71,7 +70,7 @@ public class ProducerActivity extends BaseActivity {
     ScrollView mUiScroll;
     ImagePagerItem[] mImagesUrl;
     ImagePagerAdapter mAdapter;
-    
+
     LoadProducerTask mLoadProducerTask;
     LoadProducerImagesTask mLoadProducerImagesTask;
 
@@ -187,7 +186,7 @@ public class ProducerActivity extends BaseActivity {
         mUiDescription.setText(mProducerFromBase.mVast);
         mUiPhoneNumber.setText(mProducerFromBase.mPhone);
         mUiWineName.setText(mProducerFromBase.mWineName);
-        
+
         final File imgFile = new File(ProducerActivity.this.getFilesDir().getAbsolutePath()
                 + "/"
                 + mProducerFromBase.mWineImageUrl.substring(
@@ -201,17 +200,17 @@ public class ProducerActivity extends BaseActivity {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
-                    App.downloadAndRun(mProducerFromBase.mWineImageUrl, ProducerActivity.this, mUiWineImage);
+                    App.downloadAndRun(mProducerFromBase.mWineImageUrl, ProducerActivity.this,
+                            mUiWineImage);
                 }
             }, 50);
         }
         mIsViewFilled = true;
     }
-    
-    public void fillPager(){
+
+    public void fillPager() {
         Log.e("fillPager", "Pager filled");
-        if (mImagesUrl.length > 0)
-        {
+        if (mImagesUrl.length > 0) {
             mAdapter = new ImagePagerAdapter(ProducerActivity.this, mImagesUrl);
             mUiPager.setAdapter(mAdapter);
             mUiPageIndicator.setViewPager(mUiPager);
@@ -223,63 +222,54 @@ public class ProducerActivity extends BaseActivity {
         // TODO Auto-generated method stub
         super.onResume();
 
+        // if there is an access to the Internet, try to load data from remote database
 
-            // if there is an access to the Internet, try to load data from remote database
+        if (App.isOnline(ProducerActivity.this)) {
 
-            if (App.isOnline(ProducerActivity.this)) {
-                
-                if (mProducerFromBase == null) {
-                    mLoadProducerTask = new LoadProducerTask();
-                    mLoadProducerTask.execute();
-                }
-                
-                else
-                {
-                    if (!mIsViewFilled)
-                    {
-                        fillView();
-                    }
-                }
-                
-                if (mImagesUrl == null) {
-                    mLoadProducerImagesTask = new LoadProducerImagesTask();
-                    mLoadProducerImagesTask.execute();
-                }
-                
-                else
-                {
-                    if (!mIsPagerFilled)
-                    {
-                        fillPager();
-                    }
-                }
+            if (mProducerFromBase == null) {
+                mLoadProducerTask = new LoadProducerTask();
+                mLoadProducerTask.execute();
             }
-
-            // otherwise, show message
 
             else {
-                Toast.makeText(ProducerActivity.this,
-                        getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG)
-                        .show();
+                if (!mIsViewFilled) {
+                    fillView();
+                }
             }
-        
-        
+
+            if (mImagesUrl == null) {
+                mLoadProducerImagesTask = new LoadProducerImagesTask();
+                mLoadProducerImagesTask.execute();
+            }
+
+            else {
+                if (!mIsPagerFilled) {
+                    fillPager();
+                }
+            }
+        }
+
+        // otherwise, show message
+
+        else {
+            Toast.makeText(ProducerActivity.this,
+                    getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG).show();
+        }
 
     }
-    
+
     @Override
     protected void onPause() {
 
         if (mLoadProducerTask != null) {
             mLoadProducerTask.cancel(true);
-            if (mProgDial != null)
-            {
+            if (mProgDial != null) {
                 mProgDial.dismiss();
             }
-            
+
             mLoadProducerTask = null;
         }
-        
+
         if (mLoadProducerImagesTask != null) {
             mLoadProducerImagesTask.cancel(true);
             mLoadProducerImagesTask = null;
@@ -305,13 +295,12 @@ public class ProducerActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (mProgDial == null)
-            {
+            if (mProgDial == null) {
                 mProgDial = new ProgressDialog(ProducerActivity.this);
             }
-                mProgDial.setMessage("Loading producer details...");
-                mProgDial.setIndeterminate(false);
-                mProgDial.setCancelable(true);
+            mProgDial.setMessage(getResources().getString(R.string.loading_producer));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
             mProgDial.show();
 
         }
@@ -351,8 +340,8 @@ public class ProducerActivity extends BaseActivity {
             mProgDial.dismiss();
             if (mProducerFromBase != null) {
                 fillView();
-               /* Ion.with(mUiWineImage).placeholder(R.drawable.no_image)
-                        .error(R.drawable.error_image).load(mProducerFromBase.mWineImageUrl);*/
+                /* Ion.with(mUiWineImage).placeholder(R.drawable.no_image)
+                         .error(R.drawable.error_image).load(mProducerFromBase.mWineImageUrl);*/
             }
             mLoadProducerTask = null;
         }
@@ -368,11 +357,11 @@ public class ProducerActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-/*            mProgDial = new ProgressDialog(ProducerActivity.this);
-            mProgDial.setMessage("Loading producer images...");
-            mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
-            mProgDial.show();*/
+            /*            mProgDial = new ProgressDialog(ProducerActivity.this);
+                        mProgDial.setMessage("Loading producer images...");
+                        mProgDial.setIndeterminate(false);
+                        mProgDial.setCancelable(true);
+                        mProgDial.show();*/
 
         }
 
@@ -407,11 +396,11 @@ public class ProducerActivity extends BaseActivity {
         protected void onPostExecute(String file_url) {
 
             super.onPostExecute(file_url);
-       //     mProgDial.dismiss();
+            //     mProgDial.dismiss();
             if (mImagesUrl != null && mImagesUrl.length > 0) {
                 fillPager();
             }
-            
+
             mLoadProducerImagesTask = null;
 
         }

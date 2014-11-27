@@ -78,8 +78,8 @@ public class TabRestaurantsFragment extends BaseFragment {
 
         return rootView;
     }
-    
-    public void fillView(){
+
+    public void fillView() {
         Log.e("fillView", "Restaurant view filled");
         mAdapter = new RestaurantsAdapter(getActivity(), mRestaurantList);
         mUiList.setAdapter(mAdapter);
@@ -104,28 +104,24 @@ public class TabRestaurantsFragment extends BaseFragment {
                 Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
                         Toast.LENGTH_LONG).show();
             }
-        }
-        else
-        {
-            if (!mIsViewFilled)
-            {
+        } else {
+            if (!mIsViewFilled) {
                 fillView();
             }
         }
 
     }
-    
+
     @Override
     public void onPause() {
 
         if (mLoadRestaurantTask != null) {
 
             mLoadRestaurantTask.cancel(true);
-            if (mProgDial != null)
-            {
+            if (mProgDial != null) {
                 mProgDial.dismiss();
             }
-            
+
             mLoadRestaurantTask = null;
         }
         super.onPause();
@@ -142,11 +138,10 @@ public class TabRestaurantsFragment extends BaseFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (mProgDial == null)
-            {
+            if (mProgDial == null) {
                 mProgDial = new ProgressDialog(mContext);
             }
-            mProgDial.setMessage("Loading restaurants data...");
+            mProgDial.setMessage(getResources().getString(R.string.loading_restaurants));
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
             mProgDial.show();
@@ -161,13 +156,12 @@ public class TabRestaurantsFragment extends BaseFragment {
             mParser = new JSONParser();
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
-            if (source != null)
-            {
+            if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
-    
+
                 RestaurantsResponse response = gson.fromJson(reader, RestaurantsResponse.class);
-    
+
                 if (response != null) {
                     mRestaurantList = response.restaurants;
                 }
@@ -183,8 +177,7 @@ public class TabRestaurantsFragment extends BaseFragment {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            if (mRestaurantList != null)
-            {
+            if (mRestaurantList != null) {
                 fillView();
             }
             mLoadRestaurantTask = null;

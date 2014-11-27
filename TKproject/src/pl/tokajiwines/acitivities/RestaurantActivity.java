@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.koushikdutta.ion.Ion;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import org.apache.http.NameValuePair;
@@ -59,7 +58,7 @@ public class RestaurantActivity extends BaseActivity {
     TextView mUiUrl;
     TextView mUiDescription;
     ImageView mUiNavigate;
-    
+
     LoadRestaurantTask mLoadRestaurantTask;
 
     @Override
@@ -133,7 +132,7 @@ public class RestaurantActivity extends BaseActivity {
         mUiUrl.setText(mRestaurantFromBase.mLink);
         mUiDescription.setText(mRestaurantFromBase.mVast);
         mUiPhoneNumber.setText(mRestaurantFromBase.mPhone);
-        
+
         final File imgFile = new File(RestaurantActivity.this.getFilesDir().getAbsolutePath()
                 + "/"
                 + mRestaurantFromBase.mImageUrl.substring(
@@ -147,7 +146,8 @@ public class RestaurantActivity extends BaseActivity {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
-                    App.downloadAndRun(mRestaurantFromBase.mImageUrl, RestaurantActivity.this, mUiImage);
+                    App.downloadAndRun(mRestaurantFromBase.mImageUrl, RestaurantActivity.this,
+                            mUiImage);
                 }
             }, 50);
         }
@@ -175,30 +175,27 @@ public class RestaurantActivity extends BaseActivity {
                         .show();
             }
         }
-        
-        else
-        {
-            if (!mIsViewFilled)
-            {
+
+        else {
+            if (!mIsViewFilled) {
                 fillView();
             }
         }
 
     }
-    
+
     @Override
     protected void onPause() {
 
         if (mLoadRestaurantTask != null) {
-            
+
             System.out.println("TASK NOT NULL");
 
             mLoadRestaurantTask.cancel(true);
-            if (mProgDial != null)
-            {
+            if (mProgDial != null) {
                 mProgDial.dismiss();
             }
-            
+
             mLoadRestaurantTask = null;
         }
         super.onPause();
@@ -213,14 +210,13 @@ public class RestaurantActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (mProgDial == null)
-            {
+            if (mProgDial == null) {
                 mProgDial = new ProgressDialog(RestaurantActivity.this);
             }
-                mProgDial.setMessage("Loading restaurant details...");
-                mProgDial.setIndeterminate(false);
-                mProgDial.setCancelable(true);
-             mProgDial.show();
+            mProgDial.setMessage(getResources().getString(R.string.loading_restaurant));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
 
         }
 
@@ -259,7 +255,7 @@ public class RestaurantActivity extends BaseActivity {
             if (mRestaurantFromBase != null) {
                 fillView();
             }
-            
+
             mLoadRestaurantTask = null;
 
         }

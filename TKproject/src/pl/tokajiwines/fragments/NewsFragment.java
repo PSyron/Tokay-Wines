@@ -72,16 +72,18 @@ public class NewsFragment extends BaseFragment {
         });
         mContext = getActivity();
         mIsViewFilled = false;
-        
+
         return rootView;
     }
-    public void fillView(){
+
+    public void fillView() {
         Log.e("fillView", "View filled");
         mAdapter = new NewsAdapter(getActivity(), mNewsList);
         mUiList.setAdapter(mAdapter);
         mIsViewFilled = true;
 
     }
+
     // if there is an access to the Internet, try to load data from remote database
 
     public void onResume() {
@@ -102,29 +104,25 @@ public class NewsFragment extends BaseFragment {
                         Toast.LENGTH_LONG).show();
             }
         }
-        
-        else
-        {
-            if (!mIsViewFilled)
-            {
+
+        else {
+            if (!mIsViewFilled) {
                 fillView();
             }
         }
 
     }
-    
-    
+
     @Override
     public void onPause() {
 
         if (mLoadNewsTask != null) {
 
             mLoadNewsTask.cancel(true);
-            if (mProgDial != null)
-            {
+            if (mProgDial != null) {
                 mProgDial.dismiss();
             }
-            
+
             mLoadNewsTask = null;
         }
         super.onPause();
@@ -141,11 +139,10 @@ public class NewsFragment extends BaseFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (mProgDial == null)
-            {
+            if (mProgDial == null) {
                 mProgDial = new ProgressDialog(mContext);
             }
-            mProgDial.setMessage("Loading news data...");
+            mProgDial.setMessage(getResources().getString(R.string.loading_news));
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(false);
             mProgDial.show();
@@ -183,7 +180,7 @@ public class NewsFragment extends BaseFragment {
             if (mNewsList != null) {
                 fillView();
             }
-            
+
             mLoadNewsTask = null;
         }
 

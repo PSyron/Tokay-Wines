@@ -27,6 +27,22 @@
     <string name="downloading_content">Downloading content</string>
     <string name="exit_msg">Please click BACK again to exit</string>
 
+    <!-- Loading -->
+    
+    <string name="loading">Loading...</string>
+    <string name="loading_search">Loading search results...</string>
+    <string name="loading_news">Loading news data...</string>
+    <string name="loading_wine">Loading wine data...</string>
+    <string name="loading_wines">Loading wines data...</string>
+	<string name="loading_producer">Loading producer data...</string>
+	<string name="loading_producers">Loading producers data...</string>
+    <string name="loading_near">Loading near places...</string>
+    <string name="loading_hotel">Loading hotel data...</string>
+    <string name="loading_hotels">Loading hotels data...</string>
+    <string name="loading_restaurant">Loading restaurant data...</string>
+    <string name="loading_restaurants">Loading restaurants data...</string>
+    
+
     <!-- Menu -->
 
     <string name="menu_news">News</string>
@@ -86,7 +102,6 @@
 
     <!-- Map -->
 
-    <string name="loading_near">Loading near places...</string>
     <string name="here_u_are">Here You are</string>
     <string name="distance">Distance: </string>
     <string name="duration">\nDuration: </string>
@@ -153,7 +168,9 @@
     <string name="UrlWinesGridViewList">http://tokajiwines.me/services/winesGridView.php</string>
     <string name="UrlRandomWine">http://tokajiwines.me/services/randomWine.php</string>
     <string name="UrlAllImagesDownload">http://tokajiwines.me/services/downloadImages.php</string>
-    <string name="UrlSearchItems" >http://tokajiwines.me/services/searchItems.php</string><string name="UrlSearchResults" >http://tokajiwines.me/services/searchResults.php</string><string name="title_activity_wine">WineActivity</string>
+    <string name="UrlSearchItems">http://tokajiwines.me/services/searchItems.php</string>
+    <string name="UrlSearchResults">http://tokajiwines.me/services/searchResults.php</string>
+    <string name="title_activity_wine">WineActivity</string>
     <string name="Username">zpi</string>
     <string name="Password">OEmGie</string>
 
@@ -170,7 +187,5 @@
     <string name="search_hint">Type name to search</string>
     <string name="title_activity_searchable">SearchableActivity</string>
     <string name="hello_world">Hello world!</string>
-    
-    
 
 </resources>
