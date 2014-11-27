@@ -23,11 +23,13 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.fragments.ProducersFragment;
+import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.WineDetails;
 import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
+import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 import java.io.File;
 import java.io.InputStream;
@@ -41,6 +43,7 @@ public class WineActivity extends BaseActivity {
     BaseActivity mWinesGridViewActivity;
 
     boolean mIsViewFilled;
+    boolean mIsFromList;
     TextView mUiName;
     ImageView mUiImage;
     TextView mUiProducerName;
@@ -88,8 +91,19 @@ public class WineActivity extends BaseActivity {
             mIsFromProducer = extras.getBoolean(WineActivity.TAG_CALLED_FROM_PRODUCER);
         }
 
-        initView();
         mIsViewFilled = false;
+        
+        if (mWine.mIdProducer != 0)
+        {
+            mIsFromList = true;
+        }
+        else
+        {
+            mIsFromList = false;
+        }
+        
+        initView();
+        
     }
 
     public void initView() {
@@ -110,6 +124,14 @@ public class WineActivity extends BaseActivity {
         mUiYearLayout = (LinearLayout) findViewById(R.id.activity_wine_year_layout);
         mUiPriceLayout = (LinearLayout) findViewById(R.id.activity_wine_price_layout);
 
+        if (mIsFromList)
+        {
+            fillWithBasics();
+        }
+    }
+    
+    public void fillWithBasics()
+    {
         mUiName.setText(mWine.mName);
         mUiProducerName.setText(mWine.mProducerName);
 
@@ -184,6 +206,11 @@ public class WineActivity extends BaseActivity {
                     }
                 }, 50);
             }
+        }
+        
+        if (!mIsFromList)
+        {
+            fillWithBasics();
         }
         mIsViewFilled = true;
     }
@@ -261,6 +288,10 @@ public class WineActivity extends BaseActivity {
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("idWine", "" + mWine.mIdWine));
+            params.add(new BasicNameValuePair("hasBasics", ""+mIsFromList));
+            params.add(new BasicNameValuePair("lang", ""
+                    + SharedPreferencesHelper.getSharedPreferencesInt(mContext,
+                            SettingsFragment.SharedKeyLanguage, SettingsFragment.DefLanguage)));
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
 
@@ -272,6 +303,10 @@ public class WineActivity extends BaseActivity {
 
                 if (response != null) {
                     mWineDetails = response;
+                    if (!mIsFromList)
+                    {
+                        mWine = mWineDetails.mBasics;
+                    }
                 }
             }
             return null;

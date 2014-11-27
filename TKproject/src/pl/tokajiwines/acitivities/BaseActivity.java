@@ -3,15 +3,22 @@ package pl.tokajiwines.acitivities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import pl.tokajiwines.R;
+import pl.tokajiwines.asyncs.GetSearchItemsAsync;
+import pl.tokajiwines.utils.SuggestionProvider;
 
 public class BaseActivity extends Activity {
+    
+    public GetSearchItemsAsync mLoadSearchItemsTask;
 
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
@@ -23,6 +30,14 @@ public class BaseActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.search_with_home, menu);
+        
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+         SearchView searchView =
+                 (SearchView) menu.findItem(R.id.action_search).getActionView();
+         searchView.setSearchableInfo(
+                 searchManager.getSearchableInfo(getComponentName()));
+         
         restoreActionBar();
 
         return true;
@@ -33,6 +48,17 @@ public class BaseActivity extends Activity {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+    
+    @Override
+    protected void onPause() {
+
+        if (mLoadSearchItemsTask != null) {
+
+            mLoadSearchItemsTask.cancel(true);            
+            mLoadSearchItemsTask = null;
+        }
+        super.onPause();
     }
 
     @Override
@@ -65,7 +91,11 @@ public class BaseActivity extends Activity {
 
             }
             case R.id.action_search: {
-                Toast.makeText(BaseActivity.this, "Not working yet", Toast.LENGTH_LONG).show();
+                if (SuggestionProvider.sSearchItems == null)
+                {
+                    mLoadSearchItemsTask = new GetSearchItemsAsync(BaseActivity.this);
+                    mLoadSearchItemsTask.execute();
+                }
                 return true;
             }
 

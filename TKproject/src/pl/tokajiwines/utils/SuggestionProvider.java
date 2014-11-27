@@ -25,6 +25,7 @@ public class SuggestionProvider extends ContentProvider{
         String[] columns = {
                 BaseColumns._ID, 
                 SearchManager.SUGGEST_COLUMN_TEXT_1, 
+                SearchManager.SUGGEST_COLUMN_INTENT_DATA
              };
 
          MatrixCursor cursor = new MatrixCursor(columns);
@@ -35,7 +36,7 @@ public class SuggestionProvider extends ContentProvider{
              {
                  if (removeDiacriticalMarks(sSearchItems[i].mName.toLowerCase(Locale.getDefault())).contains(query))
                  {
-                   String[] tmp = {Integer.toString(i), sSearchItems[i].mName};
+                   String[] tmp = {Integer.toString(i), sSearchItems[i].mName, Integer.toString(i)};
                    cursor.addRow(tmp);
                  }
              }

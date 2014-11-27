@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,10 +26,19 @@ import org.apache.http.message.BasicNameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.fragments.SettingsFragment;
+import pl.tokajiwines.fragments.TabHotelsFragment;
+import pl.tokajiwines.fragments.TabRestaurantsFragment;
+import pl.tokajiwines.jsonresponses.HotelListItem;
+import pl.tokajiwines.jsonresponses.ProducerListItem;
+import pl.tokajiwines.jsonresponses.RestaurantListItem;
+import pl.tokajiwines.jsonresponses.SearchItem;
 import pl.tokajiwines.jsonresponses.SearchResultResponse;
+import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
+import pl.tokajiwines.utils.SuggestionProvider;
 
 import java.io.File;
 import java.io.InputStream;
@@ -40,6 +50,8 @@ public class SearchableActivity extends BaseActivity {
 
     ProgressDialog mProgDial;
     boolean mIsViewFilled;
+    int mSelectedId;
+    SearchItem mSelectedItem;
     Context mContext;
     JSONParser mParser;
     String query;
@@ -81,6 +93,8 @@ public class SearchableActivity extends BaseActivity {
     TextView mRestaurantPhone;
     TextView mRestaurantAddress;
     ImageView mRestaurantImage;
+   
+    public String TAG_WINE_ID = "wineId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -406,7 +420,50 @@ public class SearchableActivity extends BaseActivity {
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
-        }
+        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            // Handle a suggestions click (because the suggestions all use ACTION_VIEW)
+                mSelectedId = Integer.parseInt(intent.getDataString());
+                mSelectedItem = SuggestionProvider.sSearchItems[mSelectedId];
+                
+                Intent startIntent;
+                
+                if (mSelectedItem != null)
+                {
+                   if (mSelectedItem.mItemType.equals(SearchItem.TAG_WINE))
+                   {
+                       startIntent = new Intent(mContext, WineActivity.class);
+                       startIntent.putExtra(WinesListActivity.TAG_WINE, new WineListItem(mSelectedItem.mId, mSelectedItem.mName));
+                       startIntent.putExtra(WineActivity.TAG_CALLED_FROM_PRODUCER, false);
+                       startActivity(startIntent);
+                   }
+                   else if (mSelectedItem.mItemType.equals(SearchItem.TAG_PRODUCER))
+                   {
+                       startIntent = new Intent(mContext, ProducerActivity.class);
+                       startIntent.putExtra(ProducersFragment.PRODUCER_TAG, new ProducerListItem(
+                               mSelectedItem.mId, mSelectedItem.mName, ""));
+                       startActivity(startIntent);       
+                   }
+                   
+                   else if (mSelectedItem.mItemType.equals(SearchItem.TAG_HOTEL))
+                   {
+                       startIntent = new Intent(mContext, HotelActivity.class);
+                       startIntent.putExtra(TabHotelsFragment.HOTEL_TAG, new HotelListItem(
+                               mSelectedItem.mId, mSelectedItem.mName));
+                       startActivity(startIntent);       
+                   }
+                   
+                   else if (mSelectedItem.mItemType.equals(SearchItem.TAG_RESTAURANT))
+                   {
+                       startIntent = new Intent(mContext, RestaurantActivity.class);
+                       startIntent.putExtra(TabRestaurantsFragment.RESTAURANT_TAG, new RestaurantListItem(
+                               mSelectedItem.mId, mSelectedItem.mName));
+                       startActivity(startIntent);       
+                   }
+                }
+                
+                finish();
+                
+            }
     }
 
     class LoadSearchResultTask extends AsyncTask<String, String, String> {

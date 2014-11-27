@@ -31,6 +31,12 @@ public class WineListItem implements Serializable{
     @SerializedName("strains")
     public String mStrains;
     
+    public WineListItem(int id, String name)
+    {
+        mIdWine = id;
+        mName = name;       
+    }
+    
 
 
 }

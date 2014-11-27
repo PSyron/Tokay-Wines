@@ -40,4 +40,10 @@ public class RestaurantListItem implements Serializable {
         mPostCode = postCode;
 
     }
+    
+    public RestaurantListItem(int id, String name)
+    {
+        mIdRestaurant = id;
+        mName = name;
+    }
 }

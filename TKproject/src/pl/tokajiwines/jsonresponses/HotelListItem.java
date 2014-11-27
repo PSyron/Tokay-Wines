@@ -40,4 +40,10 @@ public class HotelListItem implements Serializable {
         mPostCode = postCode;
 
     }
+    
+    public HotelListItem(int id, String name)
+    {
+        mIdHotel = id;
+        mName = name;
+    }
 }

@@ -19,5 +19,7 @@ public class WineDetails implements Serializable{
     public String mImageUrl;
     @SerializedName("description")
     public String mDescription;
+    @SerializedName("basics")
+    public WineListItem mBasics;
 
 }

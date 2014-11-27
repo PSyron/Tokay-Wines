@@ -218,6 +218,15 @@ public class MainActivity extends Activity implements
                      (SearchView) menu.findItem(R.id.action_search).getActionView();
              searchView.setSearchableInfo(
                      searchManager.getSearchableInfo(getComponentName()));
+/*             searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                
+                @Override
+                public boolean onClose() {
+                    System.out.println("CLOSE");
+                    SuggestionProvider.sSearchItems = null;
+                    return false;
+                }
+            });*/
             restoreActionBar();
             return true;
         }
