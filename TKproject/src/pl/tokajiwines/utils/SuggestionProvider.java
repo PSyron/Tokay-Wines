@@ -1,5 +1,7 @@
 package pl.tokajiwines.utils;
 
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.util.Locale;
 
 import pl.tokajiwines.jsonresponses.SearchItem;
@@ -31,7 +33,7 @@ public class SuggestionProvider extends ContentProvider{
          {
              for (int i = 0; i < sSearchItems.length; i++)
              {
-                 if (sSearchItems[i].mName.toLowerCase(Locale.getDefault()).contains(query))
+                 if (removeDiacriticalMarks(sSearchItems[i].mName.toLowerCase(Locale.getDefault())).contains(query))
                  {
                    String[] tmp = {Integer.toString(i), sSearchItems[i].mName};
                    cursor.addRow(tmp);
@@ -66,6 +68,11 @@ public class SuggestionProvider extends ContentProvider{
     public int update(Uri uri, ContentValues values, String where,
           String[] whereArgs) {
        return 0;
+    }
+    
+    public static String removeDiacriticalMarks(String string) {
+        return Normalizer.normalize(string, Form.NFD)
+            .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
     }
 
 }

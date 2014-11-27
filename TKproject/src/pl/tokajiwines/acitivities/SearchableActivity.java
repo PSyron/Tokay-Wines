@@ -510,13 +510,13 @@ public class SearchableActivity extends BaseActivity {
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
             
             if (source != null) {
+                
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
 
                 SearchResultResponse response = gson.fromJson(reader, SearchResultResponse.class);
 
                 if (response != null) {
-                    System.out.println(response.message);
                     mSearchResult = response;
                 }
             }
