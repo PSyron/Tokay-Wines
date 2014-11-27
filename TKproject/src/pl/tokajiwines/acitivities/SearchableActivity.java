@@ -488,7 +488,7 @@ public class SearchableActivity extends BaseActivity {
             {
                 mProgDial = new ProgressDialog(mContext);
             }
-            mProgDial.setMessage("Loading news data...");
+            mProgDial.setMessage("Loading search results...");
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(false);
             mProgDial.show();
