@@ -1,5 +1,7 @@
 package pl.tokajiwines.utils;
 
+import java.util.Locale;
+
 import pl.tokajiwines.jsonresponses.SearchItem;
 import android.app.SearchManager;
 import android.content.ContentProvider;
@@ -16,7 +18,7 @@ public class SuggestionProvider extends ContentProvider{
     
     public Cursor query (Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
     {
-        String query = uri.getLastPathSegment().toLowerCase();  
+        String query = uri.getLastPathSegment().toLowerCase(Locale.getDefault());  
 
         String[] columns = {
                 BaseColumns._ID, 
@@ -29,11 +31,10 @@ public class SuggestionProvider extends ContentProvider{
          {
              for (int i = 0; i < sSearchItems.length; i++)
              {
-                 if (sSearchItems[i].mName.toLowerCase().contains(query))
+                 if (sSearchItems[i].mName.toLowerCase(Locale.getDefault()).contains(query))
                  {
                    String[] tmp = {Integer.toString(i), sSearchItems[i].mName};
                    cursor.addRow(tmp);
-                   System.out.println("QUERY IS "+query+", Name is "+sSearchItems[i].mName);
                  }
              }
          }
