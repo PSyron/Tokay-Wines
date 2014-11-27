@@ -463,7 +463,7 @@ public class WinesFilterFragment extends BaseFragment {
         protected void onPreExecute() {
             super.onPreExecute();
             mProgDial = new ProgressDialog(mCtx);
-            mProgDial.setMessage("Loading...");
+            mProgDial.setMessage(getResources().getString(R.string.loading));
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
             mProgDial.show();

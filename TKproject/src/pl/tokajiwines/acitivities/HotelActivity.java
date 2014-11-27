@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.koushikdutta.ion.Ion;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import org.apache.http.NameValuePair;
@@ -28,7 +27,6 @@ import pl.tokajiwines.fragments.TabHotelsFragment;
 import pl.tokajiwines.jsonresponses.HotelDetails;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.models.Place;
-import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
@@ -45,7 +43,7 @@ public class HotelActivity extends BaseActivity {
     ProgressDialog mProgDial;
     HotelListItem mHotel;
     HotelDetails mHotelFromBase;
-    
+
     boolean mIsViewFilled;
     TextView mUiTitle;
     ImageView mUiImage;
@@ -126,11 +124,10 @@ public class HotelActivity extends BaseActivity {
         mUiUrl.setText(mHotelFromBase.mLink);
         mUiDescription.setText(mHotelFromBase.mVast);
         mUiPhoneNumber.setText(mHotelFromBase.mPhone);
-        
+
         final File imgFile = new File(HotelActivity.this.getFilesDir().getAbsolutePath()
                 + "/"
-                + mHotelFromBase.mImageUrl.substring(
-                        mHotelFromBase.mImageUrl.lastIndexOf('/') + 1,
+                + mHotelFromBase.mImageUrl.substring(mHotelFromBase.mImageUrl.lastIndexOf('/') + 1,
                         mHotelFromBase.mImageUrl.length()));
         if (imgFile.exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
@@ -144,7 +141,7 @@ public class HotelActivity extends BaseActivity {
                 }
             }, 50);
         }
-        
+
         mIsViewFilled = true;
 
     }
@@ -152,46 +149,42 @@ public class HotelActivity extends BaseActivity {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        
-        if (mHotelFromBase == null)
-        {
+
+        if (mHotelFromBase == null) {
 
             // if there is an access to the Internet, try to load data from remote database
-    
+
             if (App.isOnline(HotelActivity.this)) {
                 mLoadHotelTask = new LoadHotelTask();
                 mLoadHotelTask.execute();
             }
-    
+
             // otherwise, show message
-    
+
             else {
-                Toast.makeText(HotelActivity.this, "Cannot connect to the Internet", Toast.LENGTH_LONG)
-                        .show();
+                Toast.makeText(HotelActivity.this, "Cannot connect to the Internet",
+                        Toast.LENGTH_LONG).show();
             }
         }
-        
-        else
-        {
-            if (!mIsViewFilled)
-            {
+
+        else {
+            if (!mIsViewFilled) {
                 fillView();
             }
         }
 
     }
-    
+
     @Override
     protected void onPause() {
 
         if (mLoadHotelTask != null) {
 
             mLoadHotelTask.cancel(true);
-            if (mProgDial != null)
-            {
+            if (mProgDial != null) {
                 mProgDial.dismiss();
             }
-            
+
             mLoadHotelTask = null;
         }
         super.onPause();
@@ -206,14 +199,13 @@ public class HotelActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (mProgDial == null)
-            {
+            if (mProgDial == null) {
                 mProgDial = new ProgressDialog(HotelActivity.this);
             }
-                mProgDial.setMessage("Loading hotel details...");
-                mProgDial.setIndeterminate(false);
-                mProgDial.setCancelable(true);
-             mProgDial.show();
+            mProgDial.setMessage(getResources().getString(R.string.loading_hotel));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
 
         }
 
@@ -227,14 +219,12 @@ public class HotelActivity extends BaseActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("who", "" + mHotel.mIdHotel));
 
-            InputStream source = mParser.retrieveStream(sUrl, sUsername,
-                    sPassword, params);
-            if (source != null)
-            {
+            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
+            if (source != null) {
 
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
-    
+
                 HotelDetails response = gson.fromJson(reader, HotelDetails.class);
                 Log.e(HotelActivity.class.getName(), response.mIdHotel + " ");
                 if (response != null) {
@@ -255,7 +245,7 @@ public class HotelActivity extends BaseActivity {
             if (mHotelFromBase != null) {
                 fillView();
             }
-            
+
             mLoadHotelTask = null;
 
         }

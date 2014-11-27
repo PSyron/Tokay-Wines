@@ -1,99 +1,94 @@
 
-package pl.tokajiwines.fragments;
+package pl.tokajiwines.acitivities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.apache.http.NameValuePair;
+
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.HotelActivity;
-import pl.tokajiwines.adapters.HotelsAdapter;
-import pl.tokajiwines.jsonresponses.HotelListItem;
-import pl.tokajiwines.jsonresponses.HotelsResponse;
+import pl.tokajiwines.adapters.RestaurantsAdapter;
+import pl.tokajiwines.jsonresponses.RestaurantListItem;
+import pl.tokajiwines.jsonresponses.RestaurantsResponse;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TabHotelsFragment extends BaseFragment {
+public class RestaurantsSearchActivity extends BaseActivity {
 
     ListView mUiList;
-    HotelsAdapter mAdapter;
+    RestaurantsAdapter mAdapter;
     boolean mIsViewFilled;
-    LoadHotelTask mLoadHotelTask;
+    LoadRestaurantsTask mLoadRestaurantsTask;
     Context mContext;
     JSONParser mParser;
     ProgressDialog mProgDial;
     private String sUrl;
     private String sUsername;
     private String sPassword;
-    public static final String HOTEL_TAG = "hotel";
-    private HotelListItem[] mHotelList;
-
-    public static TabHotelsFragment newInstance() {
-        TabHotelsFragment fragment = new TabHotelsFragment();
-
-        return fragment;
-    }
-
-    public TabHotelsFragment() {
-    }
+    public static final String HOTEL_TAG = "restaurant";
+    private RestaurantListItem[] mRestaurantsList;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_hotels, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_restaurants_search);
+        getActionBar().setTitle(getResources().getString(R.string.restaurants));
+        Bundle extras = getIntent().getExtras();
+        mContext = this;
 
-        sUrl = getResources().getString(R.string.UrlHotelsList);
+        //        sUrl = getResources().getString(R.string.UrlWinesList);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
 
-        mUiList = (ListView) rootView.findViewById(R.id.frag_hotels_list);
-        mHotelList = new HotelListItem[0];
-        mAdapter = new HotelsAdapter(getActivity(), mHotelList);
+        mRestaurantsList = new RestaurantListItem[0];
+        mUiList = (ListView) findViewById(R.id.activity_restaurants_search_list);
+        mAdapter = new RestaurantsAdapter(this, mRestaurantsList);
         mUiList.setAdapter(mAdapter);
 
         mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                HotelListItem temp = (HotelListItem) mAdapter.getItem(position);
-                Intent intent = new Intent(mContext, HotelActivity.class);
+                RestaurantListItem temp = (RestaurantListItem) mAdapter.getItem(position);
+                Intent intent = new Intent(mContext, RestaurantActivity.class);
                 intent.putExtra(HOTEL_TAG, temp);
-                startActivityForResult(intent, HotelActivity.REQUEST);
+                startActivityForResult(intent, RestaurantActivity.REQUEST);
             }
         });
-        mContext = getActivity();
         mIsViewFilled = false;
-
-        return rootView;
     }
 
     public void fillView() {
+
         Log.e("fillView", "View filled");
-        mAdapter = new HotelsAdapter(getActivity(), mHotelList);
+        mAdapter = new RestaurantsAdapter(this, mRestaurantsList);
         mUiList.setAdapter(mAdapter);
         mIsViewFilled = true;
     }
 
-    // if there is an access to the Internet, try to load data from remote database
-
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        if (mHotelList.length == 0) {
+
+        if (mRestaurantsList.length == 0) {
+
             if (App.isOnline(mContext)) {
-                mLoadHotelTask = new LoadHotelTask();
-                mLoadHotelTask.execute();
+                mLoadRestaurantsTask = new LoadRestaurantsTask();
+                mLoadRestaurantsTask.execute();
             }
 
             // otherwise, show message
@@ -102,9 +97,7 @@ public class TabHotelsFragment extends BaseFragment {
                 Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
                         Toast.LENGTH_LONG).show();
             }
-        }
-
-        else {
+        } else {
             if (!mIsViewFilled) {
                 fillView();
             }
@@ -113,23 +106,21 @@ public class TabHotelsFragment extends BaseFragment {
     }
 
     @Override
-    public void onPause() {
+    protected void onPause() {
 
-        if (mLoadHotelTask != null) {
+        if (mLoadRestaurantsTask != null) {
 
-            mLoadHotelTask.cancel(true);
+            mLoadRestaurantsTask.cancel(true);
             if (mProgDial != null) {
                 mProgDial.dismiss();
             }
 
-            mLoadHotelTask = null;
+            mLoadRestaurantsTask = null;
         }
         super.onPause();
     }
 
-    // async task class that loads Hotel data from remote database
-
-    class LoadHotelTask extends AsyncTask<String, String, String> {
+    class LoadRestaurantsTask extends AsyncTask<String, String, String> {
 
         boolean failure = false;
 
@@ -141,29 +132,31 @@ public class TabHotelsFragment extends BaseFragment {
             if (mProgDial == null) {
                 mProgDial = new ProgressDialog(mContext);
             }
-            mProgDial.setMessage(getResources().getString(R.string.loading_hotels));
+            mProgDial.setMessage(getResources().getString(R.string.loading_restaurants));
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
             mProgDial.show();
 
         }
 
-        // retrieving Hotel data
+        // retrieving news data
 
         @Override
         protected String doInBackground(String... args) {
 
             mParser = new JSONParser();
 
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
             if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
 
-                HotelsResponse response = gson.fromJson(reader, HotelsResponse.class);
+                RestaurantsResponse response = gson.fromJson(reader, RestaurantsResponse.class);
 
                 if (response != null) {
-                    mHotelList = response.hotels;
+                    mRestaurantsList = response.restaurants;
                 }
             }
 
@@ -171,17 +164,20 @@ public class TabHotelsFragment extends BaseFragment {
 
         }
 
-        // create adapter that contains loaded data and show list of Hotel
+        // create adapter that contains loaded data and show list of news
 
         protected void onPostExecute(String file_url) {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            if (mHotelList != null) {
+            if (mRestaurantsList != null) {
                 fillView();
             }
-            mLoadHotelTask = null;
+
+            mLoadRestaurantsTask = null;
 
         }
+
     }
+
 }

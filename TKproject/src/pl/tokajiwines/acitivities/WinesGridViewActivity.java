@@ -85,9 +85,8 @@ public class WinesGridViewActivity extends BaseActivity {
         });
         mIsViewFilled = false;
     }
-    
-    public void fillView()
-    {
+
+    public void fillView() {
         Log.e("fillView", "View filled");
         mAdapter = new WinesGridViewAdapter(mAct, mWinesList);
         mUiList.setAdapter(mAdapter);
@@ -111,28 +110,24 @@ public class WinesGridViewActivity extends BaseActivity {
                 Toast.makeText(mAct, getResources().getString(R.string.cannot_connect),
                         Toast.LENGTH_LONG).show();
             }
-        }
-        else
-        {
-            if (!mIsViewFilled)
-            {
+        } else {
+            if (!mIsViewFilled) {
                 fillView();
             }
         }
 
     }
-    
+
     @Override
     protected void onPause() {
 
         if (mLoadWinesTask != null) {
 
             mLoadWinesTask.cancel(true);
-            if (mProgDial != null)
-            {
+            if (mProgDial != null) {
                 mProgDial.dismiss();
             }
-            
+
             mLoadWinesTask = null;
         }
         super.onPause();
@@ -158,13 +153,12 @@ public class WinesGridViewActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (mProgDial == null)
-            {
+            if (mProgDial == null) {
                 mProgDial = new ProgressDialog(mAct);
             }
-                mProgDial.setMessage("Loading wines data...");
-                mProgDial.setIndeterminate(false);
-                mProgDial.setCancelable(false);
+            mProgDial.setMessage(getResources().getString(R.string.loading_wines));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -206,7 +200,7 @@ public class WinesGridViewActivity extends BaseActivity {
             if (mWinesList != null) {
                 fillView();
             }
-            
+
             mLoadWinesTask = null;
 
         }

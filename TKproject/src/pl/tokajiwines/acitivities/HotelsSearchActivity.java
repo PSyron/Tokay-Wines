@@ -1,23 +1,22 @@
 
-package pl.tokajiwines.fragments;
+package pl.tokajiwines.acitivities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.apache.http.NameValuePair;
+
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.HotelActivity;
 import pl.tokajiwines.adapters.HotelsAdapter;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.jsonresponses.HotelsResponse;
@@ -26,13 +25,15 @@ import pl.tokajiwines.utils.Log;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TabHotelsFragment extends BaseFragment {
+public class HotelsSearchActivity extends BaseActivity {
 
     ListView mUiList;
     HotelsAdapter mAdapter;
     boolean mIsViewFilled;
-    LoadHotelTask mLoadHotelTask;
+    LoadHotelsTask mLoadHotelsTask;
     Context mContext;
     JSONParser mParser;
     ProgressDialog mProgDial;
@@ -40,28 +41,24 @@ public class TabHotelsFragment extends BaseFragment {
     private String sUsername;
     private String sPassword;
     public static final String HOTEL_TAG = "hotel";
-    private HotelListItem[] mHotelList;
-
-    public static TabHotelsFragment newInstance() {
-        TabHotelsFragment fragment = new TabHotelsFragment();
-
-        return fragment;
-    }
-
-    public TabHotelsFragment() {
-    }
+    private HotelListItem[] mHotelsList;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_hotels, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_hotels_search);
+        getActionBar().setTitle(getResources().getString(R.string.hotels));
+        Bundle extras = getIntent().getExtras();
+        mContext = this;
 
-        sUrl = getResources().getString(R.string.UrlHotelsList);
+        //        sUrl = getResources().getString(R.string.UrlWinesList);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
 
-        mUiList = (ListView) rootView.findViewById(R.id.frag_hotels_list);
-        mHotelList = new HotelListItem[0];
-        mAdapter = new HotelsAdapter(getActivity(), mHotelList);
+        mHotelsList = new HotelListItem[0];
+        mUiList = (ListView) findViewById(R.id.activity_hotels_search_list);
+        mAdapter = new HotelsAdapter(this, mHotelsList);
         mUiList.setAdapter(mAdapter);
 
         mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -72,28 +69,26 @@ public class TabHotelsFragment extends BaseFragment {
                 startActivityForResult(intent, HotelActivity.REQUEST);
             }
         });
-        mContext = getActivity();
         mIsViewFilled = false;
-
-        return rootView;
     }
 
     public void fillView() {
+
         Log.e("fillView", "View filled");
-        mAdapter = new HotelsAdapter(getActivity(), mHotelList);
+        mAdapter = new HotelsAdapter(this, mHotelsList);
         mUiList.setAdapter(mAdapter);
         mIsViewFilled = true;
     }
 
-    // if there is an access to the Internet, try to load data from remote database
-
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        if (mHotelList.length == 0) {
+
+        if (mHotelsList.length == 0) {
+
             if (App.isOnline(mContext)) {
-                mLoadHotelTask = new LoadHotelTask();
-                mLoadHotelTask.execute();
+                mLoadHotelsTask = new LoadHotelsTask();
+                mLoadHotelsTask.execute();
             }
 
             // otherwise, show message
@@ -102,9 +97,7 @@ public class TabHotelsFragment extends BaseFragment {
                 Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
                         Toast.LENGTH_LONG).show();
             }
-        }
-
-        else {
+        } else {
             if (!mIsViewFilled) {
                 fillView();
             }
@@ -113,23 +106,21 @@ public class TabHotelsFragment extends BaseFragment {
     }
 
     @Override
-    public void onPause() {
+    protected void onPause() {
 
-        if (mLoadHotelTask != null) {
+        if (mLoadHotelsTask != null) {
 
-            mLoadHotelTask.cancel(true);
+            mLoadHotelsTask.cancel(true);
             if (mProgDial != null) {
                 mProgDial.dismiss();
             }
 
-            mLoadHotelTask = null;
+            mLoadHotelsTask = null;
         }
         super.onPause();
     }
 
-    // async task class that loads Hotel data from remote database
-
-    class LoadHotelTask extends AsyncTask<String, String, String> {
+    class LoadHotelsTask extends AsyncTask<String, String, String> {
 
         boolean failure = false;
 
@@ -148,12 +139,14 @@ public class TabHotelsFragment extends BaseFragment {
 
         }
 
-        // retrieving Hotel data
+        // retrieving news data
 
         @Override
         protected String doInBackground(String... args) {
 
             mParser = new JSONParser();
+
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
             if (source != null) {
@@ -163,7 +156,7 @@ public class TabHotelsFragment extends BaseFragment {
                 HotelsResponse response = gson.fromJson(reader, HotelsResponse.class);
 
                 if (response != null) {
-                    mHotelList = response.hotels;
+                    mHotelsList = response.hotels;
                 }
             }
 
@@ -171,17 +164,20 @@ public class TabHotelsFragment extends BaseFragment {
 
         }
 
-        // create adapter that contains loaded data and show list of Hotel
+        // create adapter that contains loaded data and show list of news
 
         protected void onPostExecute(String file_url) {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            if (mHotelList != null) {
+            if (mHotelsList != null) {
                 fillView();
             }
-            mLoadHotelTask = null;
+
+            mLoadHotelsTask = null;
 
         }
+
     }
+
 }

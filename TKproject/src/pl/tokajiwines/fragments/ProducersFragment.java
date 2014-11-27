@@ -88,11 +88,11 @@ public class ProducersFragment extends BaseFragment {
 
         });
         mIsViewFilled = false;
-        
+
         return rootView;
     }
-    
-    public void fillView(){
+
+    public void fillView() {
         Log.e("fillView", "View filled");
         mAdapter = new ProducersAdapter(getActivity(), mProducersList);
         mUiList.setAdapter(mAdapter);
@@ -132,28 +132,25 @@ public class ProducersFragment extends BaseFragment {
                         Toast.LENGTH_LONG).show();
             }
         }
-        
-        else
-        {
-            if (!mIsViewFilled)
-            {
+
+        else {
+            if (!mIsViewFilled) {
                 fillView();
             }
         }
 
     }
-    
+
     @Override
     public void onPause() {
 
         if (mLoadProducersTask != null) {
 
             mLoadProducersTask.cancel(true);
-            if (mProgDial != null)
-            {
+            if (mProgDial != null) {
                 mProgDial.dismiss();
             }
-            
+
             mLoadProducersTask = null;
         }
         super.onPause();
@@ -170,11 +167,10 @@ public class ProducersFragment extends BaseFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (mProgDial == null)
-            {
+            if (mProgDial == null) {
                 mProgDial = new ProgressDialog(mContext);
             }
-            mProgDial.setMessage("Loading producers data...");
+            mProgDial.setMessage(getResources().getString(R.string.loading_producers));
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
             mProgDial.show();
@@ -213,7 +209,7 @@ public class ProducersFragment extends BaseFragment {
             if (mProducersList != null) {
                 fillView();
             }
-            
+
             mLoadProducersTask = null;
 
         }

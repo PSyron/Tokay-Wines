@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.koushikdutta.ion.Ion;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -163,17 +162,15 @@ public class WineActivity extends BaseActivity {
             }
         });
     }
-    
-    public void fillView()
-    {
+
+    public void fillView() {
         Log.e("fillView", "View filled");
         mUiDescription.setText(mWineDetails.mDescription);
 
         if (mWineDetails.mImageUrl != null) {
             final File imgFile = new File(WineActivity.this.getFilesDir().getAbsolutePath()
                     + "/"
-                    + mWineDetails.mImageUrl.substring(
-                            mWineDetails.mImageUrl.lastIndexOf('/') + 1,
+                    + mWineDetails.mImageUrl.substring(mWineDetails.mImageUrl.lastIndexOf('/') + 1,
                             mWineDetails.mImageUrl.length()));
             if (imgFile.exists()) {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
@@ -212,28 +209,25 @@ public class WineActivity extends BaseActivity {
                         .show();
             }
         }
-        
-        else
-        {
-            if (!mIsViewFilled)
-            {
+
+        else {
+            if (!mIsViewFilled) {
                 fillView();
             }
         }
 
     }
-    
+
     @Override
     protected void onPause() {
 
         if (mLoadWineTask != null) {
 
             mLoadWineTask.cancel(true);
-            if (mProgDial != null)
-            {
+            if (mProgDial != null) {
                 mProgDial.dismiss();
             }
-            
+
             mLoadWineTask = null;
         }
         super.onPause();
@@ -248,13 +242,12 @@ public class WineActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (mProgDial == null)
-            {
+            if (mProgDial == null) {
                 mProgDial = new ProgressDialog(WineActivity.this);
             }
-                mProgDial.setMessage("Loading wine details...");
-                mProgDial.setIndeterminate(false);
-                mProgDial.setCancelable(true);
+            mProgDial.setMessage(getResources().getString(R.string.loading_wine));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
             mProgDial.show();
 
         }
@@ -295,7 +288,6 @@ public class WineActivity extends BaseActivity {
                 fillView();
             }
 
-            
             mLoadWineTask = null;
         }
 

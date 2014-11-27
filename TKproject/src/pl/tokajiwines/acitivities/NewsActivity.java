@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.koushikdutta.ion.Ion;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -107,19 +106,16 @@ public class NewsActivity extends BaseActivity {
 
             }
         });
-        
+
         mIsViewFilled = false;
     }
-    
+
     public void fillView() {
 
         mUiName.setText(mNews.mHeader);
         mUiDescription.setText(mNews.mVast);
-        final File imgFile = new File(NewsActivity.this.getFilesDir().getAbsolutePath()
-                + "/"
-                + mNews.mImage.substring(
-                        mNews.mImage.lastIndexOf('/') + 1,
-                        mNews.mImage.length()));
+        final File imgFile = new File(NewsActivity.this.getFilesDir().getAbsolutePath() + "/"
+                + mNews.mImage.substring(mNews.mImage.lastIndexOf('/') + 1, mNews.mImage.length()));
         if (imgFile.exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
@@ -146,8 +142,8 @@ public class NewsActivity extends BaseActivity {
 
         getActionBar().setTitle(mNews.mHeader);
         mIsViewFilled = true;
-        
-        Log.e("fillView","View filled");
+
+        Log.e("fillView", "View filled");
     }
 
     public void onResume() {
@@ -167,11 +163,8 @@ public class NewsActivity extends BaseActivity {
                 Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
                         Toast.LENGTH_LONG).show();
             }
-        }
-        else
-        {
-            if (!mIsViewFilled)
-            {
+        } else {
+            if (!mIsViewFilled) {
                 fillView();
             }
         }
@@ -181,15 +174,14 @@ public class NewsActivity extends BaseActivity {
     @Override
     protected void onPause() {
         if (mTask != null) {
-            
+
             System.out.println("TASK NOT NULL!");
 
             mTask.cancel(true);
-            if (mProgDial != null)
-            {
+            if (mProgDial != null) {
                 mProgDial.dismiss();
             }
-            
+
             mTask = null;
         }
         super.onPause();
@@ -206,13 +198,12 @@ public class NewsActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (mProgDial == null)
-            {
+            if (mProgDial == null) {
                 mProgDial = new ProgressDialog(mContext);
             }
-                mProgDial.setMessage("Loading news data...");
-                mProgDial.setIndeterminate(false);
-                mProgDial.setCancelable(true);
+            mProgDial.setMessage(getResources().getString(R.string.loading_news));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
             mProgDial.show();
 
         }
@@ -249,7 +240,7 @@ public class NewsActivity extends BaseActivity {
             if (mNews != null) {
                 fillView();
             }
-            
+
             mTask = null;
 
         }
