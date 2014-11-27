@@ -1,6 +1,7 @@
 
 package pl.tokajiwines.acitivities;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -15,10 +16,16 @@ import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +52,13 @@ public class SearchableActivity extends BaseActivity {
     private SearchResultResponse mSearchResult;
     private LoadSearchResultTask mLoadSearchResult;
     
+    LinearLayout mWineLayout;
+    LinearLayout mWineTasteLayout;
+    LinearLayout mWineTypeLayout;
+    LinearLayout mWineStrainLayout;
+    LinearLayout mWineYearLayout;
+    LinearLayout mWinePriceLayout;
+    LinearLayout mWineProducerLayout;
     TextView mWineName;
     TextView mWineTaste;
     TextView mWineType;
@@ -52,17 +66,24 @@ public class SearchableActivity extends BaseActivity {
     TextView mWineYear;
     TextView mWinePrice;
     TextView mWineProducer;
+    ImageView mWineImage;
     
+    LinearLayout mProducerLayout;
     TextView mProducerName;
     TextView mProducerDecription;
+    ImageView mProducerImage;
     
+    LinearLayout mHotelLayout;
     TextView mHotelName;
     TextView mHotelPhone;
     TextView mHotelAddress;
+    ImageView mHotelImage;
     
+    LinearLayout mRestaurantLayout;
     TextView mRestaurantName;
     TextView mRestaurantPhone;
     TextView mRestaurantAddress;
+    ImageView mRestaurantImage;
 
     
     
@@ -108,6 +129,14 @@ public class SearchableActivity extends BaseActivity {
     
     public void initView()
     {
+        mWineLayout = (LinearLayout) findViewById(R.id.activity_search_wine_lL);
+        mWineTasteLayout = (LinearLayout) findViewById(R.id.activity_search_wine_taste_layout);
+        mWineTypeLayout = (LinearLayout) findViewById(R.id.activity_search_wine_type_layout);
+        mWineStrainLayout = (LinearLayout) findViewById(R.id.activity_search_wine_strain_layout);
+        mWineYearLayout = (LinearLayout) findViewById(R.id.activity_search_wine_year_layout);
+        mWinePriceLayout = (LinearLayout) findViewById(R.id.activity_search_wine_price_layout);
+        mWineProducerLayout = (LinearLayout) findViewById(R.id.activity_search_wine_producer_layout);
+        
         mWineName = (TextView) findViewById(R.id.activity_search_wine_name);
         mWineTaste = (TextView) findViewById(R.id.activity_search_wine_taste);
         mWineType = (TextView) findViewById(R.id.activity_search_wine_type);
@@ -115,53 +144,284 @@ public class SearchableActivity extends BaseActivity {
         mWineYear = (TextView) findViewById(R.id.activity_search_wine_year);
         mWinePrice = (TextView) findViewById(R.id.activity_search_wine_price);
         mWineProducer = (TextView) findViewById(R.id.activity_search_wine_producer);
+        mWineImage = (ImageView) findViewById(R.id.activity_search_wine_image);
         
+        mProducerLayout = (LinearLayout) findViewById(R.id.activity_search_producer_lL);
         mProducerName = (TextView) findViewById(R.id.activity_search_wineyard_title);
         mProducerDecription = (TextView) findViewById(R.id.activity_search_wineyard_content);
+        mProducerImage = (ImageView) findViewById(R.id.activity_search_wineyard_image);
         
+        mHotelLayout = (LinearLayout) findViewById(R.id.activity_search_hotel_lL);
         mHotelName = (TextView) findViewById(R.id.activity_search_hotel_name);
         mHotelPhone = (TextView) findViewById(R.id.activity_search_hotel_phone);
         mHotelAddress = (TextView) findViewById(R.id.activity_search_hotel_address);
+        mHotelImage = (ImageView) findViewById(R.id.activity_search_hotel_image);
         
+        mRestaurantLayout = (LinearLayout) findViewById(R.id.activity_search_restaurant_lL);
         mRestaurantName = (TextView) findViewById(R.id.activity_search_restaurant_name);
         mRestaurantPhone = (TextView) findViewById(R.id.activity_search_restaurant_phone);
         mRestaurantAddress = (TextView) findViewById(R.id.activity_search_restaurant_address);
+        mRestaurantImage = (ImageView) findViewById(R.id.activity_search_restaurant_image);
     }
     
     public void fillView()
     {
         if (mSearchResult.wine != null)
         {
-            mWineName.setText(""+mSearchResult.wine.mName);
-            mWineTaste.setText(""+mSearchResult.wine.mFlavourName);
-            mWineType.setText(""+mSearchResult.wine.mGrade);
-            mWineStrain.setText(""+mSearchResult.wine.mStrains);
-            mWineYear.setText(""+mSearchResult.wine.mYear);
-            mWinePrice.setText(""+mSearchResult.wine.mPrice);
-            mWineProducer.setText(""+mSearchResult.wine.mProducerName);
+            if (mSearchResult.wine.mName!= null)
+            {
+                mWineName.setText(""+mSearchResult.wine.mName);
+            }
+            else
+            {
+                mWineName.setVisibility(View.GONE); 
+            }
+            
+            if (mSearchResult.wine.mFlavourName!= null)
+            {
+                mWineTaste.setText(""+mSearchResult.wine.mFlavourName);
+            }
+            else
+            {
+                mWineTasteLayout.setVisibility(View.GONE);
+            }
+            
+            if (mSearchResult.wine.mGrade!= null)
+            {
+                mWineType.setText(""+mSearchResult.wine.mGrade);
+            }
+            else
+            {
+                mWineTypeLayout.setVisibility(View.GONE);
+            }
+            
+            if (mSearchResult.wine.mStrains!= null)
+            {
+                mWineStrain.setText(""+mSearchResult.wine.mStrains);
+            }
+            else
+            {
+                mWineStrainLayout.setVisibility(View.GONE);
+            }
+            
+            if (mSearchResult.wine.mYear!= null)
+            {
+                mWineYear.setText(""+mSearchResult.wine.mYear);
+            }
+            else
+            {
+                mWineYearLayout.setVisibility(View.GONE);
+            }
+            
+            if (mSearchResult.wine.mPrice!= null)
+            {
+                mWinePrice.setText(""+mSearchResult.wine.mPrice);
+            }
+            else
+            {
+                mWinePriceLayout.setVisibility(View.GONE);
+            }
+            
+            if (mSearchResult.wine.mProducerName!= null)
+            {
+                mWineProducer.setText(""+mSearchResult.wine.mProducerName);
+            }
+            else
+            {
+                mWineProducerLayout.setVisibility(View.GONE);
+            }
+            
+            if (mSearchResult.wine.mImageUrl != null)
+            {
+                final File imgFile = new File(mContext.getFilesDir().getAbsolutePath()
+                        + "/"
+                        + mSearchResult.wine.mImageUrl.substring(
+                                mSearchResult.wine.mImageUrl.lastIndexOf('/') + 1,
+                                mSearchResult.wine.mImageUrl.length()));
+                if (imgFile.exists()) {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+    
+                    mWineImage.setImageBitmap(myBitmap);
+                } else {
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
+                            App.downloadAndRun(mSearchResult.wine.mImageUrl, mContext, mWineImage);
+                        }
+                    }, 50);
+                }
+            }
+        }
+        else
+        {
+            mWineLayout.setVisibility(View.GONE);
         }
         
         if (mSearchResult.producer != null)
         {
-            mProducerName.setText(""+mSearchResult.producer.mName);
-            mProducerDecription.setText(""+mSearchResult.producer.mDescription);
+            if (mSearchResult.producer.mName!= null)
+            {
+                mProducerName.setText(""+mSearchResult.producer.mName);
+            }
+            else
+            {
+                mProducerName.setVisibility(View.GONE);
+            }
+            
+            if (mSearchResult.producer.mDescription!= null)
+            {
+                mProducerDecription.setText(""+mSearchResult.producer.mDescription);
+            }
+            else
+            {
+                mProducerDecription.setVisibility(View.GONE);
+            }
+            
+            if (mSearchResult.producer.mImageUrl != null)
+            {
+                final File imgFile = new File(mContext.getFilesDir().getAbsolutePath()
+                        + "/"
+                        + mSearchResult.producer.mImageUrl.substring(
+                                mSearchResult.producer.mImageUrl.lastIndexOf('/') + 1,
+                                mSearchResult.producer.mImageUrl.length()));
+                if (imgFile.exists()) {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+    
+                    mProducerImage.setImageBitmap(myBitmap);
+                } else {
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
+                            App.downloadAndRun(mSearchResult.producer.mImageUrl, mContext, mProducerImage);
+                        }
+                    }, 50);
+                }
+            }
+        }
+        else
+        {
+            mProducerLayout.setVisibility(View.GONE);
         }
         
         if (mSearchResult.hotel != null)
         {
-            mHotelName.setText(""+mSearchResult.hotel.mName);
-            mHotelPhone.setText(""+mSearchResult.hotel.mPhone);
-            mHotelAddress.setText(""+mSearchResult.hotel.mStreetName + " " + mSearchResult.hotel.mStreetNumber + " "
+            if (mSearchResult.hotel.mName!= null)
+            {
+                mHotelName.setText(""+mSearchResult.hotel.mName);
+            }
+            else
+            {
+                mHotelName.setVisibility(View.GONE);
+            }
+            
+            if (mSearchResult.hotel.mPhone!= null)
+            {
+                mHotelPhone.setText(""+mSearchResult.hotel.mPhone);
+            }
+            else
+            {
+                mHotelPhone.setVisibility(View.GONE);
+            }
+            
+            if (mSearchResult.hotel.mStreetName!= null && mSearchResult.hotel.mStreetNumber != null 
+                    && mSearchResult.hotel.mHouseNumber != null && mSearchResult.hotel.mCity != null
+                    && mSearchResult.hotel.mPostCode != null)
+            {            
+                mHotelAddress.setText(""+mSearchResult.hotel.mStreetName + " " + mSearchResult.hotel.mStreetNumber + " "
                     + mSearchResult.hotel.mHouseNumber + " " + mSearchResult.hotel.mCity + " "
                     + mSearchResult.hotel.mPostCode);
+            }
+            else
+            {
+                mHotelAddress.setVisibility(View.GONE);
+            }
+            
+            
+            if (mSearchResult.hotel.mImageUrl != null)
+            {
+                final File imgFile = new File(mContext.getFilesDir().getAbsolutePath()
+                        + "/"
+                        + mSearchResult.hotel.mImageUrl.substring(
+                                mSearchResult.hotel.mImageUrl.lastIndexOf('/') + 1,
+                                mSearchResult.hotel.mImageUrl.length()));
+                if (imgFile.exists()) {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+    
+                    mHotelImage.setImageBitmap(myBitmap);
+                } else {
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
+                            App.downloadAndRun(mSearchResult.hotel.mImageUrl, mContext, mHotelImage);
+                        }
+                    }, 50);
+                }
+            }
+        }
+        else
+        {
+                mHotelLayout.setVisibility(View.GONE);
+
         }
         if (mSearchResult.restaurant != null)
         {
-            mRestaurantName.setText(""+mSearchResult.restaurant.mName);
-            mRestaurantPhone.setText(""+mSearchResult.restaurant.mPhone);
-            mRestaurantAddress.setText(""+mSearchResult.restaurant.mStreetName + " " + mSearchResult.restaurant.mStreetNumber + " "
+            if (mSearchResult.restaurant.mName!= null)
+            {
+                mRestaurantName.setText(""+mSearchResult.restaurant.mName);
+            }
+            else
+            {
+                mRestaurantName.setVisibility(View.GONE);
+            }
+            
+            if (mSearchResult.restaurant.mPhone!= null)
+            {
+                mRestaurantPhone.setText(""+mSearchResult.restaurant.mPhone);
+            }
+            else
+            {
+                mRestaurantPhone.setVisibility(View.GONE);
+            }
+            
+            if (mSearchResult.restaurant.mStreetName!= null && mSearchResult.restaurant.mStreetNumber != null 
+                    && mSearchResult.restaurant.mHouseNumber != null && mSearchResult.restaurant.mCity != null
+                    && mSearchResult.restaurant.mPostCode != null)
+            {
+                mRestaurantAddress.setText(""+mSearchResult.restaurant.mStreetName + " " + mSearchResult.restaurant.mStreetNumber + " "
                     + mSearchResult.restaurant.mHouseNumber + " " + mSearchResult.restaurant.mCity + " "
                     + mSearchResult.restaurant.mPostCode);  
+            }
+            else
+            {
+                mRestaurantAddress.setVisibility(View.GONE);
+            }
+            
+            if (mSearchResult.restaurant.mImageUrl != null)
+            {
+                final File imgFile = new File(mContext.getFilesDir().getAbsolutePath()
+                        + "/"
+                        + mSearchResult.restaurant.mImageUrl.substring(
+                                mSearchResult.restaurant.mImageUrl.lastIndexOf('/') + 1,
+                                mSearchResult.restaurant.mImageUrl.length()));
+                if (imgFile.exists()) {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+    
+                    mRestaurantImage.setImageBitmap(myBitmap);
+                } else {
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
+                            App.downloadAndRun(mSearchResult.restaurant.mImageUrl, mContext, mRestaurantImage);
+                        }
+                    }, 50);
+                }
+            }
+            
+            
+        }
+        else
+        {
+            mRestaurantLayout.setVisibility(View.GONE);
         }
     }
     
