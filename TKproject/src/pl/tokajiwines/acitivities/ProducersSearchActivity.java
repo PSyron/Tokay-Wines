@@ -60,7 +60,7 @@ public class ProducersSearchActivity extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         mContext = this;
 
-        //        sUrl = getResources().getString(R.string.UrlWinesList);
+        sUrl = getResources().getString(R.string.UrlProducersList);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
 

@@ -52,7 +52,7 @@ public class HotelsSearchActivity extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         mContext = this;
 
-        //        sUrl = getResources().getString(R.string.UrlWinesList);
+        sUrl = getResources().getString(R.string.UrlHotelsList);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
 

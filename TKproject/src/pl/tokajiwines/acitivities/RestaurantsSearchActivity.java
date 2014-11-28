@@ -40,7 +40,7 @@ public class RestaurantsSearchActivity extends BaseActivity {
     private String sUrl;
     private String sUsername;
     private String sPassword;
-    public static final String HOTEL_TAG = "restaurant";
+    public static final String RESTAURANT_TAG = "restaurant";
     private RestaurantListItem[] mRestaurantsList;
 
     @Override
@@ -52,7 +52,7 @@ public class RestaurantsSearchActivity extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         mContext = this;
 
-        //        sUrl = getResources().getString(R.string.UrlWinesList);
+        sUrl = getResources().getString(R.string.UrlRestaurantsList);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
 
@@ -65,7 +65,7 @@ public class RestaurantsSearchActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 RestaurantListItem temp = (RestaurantListItem) mAdapter.getItem(position);
                 Intent intent = new Intent(mContext, RestaurantActivity.class);
-                intent.putExtra(HOTEL_TAG, temp);
+                intent.putExtra(RESTAURANT_TAG, temp);
                 startActivityForResult(intent, RestaurantActivity.REQUEST);
             }
         });

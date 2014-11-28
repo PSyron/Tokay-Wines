@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -76,25 +75,29 @@ public class SearchableActivity extends BaseActivity {
     TextView mWinePrice;
     TextView mWineProducer;
     ImageView mWineImage;
+    TextView mMoreWinesButton;
 
     LinearLayout mProducerLayout;
     TextView mProducerName;
     TextView mProducerDecription;
     ImageView mProducerImage;
+    TextView mMoreProducersButton;
 
     LinearLayout mHotelLayout;
     TextView mHotelName;
     TextView mHotelPhone;
     TextView mHotelAddress;
     ImageView mHotelImage;
+    TextView mMoreHotelsButton;
 
     LinearLayout mRestaurantLayout;
     TextView mRestaurantName;
     TextView mRestaurantPhone;
     TextView mRestaurantAddress;
     ImageView mRestaurantImage;
+    TextView mMoreRestaurantsButton;
+    
    
-    public String TAG_WINE_ID = "wineId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,23 +155,27 @@ public class SearchableActivity extends BaseActivity {
         mWinePrice = (TextView) findViewById(R.id.activity_search_wine_price);
         mWineProducer = (TextView) findViewById(R.id.activity_search_wine_producer);
         mWineImage = (ImageView) findViewById(R.id.activity_search_wine_image);
+        mMoreWinesButton = (TextView) findViewById(R.id.activity_search_wine_button);
 
         mProducerLayout = (LinearLayout) findViewById(R.id.activity_search_producer_lL);
         mProducerName = (TextView) findViewById(R.id.activity_search_wineyard_title);
         mProducerDecription = (TextView) findViewById(R.id.activity_search_wineyard_content);
         mProducerImage = (ImageView) findViewById(R.id.activity_search_wineyard_image);
+        mMoreProducersButton = (TextView)findViewById(R.id.activity_search_producer_button);
 
         mHotelLayout = (LinearLayout) findViewById(R.id.activity_search_hotel_lL);
         mHotelName = (TextView) findViewById(R.id.activity_search_hotel_name);
         mHotelPhone = (TextView) findViewById(R.id.activity_search_hotel_phone);
         mHotelAddress = (TextView) findViewById(R.id.activity_search_hotel_address);
         mHotelImage = (ImageView) findViewById(R.id.activity_search_hotel_image);
+        mMoreHotelsButton = (TextView)findViewById(R.id.activity_search_hotel_button);
 
         mRestaurantLayout = (LinearLayout) findViewById(R.id.activity_search_restaurant_lL);
         mRestaurantName = (TextView) findViewById(R.id.activity_search_restaurant_name);
         mRestaurantPhone = (TextView) findViewById(R.id.activity_search_restaurant_phone);
         mRestaurantAddress = (TextView) findViewById(R.id.activity_search_restaurant_address);
         mRestaurantImage = (ImageView) findViewById(R.id.activity_search_restaurant_image);
+        mMoreRestaurantsButton = (TextView)findViewById(R.id.activity_search_restaurant_button);
     }
 
     public void fillView() {
@@ -375,6 +382,75 @@ public class SearchableActivity extends BaseActivity {
         } else {
             mRestaurantLayout.setVisibility(View.GONE);
         }
+        
+        if (mSearchResult.wineCount <= 1)
+        {
+            mMoreWinesButton.setVisibility(View.GONE);
+        }
+        else
+        {
+            mMoreWinesButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                        Intent intent = new Intent(mContext, WinesListActivity.class);
+                        startActivity(intent);
+                    }
+            });
+        }
+        
+        if (mSearchResult.producerCount <= 1)
+        {
+            mMoreProducersButton.setVisibility(View.GONE);
+        }
+        else
+        {
+            mMoreProducersButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                        Intent intent = new Intent(mContext, ProducersSearchActivity.class);
+                        startActivity(intent);
+                    }
+            });
+        }
+        
+        if (mSearchResult.hotelCount <= 1)
+        {
+            mMoreHotelsButton.setVisibility(View.GONE);
+        }
+        else
+        {
+            mMoreHotelsButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                        Intent intent = new Intent(mContext, HotelsSearchActivity.class);
+                        startActivity(intent);
+                    }
+            });
+        }
+        
+        if (mSearchResult.restaurantCount <= 1)
+        {
+            mMoreRestaurantsButton.setVisibility(View.GONE);
+        }
+        else
+        {
+            mMoreRestaurantsButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                        Intent intent = new Intent(mContext, RestaurantsSearchActivity.class);
+                        startActivity(intent);
+                    }
+            });
+        }
+        
     }
 
     public void onResume() {
