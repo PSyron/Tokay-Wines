@@ -97,6 +97,7 @@ public class SearchableActivity extends BaseActivity {
     ImageView mRestaurantImage;
     TextView mMoreRestaurantsButton;
     
+    public static String TAG_NAME = "name";
    
 
     @Override
@@ -114,24 +115,6 @@ public class SearchableActivity extends BaseActivity {
         handleIntent(getIntent());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.search_with_home, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -395,6 +378,7 @@ public class SearchableActivity extends BaseActivity {
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
                         Intent intent = new Intent(mContext, WinesListActivity.class);
+                        intent.putExtra(TAG_NAME, query);
                         startActivity(intent);
                     }
             });
@@ -412,6 +396,7 @@ public class SearchableActivity extends BaseActivity {
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
                         Intent intent = new Intent(mContext, ProducersSearchActivity.class);
+                        intent.putExtra(TAG_NAME, query);
                         startActivity(intent);
                     }
             });
@@ -429,6 +414,7 @@ public class SearchableActivity extends BaseActivity {
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
                         Intent intent = new Intent(mContext, HotelsSearchActivity.class);
+                        intent.putExtra(TAG_NAME, query);
                         startActivity(intent);
                     }
             });
@@ -446,6 +432,7 @@ public class SearchableActivity extends BaseActivity {
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
                         Intent intent = new Intent(mContext, RestaurantsSearchActivity.class);
+                        intent.putExtra(TAG_NAME, query);
                         startActivity(intent);
                     }
             });
@@ -496,6 +483,28 @@ public class SearchableActivity extends BaseActivity {
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
+            if (mLoadSearchResult != null) {
+
+                mLoadSearchResult.cancel(true);
+                if (mProgDial != null) {
+                    mProgDial.dismiss();
+                }
+
+                mLoadSearchResult = null;
+            }
+            
+                if (App.isOnline(mContext)) {
+                    mLoadSearchResult = new LoadSearchResultTask();
+                    mLoadSearchResult.execute();
+                }
+
+                // otherwise, show message
+
+                else {
+                    Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
+                            Toast.LENGTH_LONG).show();
+                }
+                
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             // Handle a suggestions click (because the suggestions all use ACTION_VIEW)
                 mSelectedId = Integer.parseInt(intent.getDataString());

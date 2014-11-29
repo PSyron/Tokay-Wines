@@ -50,6 +50,7 @@ public class WinesListActivity extends BaseActivity {
     private String mYears;
     private String mProducers;
     private String mPrices;
+    private String mName = "";
     public static String TAG_WINE = "WINE";
     LoadWinesTask mLoadWinesTask;
 
@@ -67,6 +68,7 @@ public class WinesListActivity extends BaseActivity {
             mProducers = (String) extras.getString(WinesFilterFragment.TAG_PRODUCERS + "");
             mYears = (String) extras.getString(WinesFilterFragment.TAG_YEARS + "");
             mPrices = (String) extras.getString(WinesFilterFragment.TAG_PRICES + "");
+            mName = (String) extras.getString(SearchableActivity.TAG_NAME);
 
         }
 
@@ -176,6 +178,7 @@ public class WinesListActivity extends BaseActivity {
             params.add(new BasicNameValuePair("producers", mProducers));
             params.add(new BasicNameValuePair("years", mYears));
             params.add(new BasicNameValuePair("prices", mPrices));
+            params.add(new BasicNameValuePair("name", mName));
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
             if (source != null) {

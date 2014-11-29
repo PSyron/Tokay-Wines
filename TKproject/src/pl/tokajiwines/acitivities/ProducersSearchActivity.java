@@ -15,8 +15,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
-import org.json.JSONArray;
-
+import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.ProducersAdapter;
@@ -43,12 +42,8 @@ public class ProducersSearchActivity extends BaseActivity {
     private String sUrl;
     private String sUsername;
     private String sPassword;
-    private static final String TAG_ID = "idProducer";
-    private static final String TAG_NAME = "name";
-    private static final String TAG_SHORT_MESSAGE = "short";
-    private static final String TAG_PRODUCERS = "producers";
-    private JSONArray mProducersJSON = null;
     private ProducerListItem[] mProducersList;
+    private String mName;
     public static final String PRODUCER_TAG = "producer";
 
     @Override
@@ -58,6 +53,9 @@ public class ProducersSearchActivity extends BaseActivity {
         setContentView(R.layout.activity_producers_search);
         getActionBar().setTitle(getResources().getString(R.string.title_wineyards));
         Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            mName = (String) extras.getString(SearchableActivity.TAG_NAME);
+        }
         mContext = this;
 
         sUrl = getResources().getString(R.string.UrlProducersList);
@@ -161,8 +159,9 @@ public class ProducersSearchActivity extends BaseActivity {
             mParser = new JSONParser();
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("name", mName));            
 
-            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
             if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);

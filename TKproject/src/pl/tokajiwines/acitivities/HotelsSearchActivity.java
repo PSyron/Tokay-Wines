@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
@@ -40,6 +41,7 @@ public class HotelsSearchActivity extends BaseActivity {
     private String sUrl;
     private String sUsername;
     private String sPassword;
+    private String mName;
     public static final String HOTEL_TAG = "hotel";
     private HotelListItem[] mHotelsList;
 
@@ -50,6 +52,11 @@ public class HotelsSearchActivity extends BaseActivity {
         setContentView(R.layout.activity_hotels_search);
         getActionBar().setTitle(getResources().getString(R.string.hotels));
         Bundle extras = getIntent().getExtras();
+        
+        if (extras != null) {
+            mName = (String) extras.getString(SearchableActivity.TAG_NAME);
+        }
+        
         mContext = this;
 
         sUrl = getResources().getString(R.string.UrlHotelsList);
@@ -147,8 +154,9 @@ public class HotelsSearchActivity extends BaseActivity {
             mParser = new JSONParser();
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("name", mName));  
 
-            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
+            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
             if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
