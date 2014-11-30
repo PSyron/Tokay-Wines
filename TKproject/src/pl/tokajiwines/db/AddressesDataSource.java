@@ -38,6 +38,20 @@ public class AddressesDataSource {
         if (database != null && database.isOpen()) dbHelper.close();
     }
 
+    public Address getAddress(int id) {
+        Log.i(LOG, "getProducer(id=" + id + ")");
+        Address address = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_ADDRESSES, allColumns, "IdAddress"
+                + "=" + id, null, null, null, null);
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Address with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            address = cursorToAddress(cursor);
+        }
+        return address;
+    }
+
     public long insertAddress(Address address) {
         Log.i(LOG, "insertAddress()");
         ContentValues values = new ContentValues();

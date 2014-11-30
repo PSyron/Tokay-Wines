@@ -25,6 +25,7 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.ImagePagerAdapter;
+import pl.tokajiwines.db.ProducersDataSource;
 import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.jsonresponses.ImagePagerItem;
 import pl.tokajiwines.jsonresponses.ImagesResponse;
@@ -72,7 +73,9 @@ public class ProducerActivity extends BaseActivity {
     ImagePagerAdapter mAdapter;
 
     LoadProducerTask mLoadProducerTask;
+    LoadProducerOnlineTask mLoadProducerOnlineTask;
     LoadProducerImagesTask mLoadProducerImagesTask;
+    LoadProducerImagesOnlineTask mLoadProducerImagesOnlineTask;
 
     public static final String TAG_ID_PRODUCER = "IdProducer";
 
@@ -227,6 +230,35 @@ public class ProducerActivity extends BaseActivity {
         if (App.isOnline(ProducerActivity.this)) {
 
             if (mProducerFromBase == null) {
+                mLoadProducerOnlineTask = new LoadProducerOnlineTask();
+                mLoadProducerOnlineTask.execute();
+            }
+
+            else {
+                if (!mIsViewFilled) {
+                    fillView();
+                }
+            }
+
+            if (mImagesUrl == null) {
+                mLoadProducerImagesOnlineTask = new LoadProducerImagesOnlineTask();
+                mLoadProducerImagesOnlineTask.execute();
+            }
+
+            else {
+                if (!mIsPagerFilled) {
+                    fillPager();
+                }
+            }
+        }
+
+        // otherwise, show message
+
+        else {
+            /*Toast.makeText(ProducerActivity.this,
+                    getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG).show();*/
+            Toast.makeText(ProducerActivity.this, "Offline database", Toast.LENGTH_LONG).show();
+            if (mProducerFromBase == null) {
                 mLoadProducerTask = new LoadProducerTask();
                 mLoadProducerTask.execute();
             }
@@ -247,13 +279,6 @@ public class ProducerActivity extends BaseActivity {
                     fillPager();
                 }
             }
-        }
-
-        // otherwise, show message
-
-        else {
-            Toast.makeText(ProducerActivity.this,
-                    getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG).show();
         }
 
     }
@@ -310,6 +335,54 @@ public class ProducerActivity extends BaseActivity {
         @Override
         protected String doInBackground(Void... args) {
 
+            ProducersDataSource pDs = new ProducersDataSource(ProducerActivity.this);
+            pDs.open();
+            mProducerFromBase = pDs.getProducerDetails(mProducer.mIdProducer);
+
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of producers
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mProducerFromBase != null) {
+                fillView();
+                /* Ion.with(mUiWineImage).placeholder(R.drawable.no_image)
+                         .error(R.drawable.error_image).load(mProducerFromBase.mWineImageUrl);*/
+            }
+            mLoadProducerTask = null;
+        }
+
+    }
+
+    class LoadProducerOnlineTask extends AsyncTask<Void, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDial == null) {
+                mProgDial = new ProgressDialog(ProducerActivity.this);
+            }
+            mProgDial.setMessage(getResources().getString(R.string.loading_producer));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
+
+        }
+
+        // retrieving producers data
+
+        @Override
+        protected String doInBackground(Void... args) {
+
             mParser = new JSONParser();
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -343,7 +416,7 @@ public class ProducerActivity extends BaseActivity {
                 /* Ion.with(mUiWineImage).placeholder(R.drawable.no_image)
                          .error(R.drawable.error_image).load(mProducerFromBase.mWineImageUrl);*/
             }
-            mLoadProducerTask = null;
+            mLoadProducerOnlineTask = null;
         }
 
     }
@@ -402,6 +475,65 @@ public class ProducerActivity extends BaseActivity {
             }
 
             mLoadProducerImagesTask = null;
+
+        }
+
+    }
+
+    class LoadProducerImagesOnlineTask extends AsyncTask<Void, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            /*            mProgDial = new ProgressDialog(ProducerActivity.this);
+                        mProgDial.setMessage("Loading producer images...");
+                        mProgDial.setIndeterminate(false);
+                        mProgDial.setCancelable(true);
+                        mProgDial.show();*/
+
+        }
+
+        // retrieving producers data
+
+        @Override
+        protected String doInBackground(Void... args) {
+
+            mParser = new JSONParser();
+
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("who", "" + mProducer.mIdProducer));
+
+            InputStream source = mParser.retrieveStream(sUrlImage, sUsername, sPassword, params);
+            if (source != null) {
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+
+                ImagesResponse response = gson.fromJson(reader, ImagesResponse.class);
+                Log.e(ProducerActivity.class.getName(), response.images.length + " ");
+                if (response != null) {
+                    mImagesUrl = response.images;
+                }
+            }
+
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of producers
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            //     mProgDial.dismiss();
+            if (mImagesUrl != null && mImagesUrl.length > 0) {
+                fillPager();
+            }
+
+            mLoadProducerImagesOnlineTask = null;
 
         }
 

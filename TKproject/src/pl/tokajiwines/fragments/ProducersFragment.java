@@ -14,16 +14,24 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.ProducerActivity;
 import pl.tokajiwines.adapters.ProducersAdapter;
+import pl.tokajiwines.db.DatabaseHelper;
 import pl.tokajiwines.db.ProducersDataSource;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
+import pl.tokajiwines.jsonresponses.ProducersResponse;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class ProducersFragment extends BaseFragment {
 
@@ -33,6 +41,7 @@ public class ProducersFragment extends BaseFragment {
     JSONParser mParser;
     ProgressDialog mProgDial;
     LoadProducersTask mLoadProducersTask;
+    LoadProducersOnlineTask mLoadProducersOnlineTask;
     Context mContext;
     private String sUrl;
     private String sUsername;
@@ -97,36 +106,27 @@ public class ProducersFragment extends BaseFragment {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-
+        DatabaseHelper dbh = new DatabaseHelper(mContext);
         // if there is an access to the Internet, try to load data from remote database
-
+        try {
+            dbh.createDataBase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (mProducersList.length == 0) {
-
             if (App.isOnline(mContext)) {
-                mLoadProducersTask = new LoadProducersTask();
-                mLoadProducersTask.execute();
-                /*
-                DatabaseHelper dbh = new DatabaseHelper(mContext);
-
-                try {
-                    dbh.createDataBase();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                ProducersDataSource pDs = new ProducersDataSource(mContext);
-                pDs.open();
-                mProducersList = pDs.getProducerList();
-                mAdapter = new ProducersAdapter(getActivity(), mProducersList);
-                mUiList.setAdapter(mAdapter);*/
-
+                mLoadProducersOnlineTask = new LoadProducersOnlineTask();
+                mLoadProducersOnlineTask.execute();
             }
-
             // otherwise, show message
 
             else {
-                Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
-                        Toast.LENGTH_LONG).show();
+                /*Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
+                    Toast.LENGTH_LONG).show();
+                */
+                Toast.makeText(mContext, "Offline database", Toast.LENGTH_LONG).show();
+                mLoadProducersTask = new LoadProducersTask();
+                mLoadProducersTask.execute();
             }
         }
 
@@ -182,22 +182,62 @@ public class ProducersFragment extends BaseFragment {
             ProducersDataSource pDs = new ProducersDataSource(mContext);
             pDs.open();
             mProducersList = pDs.getProducerList();
+            return null;
 
-            /*
-                        mParser = new JSONParser();
+        }
 
-                        InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
-                        if (source != null) {
-                            Gson gson = new Gson();
-                            InputStreamReader reader = new InputStreamReader(source);
+        // create adapter that contains loaded data and show list of producers
 
-                            ProducersResponse response = gson.fromJson(reader, ProducersResponse.class);
+        protected void onPostExecute(String file_url) {
 
-                            if (response != null) {
-                                mProducersList = response.producers;
-                            }
-                        }
-            */
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mProducersList != null) {
+                fillView();
+            }
+
+            mLoadProducersTask = null;
+
+        }
+
+    }
+
+    class LoadProducersOnlineTask extends AsyncTask<String, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDial == null) {
+                mProgDial = new ProgressDialog(mContext);
+            }
+            mProgDial.setMessage(getResources().getString(R.string.loading_producers));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
+
+        }
+
+        // retrieving producers data
+
+        @Override
+        protected String doInBackground(String... args) {
+            mParser = new JSONParser();
+
+            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
+            if (source != null) {
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+
+                ProducersResponse response = gson.fromJson(reader, ProducersResponse.class);
+
+                if (response != null) {
+                    mProducersList = response.producers;
+                }
+            }
             return null;
 
         }

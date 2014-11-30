@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import pl.tokajiwines.jsonresponses.ProducerDetails;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.models.Producer;
 import pl.tokajiwines.utils.Log;
@@ -100,6 +101,20 @@ public class ProducersDataSource {
         return producer;
     }
 
+    public ProducerDetails getProducerDetails(int id) {
+        Log.i(LOG, "getProducer(id=" + id + ")");
+        ProducerDetails pd = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, allColumns, "IdProducer"
+                + "=" + id, null, null, null, null);
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Producer with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            pd = cursorToProducerDetails(cursor);
+        }
+        return pd;
+    }
+
     public List<Producer> getAllProducers() {
         Log.i(LOG, "getAllProducers()");
         List<Producer> producers = new ArrayList<Producer>();
@@ -165,6 +180,36 @@ public class ProducersDataSource {
         p.description = dDs.getDescriptionShort(cursor.getInt(2));
         dDs.close();
         return new ProducerListItem(p);
+    }
+
+    private ProducerDetails cursorToProducerDetails(Cursor cursor) {
+        Producer p = new Producer();
+        p.mIdProducer = cursor.getInt(0);
+        p.mName = cursor.getString(1);
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+        AddressesDataSource aDs = new AddressesDataSource(mContext);
+
+        Producer producer = new Producer();
+        producer.mIdProducer = cursor.getInt(0);
+        producer.mEmail = cursor.getString(1);
+        producer.mLink = cursor.getString(2);
+        producer.mName = cursor.getString(3);
+        producer.mPhone = cursor.getString(4);
+        dDs.open();
+        producer.description = dDs.getDescriptionVast(cursor.getInt(5));
+        dDs.close();
+        aDs.open();
+        producer.address = aDs.getAddress(cursor.getInt(6));
+        aDs.close();
+        producer.mIdUser_ = cursor.getInt(7);
+        iDs.open();
+        producer.imageCover = iDs.getImageUrl(cursor.getInt(8));
+        iDs.close();
+        producer.mIdWineBest_ = cursor.getInt(9);
+        producer.mLastUpdate = cursor.getString(10);
+
+        return new ProducerDetails(producer);
     }
 
 }

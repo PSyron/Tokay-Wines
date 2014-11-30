@@ -98,8 +98,8 @@ public class StartWineImageActivity extends BaseActivity {
     public void onResume() {
 
         super.onResume();
-        mLoadDatabase = new LoadDatabase();
-        mLoadDatabase.execute();
+        //mLoadDatabase = new LoadDatabase();
+        //mLoadDatabase.execute();
         if (App.isOnline(this)) {
 
             if (mWinesList == null) {
@@ -373,40 +373,26 @@ public class StartWineImageActivity extends BaseActivity {
 
         boolean failure = false;
 
-        // while data are loading, show progress dialog
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //            mProgDial = new ProgressDialog(StartWineImageActivity.this);
-            //            mProgDial.setMessage("Loading random wine data...");
-            //            mProgDial.setIndeterminate(false);
-            //            mProgDial.setCancelable(false);
-            //            mProgDial.show();
-
         }
-
-        // retrieving news data
 
         @Override
         protected Void doInBackground(Void... params) {
-            // TODO Auto-generated method stub
             DatabaseHelper dbh = new DatabaseHelper(StartWineImageActivity.this);
-
+            Log.i("StartWineImage", " database loading");
             try {
                 dbh.createDataBase();
-                dbh.close();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            super.onPostExecute(null);
             return null;
         }
 
         protected void onPostExecute() {
             Log.i("StartWineImage", "onPostExecute database loaded");
-            super.onPostExecute(null);
+            mLoadDatabase = null;
         }
 
     }
