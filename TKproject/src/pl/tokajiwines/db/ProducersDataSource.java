@@ -127,7 +127,6 @@ public class ProducersDataSource {
         while (!cursor.isAfterLast()) {
             ProducerListItem producer = cursorToProducerListItem(cursor);
             producers[i] = producer;
-            ;
             cursor.moveToNext();
             i++;
         }

@@ -12,7 +12,7 @@ public class Place implements Serializable {
     /**
      * 
      */
-    //{"idPlace":"1","name":"Toldi Fogad\u00f3","address":"Hajd\u00fa k\u00f6z 2 Tokaj","longitude":"21.4106","latitude":"48.1238","placeType":"Hotel"
+
     public int mId;
     public String mLastUpdate;
     @SerializedName("idPlace")
