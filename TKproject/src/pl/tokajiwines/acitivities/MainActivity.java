@@ -5,7 +5,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.SearchManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -27,6 +26,7 @@ import pl.tokajiwines.fragments.NewsFragment;
 import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.fragments.WinesFilterFragment;
+import pl.tokajiwines.recivers.RepeatServiceNotificationReceiver;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
 import pl.tokajiwines.utils.SuggestionProvider;
 
@@ -52,10 +52,7 @@ public class MainActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //        if (App.isOnline(this)) {
-        //            startActivity(new Intent(MainActivity.this, StartWineImageActivity.class));
-        //        }
-        // new RepeatServiceNotificationReceiver().onReceive(this, null);
+        new RepeatServiceNotificationReceiver().onReceive(this, null);
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -71,20 +68,18 @@ public class MainActivity extends Activity implements
         //initLanguage();
 
     }
-    
+
     @Override
     protected void onPause() {
 
         if (mLoadSearchItemsTask != null) {
 
-            mLoadSearchItemsTask.cancel(true);            
+            mLoadSearchItemsTask.cancel(true);
             mLoadSearchItemsTask = null;
         }
         super.onPause();
     }
 
-    
-    
     public void initLanguage() {
         int language;
         if (Locale.getDefault().getDisplayLanguage().contains("polsk")
@@ -212,21 +207,18 @@ public class MainActivity extends Activity implements
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.main, menu);
-            SearchManager searchManager =
-                    (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-             SearchView searchView =
-                     (SearchView) menu.findItem(R.id.action_search).getActionView();
-             searchView.setSearchableInfo(
-                     searchManager.getSearchableInfo(getComponentName()));
-/*             searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-                
-                @Override
-                public boolean onClose() {
-                    System.out.println("CLOSE");
-                    SuggestionProvider.sSearchItems = null;
-                    return false;
-                }
-            });*/
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            /*             searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                            
+                            @Override
+                            public boolean onClose() {
+                                System.out.println("CLOSE");
+                                SuggestionProvider.sSearchItems = null;
+                                return false;
+                            }
+                        });*/
             restoreActionBar();
             return true;
         }
@@ -242,8 +234,7 @@ public class MainActivity extends Activity implements
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_search) {
-            if (SuggestionProvider.sSearchItems == null)
-            {
+            if (SuggestionProvider.sSearchItems == null) {
                 mLoadSearchItemsTask = new GetSearchItemsAsync(MainActivity.this);
                 mLoadSearchItemsTask.execute();
             }
