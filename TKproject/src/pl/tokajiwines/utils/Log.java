@@ -1,8 +1,10 @@
 
 package pl.tokajiwines.utils;
 
+import pl.tokajiwines.App;
+
 public class Log {
-    static final boolean LOG = true;
+    static final boolean LOG = App.debug_mode;
 
     public static void i(String tag, String string) {
         if (LOG) android.util.Log.i(tag, string);

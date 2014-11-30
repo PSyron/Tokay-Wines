@@ -37,10 +37,9 @@ import java.net.URL;
 
 public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
 
-    static final long ONE_MINUTE_IN_MILLIS = 60000;// millisecs MINUTE
     public static final String SHARED_ARRAY = "shared_array ";
     private Context mContext;
-    
+
     private static String sUrl;
     private String sUsername;
     private String sPassword;
@@ -88,28 +87,25 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
         }
         //TODO change below sUrl for tempUrl
         Log.e("pobieranie URL", tempUrl + "     ");
-        InputStream source = mParser.retrieveStream(tempUrl, sUsername,
-                sPassword, null);
-        if (source != null)
-        {
-    
+        InputStream source = mParser.retrieveStream(tempUrl, sUsername, sPassword, null);
+        if (source != null) {
+
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(source);
-    
+
             NearPlacesResponse response = gson.fromJson(reader, NearPlacesResponse.class);
-    
+
             if (response != null) {
-    
+
                 if (response.success == 1)
                     mNearbyPlaces = response.places;
-    
+
                 else
                     mNearbyPlaces = new Place[0];
             }
         }
-        
-        else
-        {
+
+        else {
             mNearbyPlaces = new Place[0];
         }
         return null;
@@ -162,17 +158,25 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
                 //                    builder.setSound(Uri.parse("android.resource://" + mContext.getPackageName()
                 //                            + "/" + p.getSound()));
 
-                final File imgFile = new File(App.fileAbsPath
+                final File imgFile = new File(mContext.getFilesDir().getAbsolutePath()
+                        + "/"
                         + p.mImageUrl.substring(p.mImageUrl.lastIndexOf('/') + 1,
                                 p.mImageUrl.length()));
-                Bitmap myBitmap;
+                Bitmap myBitmap = null;
                 if (imgFile.exists()) {
-
+                    Log.e("Notifikacja", "zdjecie istnieje");
                     myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
                 } else {
-
-                    myBitmap = App.downloadImagesToSdCardAndReturnBitman(p.mImageUrl, mContext);
+                    Log.e("Notifikacja", "nie zdjecie istnieje");
+                    //  myBitmap = App.downloadImagesToSdCardAndReturnBitman(p.mImageUrl, mContext);
+                    try {
+                        App.downloadToInternal(p.mImageUrl, mContext);
+                        myBitmap = App.getFromInternal(p.mImageUrl, mContext);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
 
                 }
                 builder.setLargeIcon(myBitmap);

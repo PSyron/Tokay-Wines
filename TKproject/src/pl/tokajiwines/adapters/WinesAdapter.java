@@ -2,9 +2,6 @@
 package pl.tokajiwines.adapters;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import pl.tokajiwines.App;
+import com.squareup.picasso.Picasso;
+
 import pl.tokajiwines.R;
 import pl.tokajiwines.jsonresponses.WineListItem;
 
@@ -129,17 +127,14 @@ public class WinesAdapter extends BaseAdapter {
                         mWines[position].mImageUrl.lastIndexOf('/') + 1,
                         mWines[position].mImageUrl.length()));
         if (imgFile.exists()) {
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-
-            holder.img.setImageBitmap(myBitmap);
-        } else {
+            Picasso.with(mActivity).load(imgFile).into(holder.img);
+        } /*else {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     // App.downloadImagesToSdCard(mWines[position].mImageUrl, mActivity, holder.img);
                     App.downloadAndRun(mWines[position].mImageUrl, mActivity, holder.img);
                 }
-            }, 50);
-        }
+            }, 50);*/
 
         //        rowView.setOnClickListener(new OnClickListener() {
         //            @Override
@@ -151,5 +146,4 @@ public class WinesAdapter extends BaseAdapter {
         //        });
         return rowView;
     }
-
 }
