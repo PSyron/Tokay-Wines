@@ -14,21 +14,16 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
 import org.json.JSONArray;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.ProducerActivity;
 import pl.tokajiwines.adapters.ProducersAdapter;
+import pl.tokajiwines.db.ProducersDataSource;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
-import pl.tokajiwines.jsonresponses.ProducersResponse;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 public class ProducersFragment extends BaseFragment {
 
@@ -110,7 +105,8 @@ public class ProducersFragment extends BaseFragment {
             if (App.isOnline(mContext)) {
                 mLoadProducersTask = new LoadProducersTask();
                 mLoadProducersTask.execute();
-                /*DatabaseHelper dbh = new DatabaseHelper(mContext);
+                /*
+                DatabaseHelper dbh = new DatabaseHelper(mContext);
 
                 try {
                     dbh.createDataBase();
@@ -120,9 +116,10 @@ public class ProducersFragment extends BaseFragment {
                 }
                 ProducersDataSource pDs = new ProducersDataSource(mContext);
                 pDs.open();
-                ProducersAdapter mAdapter = new ProducersAdapter(getActivity(),
-                        pDs.getProducerList());
+                mProducersList = pDs.getProducerList();
+                mAdapter = new ProducersAdapter(getActivity(), mProducersList);
                 mUiList.setAdapter(mAdapter);*/
+
             }
 
             // otherwise, show message
@@ -182,20 +179,25 @@ public class ProducersFragment extends BaseFragment {
         @Override
         protected String doInBackground(String... args) {
 
-            mParser = new JSONParser();
+            ProducersDataSource pDs = new ProducersDataSource(mContext);
+            pDs.open();
+            mProducersList = pDs.getProducerList();
 
-            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
-            if (source != null) {
-                Gson gson = new Gson();
-                InputStreamReader reader = new InputStreamReader(source);
+            /*
+                        mParser = new JSONParser();
 
-                ProducersResponse response = gson.fromJson(reader, ProducersResponse.class);
+                        InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
+                        if (source != null) {
+                            Gson gson = new Gson();
+                            InputStreamReader reader = new InputStreamReader(source);
 
-                if (response != null) {
-                    mProducersList = response.producers;
-                }
-            }
+                            ProducersResponse response = gson.fromJson(reader, ProducersResponse.class);
 
+                            if (response != null) {
+                                mProducersList = response.producers;
+                            }
+                        }
+            */
             return null;
 
         }

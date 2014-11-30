@@ -21,6 +21,7 @@ import org.apache.http.NameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.db.DatabaseHelper;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.DownloadImagesRespons;
 import pl.tokajiwines.jsonresponses.WineListItem;
@@ -56,6 +57,7 @@ public class StartWineImageActivity extends BaseActivity {
     Image[] mImagesList;
     LoadImages mDownloadImagesTask;
     LoadWineImageTask mLoadWine;
+    LoadDatabase mLoadDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,20 +98,17 @@ public class StartWineImageActivity extends BaseActivity {
     public void onResume() {
 
         super.onResume();
-
+        mLoadDatabase = new LoadDatabase();
+        mLoadDatabase.execute();
         if (App.isOnline(this)) {
-            
-            if (mWinesList == null)
-            {
+
+            if (mWinesList == null) {
                 mLoadWine = new LoadWineImageTask();
                 mLoadWine.execute();
-            }
-            else
-            {
-                if (!mIsViewFilled)
-                {
+            } else {
+                if (!mIsViewFilled) {
                     initView(mWinesList);
-                }               
+                }
             }
             boolean learned = SharedPreferencesHelper.getSharedPreferencesBoolean(this, DOWNLOAD,
                     false);
@@ -224,7 +223,7 @@ public class StartWineImageActivity extends BaseActivity {
                         finish();
                     }
                 });
-                
+
                 Log.e("StartWineImage", "Start wine view filled");
                 mIsViewFilled = true;
                 return;
@@ -246,10 +245,10 @@ public class StartWineImageActivity extends BaseActivity {
             if (mProgDial == null) {
                 mProgDial = new ProgressDialog(StartWineImageActivity.this);
             }
-                mProgDial.setMessage(getResources().getString(R.string.downloading_content));
-                mProgDial.setIndeterminate(false);
-                mProgDial.setCancelable(false);
-                mProgDial.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgDial.setMessage(getResources().getString(R.string.downloading_content));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(false);
+            mProgDial.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             mProgDial.show();
 
         }
@@ -363,9 +362,51 @@ public class StartWineImageActivity extends BaseActivity {
                 //                mUiList.setAdapter(mAdapter);
                 initView(mWinesList);
             }
-            
+
             mLoadWine = null;
 
+        }
+
+    }
+
+    class LoadDatabase extends AsyncTask<Void, Void, Void> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //            mProgDial = new ProgressDialog(StartWineImageActivity.this);
+            //            mProgDial.setMessage("Loading random wine data...");
+            //            mProgDial.setIndeterminate(false);
+            //            mProgDial.setCancelable(false);
+            //            mProgDial.show();
+
+        }
+
+        // retrieving news data
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // TODO Auto-generated method stub
+            DatabaseHelper dbh = new DatabaseHelper(StartWineImageActivity.this);
+
+            try {
+                dbh.createDataBase();
+                dbh.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            super.onPostExecute(null);
+            return null;
+        }
+
+        protected void onPostExecute() {
+            Log.i("StartWineImage", "onPostExecute database loaded");
+            super.onPostExecute(null);
         }
 
     }
