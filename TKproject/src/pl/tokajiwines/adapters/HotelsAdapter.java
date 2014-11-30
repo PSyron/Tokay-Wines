@@ -2,8 +2,6 @@
 package pl.tokajiwines.adapters;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
@@ -79,9 +79,7 @@ public class HotelsAdapter extends BaseAdapter {
                         mHotels[position].mImageUrl.lastIndexOf('/') + 1,
                         mHotels[position].mImageUrl.length()));
         if (imgFile.exists()) {
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-
-            holder.img.setImageBitmap(myBitmap);
+            Picasso.with(mActivity).load(imgFile).into(holder.img);
         } else {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
