@@ -34,10 +34,7 @@ import org.json.JSONObject;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.fragments.SettingsFragment;
-import pl.tokajiwines.fragments.TabHotelsFragment;
-import pl.tokajiwines.fragments.TabRestaurantsFragment;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.jsonresponses.NearPlacesResponse;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
@@ -262,19 +259,19 @@ public class NearPlaceActivity extends BaseActivity {
                                 mSelectedPlace.mName, mSelectedPlace.mPhone, "",
                                 mSelectedPlace.mImageUrl, "", "", "", "");
                         Intent intent = new Intent(NearPlaceActivity.this, HotelActivity.class);
-                        intent.putExtra(TabHotelsFragment.HOTEL_TAG, temp);
+                        intent.putExtra(HotelActivity.HOTEL_TAG, temp);
                         startActivityForResult(intent, HotelActivity.REQUEST);
                     } else if (mSelectedPlace.mPlaceType.contains("Restaurant")) {
                         RestaurantListItem temp = new RestaurantListItem(mSelectedPlace.mIdPlace,
                                 mSelectedPlace.mName, mSelectedPlace.mPhone, "",
                                 mSelectedPlace.mImageUrl, "", "", "", "");
                         Intent intent = new Intent(NearPlaceActivity.this, RestaurantActivity.class);
-                        intent.putExtra(TabRestaurantsFragment.RESTAURANT_TAG, temp);
+                        intent.putExtra(RestaurantActivity.RESTAURANT_TAG, temp);
 
                         startActivityForResult(intent, RestaurantActivity.REQUEST);
                     } else if (mSelectedPlace.mPlaceType.contains("Producer")) {
                         Intent intent = new Intent(NearPlaceActivity.this, ProducerActivity.class);
-                        intent.putExtra(ProducersFragment.PRODUCER_TAG, new ProducerListItem(
+                        intent.putExtra(ProducerActivity.PRODUCER_TAG, new ProducerListItem(
                                 mSelectedPlace.mIdPlace, mSelectedPlace.mName, ""));
 
                         startActivityForResult(intent, ProducerActivity.REQUEST);

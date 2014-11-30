@@ -218,7 +218,7 @@ public class StartWineImageActivity extends BaseActivity {
                         startActivity(i);
 
                         Intent intent = new Intent(StartWineImageActivity.this, WineActivity.class);
-                        intent.putExtra(WinesListActivity.TAG_WINE, mChosedItem);
+                        intent.putExtra(WineActivity.TAG_WINE, mChosedItem);
                         startActivity(intent);
 
                         finish();

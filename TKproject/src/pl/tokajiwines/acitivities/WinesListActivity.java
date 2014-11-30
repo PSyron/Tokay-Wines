@@ -51,7 +51,6 @@ public class WinesListActivity extends BaseActivity {
     private String mProducers;
     private String mPrices;
     private String mName = "";
-    public static String TAG_WINE = "WINE";
     LoadWinesTask mLoadWinesTask;
 
     @Override
@@ -86,7 +85,7 @@ public class WinesListActivity extends BaseActivity {
         mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(mAct, WineActivity.class);
-                intent.putExtra(TAG_WINE, (WineListItem) mAdapter.getItem(position));
+                intent.putExtra(WineActivity.TAG_WINE, (WineListItem) mAdapter.getItem(position));
                 intent.putExtra(WineActivity.TAG_CALLED_FROM_PRODUCER, false);
                 startActivity(intent);
             }

@@ -25,7 +25,6 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.ImagePagerAdapter;
-import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.jsonresponses.ImagePagerItem;
 import pl.tokajiwines.jsonresponses.ImagesResponse;
 import pl.tokajiwines.jsonresponses.ProducerDetails;
@@ -75,6 +74,7 @@ public class ProducerActivity extends BaseActivity {
     LoadProducerImagesTask mLoadProducerImagesTask;
 
     public static final String TAG_ID_PRODUCER = "IdProducer";
+    public static final String PRODUCER_TAG = "producer";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +87,7 @@ public class ProducerActivity extends BaseActivity {
         sUrlImage = getResources().getString(R.string.UrlProducerImages);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            mProducer = (ProducerListItem) extras.getSerializable(ProducersFragment.PRODUCER_TAG);
+            mProducer = (ProducerListItem) extras.getSerializable(PRODUCER_TAG);
         }
         Log.e(ProducerActivity.class.getName(), mProducer + " ");
         initView();

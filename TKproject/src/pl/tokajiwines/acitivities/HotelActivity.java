@@ -23,7 +23,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.fragments.TabHotelsFragment;
 import pl.tokajiwines.jsonresponses.HotelDetails;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.models.Place;
@@ -57,6 +56,8 @@ public class HotelActivity extends BaseActivity {
     LoadHotelTask mLoadHotelTask;
     private String sUsername;
     private String sPassword;
+    
+    public static final String HOTEL_TAG = "hotel";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class HotelActivity extends BaseActivity {
         sPassword = getResources().getString(R.string.Password);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            mHotel = (HotelListItem) extras.getSerializable(TabHotelsFragment.HOTEL_TAG);
+            mHotel = (HotelListItem) extras.getSerializable(HotelActivity.HOTEL_TAG);
         }
 
         Log.e(HotelActivity.class.getName(), mHotel + " ");
@@ -89,10 +90,6 @@ public class HotelActivity extends BaseActivity {
         mUiUrl = (TextView) findViewById(R.id.activity_hotel_details_url);
         mUiNavigate = (ImageView) findViewById(R.id.activity_hotel_navigate);
         mUiDescription = (TextView) findViewById(R.id.activity_hotel_details_description);
-
-        int[] images = {
-                R.drawable.placeholder_image, R.drawable.placeholder_image
-        };
 
         mUiNavigate.setOnClickListener(new OnClickListener() {
 

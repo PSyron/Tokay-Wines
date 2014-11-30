@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
-import android.widget.Toast;
-
 import pl.tokajiwines.R;
 import pl.tokajiwines.asyncs.GetSearchItemsAsync;
 import pl.tokajiwines.utils.SuggestionProvider;

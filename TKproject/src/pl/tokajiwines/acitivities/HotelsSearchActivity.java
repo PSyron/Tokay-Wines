@@ -42,7 +42,6 @@ public class HotelsSearchActivity extends BaseActivity {
     private String sUsername;
     private String sPassword;
     private String mName;
-    public static final String HOTEL_TAG = "hotel";
     private HotelListItem[] mHotelsList;
 
     @Override
@@ -72,7 +71,7 @@ public class HotelsSearchActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 HotelListItem temp = (HotelListItem) mAdapter.getItem(position);
                 Intent intent = new Intent(mContext, HotelActivity.class);
-                intent.putExtra(HOTEL_TAG, temp);
+                intent.putExtra(HotelActivity.HOTEL_TAG, temp);
                 startActivityForResult(intent, HotelActivity.REQUEST);
             }
         });

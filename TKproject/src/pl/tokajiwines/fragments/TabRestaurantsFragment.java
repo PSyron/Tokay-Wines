@@ -40,7 +40,6 @@ public class TabRestaurantsFragment extends BaseFragment {
     private String sUsername;
     private String sPassword;
 
-    public static final String RESTAURANT_TAG = "restaurant";
     private RestaurantListItem[] mRestaurantList;
 
     public static TabRestaurantsFragment newInstance() {
@@ -68,7 +67,7 @@ public class TabRestaurantsFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 RestaurantListItem temp = (RestaurantListItem) mAdapter.getItem(position);
                 Intent intent = new Intent(mContext, RestaurantActivity.class);
-                intent.putExtra(RESTAURANT_TAG, temp);
+                intent.putExtra(RestaurantActivity.RESTAURANT_TAG, temp);
                 System.out.println(temp.mIdRestaurant);
                 startActivityForResult(intent, RestaurantActivity.REQUEST);
             }
