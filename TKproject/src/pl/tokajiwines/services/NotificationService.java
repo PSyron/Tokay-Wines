@@ -22,8 +22,11 @@ public class NotificationService extends Service {
         if (SharedPreferencesHelper.getSharedPreferencesBoolean(this,
                 SettingsFragment.SharedKeyNotif, SettingsFragment.DefNotif)) {
             Log.e("onStartCommand", "execute ");
-            if (App.isOnline(this)) {
-                new GetNearPlacesAsync(this).execute(new GPSTracker(this).getLocationLatLng());
+            GPSTracker gps = new GPSTracker(this);
+
+            if (App.isOnline(this) && gps.canGetLocation()) {
+                Log.e("serwis", "GetNearPlaces.execute");
+                new GetNearPlacesAsync(this).execute(gps.getLocationLatLng());
             }
         }
         // Log.e("serwis", "execute " + wyswietlone.size());

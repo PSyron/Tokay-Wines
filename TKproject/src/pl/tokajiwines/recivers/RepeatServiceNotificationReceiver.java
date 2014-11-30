@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import pl.tokajiwines.models.Place;
+import pl.tokajiwines.utils.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,12 +17,12 @@ import java.util.List;
 public class RepeatServiceNotificationReceiver extends BroadcastReceiver {
 
     // restart service every 30 seconds
-    private static final long REPEAT_TIME = 1000 * 60;
+    private static final long REPEAT_TIME = 1000 * 10;
     public static List<Place> wyswietlone = new ArrayList<Place>();
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
+        Log.e("RepeatServiceNotificationReceiver", "execute ");
         AlarmManager service = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent(context, StartServiceReceiver.class);
         PendingIntent pending = PendingIntent.getBroadcast(context, 0, i,
