@@ -4,11 +4,16 @@ package pl.tokajiwines.acitivities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -205,12 +210,24 @@ public class WinesListActivity extends BaseActivity {
             mProgDial.dismiss();
             if (mWinesList != null) {
                 fillView();
+            } else {
+                LinearLayout layout = new LinearLayout(mAct);
+                setContentView(layout);
+                layout.setOrientation(LinearLayout.VERTICAL);
+                TextView tv = new TextView(getApplicationContext());
+                tv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+                        LayoutParams.MATCH_PARENT));
+                tv.setText(getResources().getString(R.string.no_results));
+                tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+                tv.setTextSize(16);
+                tv.setTypeface(Typeface.DEFAULT_BOLD);
+                tv.setTextColor(getResources().getColor(R.color.filter_text));
+                layout.addView(tv);
             }
 
             mLoadWinesTask = null;
 
         }
-
     }
 
 }

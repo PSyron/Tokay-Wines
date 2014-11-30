@@ -26,16 +26,17 @@
 
     <string name="downloading_content">Pobieranie zawartości</string>
     <string name="exit_msg">Naciśnij ponownie przycisk WSTECZ, aby wyjść</string>
-    
-     <!-- Loading -->
-    
+    <string name="no_results">Brak wyników dla wybranych parametrów</string>
+
+    <!-- Loading -->
+
     <string name="loading">Wczytywanie...</string>
     <string name="loading_search">Wczytywanie wyników wyszukiwania...</string>
     <string name="loading_news">Wczytywanie aktualności...</string>
     <string name="loading_wine">Wczytywanie informacji o winie...</string>
     <string name="loading_wines">Wczytywanie informacji o winach...</string>
-	<string name="loading_producer">Wczytywanie informacji o producencie...</string>
-	<string name="loading_producers">Wczytywanie informacji o producentach...</string>
+    <string name="loading_producer">Wczytywanie informacji o producencie...</string>
+    <string name="loading_producers">Wczytywanie informacji o producentach...</string>
     <string name="loading_near">Wczytywanie miejsc w pobliżu...</string>
     <string name="loading_hotel">Wczytywanie informacji o hotelu...</string>
     <string name="loading_hotels">Wczytywanie informacji o hotelach...</string>
