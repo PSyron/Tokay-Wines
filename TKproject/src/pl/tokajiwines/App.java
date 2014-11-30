@@ -28,7 +28,7 @@ import java.net.URLConnection;
 
 public class App extends Application {
 
-    public static boolean debug_mode = false;// emulating positionublic static String fileAbsPath = Environment.getExternalStorageDirectory() + "/Tokaji Wines/";
+    public static boolean debug_mode = true;// emulating positionublic static String fileAbsPath = Environment.getExternalStorageDirectory() + "/Tokaji Wines/";
     public static BaseActivity sMapAct = null;
 
     public static boolean isOnline(Context context) {
@@ -41,56 +41,10 @@ public class App extends Application {
         return false;
     }
 
-    //    public static void downloadImagesToSdCard(final String downloadUrl, Context ctx,
-    //            final ImageView img) {
-    //
-    //        final File direct = new File(Environment.getExternalStorageDirectory() + "/Tokaji Wines");
-    //        String internalPath = ctx.getFilesDir().getAbsolutePath();
-    //
-    //        if (!direct.exists()) {
-    //            direct.mkdirs();
-    //        }
-    //
-    //        DownloadManager mgr = (DownloadManager) ctx.getSystemService(Context.DOWNLOAD_SERVICE);
-    //
-    //        Uri downloadUri = Uri.parse(downloadUrl);
-    //        DownloadManager.Request request = new DownloadManager.Request(downloadUri);
-    //
-    //        request.setAllowedNetworkTypes(
-    //                DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
-    //                .setAllowedOverRoaming(true)
-    //                .setTitle("Downloading images")
-    //                .setDescription("Images for Application")
-    //                .setDestinationInExternalFilesDir(
-    //                        ctx,
-    //                        "/Tokaji Wines",
-    //                        downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1,
-    //                                downloadUrl.length()));
-    //
-    //        Log.i("App", ctx.getFilesDir().getAbsolutePath());
-    //        mgr.enqueue(request);
-    //
-    //        new Handler().postDelayed(new Runnable() {
-    //            public void run() {
-    //                BitmapFactory.Options options = new BitmapFactory.Options();
-    //                options.inSampleSize = 8;
-    //                Bitmap myBitmap = BitmapFactory.decodeFile(
-    //                        direct.getPath()
-    //                                + "/"
-    //                                + downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1,
-    //                                        downloadUrl.length()), options);
-    //
-    //                img.setImageBitmap(myBitmap);
-    //
-    //            }
-    //        }, 1200);
-    //
-    //    }
-
     public static Bitmap downloadImagesToSdCardAndReturnBitman(final String downloadUrl, Context ctx) {
 
         final File direct = new File(Environment.getExternalStorageDirectory() + "/Tokaji Wines");
-        String internalPath = ctx.getFilesDir().getAbsolutePath();
+        // String internalPath = ctx.getFilesDir().getAbsolutePath();
 
         if (!direct.exists()) {
             direct.mkdirs();
@@ -179,10 +133,6 @@ public class App extends Application {
         //  int loadedSize = 0;
 
         while ((dataSize = inputStream.read(buffer)) != -1) {
-
-            //loadedSize += dataSize;
-
-            // ctx.publishProgress(loadedSize);
 
             outputStream.write(buffer, 0, dataSize);
 

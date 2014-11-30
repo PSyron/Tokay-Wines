@@ -162,14 +162,21 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
                         + "/"
                         + p.mImageUrl.substring(p.mImageUrl.lastIndexOf('/') + 1,
                                 p.mImageUrl.length()));
-                Bitmap myBitmap;
+                Bitmap myBitmap = null;
                 if (imgFile.exists()) {
                     Log.e("Notifikacja", "zdjecie istnieje");
                     myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
                 } else {
                     Log.e("Notifikacja", "nie zdjecie istnieje");
-                    myBitmap = App.downloadImagesToSdCardAndReturnBitman(p.mImageUrl, mContext);
+                    //  myBitmap = App.downloadImagesToSdCardAndReturnBitman(p.mImageUrl, mContext);
+                    try {
+                        App.downloadToInternal(p.mImageUrl, mContext);
+                        myBitmap = App.getFromInternal(p.mImageUrl, mContext);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
 
                 }
                 builder.setLargeIcon(myBitmap);
