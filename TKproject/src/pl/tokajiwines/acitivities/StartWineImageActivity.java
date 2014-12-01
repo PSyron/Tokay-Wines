@@ -98,18 +98,14 @@ public class StartWineImageActivity extends BaseActivity {
         super.onResume();
 
         if (App.isOnline(this)) {
-            
-            if (mWinesList == null)
-            {
+
+            if (mWinesList == null) {
                 mLoadWine = new LoadWineImageTask();
                 mLoadWine.execute();
-            }
-            else
-            {
-                if (!mIsViewFilled)
-                {
+            } else {
+                if (!mIsViewFilled) {
                     initView(mWinesList);
-                }               
+                }
             }
             boolean learned = SharedPreferencesHelper.getSharedPreferencesBoolean(this, DOWNLOAD,
                     false);
@@ -224,7 +220,7 @@ public class StartWineImageActivity extends BaseActivity {
                         finish();
                     }
                 });
-                
+
                 Log.e("StartWineImage", "Start wine view filled");
                 mIsViewFilled = true;
                 return;
@@ -246,10 +242,10 @@ public class StartWineImageActivity extends BaseActivity {
             if (mProgDial == null) {
                 mProgDial = new ProgressDialog(StartWineImageActivity.this);
             }
-                mProgDial.setMessage(getResources().getString(R.string.downloading_content));
-                mProgDial.setIndeterminate(false);
-                mProgDial.setCancelable(false);
-                mProgDial.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgDial.setMessage(getResources().getString(R.string.downloading_content));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(false);
+            mProgDial.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             mProgDial.show();
 
         }
@@ -274,6 +270,12 @@ public class StartWineImageActivity extends BaseActivity {
                     int value = 0;
                     mProgDial.setProgress(value);
                     for (Image i : mImagesList) {
+                        if (!App.isOnline(StartWineImageActivity.this)) {
+                            mDownloadImagesTask.cancel(true);
+                            if (mProgDial != null) {
+                                mProgDial.dismiss();
+                            }
+                        }
                         final File imgFile = new File(StartWineImageActivity.this.getFilesDir()
                                 .getAbsolutePath()
                                 + "/"
@@ -363,7 +365,7 @@ public class StartWineImageActivity extends BaseActivity {
                 //                mUiList.setAdapter(mAdapter);
                 initView(mWinesList);
             }
-            
+
             mLoadWine = null;
 
         }
