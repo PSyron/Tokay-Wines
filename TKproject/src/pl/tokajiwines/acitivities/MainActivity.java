@@ -26,6 +26,10 @@ import pl.tokajiwines.fragments.NewsFragment;
 import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.fragments.WinesFilterFragment;
+import pl.tokajiwines.jsonresponses.HotelListItem;
+import pl.tokajiwines.jsonresponses.ProducerListItem;
+import pl.tokajiwines.jsonresponses.RestaurantListItem;
+import pl.tokajiwines.models.Place;
 import pl.tokajiwines.recivers.RepeatServiceNotificationReceiver;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
 import pl.tokajiwines.utils.SuggestionProvider;
@@ -42,6 +46,8 @@ public class MainActivity extends Activity implements
     private NavigationDrawerFragment mNavigationDrawerFragment;
     boolean doubleBackToExitPressedOnce = false;
     public GetSearchItemsAsync mLoadSearchItemsTask;
+
+    public static final String FROM_NOTIFICATION = "tPlaceFromNotification";
     /**
      * Used to store the last screen title. For use in
      * {@link #restoreActionBar()}.
@@ -59,6 +65,32 @@ public class MainActivity extends Activity implements
 
         if (App.debug_mode) {
             SharedPreferencesHelper.clearSharedPreferences(this);
+        }
+        //From notyfication
+        if (getIntent().hasExtra(FROM_NOTIFICATION)) {
+            Place notificationPlace = (Place) getIntent().getSerializableExtra(FROM_NOTIFICATION);
+            if (notificationPlace.mPlaceType.contains("Hotel")) {
+                HotelListItem temp = new HotelListItem(notificationPlace.mIdPlace,
+                        notificationPlace.mName, notificationPlace.mPhone, "",
+                        notificationPlace.mImageUrl, "", "", "", "");
+                Intent intent = new Intent(MainActivity.this, HotelActivity.class);
+                intent.putExtra(HotelActivity.HOTEL_TAG, temp);
+                startActivityForResult(intent, HotelActivity.REQUEST);
+            } else if (notificationPlace.mPlaceType.contains("Restaurant")) {
+                RestaurantListItem temp = new RestaurantListItem(notificationPlace.mIdPlace,
+                        notificationPlace.mName, notificationPlace.mPhone, "",
+                        notificationPlace.mImageUrl, "", "", "", "");
+                Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
+                intent.putExtra(RestaurantActivity.RESTAURANT_TAG, temp);
+
+                startActivityForResult(intent, RestaurantActivity.REQUEST);
+            } else if (notificationPlace.mPlaceType.contains("Producer")) {
+                Intent intent = new Intent(MainActivity.this, ProducerActivity.class);
+                intent.putExtra(ProducerActivity.PRODUCER_TAG, new ProducerListItem(
+                        notificationPlace.mIdPlace, notificationPlace.mName, ""));
+
+                startActivityForResult(intent, ProducerActivity.REQUEST);
+            }
         }
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,

@@ -114,6 +114,8 @@ public class ProducerActivity extends BaseActivity {
         mUiWineName = (TextView) findViewById(R.id.activity_producer_details_wine_name);
         mUiWineImage = (ImageView) findViewById(R.id.activity_producer_details_wine_image);
         mUiScroll = (ScrollView) findViewById(R.id.activity_producer_details_scrollview);
+        mUiNavigate.setVisibility(View.INVISIBLE);
+        mUiNear.setVisibility(View.INVISIBLE);
 
         int[] images = {
             R.drawable.no_image_big
@@ -174,6 +176,8 @@ public class ProducerActivity extends BaseActivity {
     }
 
     public void fillView() {
+        mUiNavigate.setVisibility(View.VISIBLE);
+        mUiNear.setVisibility(View.VISIBLE);
         Log.e("fillView", mProducerFromBase.mIdProducer + " " + mProducerFromBase.mName + " "
                 + mProducerFromBase.mStreetName + " " + mProducerFromBase.mStreetNumber + " "
                 + mProducerFromBase.mHouseNumber + " " + mProducerFromBase.mCity + " "

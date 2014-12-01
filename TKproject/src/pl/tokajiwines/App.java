@@ -28,7 +28,7 @@ import java.net.URLConnection;
 
 public class App extends Application {
 
-    public static boolean debug_mode = true;// emulating positionublic static String fileAbsPath = Environment.getExternalStorageDirectory() + "/Tokaji Wines/";
+    public static boolean debug_mode = false;// emulating positionublic static String fileAbsPath = Environment.getExternalStorageDirectory() + "/Tokaji Wines/";
     public static BaseActivity sMapAct = null;
 
     public static boolean isOnline(Context context) {
