@@ -44,7 +44,8 @@ public class ProducerDetails implements Serializable {
         mLng = p.address.mLongitude + "";
         mPostCode = p.address.mPostcode;
         mLastUpdate = p.mLastUpdate;
-
+        mWineImageUrl = p.wineBest.imageCover.mImage;
+        mWineName = p.wineBest.mName;
     }
 
     /**

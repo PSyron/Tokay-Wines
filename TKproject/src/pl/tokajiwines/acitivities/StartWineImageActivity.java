@@ -98,8 +98,8 @@ public class StartWineImageActivity extends BaseActivity {
     public void onResume() {
 
         super.onResume();
-        //mLoadDatabase = new LoadDatabase();
-        //mLoadDatabase.execute();
+        mLoadDatabase = new LoadDatabase();
+        mLoadDatabase.execute();
         if (App.isOnline(this)) {
 
             if (mWinesList == null) {
@@ -391,6 +391,7 @@ public class StartWineImageActivity extends BaseActivity {
         }
 
         protected void onPostExecute() {
+            super.onPostExecute(null);
             Log.i("StartWineImage", "onPostExecute database loaded");
             mLoadDatabase = null;
         }

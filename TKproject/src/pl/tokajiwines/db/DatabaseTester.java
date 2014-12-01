@@ -3,6 +3,7 @@ package pl.tokajiwines.db;
 
 import android.content.Context;
 
+import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.models.Address;
 import pl.tokajiwines.models.Currency;
 import pl.tokajiwines.models.Description;
@@ -54,7 +55,7 @@ public class DatabaseTester {
                 1, 1, "Dawno"));
         pDs.insertProducer(new Producer(2, "Email", "www.test.pl", "Testowy", "666666666", 1, 1, 1,
                 1, 1, "Dawno"));
-        List<Producer> prodlist = pDs.getAllProducers();
+        List<Producer> prodlist = null;
         pDs.close();
         Log.i("Producent1", prodlist.get(0).mName + " " + prodlist.get(0).mIdDescription_ + " "
                 + prodlist.get(0).mIdImageCover_ + " " + prodlist.get(0).mIdProducer);
@@ -98,12 +99,13 @@ public class DatabaseTester {
 
     public void testWines() {
         wDs.open();
-        wDs.insertWine(new Wine(1, "Testowe", 2012, 22.13, 0, 50, "Dawno", 1, 1, 1, 1, 1, 1));
-        wDs.insertWine(new Wine(2, "Testowo", 2010, 22.13, 0, 50, "Dawnop", 1, 1, 1, 1, 1, 1));
         List<Wine> wl = wDs.getAllWines();
+        Wine p = wDs.getProducerWineBest(5);
+        WineListItem[] d = wDs.getProducerWines(1);
         wDs.close();
         Log.i("Wines", "Wine name:" + wl.get(0).mName);
         Log.i("Wines", "Wine name:" + wl.get(1).mName);
+        Log.i("Pierwsze", p.mName);
     }
 
     public void testWineStrains() {
@@ -140,7 +142,7 @@ public class DatabaseTester {
         gDs.open();
         gDs.insertGrade(new Grade(1, "Osioł"));
         gDs.insertGrade(new Grade(2, "Dwor"));
-        List<Grade> gL = gDs.getAllGrades();
+        List<Grade> gL = null;
         gDs.close();
         Log.i("Grades", gL.get(0).mName);
         Log.i("Grades", gL.get(1).mName);
@@ -150,7 +152,7 @@ public class DatabaseTester {
         fDs.open();
         fDs.insertFlavour(new Flavour(1, "Soar", "Gorzki"));
         fDs.insertFlavour(new Flavour(2, "Sweet", "Slodki"));
-        List<Flavour> fL = fDs.getAllFlavours();
+        List<Flavour> fL = null;
         fDs.close();
         Log.i("Flavours", fL.get(0).mNameEng);
         Log.i("Flavours", fL.get(1).mNameEng);

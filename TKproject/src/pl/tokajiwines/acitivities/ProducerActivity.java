@@ -25,6 +25,7 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.ImagePagerAdapter;
+import pl.tokajiwines.db.ProducerImagesDataSource;
 import pl.tokajiwines.db.ProducersDataSource;
 import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.jsonresponses.ImagePagerItem;
@@ -255,9 +256,9 @@ public class ProducerActivity extends BaseActivity {
         // otherwise, show message
 
         else {
-            /*Toast.makeText(ProducerActivity.this,
-                    getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG).show();*/
-            Toast.makeText(ProducerActivity.this, "Offline database", Toast.LENGTH_LONG).show();
+            Toast.makeText(ProducerActivity.this,
+                    getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG).show();
+            /*Toast.makeText(ProducerActivity.this, "Offline database", Toast.LENGTH_LONG).show();
             if (mProducerFromBase == null) {
                 mLoadProducerTask = new LoadProducerTask();
                 mLoadProducerTask.execute();
@@ -272,13 +273,14 @@ public class ProducerActivity extends BaseActivity {
             if (mImagesUrl == null) {
                 mLoadProducerImagesTask = new LoadProducerImagesTask();
                 mLoadProducerImagesTask.execute();
-            }
-
+            }*/
+            /*
             else {
                 if (!mIsPagerFilled) {
                     fillPager();
                 }
             }
+            */
         }
 
     }
@@ -294,10 +296,21 @@ public class ProducerActivity extends BaseActivity {
 
             mLoadProducerTask = null;
         }
+        if (mLoadProducerOnlineTask != null) {
+            mLoadProducerOnlineTask.cancel(true);
+            if (mProgDial != null) {
+                mProgDial.dismiss();
+            }
 
+            mLoadProducerOnlineTask = null;
+        }
         if (mLoadProducerImagesTask != null) {
             mLoadProducerImagesTask.cancel(true);
             mLoadProducerImagesTask = null;
+        }
+        if (mLoadProducerImagesOnlineTask != null) {
+            mLoadProducerImagesOnlineTask.cancel(true);
+            mLoadProducerImagesOnlineTask = null;
         }
         super.onPause();
     }
@@ -338,7 +351,7 @@ public class ProducerActivity extends BaseActivity {
             ProducersDataSource pDs = new ProducersDataSource(ProducerActivity.this);
             pDs.open();
             mProducerFromBase = pDs.getProducerDetails(mProducer.mIdProducer);
-
+            pDs.close();
             return null;
 
         }
@@ -430,41 +443,19 @@ public class ProducerActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            /*            mProgDial = new ProgressDialog(ProducerActivity.this);
-                        mProgDial.setMessage("Loading producer images...");
-                        mProgDial.setIndeterminate(false);
-                        mProgDial.setCancelable(true);
-                        mProgDial.show();*/
 
         }
-
-        // retrieving producers data
 
         @Override
         protected String doInBackground(Void... args) {
-
-            mParser = new JSONParser();
-
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("who", "" + mProducer.mIdProducer));
-
-            InputStream source = mParser.retrieveStream(sUrlImage, sUsername, sPassword, params);
-            if (source != null) {
-                Gson gson = new Gson();
-                InputStreamReader reader = new InputStreamReader(source);
-
-                ImagesResponse response = gson.fromJson(reader, ImagesResponse.class);
-                Log.e(ProducerActivity.class.getName(), response.images.length + " ");
-                if (response != null) {
-                    mImagesUrl = response.images;
-                }
-            }
-
+            ProducerImagesDataSource piDs = new ProducerImagesDataSource(ProducerActivity.this);
+            piDs.open();
+            ImagePagerItem[] response = piDs.getProducerImagesPager(mProducer.mIdProducer);
+            piDs.close();
+            if (response != null) mImagesUrl = response;
             return null;
 
         }
-
-        // create adapter that contains loaded data and show list of producers
 
         protected void onPostExecute(String file_url) {
 

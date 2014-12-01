@@ -10,9 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import pl.tokajiwines.models.Grade;
 import pl.tokajiwines.utils.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class GradesDataSource {
     // LogCat tag
     private static final String LOG = "GradesDataSource";
@@ -35,6 +32,19 @@ public class GradesDataSource {
 
     public void close() {
         if (database != null && database.isOpen()) dbHelper.close();
+    }
+
+    public Grade getGrade(int id) {
+        Grade grade = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_GRADES, allColumns, "IdGrade" + "="
+                + id, null, null, null, null);
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Grade with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            grade = cursorToGrade(cursor);
+        }
+        return grade;
     }
 
     public long insertGrade(Grade grade) {
@@ -62,19 +72,25 @@ public class GradesDataSource {
         Log.i(LOG, "Updated grade with id: " + gradeOld.mIdGrade + " on: " + rows + " row(s)");
     }
 
-    public List<Grade> getAllGrades() {
-        Log.i(LOG, "getAllGrades()");
-        List<Grade> grades = new ArrayList<Grade>();
+    public Grade[] getAllGrades() {
+        Log.i(LOG, "getAllStrains()");
         Cursor cursor = database.query(DatabaseHelper.TABLE_GRADES, allColumns, null, null, null,
                 null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Grade grade = cursorToGrade(cursor);
-            grades.add(grade);
-            cursor.moveToNext();
-        }
+
+        Grade[] grades = null;
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            grades = new Grade[cursor.getCount()];
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                Grade grade = cursorToGrade(cursor);
+                grades[i] = grade;
+                cursor.moveToNext();
+                i++;
+            }
+        } else
+            Log.w(LOG, "Grades are empty()");
         cursor.close();
-        if (grades.isEmpty()) Log.w(LOG, "Grades are empty()");
         return grades;
     }
 

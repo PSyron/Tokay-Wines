@@ -1,10 +1,13 @@
-package pl.tokajiwines.jsonresponses;
 
-import java.io.Serializable;
+package pl.tokajiwines.jsonresponses;
 
 import com.google.gson.annotations.SerializedName;
 
-public class NewsDetails implements Serializable{
+import pl.tokajiwines.models.News;
+
+import java.io.Serializable;
+
+public class NewsDetails implements Serializable {
 
     /**
      * 
@@ -25,4 +28,14 @@ public class NewsDetails implements Serializable{
     @SerializedName("endDate")
     public String mEndDate;
 
+    public NewsDetails(News n) {
+        mIdNews = n.mIdNews;
+        mHeader = n.mHeaderEng;
+        mVast = n.description.mVast;
+        mImage = n.imageCover.mImage;
+        mEndDate = n.mEndDate;
+        mStartDate = n.mStartDate;
+        mEntryDate = n.mEntryDate;
+
+    }
 }

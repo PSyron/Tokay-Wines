@@ -12,9 +12,6 @@ import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.models.Producer;
 import pl.tokajiwines.utils.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ProducersDataSource {
     // LogCat tag
     private static final String LOG = "ProducersDataSource";
@@ -115,19 +112,25 @@ public class ProducersDataSource {
         return pd;
     }
 
-    public List<Producer> getAllProducers() {
-        Log.i(LOG, "getAllProducers()");
-        List<Producer> producers = new ArrayList<Producer>();
+    public Producer[] getAllProducers() {
+        Log.i(LOG, "getAllStrains()");
         Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, allColumns, null, null,
                 null, null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Producer producer = cursorToProducer(cursor);
-            producers.add(producer);
-            cursor.moveToNext();
-        }
+
+        Producer[] producers = null;
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            producers = new Producer[cursor.getCount()];
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                Producer producer = cursorToProducer(cursor);
+                producers[i] = producer;
+                cursor.moveToNext();
+                i++;
+            }
+        } else
+            Log.w(LOG, "Producers are empty()");
         cursor.close();
-        if (producers.isEmpty()) Log.w(LOG, "Producers are empty()");
         return producers;
     }
 
@@ -146,7 +149,7 @@ public class ProducersDataSource {
             i++;
         }
         cursor.close();
-        if (producers.length == 0) Log.w(LOG, "Producers are empty()");
+        if (producers == null) Log.w(LOG, "Producers are empty()");
 
         return producers;
     }
@@ -189,7 +192,7 @@ public class ProducersDataSource {
         ImagesDataSource iDs = new ImagesDataSource(mContext);
         DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
         AddressesDataSource aDs = new AddressesDataSource(mContext);
-
+        WinesDataSource wDs = new WinesDataSource(mContext);
         Producer producer = new Producer();
         producer.mIdProducer = cursor.getInt(0);
         producer.mEmail = cursor.getString(1);
@@ -206,10 +209,11 @@ public class ProducersDataSource {
         iDs.open();
         producer.imageCover = iDs.getImageUrl(cursor.getInt(8));
         iDs.close();
-        producer.mIdWineBest_ = cursor.getInt(9);
+        wDs.open();
+        producer.wineBest = wDs.getProducerWineBest(cursor.getInt(9));
+        wDs.close();
         producer.mLastUpdate = cursor.getString(10);
 
         return new ProducerDetails(producer);
     }
-
 }

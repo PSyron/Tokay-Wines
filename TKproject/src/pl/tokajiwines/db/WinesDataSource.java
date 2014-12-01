@@ -7,6 +7,9 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.google.gson.annotations.SerializedName;
+
+import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.models.Wine;
 import pl.tokajiwines.utils.Log;
 
@@ -19,6 +22,7 @@ public class WinesDataSource {
     // Database fields
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
+    private Context mContext;
 
     private String[] allColumns = {
             "IdWine", "Name", "ProdDate", "Price", "Volume", "AvailablePL", "LastUpdate",
@@ -27,6 +31,7 @@ public class WinesDataSource {
 
     public WinesDataSource(Context context) {
         dbHelper = new DatabaseHelper(context);
+        mContext = context;
     }
 
     public void open() throws SQLException {
@@ -36,6 +41,92 @@ public class WinesDataSource {
 
     public void close() {
         if (database != null && database.isOpen()) dbHelper.close();
+    }
+
+    public WineListItem[] getProducerWines(int idProducer) {
+        Log.i(LOG, "getProducerWines");
+        Cursor cursor = database.query(DatabaseHelper.TABLE_WINES, allColumns, "IdProducer_ = ?",
+                new String[] {
+                    idProducer + ""
+                }, null, null, null);
+        WineListItem[] wines = null;
+
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Wines for producer with id= " + idProducer + " don't exist");
+        else {
+            cursor.moveToFirst();
+            wines = new WineListItem[cursor.getCount()];
+            int i = 0;
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            iDs.open();
+            while (!cursor.isAfterLast()) {
+                wines[i] = cursorToWineListItem(cursor);
+                cursor.moveToNext();
+            }
+            iDs.close();
+            cursor.close();
+        }
+
+        if (wines == null) Log.w(LOG, "Producer wines are empty()");
+        return wines;
+    }
+
+    private WineListItem cursorToWineListItem(Cursor cursor) {
+        Wine wine = new Wine();
+        ColorsDataSource cDs = new ColorsDataSource(mContext);
+        FlavoursDataSource fDs = new FlavoursDataSource(mContext);
+        ProducersDataSource pDs = new ProducersDataSource(mContext);
+        GradesDataSource gDs = new GradesDataSource(mContext);
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        WineStrainsDataSource wsDs = new WineStrainsDataSource(mContext);
+        wine.mIdWine = cursor.getInt(0);
+        wine.mName = cursor.getString(1);
+        wine.mProdDate = cursor.getInt(2);
+        wine.mPrice = cursor.getDouble(3);
+        wine.mVolume = cursor.getInt(4);
+        wine.mAvailablePL = cursor.getInt(5);
+        wine.mLastUpdate = cursor.getString(6);
+        wine.mIdColor_ = cursor.getInt(7);
+        wine.mIdFlavour_ = cursor.getInt(8);
+        wine.mIdProducer_ = cursor.getInt(9);
+        wine.mIdDescription_ = cursor.getInt(10);
+        wine.mIdGrade_ = cursor.getInt(11);
+        wine.mIdImageCover_ = cursor.getInt(12);
+        cDs.open();
+        wine.color = cDs.getColor(wine.mIdColor_);
+        cDs.close();
+        fDs.open();
+        wine.flavour = fDs.getFlavour(wine.mIdFlavour_);
+        fDs.close();
+        pDs.open();
+        wine.producer = pDs.getProducer(wine.mIdProducer_);
+        pDs.close();
+        gDs.open();
+        wine.grade = gDs.getGrade(wine.mIdGrade_);
+        gDs.close();
+        iDs.open();
+        wine.imageCover = iDs.getImageUrl(wine.mIdImageCover_);
+        iDs.close();
+        wsDs.open();
+        wine.strains = wsDs.getWineStrains(wine.mIdWine);
+        wsDs.close();
+
+        return null;
+    }
+
+    public Wine getProducerWineBest(int id) {
+        Log.i(LOG, "getWine(id=" + id + ")");
+        Wine w = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_WINES, new String[] {
+                "Name", "IdImageCover_"
+        }, "IdWine" + "=" + id, null, null, null, null);
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Wine with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            w = cursorToProducerBestWine(cursor);
+        }
+        return w;
     }
 
     public long insertWine(Wine wine) {
@@ -101,6 +192,27 @@ public class WinesDataSource {
         return wines;
     }
 
+    public String[] getProdDates() {
+        Log.i(LOG, "getProdDates()");
+        Cursor cursor = database.query(true, DatabaseHelper.TABLE_WINES, new String[] {
+            "ProdDate"
+        }, null, null, "ProdDate", null, null, null);
+        String[] dates = null;
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            dates = new String[cursor.getCount()];
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                dates[i] = cursor.getString(0);
+                cursor.moveToNext();
+                i++;
+            }
+        } else
+            Log.w(LOG, "Grades are empty()");
+        cursor.close();
+        return dates;
+    }
+
     private Wine cursorToWine(Cursor cursor) {
         Wine wine = new Wine();
 
@@ -119,4 +231,20 @@ public class WinesDataSource {
         wine.mIdImageCover_ = cursor.getInt(12);
         return wine;
     }
+
+    @SerializedName("wineImage")
+    public String mWineImageUrl;
+    @SerializedName("wineName")
+    public String mWineName;
+
+    private Wine cursorToProducerBestWine(Cursor cursor) {
+        Wine w = new Wine();
+        w.mName = cursor.getString(0);
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        iDs.open();
+        w.imageCover = iDs.getImageUrl(cursor.getInt(1));
+        iDs.close();
+        return w;
+    }
+
 }

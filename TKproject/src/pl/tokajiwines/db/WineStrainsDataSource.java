@@ -19,12 +19,14 @@ public class WineStrainsDataSource {
     // Database fields
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
+    private Context mContext;
     private String[] allColumns = {
             "IdWineStrain", "Content", "IdStrain_", "IdWine_"
     };
 
     public WineStrainsDataSource(Context context) {
         dbHelper = new DatabaseHelper(context);
+        mContext = context;
     }
 
     public void open() throws SQLException {
@@ -34,6 +36,29 @@ public class WineStrainsDataSource {
 
     public void close() {
         if (database != null && database.isOpen()) dbHelper.close();
+    }
+
+    public WineStrain[] getWineStrains(int idWine) {
+        Log.i(LOG, "getWineStrains");
+        Cursor cursor = database.query(DatabaseHelper.TABLE_WINE_STRAINS, allColumns, "IdWine_"
+                + "=" + idWine, null, null, null, null);
+        WineStrain[] strains = null;
+
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Wine strains for wine with id= " + idWine + " don't exist");
+        else {
+            cursor.moveToFirst();
+            strains = new WineStrain[cursor.getCount()];
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                strains[i] = cursorToWineStrain(cursor);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+
+        if (strains == null) Log.w(LOG, "Wine's strains are empty()");
+        return strains;
     }
 
     public long insertWineStrain(WineStrain wineStrain) {
@@ -84,10 +109,15 @@ public class WineStrainsDataSource {
 
     private WineStrain cursorToWineStrain(Cursor cursor) {
         WineStrain wineStrain = new WineStrain();
+        StrainsDataSource sDs = new StrainsDataSource(mContext);
         wineStrain.mIdWineStrain = cursor.getInt(0);
         wineStrain.mContent = cursor.getInt(1);
         wineStrain.mIdStrain_ = cursor.getInt(2);
         wineStrain.mIdWine_ = cursor.getInt(3);
+        sDs.open();
+        wineStrain.strain = sDs.getStrain(wineStrain.mIdWineStrain);
+        sDs.close();
         return wineStrain;
     }
+
 }

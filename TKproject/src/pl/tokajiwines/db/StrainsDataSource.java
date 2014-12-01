@@ -10,9 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import pl.tokajiwines.models.Strain;
 import pl.tokajiwines.utils.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class StrainsDataSource {
     // LogCat tag
     private static final String LOG = "StrainsDataSource";
@@ -35,6 +32,19 @@ public class StrainsDataSource {
 
     public void close() {
         if (database != null && database.isOpen()) dbHelper.close();
+    }
+
+    public Strain getStrain(int id) {
+        Strain strain = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_STRAINS, allColumns, "IdStrain" + "="
+                + id, null, null, null, null);
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Strain with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            strain = cursorToStrain(cursor);
+        }
+        return strain;
     }
 
     public long insertStrain(Strain strain) {
@@ -62,19 +72,26 @@ public class StrainsDataSource {
         Log.i(LOG, "Updated strain with id: " + strainOld.mIdStrain + " on: " + rows + " row(s)");
     }
 
-    public List<Strain> getAllStrains() {
+    public Strain[] getAllStrains() {
         Log.i(LOG, "getAllStrains()");
-        List<Strain> strains = new ArrayList<Strain>();
         Cursor cursor = database.query(DatabaseHelper.TABLE_STRAINS, allColumns, null, null, null,
                 null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Strain strain = cursorToStrain(cursor);
-            strains.add(strain);
-            cursor.moveToNext();
-        }
+
+        Strain[] strains = null;
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            strains = new Strain[cursor.getCount()];
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                Strain strain = cursorToStrain(cursor);
+                strains[i] = strain;
+                cursor.moveToNext();
+                i++;
+            }
+        } else
+            Log.w(LOG, "Strains are empty()");
+
         cursor.close();
-        if (strains.isEmpty()) Log.w(LOG, "Strains are empty()");
         return strains;
     }
 

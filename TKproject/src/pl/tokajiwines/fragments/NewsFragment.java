@@ -19,6 +19,7 @@ import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.NewsActivity;
 import pl.tokajiwines.adapters.NewsAdapter;
+import pl.tokajiwines.db.NewsDataSource;
 import pl.tokajiwines.jsonresponses.NewsListItem;
 import pl.tokajiwines.jsonresponses.NewsResponse;
 import pl.tokajiwines.utils.JSONParser;
@@ -41,6 +42,7 @@ public class NewsFragment extends BaseFragment {
     public static final String TAG_ID_NEWS = "IdNews";
     private NewsListItem[] mNewsList;
     LoadNewsTask mLoadNewsTask;
+    LoadNewsOnlineTask mLoadNewsOnlineTask;
 
     public static NewsFragment newInstance() {
         NewsFragment fragment = new NewsFragment();
@@ -93,15 +95,18 @@ public class NewsFragment extends BaseFragment {
         if (mNewsList.length == 0) {
 
             if (App.isOnline(mContext)) {
-                mLoadNewsTask = new LoadNewsTask();
-                mLoadNewsTask.execute();
+                mLoadNewsOnlineTask = new LoadNewsOnlineTask();
+                mLoadNewsOnlineTask.execute();
             }
 
             // otherwise, show message
 
             else {
-                Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
-                        Toast.LENGTH_LONG).show();
+                /*Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
+                        Toast.LENGTH_LONG).show();*/
+                Toast.makeText(mContext, "Baza offline", Toast.LENGTH_LONG).show();
+                mLoadNewsTask = new LoadNewsTask();
+                mLoadNewsTask.execute();
             }
         }
 
@@ -129,8 +134,53 @@ public class NewsFragment extends BaseFragment {
     }
 
     // async task class that loads news data from remote database
-
     class LoadNewsTask extends AsyncTask<String, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDial == null) {
+                mProgDial = new ProgressDialog(mContext);
+            }
+            mProgDial.setMessage(getResources().getString(R.string.loading_news));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(false);
+            mProgDial.show();
+        }
+
+        // retrieving news data
+
+        @Override
+        protected String doInBackground(String... args) {
+
+            NewsDataSource nDs = new NewsDataSource(mContext);
+            nDs.open();
+            mNewsList = nDs.getNewsList();
+            nDs.close();
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of news
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mNewsList != null) {
+                fillView();
+            }
+
+            mLoadNewsTask = null;
+        }
+
+    }
+
+    class LoadNewsOnlineTask extends AsyncTask<String, String, String> {
 
         boolean failure = false;
 
@@ -181,7 +231,7 @@ public class NewsFragment extends BaseFragment {
                 fillView();
             }
 
-            mLoadNewsTask = null;
+            mLoadNewsOnlineTask = null;
         }
 
     }

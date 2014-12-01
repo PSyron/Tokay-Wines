@@ -22,6 +22,11 @@ import com.google.gson.Gson;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.WinesListActivity;
+import pl.tokajiwines.db.FlavoursDataSource;
+import pl.tokajiwines.db.GradesDataSource;
+import pl.tokajiwines.db.ProducersDataSource;
+import pl.tokajiwines.db.StrainsDataSource;
+import pl.tokajiwines.db.WinesDataSource;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.WineFilterResponse;
 import pl.tokajiwines.models.Flavour;
@@ -436,24 +441,78 @@ public class WinesFilterFragment extends BaseFragment {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-
         if (mWineStrains.length == 0) {
 
             if (App.isOnline(mCtx)) {
+                new LoadFilterOnlineTask().execute();
+            } else {
+                /*Toast.makeText(mCtx, getResources().getString(R.string.cannot_connect),
+                        Toast.LENGTH_LONG).show();*/
+                Toast.makeText(mCtx, "Offline Database", Toast.LENGTH_LONG).show();
                 new LoadFilterTask().execute();
             }
-
-            // otherwise, show message
-
-            else {
-                Toast.makeText(mCtx, getResources().getString(R.string.cannot_connect),
-                        Toast.LENGTH_LONG).show();
-            }
         }
-
     }
 
     class LoadFilterTask extends AsyncTask<String, String, String> {
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgDial = new ProgressDialog(mCtx);
+            mProgDial.setMessage(getResources().getString(R.string.loading));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
+        }
+
+        // retrieving news data
+        @Override
+        protected String doInBackground(String... args) {
+            WinesDataSource wDs = new WinesDataSource(getActivity());
+            StrainsDataSource sDs = new StrainsDataSource(getActivity());
+            GradesDataSource gDs = new GradesDataSource(getActivity());
+            FlavoursDataSource fDs = new FlavoursDataSource(getActivity());
+            ProducersDataSource pDs = new ProducersDataSource(getActivity());
+            wDs.open();
+            mWineYear = wDs.getProdDates();
+            wDs.close();
+            sDs.open();
+            mWineStrains = sDs.getAllStrains();
+            sDs.close();
+            gDs.open();
+            mWineGrades = gDs.getAllGrades();
+            gDs.close();
+            fDs.open();
+            mWineFlavours = fDs.getAllFlavours();
+            fDs.close();
+            pDs.open();
+            mWineProducers = pDs.getProducerList();
+            pDs.close();
+
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of news
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+
+            if (mWineFlavours != null) mCheckedTastes = new boolean[mWineFlavours.length];
+            if (mWineGrades != null) mCheckedTypes = new boolean[mWineGrades.length];
+            if (mWineStrains != null) mCheckedStrains = new boolean[mWineStrains.length];
+            if (mWineYear != null) mCheckedYears = new boolean[mWineYear.length];
+            if (mWineProducers != null) mCheckedProducers = new boolean[mWineProducers.length];
+            if (mWinePrices != null) mCheckedPrices = new boolean[mWinePrices.length];
+        }
+    }
+
+    class LoadFilterOnlineTask extends AsyncTask<String, String, String> {
 
         boolean failure = false;
 

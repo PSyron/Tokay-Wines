@@ -22,14 +22,12 @@ import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.ProducerActivity;
 import pl.tokajiwines.adapters.ProducersAdapter;
-import pl.tokajiwines.db.DatabaseHelper;
 import pl.tokajiwines.db.ProducersDataSource;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.ProducersResponse;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -106,13 +104,7 @@ public class ProducersFragment extends BaseFragment {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        DatabaseHelper dbh = new DatabaseHelper(mContext);
-        // if there is an access to the Internet, try to load data from remote database
-        try {
-            dbh.createDataBase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         if (mProducersList.length == 0) {
             if (App.isOnline(mContext)) {
                 mLoadProducersOnlineTask = new LoadProducersOnlineTask();
@@ -182,6 +174,7 @@ public class ProducersFragment extends BaseFragment {
             ProducersDataSource pDs = new ProducersDataSource(mContext);
             pDs.open();
             mProducersList = pDs.getProducerList();
+            pDs.close();
             return null;
 
         }

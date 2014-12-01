@@ -10,9 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import pl.tokajiwines.models.Flavour;
 import pl.tokajiwines.utils.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FlavoursDataSource {
     // LogCat tag
     private static final String LOG = "FlavoursDataSource";
@@ -34,6 +31,19 @@ public class FlavoursDataSource {
 
     public void close() {
         if (database != null && database.isOpen()) dbHelper.close();
+    }
+
+    public Flavour getFlavour(int id) {
+        Flavour flavour = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_FLAVOURS, allColumns, "IdFlavour" + "="
+                + id, null, null, null, null);
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Flavour with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            flavour = cursorToFlavour(cursor);
+        }
+        return flavour;
     }
 
     public long insertFlavour(Flavour flavour) {
@@ -63,20 +73,27 @@ public class FlavoursDataSource {
         Log.i(LOG, "Updated flavour with id: " + flavourOld.mIdFlavour + " on: " + rows + " row(s)");
     }
 
-    public List<Flavour> getAllFlavours() {
+    public Flavour[] getAllFlavours() {
         Log.i(LOG, "getAllFlavours()");
-        List<Flavour> flavoures = new ArrayList<Flavour>();
         Cursor cursor = database.query(DatabaseHelper.TABLE_FLAVOURS, allColumns, null, null, null,
                 null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Flavour flavour = cursorToFlavour(cursor);
-            flavoures.add(flavour);
-            cursor.moveToNext();
-        }
+
+        Flavour[] flavours = null;
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            flavours = new Flavour[cursor.getCount()];
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                Flavour flavour = cursorToFlavour(cursor);
+                flavours[i] = flavour;
+                cursor.moveToNext();
+                i++;
+            }
+        } else
+            Log.w(LOG, "Flavours are empty()");
+
         cursor.close();
-        if (flavoures.isEmpty()) Log.w(LOG, "Flavours are empty()");
-        return flavoures;
+        return flavours;
     }
 
     private Flavour cursorToFlavour(Cursor cursor) {

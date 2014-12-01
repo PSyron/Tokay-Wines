@@ -18,7 +18,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // ------------------------ Database settings ----------------//
     private static final String DATABASE_NAME = "tokaji_release.db";
     private static final int DATABASE_VERSION = 1;
-    private static String DATABASE_PATH = "/data/data/pl.tokajiwines/databases/";
+    private static String DATABASE_PATH;
+
     private static final String LOG = "DatabaseHelper"; // LogCat tag
 
     // ------------------------ Table names ----------------//
@@ -159,6 +160,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         mContext = context;
+        if (android.os.Build.VERSION.SDK_INT >= 4.2) {
+            DATABASE_PATH = context.getApplicationInfo().dataDir + "/databases/";
+        } else {
+            DATABASE_PATH = "/data/data/pl.tokajiwines/databases/";
+        }
     }
 
     @Override
