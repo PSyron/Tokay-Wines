@@ -21,6 +21,7 @@
     <string name="app_version">Aplication version:</string>
     <string name="developers">Developers</string>
     <string name="version_problem">Cannot get version name</string>
+    <string name="cancel">Cancel</string>
 
     <!-- Main -->
 
@@ -114,7 +115,8 @@
     <string name="no_points">No points</string>
     <string name="route_to">Route to</string>
     <string name="check_route">Do You want to check route?</string>
-
+	<string name="cancel_tour">Hide tour</string>
+	
     <!-- Guide -->
 
     <string name="curiosities">Curiosities</string>
@@ -176,9 +178,9 @@
 
     <!-- Developers -->
 
-	<string name="gabriel_kurczewski">Gabriel Kurczewski - originator</string>
+    <string name="gabriel_kurczewski">Gabriel Kurczewski - originator</string>
     <string name="gabriel_kurczewski_email">gabriel.kurczewski@gmail.com</string>
-	<string name="krzysztof_wasko">Krzysztof Wasko - originator</string>
+    <string name="krzysztof_wasko">Krzysztof Wasko - originator</string>
     <string name="krzysztof_wasko_email">k.wasko@mikrozet.pl</string>
     <string name="paulina_konieczna">Paulina Konieczna - programmer</string>
     <string name="paulina_konieczna_email">konieczna.paulina00@gmail.com</string>
@@ -190,7 +192,6 @@
     <string name="wojciech_klimczyk_email">boberjunior@gmail.com</string>
     <string name="paulina_malinka">Paulina Malinka - graphic designer</string>
     <string name="paulina_malinka_email">paulina.teresa.malinka@gmail.com</string>
-    
     <string name="search_hint">Type name to search</string>
     <string name="title_activity_searchable">SearchableActivity</string>
     <string name="hello_world">Hello world!</string>

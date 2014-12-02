@@ -21,6 +21,7 @@
     <string name="app_version">Wersja aplikacji:</string>
     <string name="developers">Twórcy</string>
     <string name="version_problem">Nie można odczytać wersji</string>
+    <string name="cancel">Anuluj</string>
 
     <!-- Main -->
 
@@ -114,6 +115,7 @@
     <string name="no_points">Brak punktów</string>
     <string name="route_to">Nawiguj do</string>
     <string name="check_route">Czy chcesz wyznaczyć trasę?</string>
+    <string name="cancel_tour">Ukryj trasę</string>
 
     <!-- Guide -->
 
@@ -158,7 +160,6 @@
     <string name="tomasz_kluza">Tomasz Kluza - programista</string>
     <string name="wojciech_klimczyk">Wojciech Klimczyk - programista</string>
     <string name="paulina_malinka">Paulina Malinka - grafik</string>
-    
     <string name="search_hint">Wpisz szukaną nazwę</string>
 
 </resources>
