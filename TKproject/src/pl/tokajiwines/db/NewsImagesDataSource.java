@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import pl.tokajiwines.jsonresponses.ImagePagerItem;
 import pl.tokajiwines.models.NewsImage;
 import pl.tokajiwines.utils.Log;
 
@@ -19,21 +20,50 @@ public class NewsImagesDataSource {
     // Database fields
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
+    private Context mContext;
     private String[] allColumns = {
             "IdNewsImage", "IdNews_", "IdImage_", "LastUpdate"
     };
 
     public NewsImagesDataSource(Context context) {
         dbHelper = new DatabaseHelper(context);
+        mContext = context;
     }
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
-        Log.i(LOG, database + " ");
+        //Log.i(LOG, database + " ");
     }
 
     public void close() {
         if (database != null && database.isOpen()) dbHelper.close();
+    }
+
+    public ImagePagerItem[] getNewsImagesPager(int idNews) {
+        Log.i(LOG, "getNewsImagesPager");
+        Cursor cursor = database.query(DatabaseHelper.TABLE_NEWS_IMAGES, new String[] {
+            "IdImage_"
+        }, "IdNews_" + "=" + idNews, null, null, null, null);
+        ImagePagerItem[] pImages = null;
+
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Images for news with id= " + idNews + " don't exist");
+        else {
+            cursor.moveToFirst();
+            pImages = new ImagePagerItem[cursor.getCount()];
+            int i = 0;
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            iDs.open();
+            while (!cursor.isAfterLast()) {
+                pImages[i] = new ImagePagerItem(iDs.getImageUrl(cursor.getInt(0)));
+                cursor.moveToNext();
+                i++;
+            }
+            iDs.close();
+        }
+        cursor.close();
+        if (pImages.length == 0) Log.w(LOG, "News images are empty()");
+        return pImages;
     }
 
     public long insertImage(NewsImage ni) {

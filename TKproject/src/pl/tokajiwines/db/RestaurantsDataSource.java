@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import pl.tokajiwines.jsonresponses.RestaurantDetails;
+import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.models.Restaurant;
 import pl.tokajiwines.utils.Log;
 
@@ -19,6 +21,7 @@ public class RestaurantsDataSource {
     // Database fields
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
+    private Context mContext;
     private String[] allColumns = {
             "IdRestaurant", "Email", "Link", "Name", "Phone", "IdDescription_", "IdAddress_",
             "IdUser_", "IdImageCover_", "LastUpdate"
@@ -26,15 +29,66 @@ public class RestaurantsDataSource {
 
     public RestaurantsDataSource(Context context) {
         dbHelper = new DatabaseHelper(context);
+        mContext = context;
     }
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
-        Log.i(LOG, database + " ");
+        //Log.i(LOG, database + " ");
     }
 
     public void close() {
         if (database != null && database.isOpen()) dbHelper.close();
+    }
+
+    public Restaurant getRestaurant(int id) {
+        Log.i(LOG, "getRestaurant(id=" + id + ")");
+        Restaurant restaurant = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_RESTAURANTS, allColumns, "IdRestaurant"
+                + "=" + id, null, null, null, null);
+        if (cursor == null)
+            Log.w(LOG, "Restaurant with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            restaurant = cursorToRestaurant(cursor);
+        }
+        cursor.close();
+        return restaurant;
+    }
+
+    public RestaurantDetails getRestaurantDetails(int id) {
+        Log.i(LOG, "getRestaurantDetails(id=" + id + ")");
+        RestaurantDetails restaurant = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_RESTAURANTS, allColumns, "IdRestaurant"
+                + "=" + id, null, null, null, null);
+        if (cursor == null)
+            Log.w(LOG, "Restaurant with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            restaurant = cursorToRestaurantDetails(cursor);
+        }
+        cursor.close();
+        return restaurant;
+    }
+
+    public RestaurantListItem[] getRestaurantList() {
+        Log.i(LOG, "getRestaurantList()");
+        Cursor cursor = database.query(DatabaseHelper.TABLE_RESTAURANTS, new String[] {
+                "IdRestaurant", "Name", "IdAddress_", "IdImageCover_"
+        }, null, null, null, null, null);
+        cursor.moveToFirst();
+        RestaurantListItem[] restaurants = new RestaurantListItem[cursor.getCount()];
+        int i = 0;
+        while (!cursor.isAfterLast()) {
+            RestaurantListItem restaurant = cursorToRestaurantListItem(cursor);
+            restaurants[i] = restaurant;
+            cursor.moveToNext();
+            i++;
+        }
+        cursor.close();
+        if (restaurants == null) Log.w(LOG, "Restaurants are empty()");
+
+        return restaurants;
     }
 
     public long insertRestaurant(Restaurant restaurant) {
@@ -110,5 +164,45 @@ public class RestaurantsDataSource {
         restaurant.mIdImageCover_ = cursor.getInt(8);
         restaurant.mLastUpdate = cursor.getString(9);
         return restaurant;
+    }
+
+    private RestaurantListItem cursorToRestaurantListItem(Cursor cursor) {
+        Restaurant r = new Restaurant();
+        r.mIdRestaurant = cursor.getInt(0);
+        r.mName = cursor.getString(1);
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        AddressesDataSource aDs = new AddressesDataSource(mContext);
+        iDs.open();
+        r.imageCover = iDs.getImageUrl(cursor.getInt(3));
+        iDs.close();
+        aDs.open();
+        r.address = aDs.getAddress(cursor.getInt(2));
+        aDs.close();
+        return new RestaurantListItem(r);
+    }
+
+    private RestaurantDetails cursorToRestaurantDetails(Cursor cursor) {
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+        AddressesDataSource aDs = new AddressesDataSource(mContext);
+        Restaurant restaurant = new Restaurant();
+        restaurant.mIdRestaurant = cursor.getInt(0);
+        restaurant.mEmail = cursor.getString(1);
+        restaurant.mLink = cursor.getString(2);
+        restaurant.mName = cursor.getString(3);
+        restaurant.mPhone = cursor.getString(4);
+        dDs.open();
+        restaurant.description = dDs.getDescriptionVast(cursor.getInt(5));
+        dDs.close();
+        aDs.open();
+        restaurant.address = aDs.getAddress(cursor.getInt(6));
+        aDs.close();
+        restaurant.mIdUser_ = cursor.getInt(7);
+        iDs.open();
+        restaurant.imageCover = iDs.getImageUrl(cursor.getInt(8));
+        iDs.close();
+        restaurant.mLastUpdate = cursor.getString(9);
+
+        return new RestaurantDetails(restaurant);
     }
 }

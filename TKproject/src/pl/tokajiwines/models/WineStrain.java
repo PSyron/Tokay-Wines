@@ -24,7 +24,6 @@ public class WineStrain implements Serializable {
     public Strain strain;
 
     public WineStrain(int IdWineStrain, int Content, int IdWine_, int IdStrain_) {
-        super();
         mIdWineStrain = IdWineStrain;
         mContent = Content;
         mIdWine_ = IdWine_;

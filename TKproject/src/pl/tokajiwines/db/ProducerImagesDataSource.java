@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ProducerImagesDataSource {
     // LogCat tag
-    private static final String LOG = "ImagesDataSource";
+    private static final String LOG = "ProducerImagesDataSource";
     // Database fields
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
@@ -109,11 +109,12 @@ public class ProducerImagesDataSource {
             while (!cursor.isAfterLast()) {
                 pImages[i] = new ImagePagerItem(iDs.getImageUrl(cursor.getInt(0)));
                 cursor.moveToNext();
+                i++;
             }
             iDs.close();
-            cursor.close();
         }
 
+        cursor.close();
         if (pImages.length == 0) Log.w(LOG, "Producer images are empty()");
         return pImages;
     }

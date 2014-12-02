@@ -276,7 +276,7 @@ public class ProducerActivity extends BaseActivity {
         else {
             Toast.makeText(ProducerActivity.this,
                     getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG).show();
-            /*Toast.makeText(ProducerActivity.this, "Offline database", Toast.LENGTH_LONG).show();
+            Toast.makeText(ProducerActivity.this, "Offline database", Toast.LENGTH_LONG).show();
             if (mProducerFromBase == null) {
                 mLoadProducerTask = new LoadProducerTask();
                 mLoadProducerTask.execute();
@@ -287,18 +287,18 @@ public class ProducerActivity extends BaseActivity {
                     fillView();
                 }
             }
-
+            /*
             if (mImagesUrl == null) {
                 mLoadProducerImagesTask = new LoadProducerImagesTask();
                 mLoadProducerImagesTask.execute();
-            }*/
-            /*
+            }
+
             else {
                 if (!mIsPagerFilled) {
                     fillPager();
                 }
-            }
-            */
+            }*/
+
         }
 
     }

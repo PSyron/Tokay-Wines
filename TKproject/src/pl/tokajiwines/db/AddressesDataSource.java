@@ -39,7 +39,8 @@ public class AddressesDataSource {
     }
 
     public Address getAddress(int id) {
-        Log.i(LOG, "getProducer(id=" + id + ")");
+        Log.i(LOG, "getAddress(id=" + id + ")");
+        if (id == 0) return null;
         Address address = null;
         Cursor cursor = database.query(DatabaseHelper.TABLE_ADDRESSES, allColumns, "IdAddress"
                 + "=" + id, null, null, null, null);

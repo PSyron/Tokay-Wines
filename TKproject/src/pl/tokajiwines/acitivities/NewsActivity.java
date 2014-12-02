@@ -25,6 +25,7 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.db.NewsDataSource;
+import pl.tokajiwines.db.NewsImagesDataSource;
 import pl.tokajiwines.fragments.NewsFragment;
 import pl.tokajiwines.jsonresponses.NewsDetails;
 import pl.tokajiwines.jsonresponses.NewsDetailsResponse;
@@ -214,10 +215,15 @@ public class NewsActivity extends BaseActivity {
 
         @Override
         protected String doInBackground(String... args) {
+            NewsImagesDataSource niDs = new NewsImagesDataSource(mContext);
             NewsDataSource nDs = new NewsDataSource(mContext);
             nDs.open();
+            niDs.open();
             mNews = nDs.getNewsDetails(mIdNews);
+            mNews.mImage = (niDs.getNewsImagesPager(mIdNews))[0].ImageUrl;
             nDs.close();
+            niDs.close();
+
             return null;
         }
 

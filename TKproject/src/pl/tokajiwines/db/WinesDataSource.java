@@ -36,7 +36,7 @@ public class WinesDataSource {
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
-        Log.i(LOG, database + " ");
+        //Log.i(LOG, database + " ");
     }
 
     public void close() {
@@ -51,22 +51,20 @@ public class WinesDataSource {
                 }, null, null, null);
         WineListItem[] wines = null;
 
-        if (cursor.getCount() == 0)
+        if (cursor == null && cursor.getCount() == 0)
             Log.w(LOG, "Wines for producer with id= " + idProducer + " don't exist");
         else {
             cursor.moveToFirst();
             wines = new WineListItem[cursor.getCount()];
             int i = 0;
-            ImagesDataSource iDs = new ImagesDataSource(mContext);
-            iDs.open();
             while (!cursor.isAfterLast()) {
                 wines[i] = cursorToWineListItem(cursor);
                 cursor.moveToNext();
+                i++;
             }
-            iDs.close();
-            cursor.close();
         }
 
+        cursor.close();
         if (wines == null) Log.w(LOG, "Producer wines are empty()");
         return wines;
     }
@@ -82,28 +80,34 @@ public class WinesDataSource {
         wine.mIdWine = cursor.getInt(0);
         wine.mName = cursor.getString(1);
         wine.mProdDate = cursor.getInt(2);
-        wine.mPrice = cursor.getDouble(3);
+        if (cursor.isNull(3) == false) {
+            wine.mPrice = cursor.getDouble(3);
+        }
         wine.mVolume = cursor.getInt(4);
         wine.mAvailablePL = cursor.getInt(5);
         wine.mLastUpdate = cursor.getString(6);
         wine.mIdColor_ = cursor.getInt(7);
-        wine.mIdFlavour_ = cursor.getInt(8);
+        if (cursor.isNull(8) == false) {
+            wine.mIdFlavour_ = cursor.getInt(8);
+            fDs.open();
+            wine.flavour = fDs.getFlavour(wine.mIdFlavour_);
+            fDs.close();
+        }
         wine.mIdProducer_ = cursor.getInt(9);
         wine.mIdDescription_ = cursor.getInt(10);
-        wine.mIdGrade_ = cursor.getInt(11);
+        if (cursor.isNull(11) == false) {
+            wine.mIdGrade_ = cursor.getInt(11);
+            gDs.open();
+            wine.grade = gDs.getGrade(wine.mIdGrade_);
+            gDs.close();
+        }
         wine.mIdImageCover_ = cursor.getInt(12);
         cDs.open();
         wine.color = cDs.getColor(wine.mIdColor_);
         cDs.close();
-        fDs.open();
-        wine.flavour = fDs.getFlavour(wine.mIdFlavour_);
-        fDs.close();
         pDs.open();
         wine.producer = pDs.getProducer(wine.mIdProducer_);
         pDs.close();
-        gDs.open();
-        wine.grade = gDs.getGrade(wine.mIdGrade_);
-        gDs.close();
         iDs.open();
         wine.imageCover = iDs.getImageUrl(wine.mIdImageCover_);
         iDs.close();
@@ -111,7 +115,7 @@ public class WinesDataSource {
         wine.strains = wsDs.getWineStrains(wine.mIdWine);
         wsDs.close();
 
-        return null;
+        return new WineListItem(wine);
     }
 
     public Wine getProducerWineBest(int id) {

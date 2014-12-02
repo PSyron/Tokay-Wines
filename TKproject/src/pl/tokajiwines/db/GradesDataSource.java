@@ -27,7 +27,7 @@ public class GradesDataSource {
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
-        Log.i(LOG, database + " ");
+        //Log.i(LOG, database + " ");
     }
 
     public void close() {
@@ -38,12 +38,13 @@ public class GradesDataSource {
         Grade grade = null;
         Cursor cursor = database.query(DatabaseHelper.TABLE_GRADES, allColumns, "IdGrade" + "="
                 + id, null, null, null, null);
-        if (cursor.getCount() == 0)
+        if (cursor == null && cursor.getCount() == 0)
             Log.w(LOG, "Grade with id= " + id + " doesn't exists");
         else {
             cursor.moveToFirst();
             grade = cursorToGrade(cursor);
         }
+        cursor.close();
         return grade;
     }
 

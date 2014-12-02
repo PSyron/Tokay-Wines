@@ -23,6 +23,8 @@ import org.apache.http.message.BasicNameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.db.RestaurantImagesDataSource;
+import pl.tokajiwines.db.RestaurantsDataSource;
 import pl.tokajiwines.jsonresponses.RestaurantDetails;
 import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.models.Place;
@@ -58,6 +60,7 @@ public class RestaurantActivity extends BaseActivity {
     TextView mUiDescription;
     ImageView mUiNavigate;
 
+    LoadRestaurantOnlineTask mLoadRestaurantOnlineTask;
     LoadRestaurantTask mLoadRestaurantTask;
     public static final String RESTAURANT_TAG = "restaurant";
 
@@ -94,7 +97,6 @@ public class RestaurantActivity extends BaseActivity {
         mUiUrl = (TextView) findViewById(R.id.activity_restaurant_details_url);
         mUiNavigate = (ImageView) findViewById(R.id.activity_restaurant_navigate);
         mUiDescription = (TextView) findViewById(R.id.activity_restaurant_details_description);
-
 
         mUiNavigate.setOnClickListener(new OnClickListener() {
 
@@ -160,16 +162,20 @@ public class RestaurantActivity extends BaseActivity {
             // if there is an access to the Internet, try to load data from remote database
 
             if (App.isOnline(RestaurantActivity.this)) {
-                mLoadRestaurantTask = new LoadRestaurantTask();
-                mLoadRestaurantTask.execute();
+                mLoadRestaurantOnlineTask = new LoadRestaurantOnlineTask();
+                mLoadRestaurantOnlineTask.execute();
             }
 
             // otherwise, show message
 
             else {
-                Toast.makeText(RestaurantActivity.this,
+                /*Toast.makeText(RestaurantActivity.this,
                         getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG)
+                        .show();*/
+                Toast.makeText(RestaurantActivity.this, "Offline database", Toast.LENGTH_LONG)
                         .show();
+                mLoadRestaurantTask = new LoadRestaurantTask();
+                mLoadRestaurantTask.execute();
             }
         }
 
@@ -199,6 +205,61 @@ public class RestaurantActivity extends BaseActivity {
     }
 
     class LoadRestaurantTask extends AsyncTask<Void, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDial == null) {
+                mProgDial = new ProgressDialog(RestaurantActivity.this);
+            }
+            mProgDial.setMessage(getResources().getString(R.string.loading_restaurant));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
+
+        }
+
+        // retrieving Restaurants data
+
+        @Override
+        protected String doInBackground(Void... args) {
+
+            RestaurantImagesDataSource riDs = new RestaurantImagesDataSource(
+                    RestaurantActivity.this);
+            RestaurantsDataSource rDs = new RestaurantsDataSource(RestaurantActivity.this);
+            rDs.open();
+            riDs.open();
+            mRestaurantFromBase = rDs.getRestaurantDetails(mRestaurant.mIdRestaurant);
+            mRestaurantFromBase.mImageUrl = (riDs
+                    .getRestaurantImagesPager(mRestaurant.mIdRestaurant))[0].ImageUrl;
+            rDs.close();
+            riDs.close();
+
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of Restaurants
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mRestaurantFromBase != null) {
+                fillView();
+            }
+
+            mLoadRestaurantTask = null;
+
+        }
+
+    }
+
+    class LoadRestaurantOnlineTask extends AsyncTask<Void, String, String> {
 
         boolean failure = false;
 
@@ -253,10 +314,9 @@ public class RestaurantActivity extends BaseActivity {
                 fillView();
             }
 
-            mLoadRestaurantTask = null;
+            mLoadRestaurantOnlineTask = null;
 
         }
 
     }
-
 }

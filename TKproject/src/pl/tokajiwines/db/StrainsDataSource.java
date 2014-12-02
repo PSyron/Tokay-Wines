@@ -38,12 +38,13 @@ public class StrainsDataSource {
         Strain strain = null;
         Cursor cursor = database.query(DatabaseHelper.TABLE_STRAINS, allColumns, "IdStrain" + "="
                 + id, null, null, null, null);
-        if (cursor.getCount() == 0)
+        if (cursor == null && cursor.getCount() == 0)
             Log.w(LOG, "Strain with id= " + id + " doesn't exists");
         else {
             cursor.moveToFirst();
             strain = cursorToStrain(cursor);
         }
+        cursor.close();
         return strain;
     }
 

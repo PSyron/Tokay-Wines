@@ -30,6 +30,9 @@ public class Restaurant implements Serializable {
     public String mLastUpdate;
     @SerializedName("IdDescription_")
     public int mIdDescription_;
+    public Description description;
+    public Address address;
+    public Image imageCover;
 
     public Restaurant(int IdRestaurant, String Email, String Link, String Name, String Phone,
             int IdDescription_, int IdAddress_, int IdUser_, int IdImageCover_, String LastUpdate) {

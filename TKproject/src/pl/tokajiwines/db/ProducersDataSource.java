@@ -31,7 +31,7 @@ public class ProducersDataSource {
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
-        Log.i(LOG, database + " ");
+        //Log.i(LOG, database + " ");
     }
 
     public void close() {
@@ -89,12 +89,13 @@ public class ProducersDataSource {
         Producer producer = null;
         Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, allColumns, "IdProducer"
                 + "=" + id, null, null, null, null);
-        if (cursor.getCount() == 0)
+        if (cursor == null && cursor.getCount() == 0)
             Log.w(LOG, "Producer with id= " + id + " doesn't exists");
         else {
             cursor.moveToFirst();
             producer = cursorToProducer(cursor);
         }
+        cursor.close();
         return producer;
     }
 
@@ -109,6 +110,7 @@ public class ProducersDataSource {
             cursor.moveToFirst();
             pd = cursorToProducerDetails(cursor);
         }
+        cursor.close();
         return pd;
     }
 
@@ -186,9 +188,6 @@ public class ProducersDataSource {
     }
 
     private ProducerDetails cursorToProducerDetails(Cursor cursor) {
-        Producer p = new Producer();
-        p.mIdProducer = cursor.getInt(0);
-        p.mName = cursor.getString(1);
         ImagesDataSource iDs = new ImagesDataSource(mContext);
         DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
         AddressesDataSource aDs = new AddressesDataSource(mContext);

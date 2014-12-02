@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import pl.tokajiwines.jsonresponses.ImagePagerItem;
 import pl.tokajiwines.models.HotelImage;
 import pl.tokajiwines.utils.Log;
 
@@ -19,17 +20,19 @@ public class HotelImagesDataSource {
     // Database fields
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
+    private Context mContext;
     private String[] allColumns = {
             "IdHotelImage", "IdHotel_", "IdImage_", "LastUpdate"
     };
 
     public HotelImagesDataSource(Context context) {
         dbHelper = new DatabaseHelper(context);
+        mContext = context;
     }
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
-        Log.i(LOG, database + " ");
+        //Log.i(LOG, database + " ");
     }
 
     public void close() {
@@ -62,6 +65,33 @@ public class HotelImagesDataSource {
         int rows = database.update(DatabaseHelper.TABLE_HOTEL_IMAGES, values, "'"
                 + hiOld.mIdHotelImage + "' = '" + hiNew.mIdHotelImage + "'", null);
         Log.i(LOG, "Updated image with id: " + hiOld.mIdHotelImage + " on: " + rows + " row(s)");
+    }
+
+    public ImagePagerItem[] getHotelImagesPager(int idHotel) {
+        Log.i(LOG, "getHotelImagesPager");
+        Cursor cursor = database.query(DatabaseHelper.TABLE_HOTEL_IMAGES, new String[] {
+            "IdImage_"
+        }, "IdHotel_" + "=" + idHotel, null, null, null, null);
+        ImagePagerItem[] pImages = null;
+
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Images for hotel with id= " + idHotel + " don't exist");
+        else {
+            cursor.moveToFirst();
+            pImages = new ImagePagerItem[cursor.getCount()];
+            int i = 0;
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            iDs.open();
+            while (!cursor.isAfterLast()) {
+                pImages[i] = new ImagePagerItem(iDs.getImageUrl(cursor.getInt(0)));
+                cursor.moveToNext();
+                i++;
+            }
+            iDs.close();
+        }
+        cursor.close();
+        if (pImages.length == 0) Log.w(LOG, "Hotel images are empty()");
+        return pImages;
     }
 
     public List<HotelImage> getAllImages() {

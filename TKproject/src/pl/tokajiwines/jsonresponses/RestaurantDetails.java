@@ -3,6 +3,8 @@ package pl.tokajiwines.jsonresponses;
 
 import com.google.gson.annotations.SerializedName;
 
+import pl.tokajiwines.models.Restaurant;
+
 import java.io.Serializable;
 
 public class RestaurantDetails implements Serializable {
@@ -33,6 +35,24 @@ public class RestaurantDetails implements Serializable {
         mLng = lng;
         mPostCode = postCode;
         mLastUpdate = lastUpdate;
+    }
+
+    public RestaurantDetails(Restaurant r) {
+        mIdRestaurant = r.mIdRestaurant;
+        mEmail = r.mEmail;
+        mLink = r.mLink;
+        mName = r.mName;
+        mPhone = r.mPhone;
+        mVast = r.description.mVast;
+        mStreetName = r.address.mStreetName;
+        mStreetNumber = r.address.mStreetNumber + "";
+        mHouseNumber = r.address.mHouseNumber + "";
+        mCity = r.address.mCity;
+        mLat = r.address.mLatitude + "";
+        mLng = r.address.mLongitude + "";
+        mPostCode = r.address.mPostcode;
+        mLastUpdate = r.mLastUpdate;
+        mImageUrl = r.imageCover.mImage;
     }
 
     private static final long serialVersionUID = -8116924641773895022L;

@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import pl.tokajiwines.jsonresponses.ImagePagerItem;
 import pl.tokajiwines.models.RestaurantImage;
 import pl.tokajiwines.utils.Log;
 
@@ -19,12 +20,14 @@ public class RestaurantImagesDataSource {
     // Database fields
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
+    private Context mContext;
     private String[] allColumns = {
             "IdRestaurantImage", "IdRestaurant_", "IdImage_", "LastUpdate"
     };
 
     public RestaurantImagesDataSource(Context context) {
         dbHelper = new DatabaseHelper(context);
+        mContext = context;
     }
 
     public void open() throws SQLException {
@@ -63,6 +66,33 @@ public class RestaurantImagesDataSource {
                 + riOld.mIdRestaurantImage + "' = '" + riNew.mIdRestaurantImage + "'", null);
         Log.i(LOG, "Updated image with id: " + riOld.mIdRestaurantImage + " on: " + rows
                 + " row(s)");
+    }
+
+    public ImagePagerItem[] getRestaurantImagesPager(int idRestaurant) {
+        Log.i(LOG, "getRestaurantImagesPager");
+        Cursor cursor = database.query(DatabaseHelper.TABLE_RESTAURANT_IMAGES, new String[] {
+            "IdImage_"
+        }, "IdRestaurant_" + "=" + idRestaurant, null, null, null, null);
+        ImagePagerItem[] pImages = null;
+
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Images for restaurant with id= " + idRestaurant + " don't exist");
+        else {
+            cursor.moveToFirst();
+            pImages = new ImagePagerItem[cursor.getCount()];
+            int i = 0;
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            iDs.open();
+            while (!cursor.isAfterLast()) {
+                pImages[i] = new ImagePagerItem(iDs.getImageUrl(cursor.getInt(0)));
+                cursor.moveToNext();
+                i++;
+            }
+            iDs.close();
+        }
+        cursor.close();
+        if (pImages.length == 0) Log.w(LOG, "Restaurant images are empty()");
+        return pImages;
     }
 
     public List<RestaurantImage> getAllImages() {

@@ -31,7 +31,7 @@ public class WineStrainsDataSource {
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
-        Log.i(LOG, database + " ");
+        //Log.i(LOG, database + " ");
     }
 
     public void close() {
@@ -53,6 +53,7 @@ public class WineStrainsDataSource {
             while (!cursor.isAfterLast()) {
                 strains[i] = cursorToWineStrain(cursor);
                 cursor.moveToNext();
+                i++;
             }
             cursor.close();
         }
@@ -115,7 +116,7 @@ public class WineStrainsDataSource {
         wineStrain.mIdStrain_ = cursor.getInt(2);
         wineStrain.mIdWine_ = cursor.getInt(3);
         sDs.open();
-        wineStrain.strain = sDs.getStrain(wineStrain.mIdWineStrain);
+        wineStrain.strain = sDs.getStrain(wineStrain.mIdStrain_);
         sDs.close();
         return wineStrain;
     }

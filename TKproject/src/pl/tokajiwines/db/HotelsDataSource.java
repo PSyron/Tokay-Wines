@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import pl.tokajiwines.jsonresponses.HotelDetails;
+import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.models.Hotel;
 import pl.tokajiwines.utils.Log;
 
@@ -19,6 +21,7 @@ public class HotelsDataSource {
     // Database fields
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
+    private Context mContext;
     private String[] allColumns = {
             "IdHotel", "Email", "Link", "Name", "Phone", "IdDescription_", "IdAddress_", "IdUser_",
             "IdImageCover_", "LastUpdate"
@@ -26,15 +29,46 @@ public class HotelsDataSource {
 
     public HotelsDataSource(Context context) {
         dbHelper = new DatabaseHelper(context);
+        mContext = context;
     }
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
-        Log.i(LOG, database + " ");
+        //Log.i(LOG, database + " ");
     }
 
     public void close() {
         if (database != null && database.isOpen()) dbHelper.close();
+    }
+
+    public Hotel getHotel(int id) {
+        Log.i(LOG, "getHotel(id=" + id + ")");
+        Hotel hotel = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_HOTELS, allColumns, "IdHotel" + "="
+                + id, null, null, null, null);
+        if (cursor == null)
+            Log.w(LOG, "Hotel with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            hotel = cursorToHotel(cursor);
+        }
+        cursor.close();
+        return hotel;
+    }
+
+    public HotelDetails getHotelDetails(int id) {
+        Log.i(LOG, "getHotelDetails(id=" + id + ")");
+        HotelDetails hotel = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_HOTELS, allColumns, "IdHotel" + "="
+                + id, null, null, null, null);
+        if (cursor == null)
+            Log.w(LOG, "Hotel with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            hotel = cursorToHotelDetails(cursor);
+        }
+        cursor.close();
+        return hotel;
     }
 
     public long insertHotel(Hotel hotel) {
@@ -77,6 +111,26 @@ public class HotelsDataSource {
         Log.i(LOG, "Updated hotel with id: " + hotelOld.mIdHotel + " on: " + rows + " row(s)");
     }
 
+    public HotelListItem[] getHotelList() {
+        Log.i(LOG, "getHotelList()");
+        Cursor cursor = database.query(DatabaseHelper.TABLE_HOTELS, new String[] {
+                "IdHotel", "Name", "IdAddress_", "IdImageCover_"
+        }, null, null, null, null, null);
+        cursor.moveToFirst();
+        HotelListItem[] hotels = new HotelListItem[cursor.getCount()];
+        int i = 0;
+        while (!cursor.isAfterLast()) {
+            HotelListItem hotel = cursorToHotelListItem(cursor);
+            hotels[i] = hotel;
+            cursor.moveToNext();
+            i++;
+        }
+        cursor.close();
+        if (hotels == null) Log.w(LOG, "Hotels are empty()");
+
+        return hotels;
+    }
+
     public List<Hotel> getAllHotels() {
         Log.i(LOG, "getAllHotels()");
         List<Hotel> hotels = new ArrayList<Hotel>();
@@ -109,4 +163,45 @@ public class HotelsDataSource {
         hotel.mLastUpdate = cursor.getString(9);
         return hotel;
     }
+
+    private HotelDetails cursorToHotelDetails(Cursor cursor) {
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+        AddressesDataSource aDs = new AddressesDataSource(mContext);
+        Hotel hotel = new Hotel();
+        hotel.mIdHotel = cursor.getInt(0);
+        hotel.mEmail = cursor.getString(1);
+        hotel.mLink = cursor.getString(2);
+        hotel.mName = cursor.getString(3);
+        hotel.mPhone = cursor.getString(4);
+        dDs.open();
+        hotel.description = dDs.getDescriptionVast(cursor.getInt(5));
+        dDs.close();
+        aDs.open();
+        hotel.address = aDs.getAddress(cursor.getInt(6));
+        aDs.close();
+        hotel.mIdUser_ = cursor.getInt(7);
+        iDs.open();
+        hotel.imageCover = iDs.getImageUrl(cursor.getInt(8));
+        iDs.close();
+        hotel.mLastUpdate = cursor.getString(9);
+
+        return new HotelDetails(hotel);
+    }
+
+    private HotelListItem cursorToHotelListItem(Cursor cursor) {
+        Hotel h = new Hotel();
+        h.mIdHotel = cursor.getInt(0);
+        h.mName = cursor.getString(1);
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        AddressesDataSource aDs = new AddressesDataSource(mContext);
+        iDs.open();
+        h.imageCover = iDs.getImageUrl(cursor.getInt(3));
+        iDs.close();
+        aDs.open();
+        h.address = aDs.getAddress(cursor.getInt(2));
+        aDs.close();
+        return new HotelListItem(h);
+    }
+
 }
