@@ -7,10 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -661,6 +664,22 @@ public class SearchableActivity extends BaseActivity {
             mProgDial.dismiss();
             if (mSearchResult != null) {
                 fillView();
+                if (mSearchResult.wine == null && mSearchResult.producer == null
+                        && mSearchResult.hotel == null && mSearchResult.restaurant == null)
+                {
+                    LinearLayout layout = new LinearLayout(mContext);
+                    setContentView(layout);
+                    layout.setOrientation(LinearLayout.VERTICAL);
+                    TextView tv = new TextView(getApplicationContext());
+                    tv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+                            LayoutParams.MATCH_PARENT));
+                    tv.setText(getResources().getString(R.string.no_results));
+                    tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+                    tv.setTextSize(16);
+                    tv.setTypeface(Typeface.DEFAULT_BOLD);
+                    tv.setTextColor(getResources().getColor(R.color.filter_text));
+                    layout.addView(tv);
+                }
             }
             mLoadSearchResult = null;
         }

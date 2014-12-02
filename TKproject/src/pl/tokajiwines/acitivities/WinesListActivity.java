@@ -109,24 +109,29 @@ public class WinesListActivity extends BaseActivity {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-
-        if (mWinesList.length == 0) {
-
-            if (App.isOnline(mAct)) {
-                mLoadWinesTask = new LoadWinesTask();
-                mLoadWinesTask.execute();
+        
+        if (mWinesList != null)
+        {
+    
+            if (mWinesList.length == 0) {
+    
+                if (App.isOnline(mAct)) {
+                    mLoadWinesTask = new LoadWinesTask();
+                    mLoadWinesTask.execute();
+                }
+    
+                // otherwise, show message
+    
+                else {
+                    Toast.makeText(mAct, getResources().getString(R.string.cannot_connect),
+                            Toast.LENGTH_LONG).show();
+                }
+            } else {
+                if (!mIsViewFilled) {
+                    fillView();
+                }
             }
-
-            // otherwise, show message
-
-            else {
-                Toast.makeText(mAct, getResources().getString(R.string.cannot_connect),
-                        Toast.LENGTH_LONG).show();
-            }
-        } else {
-            if (!mIsViewFilled) {
-                fillView();
-            }
+        
         }
 
     }
@@ -193,7 +198,6 @@ public class WinesListActivity extends BaseActivity {
 
                 if (response != null) {
                     mWinesList = response.wines;
-                    System.out.println(response);
                 }
             }
 
