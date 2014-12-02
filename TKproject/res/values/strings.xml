@@ -176,14 +176,21 @@
 
     <!-- Developers -->
 
-    <string name="paulina_konieczna">Paulina Konieczna</string>
+	<string name="gabriel_kurczewski">Gabriel Kurczewski - originator</string>
+    <string name="gabriel_kurczewski_email">gabriel.kurczewski@gmail.com</string>
+	<string name="krzysztof_wasko">Krzysztof Wasko - originator</string>
+    <string name="krzysztof_wasko_email">k.wasko@mikrozet.pl</string>
+    <string name="paulina_konieczna">Paulina Konieczna - programmer</string>
     <string name="paulina_konieczna_email">konieczna.paulina00@gmail.com</string>
-    <string name="pawel_cyron">Pawel Cyron</string>
+    <string name="pawel_cyron">Pawel Cyron - programmer</string>
     <string name="pawel_cyron_email">paul.cyron1@gmail.com</string>
-    <string name="tomasz_kluza">Tomasz Kluza</string>
+    <string name="tomasz_kluza">Tomasz Kluza - programmer</string>
     <string name="tomasz_kluza_email">kluza.tomasz@gmail.com</string>
-    <string name="wojciech_klimczyk">Wojciech Klimczyk</string>
+    <string name="wojciech_klimczyk">Wojciech Klimczyk - programmer</string>
     <string name="wojciech_klimczyk_email">boberjunior@gmail.com</string>
+    <string name="paulina_malinka">Paulina Malinka - graphic designer</string>
+    <string name="paulina_malinka_email">paulina.teresa.malinka@gmail.com</string>
+    
     <string name="search_hint">Type name to search</string>
     <string name="title_activity_searchable">SearchableActivity</string>
     <string name="hello_world">Hello world!</string>
