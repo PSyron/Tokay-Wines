@@ -373,6 +373,7 @@ public class MapFragment extends BaseFragment {
                 } else {
                     trasaIsPicked = false;
                     googleMap.clear();
+                    mUiPlaceBox.setVisibility(View.GONE);
                     mUiTours.setText(getResources().getString(R.string.preffered_tours));
                     mNearbyPlaces = null;
                     if (App.isOnline(mCtx)) {
