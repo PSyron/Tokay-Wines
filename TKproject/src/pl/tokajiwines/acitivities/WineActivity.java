@@ -22,7 +22,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.WineDetails;
@@ -71,6 +70,7 @@ public class WineActivity extends BaseActivity {
     LoadWineTask mLoadWineTask;
 
     public static String TAG_CALLED_FROM_PRODUCER = "called_from_producer";
+    public static String TAG_WINE = "wine";
     private boolean mIsFromProducer = false;
 
     @Override
@@ -87,7 +87,7 @@ public class WineActivity extends BaseActivity {
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            mWine = (WineListItem) extras.getSerializable(WinesListActivity.TAG_WINE);
+            mWine = (WineListItem) extras.getSerializable(TAG_WINE);
             mIsFromProducer = extras.getBoolean(WineActivity.TAG_CALLED_FROM_PRODUCER);
         }
 
@@ -176,7 +176,7 @@ public class WineActivity extends BaseActivity {
                     finish();
                 } else {
                     Intent intent = new Intent(mContext, ProducerActivity.class);
-                    intent.putExtra(ProducersFragment.PRODUCER_TAG, new ProducerListItem(
+                    intent.putExtra(ProducerActivity.PRODUCER_TAG, new ProducerListItem(
                             mWine.mIdProducer, mWine.mProducerName, ""));
 
                     startActivity(intent);

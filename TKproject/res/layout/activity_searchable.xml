@@ -48,6 +48,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/activity_search_item_wine"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal" >
@@ -229,6 +230,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/activity_search_item_producer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal" >
@@ -300,6 +302,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/activity_search_item_hotel"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal" >
@@ -393,6 +396,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/activity_search_item_restaurant"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal" >

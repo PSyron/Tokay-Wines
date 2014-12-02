@@ -7,12 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,10 +26,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.fragments.SettingsFragment;
-import pl.tokajiwines.fragments.TabHotelsFragment;
-import pl.tokajiwines.fragments.TabRestaurantsFragment;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.RestaurantListItem;
@@ -61,6 +59,7 @@ public class SearchableActivity extends BaseActivity {
     private LoadSearchResultTask mLoadSearchResult;
 
     LinearLayout mWineLayout;
+    LinearLayout mWineItem;
     LinearLayout mWineTasteLayout;
     LinearLayout mWineTypeLayout;
     LinearLayout mWineStrainLayout;
@@ -78,12 +77,14 @@ public class SearchableActivity extends BaseActivity {
     TextView mMoreWinesButton;
 
     LinearLayout mProducerLayout;
+    LinearLayout mProducerItem;
     TextView mProducerName;
     TextView mProducerDecription;
     ImageView mProducerImage;
     TextView mMoreProducersButton;
 
     LinearLayout mHotelLayout;
+    LinearLayout mHotelItem;
     TextView mHotelName;
     TextView mHotelPhone;
     TextView mHotelAddress;
@@ -91,6 +92,7 @@ public class SearchableActivity extends BaseActivity {
     TextView mMoreHotelsButton;
 
     LinearLayout mRestaurantLayout;
+    LinearLayout mRestaurantItem;
     TextView mRestaurantName;
     TextView mRestaurantPhone;
     TextView mRestaurantAddress;
@@ -123,6 +125,7 @@ public class SearchableActivity extends BaseActivity {
 
     public void initView() {
         mWineLayout = (LinearLayout) findViewById(R.id.activity_search_wine_lL);
+        mWineItem = (LinearLayout) findViewById(R.id.activity_search_item_wine);
         mWineTasteLayout = (LinearLayout) findViewById(R.id.activity_search_wine_taste_layout);
         mWineTypeLayout = (LinearLayout) findViewById(R.id.activity_search_wine_type_layout);
         mWineStrainLayout = (LinearLayout) findViewById(R.id.activity_search_wine_strain_layout);
@@ -141,12 +144,14 @@ public class SearchableActivity extends BaseActivity {
         mMoreWinesButton = (TextView) findViewById(R.id.activity_search_wine_button);
 
         mProducerLayout = (LinearLayout) findViewById(R.id.activity_search_producer_lL);
+        mProducerItem = (LinearLayout) findViewById(R.id.activity_search_item_producer);
         mProducerName = (TextView) findViewById(R.id.activity_search_wineyard_title);
         mProducerDecription = (TextView) findViewById(R.id.activity_search_wineyard_content);
         mProducerImage = (ImageView) findViewById(R.id.activity_search_wineyard_image);
         mMoreProducersButton = (TextView)findViewById(R.id.activity_search_producer_button);
 
         mHotelLayout = (LinearLayout) findViewById(R.id.activity_search_hotel_lL);
+        mHotelItem = (LinearLayout) findViewById(R.id.activity_search_item_hotel);
         mHotelName = (TextView) findViewById(R.id.activity_search_hotel_name);
         mHotelPhone = (TextView) findViewById(R.id.activity_search_hotel_phone);
         mHotelAddress = (TextView) findViewById(R.id.activity_search_hotel_address);
@@ -154,6 +159,7 @@ public class SearchableActivity extends BaseActivity {
         mMoreHotelsButton = (TextView)findViewById(R.id.activity_search_hotel_button);
 
         mRestaurantLayout = (LinearLayout) findViewById(R.id.activity_search_restaurant_lL);
+        mRestaurantItem = (LinearLayout) findViewById(R.id.activity_search_item_restaurant);
         mRestaurantName = (TextView) findViewById(R.id.activity_search_restaurant_name);
         mRestaurantPhone = (TextView) findViewById(R.id.activity_search_restaurant_phone);
         mRestaurantAddress = (TextView) findViewById(R.id.activity_search_restaurant_address);
@@ -163,6 +169,19 @@ public class SearchableActivity extends BaseActivity {
 
     public void fillView() {
         if (mSearchResult.wine != null) {
+            
+            mWineItem.setOnClickListener(new View.OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, WineActivity.class);
+                    intent.putExtra(WineActivity.TAG_WINE, mSearchResult.wine);
+                    intent.putExtra(WineActivity.TAG_CALLED_FROM_PRODUCER, false);
+                    startActivity(intent);
+                    
+                }
+            });
+            
             if (mSearchResult.wine.mName != null) {
                 mWineName.setText("" + mSearchResult.wine.mName);
             } else {
@@ -229,6 +248,18 @@ public class SearchableActivity extends BaseActivity {
         }
 
         if (mSearchResult.producer != null) {
+            
+            mProducerItem.setOnClickListener(new View.OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, ProducerActivity.class);
+                    intent.putExtra(ProducerActivity.PRODUCER_TAG, mSearchResult.producer);
+                    startActivity(intent);
+                    
+                }
+            });
+            
             if (mSearchResult.producer.mName != null) {
                 mProducerName.setText("" + mSearchResult.producer.mName);
             } else {
@@ -266,6 +297,18 @@ public class SearchableActivity extends BaseActivity {
         }
 
         if (mSearchResult.hotel != null) {
+            
+            mHotelItem.setOnClickListener(new View.OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, HotelActivity.class);
+                    intent.putExtra(HotelActivity.HOTEL_TAG, mSearchResult.hotel);
+                    startActivity(intent);
+                    
+                }
+            });
+
             if (mSearchResult.hotel.mName != null) {
                 mHotelName.setText("" + mSearchResult.hotel.mName);
             } else {
@@ -314,6 +357,19 @@ public class SearchableActivity extends BaseActivity {
 
         }
         if (mSearchResult.restaurant != null) {
+                
+                mRestaurantItem.setOnClickListener(new View.OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, RestaurantActivity.class);
+                        intent.putExtra(RestaurantActivity.RESTAURANT_TAG, mSearchResult.restaurant);
+                        startActivity(intent);
+                        
+                    }
+                });
+            
+            
             if (mSearchResult.restaurant.mName != null) {
                 mRestaurantName.setText("" + mSearchResult.restaurant.mName);
             } else {
@@ -517,14 +573,14 @@ public class SearchableActivity extends BaseActivity {
                    if (mSelectedItem.mItemType.equals(SearchItem.TAG_WINE))
                    {
                        startIntent = new Intent(mContext, WineActivity.class);
-                       startIntent.putExtra(WinesListActivity.TAG_WINE, new WineListItem(mSelectedItem.mId, mSelectedItem.mName));
+                       startIntent.putExtra(WineActivity.TAG_WINE, new WineListItem(mSelectedItem.mId, mSelectedItem.mName));
                        startIntent.putExtra(WineActivity.TAG_CALLED_FROM_PRODUCER, false);
                        startActivity(startIntent);
                    }
                    else if (mSelectedItem.mItemType.equals(SearchItem.TAG_PRODUCER))
                    {
                        startIntent = new Intent(mContext, ProducerActivity.class);
-                       startIntent.putExtra(ProducersFragment.PRODUCER_TAG, new ProducerListItem(
+                       startIntent.putExtra(ProducerActivity.PRODUCER_TAG, new ProducerListItem(
                                mSelectedItem.mId, mSelectedItem.mName, ""));
                        startActivity(startIntent);       
                    }
@@ -532,7 +588,7 @@ public class SearchableActivity extends BaseActivity {
                    else if (mSelectedItem.mItemType.equals(SearchItem.TAG_HOTEL))
                    {
                        startIntent = new Intent(mContext, HotelActivity.class);
-                       startIntent.putExtra(TabHotelsFragment.HOTEL_TAG, new HotelListItem(
+                       startIntent.putExtra(HotelActivity.HOTEL_TAG, new HotelListItem(
                                mSelectedItem.mId, mSelectedItem.mName));
                        startActivity(startIntent);       
                    }
@@ -540,7 +596,7 @@ public class SearchableActivity extends BaseActivity {
                    else if (mSelectedItem.mItemType.equals(SearchItem.TAG_RESTAURANT))
                    {
                        startIntent = new Intent(mContext, RestaurantActivity.class);
-                       startIntent.putExtra(TabRestaurantsFragment.RESTAURANT_TAG, new RestaurantListItem(
+                       startIntent.putExtra(RestaurantActivity.RESTAURANT_TAG, new RestaurantListItem(
                                mSelectedItem.mId, mSelectedItem.mName));
                        startActivity(startIntent);       
                    }
@@ -608,6 +664,22 @@ public class SearchableActivity extends BaseActivity {
             mProgDial.dismiss();
             if (mSearchResult != null) {
                 fillView();
+                if (mSearchResult.wine == null && mSearchResult.producer == null
+                        && mSearchResult.hotel == null && mSearchResult.restaurant == null)
+                {
+                    LinearLayout layout = new LinearLayout(mContext);
+                    setContentView(layout);
+                    layout.setOrientation(LinearLayout.VERTICAL);
+                    TextView tv = new TextView(getApplicationContext());
+                    tv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+                            LayoutParams.MATCH_PARENT));
+                    tv.setText(getResources().getString(R.string.no_results));
+                    tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+                    tv.setTextSize(16);
+                    tv.setTypeface(Typeface.DEFAULT_BOLD);
+                    tv.setTextColor(getResources().getColor(R.color.filter_text));
+                    layout.addView(tv);
+                }
             }
             mLoadSearchResult = null;
         }

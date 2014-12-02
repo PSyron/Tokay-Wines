@@ -27,7 +27,6 @@ import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.ImagePagerAdapter;
 import pl.tokajiwines.db.ProducerImagesDataSource;
 import pl.tokajiwines.db.ProducersDataSource;
-import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.jsonresponses.ImagePagerItem;
 import pl.tokajiwines.jsonresponses.ImagesResponse;
 import pl.tokajiwines.jsonresponses.ProducerDetails;
@@ -79,6 +78,7 @@ public class ProducerActivity extends BaseActivity {
     LoadProducerImagesOnlineTask mLoadProducerImagesOnlineTask;
 
     public static final String TAG_ID_PRODUCER = "IdProducer";
+    public static final String PRODUCER_TAG = "producer";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +91,7 @@ public class ProducerActivity extends BaseActivity {
         sUrlImage = getResources().getString(R.string.UrlProducerImages);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            mProducer = (ProducerListItem) extras.getSerializable(ProducersFragment.PRODUCER_TAG);
+            mProducer = (ProducerListItem) extras.getSerializable(PRODUCER_TAG);
         }
         Log.e(ProducerActivity.class.getName(), mProducer + " ");
         initView();
@@ -118,6 +118,8 @@ public class ProducerActivity extends BaseActivity {
         mUiWineName = (TextView) findViewById(R.id.activity_producer_details_wine_name);
         mUiWineImage = (ImageView) findViewById(R.id.activity_producer_details_wine_image);
         mUiScroll = (ScrollView) findViewById(R.id.activity_producer_details_scrollview);
+        mUiNavigate.setVisibility(View.INVISIBLE);
+        mUiNear.setVisibility(View.INVISIBLE);
 
         int[] images = {
             R.drawable.no_image_big
@@ -178,6 +180,8 @@ public class ProducerActivity extends BaseActivity {
     }
 
     public void fillView() {
+        mUiNavigate.setVisibility(View.VISIBLE);
+        mUiNear.setVisibility(View.VISIBLE);
         Log.e("fillView", mProducerFromBase.mIdProducer + " " + mProducerFromBase.mName + " "
                 + mProducerFromBase.mStreetName + " " + mProducerFromBase.mStreetNumber + " "
                 + mProducerFromBase.mHouseNumber + " " + mProducerFromBase.mCity + " "
@@ -186,9 +190,23 @@ public class ProducerActivity extends BaseActivity {
         mUiAddress.setText(mProducerFromBase.mStreetName + " " + mProducerFromBase.mStreetNumber
                 + " " + mProducerFromBase.mHouseNumber + " " + mProducerFromBase.mCity + " "
                 + mProducerFromBase.mPostCode);
-        mUiUrl.setText(mProducerFromBase.mLink);
-        mUiDescription.setText(mProducerFromBase.mVast);
-        mUiPhoneNumber.setText(mProducerFromBase.mPhone);
+        if (mProducerFromBase.mLink != null) {
+            mUiUrl.setText(mProducerFromBase.mLink);
+        } else {
+            mUiUrl.setVisibility(View.GONE);
+        }
+        if (mProducerFromBase.mVast != null) {
+            mUiDescription.setText(mProducerFromBase.mVast);
+        } else {
+            mUiDescription.setVisibility(View.GONE);
+        }
+
+        if (mProducerFromBase.mPhone != null) {
+            mUiPhoneNumber.setText(mProducerFromBase.mPhone);
+        } else {
+            mUiPhoneNumber.setVisibility(View.GONE);
+        }
+
         mUiWineName.setText(mProducerFromBase.mWineName);
 
         final File imgFile = new File(ProducerActivity.this.getFilesDir().getAbsolutePath()

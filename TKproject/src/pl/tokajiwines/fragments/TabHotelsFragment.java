@@ -39,7 +39,6 @@ public class TabHotelsFragment extends BaseFragment {
     private String sUrl;
     private String sUsername;
     private String sPassword;
-    public static final String HOTEL_TAG = "hotel";
     private HotelListItem[] mHotelList;
 
     public static TabHotelsFragment newInstance() {
@@ -68,7 +67,7 @@ public class TabHotelsFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 HotelListItem temp = (HotelListItem) mAdapter.getItem(position);
                 Intent intent = new Intent(mContext, HotelActivity.class);
-                intent.putExtra(HOTEL_TAG, temp);
+                intent.putExtra(HotelActivity.HOTEL_TAG, temp);
                 startActivityForResult(intent, HotelActivity.REQUEST);
             }
         });

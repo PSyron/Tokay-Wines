@@ -144,6 +144,7 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
                             .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                     builder.setSound(alarmSound);
                 }
+                inter.putExtra(MainActivity.FROM_NOTIFICATION, p);
                 // inter.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP
                 // | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, inter,
@@ -162,14 +163,21 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
                         + "/"
                         + p.mImageUrl.substring(p.mImageUrl.lastIndexOf('/') + 1,
                                 p.mImageUrl.length()));
-                Bitmap myBitmap;
+                Bitmap myBitmap = null;
                 if (imgFile.exists()) {
                     Log.e("Notifikacja", "zdjecie istnieje");
                     myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
                 } else {
                     Log.e("Notifikacja", "nie zdjecie istnieje");
-                    myBitmap = App.downloadImagesToSdCardAndReturnBitman(p.mImageUrl, mContext);
+                    //  myBitmap = App.downloadImagesToSdCardAndReturnBitman(p.mImageUrl, mContext);
+                    try {
+                        App.downloadToInternal(p.mImageUrl, mContext);
+                        myBitmap = App.getFromInternal(p.mImageUrl, mContext);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
 
                 }
                 builder.setLargeIcon(myBitmap);

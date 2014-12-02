@@ -21,27 +21,28 @@
     <string name="app_version">Aplication version:</string>
     <string name="developers">Developers</string>
     <string name="version_problem">Cannot get version name</string>
+    <string name="cancel">Cancel</string>
 
     <!-- Main -->
 
     <string name="downloading_content">Downloading content</string>
     <string name="exit_msg">Please click BACK again to exit</string>
+    <string name="no_results">No results for selected parameters</string>
 
     <!-- Loading -->
-    
+
     <string name="loading">Loading...</string>
     <string name="loading_search">Loading search results...</string>
     <string name="loading_news">Loading news data...</string>
     <string name="loading_wine">Loading wine data...</string>
     <string name="loading_wines">Loading wines data...</string>
-	<string name="loading_producer">Loading producer data...</string>
-	<string name="loading_producers">Loading producers data...</string>
+    <string name="loading_producer">Loading producer data...</string>
+    <string name="loading_producers">Loading producers data...</string>
     <string name="loading_near">Loading near places...</string>
     <string name="loading_hotel">Loading hotel data...</string>
     <string name="loading_hotels">Loading hotels data...</string>
     <string name="loading_restaurant">Loading restaurant data...</string>
     <string name="loading_restaurants">Loading restaurants data...</string>
-    
 
     <!-- Menu -->
 
@@ -114,7 +115,8 @@
     <string name="no_points">No points</string>
     <string name="route_to">Route to</string>
     <string name="check_route">Do You want to check route?</string>
-
+	<string name="cancel_tour">Hide tour</string>
+	
     <!-- Guide -->
 
     <string name="curiosities">Curiosities</string>
@@ -176,14 +178,20 @@
 
     <!-- Developers -->
 
-    <string name="paulina_konieczna">Paulina Konieczna</string>
+    <string name="gabriel_kurczewski">Gabriel Kurczewski - originator</string>
+    <string name="gabriel_kurczewski_email">gabriel.kurczewski@gmail.com</string>
+    <string name="krzysztof_wasko">Krzysztof Wasko - originator</string>
+    <string name="krzysztof_wasko_email">k.wasko@mikrozet.pl</string>
+    <string name="paulina_konieczna">Paulina Konieczna - programmer</string>
     <string name="paulina_konieczna_email">konieczna.paulina00@gmail.com</string>
-    <string name="pawel_cyron">Pawel Cyron</string>
+    <string name="pawel_cyron">Pawel Cyron - programmer</string>
     <string name="pawel_cyron_email">paul.cyron1@gmail.com</string>
-    <string name="tomasz_kluza">Tomasz Kluza</string>
+    <string name="tomasz_kluza">Tomasz Kluza - programmer</string>
     <string name="tomasz_kluza_email">kluza.tomasz@gmail.com</string>
-    <string name="wojciech_klimczyk">Wojciech Klimczyk</string>
+    <string name="wojciech_klimczyk">Wojciech Klimczyk - programmer</string>
     <string name="wojciech_klimczyk_email">boberjunior@gmail.com</string>
+    <string name="paulina_malinka">Paulina Malinka - graphic designer</string>
+    <string name="paulina_malinka_email">paulina.teresa.malinka@gmail.com</string>
     <string name="search_hint">Type name to search</string>
     <string name="title_activity_searchable">SearchableActivity</string>
     <string name="hello_world">Hello world!</string>

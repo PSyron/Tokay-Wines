@@ -217,7 +217,7 @@ public class StartWineImageActivity extends BaseActivity {
                         startActivity(i);
 
                         Intent intent = new Intent(StartWineImageActivity.this, WineActivity.class);
-                        intent.putExtra(WinesListActivity.TAG_WINE, mChosedItem);
+                        intent.putExtra(WineActivity.TAG_WINE, mChosedItem);
                         startActivity(intent);
 
                         finish();
@@ -273,6 +273,12 @@ public class StartWineImageActivity extends BaseActivity {
                     int value = 0;
                     mProgDial.setProgress(value);
                     for (Image i : mImagesList) {
+                        if (!App.isOnline(StartWineImageActivity.this)) {
+                            mDownloadImagesTask.cancel(true);
+                            if (mProgDial != null) {
+                                mProgDial.dismiss();
+                            }
+                        }
                         final File imgFile = new File(StartWineImageActivity.this.getFilesDir()
                                 .getAbsolutePath()
                                 + "/"

@@ -69,6 +69,45 @@
                     style="@style/DetailsHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/krzysztof_wasko" />
+
+                <TextView
+                    style="@style/DetailsHeader.NormalTextAbout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/krzysztof_wasko_email" />
+            </LinearLayout>
+                        <LinearLayout
+                style="@style/DetailsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/divider_item"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/DetailsHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gabriel_kurczewski" />
+
+                <TextView
+                    style="@style/DetailsHeader.NormalTextAbout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gabriel_kurczewski_email" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/DetailsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/divider_item"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/DetailsHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="@string/paulina_konieczna" />
 
                 <TextView
@@ -115,7 +154,7 @@
                     style="@style/DetailsHeader.NormalTextAbout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/tomasz_kluza_email"/>
+                    android:text="@string/tomasz_kluza_email" />
             </LinearLayout>
 
             <LinearLayout
@@ -137,6 +176,26 @@
                     android:layout_height="wrap_content"
                     android:text="@string/wojciech_klimczyk_email" />
             </LinearLayout>
+                        <LinearLayout
+                style="@style/DetailsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/divider_item"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/DetailsHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/paulina_malinka" />
+
+                <TextView
+                    style="@style/DetailsHeader.NormalTextAbout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/paulina_malinka_email" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
 </ScrollView>

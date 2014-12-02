@@ -5,10 +5,13 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +38,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
+import com.koushikdutta.ion.Ion;
 
 import org.json.JSONObject;
 
@@ -47,6 +53,7 @@ import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -70,6 +77,7 @@ public class MapFragment extends BaseFragment {
     Boolean mFirstRun = true;
     JSONParser mParser;
     LatLng myPosition; //TODO temp
+    boolean trasaIsPicked = false;
 
     private Place[] mNearbyPlaces;
 
@@ -78,6 +86,31 @@ public class MapFragment extends BaseFragment {
     private String sPassword;
     public static final String TAG_ID_PLACE = "IdPlace";
     GPSTracker mGPStrack;
+    Place[] wStroneTokaju = {
+            new Place(16, "Pendits", "Béke 111 Abaújszántó", "21.1853", "48.2742", "Producer",
+                    "http://tokajiwines.me/photos/pendits_thumb.jpg"),
+            new Place(6, "Első Mádi Borház", "Hunyadi 2 Mád", "21.27930729", "48.18370715",
+                    "Restaurant", "http://tokajiwines.me/photos/5elso_madi_borhaz_thumb.jpg"),
+            new Place(3, "Disznókő", "Hrsz.0202  Mezőzombo", "21.303", "48.1654", "Producer",
+                    "http://tokajiwines.me/photos/disznoko_thumb.jpg"),
+            new Place(6, "Grof Degenfeld ****", "Terézia kert 9 Tarcal", "21.334291", "48.143589",
+                    "Hotel", "http://tokajiwines.me/photos/6grof_degenfeld_kastely_thumb.jpg"),
+            new Place(17, "Tokaj Kikelet Pince", "Könyves Kálmán  62 Tarcal", "21.34924",
+                    "48.127754", "Producer",
+                    "http://tokajiwines.me/photos/takaji_kikelet_price_thumb.jpg")
+    };
+    Place[] choosenTrip;
+
+    View mUiPlaceBox;
+    ImageView mUiPlaceImage;
+    TextView mUiPlaceTitle;
+    TextView mUiPlaceAddress;
+
+    LinearLayout mUiPlaceDistance;
+    LinearLayout mUiPlaceDuration;
+    LinearLayout mUiPlacePhone;
+    ImageView mUiNavigateTo;
+    ImageView mUiInfo;
 
     public static MapFragment newInstance(Context ctx) {
         MapFragment fragment = new MapFragment(ctx);
@@ -113,8 +146,52 @@ public class MapFragment extends BaseFragment {
         mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
         mUiTours = (TextView) v.findViewById(R.id.map_tours);
         //To laguje wlaczanie
+        mUiPlaceBox = v.findViewById(R.id.fragment_map_box);
+        mUiPlaceImage = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_image);
+        mUiPlaceTitle = (TextView) mUiPlaceBox.findViewById(R.id.item_map_title);
+        mUiPlaceAddress = (TextView) mUiPlaceBox.findViewById(R.id.item_map_address);
+
+        mUiPlaceDistance = (LinearLayout) mUiPlaceBox.findViewById(R.id.item_map_linear_distance);
+        mUiPlaceDuration = (LinearLayout) mUiPlaceBox.findViewById(R.id.item_map_linear_duration);
+        mUiPlacePhone = (LinearLayout) mUiPlaceBox.findViewById(R.id.item_map_linear_phone);
+        mUiPlaceDistance.setVisibility(View.GONE);
+        mUiPlaceDuration.setVisibility(View.GONE);
+        mUiPlacePhone.setVisibility(View.GONE);
+        mUiNavigateTo = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_navigate);
+        mUiNavigateTo.setVisibility(View.GONE);
+        mUiInfo = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_info);
+        mUiInfo.setVisibility(View.GONE);
 
         return v;
+    }
+
+    public void fillBox(final Place clicked) {
+
+        mUiPlaceBox.setVisibility(View.VISIBLE);
+        mUiPlaceTitle.setText(clicked.mPlaceType + ": " + clicked.mName);
+
+        mUiPlaceAddress.setText(clicked.mAddress);
+        if (!clicked.mImageUrl.equals("")) {
+            Ion.with(mUiPlaceImage).placeholder(R.drawable.placeholder_image)
+                    .error(R.drawable.error_image).load(clicked.mImageUrl);
+            final File imgFile = new File(getActivity().getFilesDir().getAbsolutePath()
+                    + "/"
+                    + clicked.mImageUrl.substring(clicked.mImageUrl.lastIndexOf('/') + 1,
+                            clicked.mImageUrl.length()));
+            if (imgFile.exists()) {
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+                mUiPlaceImage.setImageBitmap(myBitmap);
+            } else {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
+                        App.downloadAndRun(clicked.mImageUrl, getActivity(), mUiPlaceImage);
+                    }
+                }, 50);
+            }
+        }
+
     }
 
     @Override
@@ -149,40 +226,57 @@ public class MapFragment extends BaseFragment {
 
             @Override
             public boolean onMarkerClick(final Marker arg0) {
-                if (arg0.getPosition() != myPosition) {
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(
-                                    getResources().getString(R.string.route_to) + " "
-                                            + arg0.getTitle())
-                            .setMessage(getResources().getString(R.string.check_route))
-                            .setPositiveButton(android.R.string.yes,
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // Getting URL to the Google Directions API
-                                            if (mRoute != null) {
-                                                mRoute.remove();
+                if (!trasaIsPicked) {
+                    if (arg0.getPosition() != myPosition) {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(
+                                        getResources().getString(R.string.route_to) + " "
+                                                + arg0.getTitle())
+                                .setMessage(getResources().getString(R.string.check_route))
+                                .setPositiveButton(android.R.string.yes,
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // Getting URL to the Google Directions API
+
+                                                if (mRoute != null) {
+
+                                                    mRoute.remove();
+
+                                                }
+                                                String url = getDirectionsUrl(myPosition,
+                                                        arg0.getPosition());
+
+                                                DownloadTask downloadTask = new DownloadTask();
+
+                                                // Start downloading json data from Google Directions API
+                                                downloadTask.execute(url);
                                             }
-                                            String url = getDirectionsUrl(myPosition,
-                                                    arg0.getPosition());
 
-                                            DownloadTask downloadTask = new DownloadTask();
+                                        })
+                                .setNegativeButton(android.R.string.no,
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // do nothing
+                                            }
+                                        }).setIcon(android.R.drawable.ic_dialog_alert).show();
+                    }
+                    return false;
+                } else {
+                    for (Place pl : choosenTrip) {
+                        if (arg0.getPosition().latitude == Double.parseDouble(pl.mLat)
+                                && arg0.getPosition().longitude == Double.parseDouble(pl.mLng)) {
+                            fillBox(pl);
 
-                                            // Start downloading json data from Google Directions API
-                                            downloadTask.execute(url);
-                                        }
-                                    })
-                            .setNegativeButton(android.R.string.no,
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // do nothing
-                                        }
-                                    }).setIcon(android.R.drawable.ic_dialog_alert).show();
+                            return false;
+                        }
+                    }
+
+                    return false;
                 }
-                return false;
-            }
 
+            }
         });
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(15)
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(12)
                 .build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
@@ -216,15 +310,84 @@ public class MapFragment extends BaseFragment {
 
             }
         });
+
         mUiTours.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(MapFragment.this.mCtx,
-                        getResources().getString(R.string.not_working), Toast.LENGTH_LONG).show();
+                if (!trasaIsPicked) {
+                    AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
+                    builderSingle.setIcon(R.drawable.ic_launcher);
+                    builderSingle.setTitle(getResources().getString(R.string.preffered_tours));
+                    final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                            getActivity(), android.R.layout.select_dialog_singlechoice);
+                    arrayAdapter.add("W stronę Tokaju");
 
+                    builderSingle.setNegativeButton(getResources().getString(R.string.cancel),
+                            new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                    builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            trasaIsPicked = true;
+                            googleMap.clear();
+                            switch (which) {
+                                case 0:
+                                    addMarkers(wStroneTokaju);
+                                    choosenTrip = wStroneTokaju;
+                                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                                            .target(wStroneTokaju[1].getLatLng()).zoom(10).build();
+                                    googleMap.animateCamera(CameraUpdateFactory
+                                            .newCameraPosition(cameraPosition));
+                                    if (App.isOnline(getActivity())) {
+                                        for (int i = 0; i < wStroneTokaju.length - 1; i++) {
+                                            String url = getDirectionsUrl(
+                                                    wStroneTokaju[i].getLatLng(),
+                                                    wStroneTokaju[i + 1].getLatLng());
+
+                                            DownloadTask downloadTask = new DownloadTask();
+
+                                            // Start downloading json data from Google Directions API
+                                            downloadTask.execute(url);
+                                        }
+                                    }
+                                    break;
+
+                                default:
+                                    break;
+                            }
+
+                            dialog.dismiss();
+                            mUiTours.setText(getResources().getString(R.string.cancel_tour));
+                        }
+                    });
+                    builderSingle.show();
+
+                } else {
+                    trasaIsPicked = false;
+                    googleMap.clear();
+                    mUiPlaceBox.setVisibility(View.GONE);
+                    mUiTours.setText(getResources().getString(R.string.preffered_tours));
+                    mNearbyPlaces = null;
+                    if (App.isOnline(mCtx)) {
+
+                        new LoadNearPlaces().execute(myPosition);
+                    }
+                    CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition)
+                            .zoom(10).build();
+                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                }
             }
         });
+
     }
 
     private String getDirectionsUrl(LatLng origin, LatLng dest) {
@@ -310,15 +473,14 @@ public class MapFragment extends BaseFragment {
     }
 
     @Override
-    public void onPause() {       
+    public void onPause() {
         if (mLoadNearPlaces != null) {
 
             mLoadNearPlaces.cancel(true);
-            if (mProgDial != null)
-            {
+            if (mProgDial != null) {
                 mProgDial.dismiss();
             }
-            
+
             mLoadNearPlaces = null;
         }
         super.onPause();
@@ -347,8 +509,7 @@ public class MapFragment extends BaseFragment {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.e("Async on PreExecute", "Executing create progress bar");
-            if (mProgDial == null)
-            {
+            if (mProgDial == null) {
                 mProgDial = new ProgressDialog(mCtx);
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_near));
@@ -556,15 +717,9 @@ public class MapFragment extends BaseFragment {
             //            MainActivity.this.tvDistanceDuration.setText("Distance:" + distance + ", Duration:"
             //                    + duration);
 
-            Toast.makeText(
-                    mCtx,
-                    getResources().getString(R.string.distance) + distance
-                            + getResources().getString(R.string.duration) + duration,
-                    Toast.LENGTH_LONG).show();
-
             // Drawing polyline in the Google Map for the i-th route
             mRoute = MapFragment.this.googleMap.addPolyline(lineOptions);
-            
+
             mLoadNearPlaces = null;
         }
     }

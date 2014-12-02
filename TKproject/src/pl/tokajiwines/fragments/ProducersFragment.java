@@ -16,8 +16,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.ProducerActivity;
@@ -44,13 +42,7 @@ public class ProducersFragment extends BaseFragment {
     private String sUrl;
     private String sUsername;
     private String sPassword;
-    private static final String TAG_ID = "idProducer";
-    private static final String TAG_NAME = "name";
-    private static final String TAG_SHORT_MESSAGE = "short";
-    private static final String TAG_PRODUCERS = "producers";
-    private JSONArray mProducersJSON = null;
     private ProducerListItem[] mProducersList;
-    public static final String PRODUCER_TAG = "producer";
 
     public static ProducersFragment newInstance() {
         ProducersFragment fragment = new ProducersFragment();
@@ -82,7 +74,7 @@ public class ProducersFragment extends BaseFragment {
                 ProducerListItem temp = (ProducerListItem) mAdapter.getItem(position);
                 Log.e(ProducersFragment.class.getName(), temp + " ");
                 Intent intent = new Intent(mContext, ProducerActivity.class);
-                intent.putExtra(PRODUCER_TAG, temp);
+                intent.putExtra(ProducerActivity.PRODUCER_TAG, temp);
 
                 startActivityForResult(intent, ProducerActivity.REQUEST);
 

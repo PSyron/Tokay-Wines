@@ -23,7 +23,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.fragments.TabRestaurantsFragment;
 import pl.tokajiwines.jsonresponses.RestaurantDetails;
 import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.models.Place;
@@ -60,6 +59,7 @@ public class RestaurantActivity extends BaseActivity {
     ImageView mUiNavigate;
 
     LoadRestaurantTask mLoadRestaurantTask;
+    public static final String RESTAURANT_TAG = "restaurant";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class RestaurantActivity extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mRestaurant = (RestaurantListItem) extras
-                    .getSerializable(TabRestaurantsFragment.RESTAURANT_TAG);
+                    .getSerializable(RestaurantActivity.RESTAURANT_TAG);
         }
 
         Log.e(RestaurantActivity.class.getName(), mRestaurant + " ");
@@ -95,9 +95,6 @@ public class RestaurantActivity extends BaseActivity {
         mUiNavigate = (ImageView) findViewById(R.id.activity_restaurant_navigate);
         mUiDescription = (TextView) findViewById(R.id.activity_restaurant_details_description);
 
-        int[] images = {
-                R.drawable.placeholder_image, R.drawable.placeholder_image
-        };
 
         mUiNavigate.setOnClickListener(new OnClickListener() {
 
