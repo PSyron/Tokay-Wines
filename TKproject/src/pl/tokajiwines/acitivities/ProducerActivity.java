@@ -186,9 +186,32 @@ public class ProducerActivity extends BaseActivity {
         mUiAddress.setText(mProducerFromBase.mStreetName + " " + mProducerFromBase.mStreetNumber
                 + " " + mProducerFromBase.mHouseNumber + " " + mProducerFromBase.mCity + " "
                 + mProducerFromBase.mPostCode);
-        mUiUrl.setText(mProducerFromBase.mLink);
-        mUiDescription.setText(mProducerFromBase.mVast);
-        mUiPhoneNumber.setText(mProducerFromBase.mPhone);
+        if (mProducerFromBase.mLink != null)
+        {
+            mUiUrl.setText(mProducerFromBase.mLink);
+        }
+        else
+        {
+            mUiUrl.setVisibility(View.GONE);
+        }
+        if (mProducerFromBase.mVast != null)
+        {
+            mUiDescription.setText(mProducerFromBase.mVast);
+        }
+        else
+        {
+            mUiDescription.setVisibility(View.GONE);
+        }
+        
+        if (mProducerFromBase.mPhone != null)
+        {
+            mUiPhoneNumber.setText(mProducerFromBase.mPhone);
+        }
+        else
+        {
+            mUiPhoneNumber.setVisibility(View.GONE); 
+        }
+        
         mUiWineName.setText(mProducerFromBase.mWineName);
 
         final File imgFile = new File(ProducerActivity.this.getFilesDir().getAbsolutePath()
