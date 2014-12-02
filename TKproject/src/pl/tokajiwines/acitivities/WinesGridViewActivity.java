@@ -49,7 +49,6 @@ public class WinesGridViewActivity extends BaseActivity {
     private String sUsername;
     private String sPassword;
 
-    public static String TAG_WINE = "WINE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +77,7 @@ public class WinesGridViewActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(mAct, WineActivity.class);
-                intent.putExtra(TAG_WINE, (WineListItem) mAdapter.getItem(position));
+                intent.putExtra(WineActivity.TAG_WINE, (WineListItem) mAdapter.getItem(position));
                 intent.putExtra(WineActivity.TAG_CALLED_FROM_PRODUCER, true);
                 startActivityForResult(intent, 1);
             }
