@@ -70,6 +70,7 @@ public class MapFragment extends BaseFragment {
     Boolean mFirstRun = true;
     JSONParser mParser;
     LatLng myPosition; //TODO temp
+    boolean trasaIsPicked = false;
 
     private Place[] mNearbyPlaces;
 
@@ -78,6 +79,18 @@ public class MapFragment extends BaseFragment {
     private String sPassword;
     public static final String TAG_ID_PLACE = "IdPlace";
     GPSTracker mGPStrack;
+    Place[] wStroneTokaju = {
+            new Place(16, "Pendits", "", "21.1853", "48.2742", "Producer",
+                    "http://tokajiwines.me/photos/pendits_thumb.jpg"),
+            new Place(6, "Első Mádi Borház", "", "21.27930729", "48.18370715", "Restaurant",
+                    "http://tokajiwines.me/photos/5elso_madi_borhaz_thumb.jpg"),
+            new Place(3, "Disznókő", "", "21.303", "48.1654", "Producer",
+                    "http://tokajiwines.me/photos/disznoko_thumb.jpg"),
+            new Place(6, "Grof Degenfeld ****", "", "21.334291", "48.143589", "Hotel",
+                    "http://tokajiwines.me/photos/6grof_degenfeld_kastely_thumb.jpg"),
+            new Place(17, "Tokaj Kikelet Pince", "", "21.34924", "48.127754", "Producer",
+                    "http://tokajiwines.me/photos/takaji_kikelet_price_thumb.jpg")
+    };
 
     public static MapFragment newInstance(Context ctx) {
         MapFragment fragment = new MapFragment(ctx);
@@ -159,16 +172,20 @@ public class MapFragment extends BaseFragment {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
                                             // Getting URL to the Google Directions API
-                                            if (mRoute != null) {
-                                                mRoute.remove();
+                                            if (!trasaIsPicked) {
+                                                if (mRoute != null) {
+
+                                                    mRoute.remove();
+
+                                                }
+                                                String url = getDirectionsUrl(myPosition,
+                                                        arg0.getPosition());
+
+                                                DownloadTask downloadTask = new DownloadTask();
+
+                                                // Start downloading json data from Google Directions API
+                                                downloadTask.execute(url);
                                             }
-                                            String url = getDirectionsUrl(myPosition,
-                                                    arg0.getPosition());
-
-                                            DownloadTask downloadTask = new DownloadTask();
-
-                                            // Start downloading json data from Google Directions API
-                                            downloadTask.execute(url);
                                         }
                                     })
                             .setNegativeButton(android.R.string.no,
@@ -182,7 +199,7 @@ public class MapFragment extends BaseFragment {
             }
 
         });
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(15)
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(12)
                 .build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
@@ -216,15 +233,30 @@ public class MapFragment extends BaseFragment {
 
             }
         });
+
         mUiTours.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(MapFragment.this.mCtx,
-                        getResources().getString(R.string.not_working), Toast.LENGTH_LONG).show();
 
+                addMarkers(wStroneTokaju);
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(wStroneTokaju[1].getLatLng()).zoom(10).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                if (App.isOnline(getActivity())) {
+                    for (int i = 0; i < wStroneTokaju.length - 1; i++) {
+                        String url = getDirectionsUrl(wStroneTokaju[i].getLatLng(),
+                                wStroneTokaju[i + 1].getLatLng());
+
+                        DownloadTask downloadTask = new DownloadTask();
+
+                        // Start downloading json data from Google Directions API
+                        downloadTask.execute(url);
+                    }
+                }
             }
         });
+
     }
 
     private String getDirectionsUrl(LatLng origin, LatLng dest) {
@@ -310,15 +342,14 @@ public class MapFragment extends BaseFragment {
     }
 
     @Override
-    public void onPause() {       
+    public void onPause() {
         if (mLoadNearPlaces != null) {
 
             mLoadNearPlaces.cancel(true);
-            if (mProgDial != null)
-            {
+            if (mProgDial != null) {
                 mProgDial.dismiss();
             }
-            
+
             mLoadNearPlaces = null;
         }
         super.onPause();
@@ -347,8 +378,7 @@ public class MapFragment extends BaseFragment {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.e("Async on PreExecute", "Executing create progress bar");
-            if (mProgDial == null)
-            {
+            if (mProgDial == null) {
                 mProgDial = new ProgressDialog(mCtx);
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_near));
@@ -556,15 +586,9 @@ public class MapFragment extends BaseFragment {
             //            MainActivity.this.tvDistanceDuration.setText("Distance:" + distance + ", Duration:"
             //                    + duration);
 
-            Toast.makeText(
-                    mCtx,
-                    getResources().getString(R.string.distance) + distance
-                            + getResources().getString(R.string.duration) + duration,
-                    Toast.LENGTH_LONG).show();
-
             // Drawing polyline in the Google Map for the i-th route
             mRoute = MapFragment.this.googleMap.addPolyline(lineOptions);
-            
+
             mLoadNearPlaces = null;
         }
     }
