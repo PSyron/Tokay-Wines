@@ -118,9 +118,32 @@ public class HotelActivity extends BaseActivity {
         mUiAddress.setText(mHotelFromBase.mStreetName + " " + mHotelFromBase.mStreetNumber + " "
                 + mHotelFromBase.mHouseNumber + " " + mHotelFromBase.mCity + " "
                 + mHotelFromBase.mPostCode);
-        mUiUrl.setText(mHotelFromBase.mLink);
-        mUiDescription.setText(mHotelFromBase.mVast);
-        mUiPhoneNumber.setText(mHotelFromBase.mPhone);
+        if (mHotelFromBase.mLink != null)
+        {
+            mUiUrl.setText(mHotelFromBase.mLink);
+        }
+        else
+        {
+            mUiUrl.setVisibility(View.GONE);
+        }
+        
+        if (mHotelFromBase.mVast != null)
+        {
+            mUiDescription.setText(mHotelFromBase.mVast);
+        }
+        else
+        {
+            mUiDescription.setVisibility(View.GONE);
+        }
+        
+        if (mHotelFromBase.mPhone != null)
+        {
+            mUiPhoneNumber.setText(mHotelFromBase.mPhone);
+        }
+        else
+        {
+            mUiPhoneNumber.setVisibility(View.GONE);
+        }
 
         final File imgFile = new File(HotelActivity.this.getFilesDir().getAbsolutePath()
                 + "/"
