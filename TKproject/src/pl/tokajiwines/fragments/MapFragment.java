@@ -238,57 +238,70 @@ public class MapFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
+                if (!trasaIsPicked) {
+                    AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
+                    builderSingle.setIcon(R.drawable.ic_launcher);
+                    builderSingle.setTitle(getResources().getString(R.string.preffered_tours));
+                    final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                            getActivity(), android.R.layout.select_dialog_singlechoice);
+                    arrayAdapter.add("W stronę Tokaju");
 
-                AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
-                builderSingle.setIcon(R.drawable.ic_launcher);
-                builderSingle.setTitle(getResources().getString(R.string.preffered_tours));
-                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.select_dialog_singlechoice);
-                arrayAdapter.add("W stronę Tokaju");
+                    builderSingle.setNegativeButton(getResources().getString(R.string.cancel),
+                            new DialogInterface.OnClickListener() {
 
-                builderSingle.setNegativeButton(getResources().getString(R.string.cancel),
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-
-                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                addMarkers(wStroneTokaju);
-                                CameraPosition cameraPosition = new CameraPosition.Builder()
-                                        .target(wStroneTokaju[1].getLatLng()).zoom(10).build();
-                                googleMap.animateCamera(CameraUpdateFactory
-                                        .newCameraPosition(cameraPosition));
-                                if (App.isOnline(getActivity())) {
-                                    for (int i = 0; i < wStroneTokaju.length - 1; i++) {
-                                        String url = getDirectionsUrl(wStroneTokaju[i].getLatLng(),
-                                                wStroneTokaju[i + 1].getLatLng());
-
-                                        DownloadTask downloadTask = new DownloadTask();
-
-                                        // Start downloading json data from Google Directions API
-                                        downloadTask.execute(url);
-                                    }
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
                                 }
-                                break;
+                            });
 
-                            default:
-                                break;
+                    builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            trasaIsPicked = true;
+                            googleMap.clear();
+                            switch (which) {
+                                case 0:
+                                    addMarkers(wStroneTokaju);
+                                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                                            .target(wStroneTokaju[1].getLatLng()).zoom(10).build();
+                                    googleMap.animateCamera(CameraUpdateFactory
+                                            .newCameraPosition(cameraPosition));
+                                    if (App.isOnline(getActivity())) {
+                                        for (int i = 0; i < wStroneTokaju.length - 1; i++) {
+                                            String url = getDirectionsUrl(
+                                                    wStroneTokaju[i].getLatLng(),
+                                                    wStroneTokaju[i + 1].getLatLng());
+
+                                            DownloadTask downloadTask = new DownloadTask();
+
+                                            // Start downloading json data from Google Directions API
+                                            downloadTask.execute(url);
+                                        }
+                                    }
+                                    break;
+
+                                default:
+                                    break;
+                            }
+
+                            dialog.dismiss();
+                            mUiTours.setText(getResources().getString(R.string.cancel_tour));
                         }
+                    });
+                    builderSingle.show();
 
-                        dialog.dismiss();
-                        mUiTours.setText(getResources().getString(R.string.cancel_tour));
-                    }
-                });
-                builderSingle.show();
+                } else {
+                    trasaIsPicked = false;
+                    googleMap.clear();
+                    mUiTours.setText(getResources().getString(R.string.preffered_tours));
+                    ;
+                    CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition)
+                            .zoom(10).build();
+                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+                }
             }
         });
 
