@@ -92,6 +92,19 @@ public class MapFragment extends BaseFragment {
                     "http://tokajiwines.me/photos/takaji_kikelet_price_thumb.jpg")
     };
 
+    Place[] wTokaju = {
+            new Place(16, "Pendits", "", "21.1853", "48.2742", "Producer",
+                    "http://tokajiwines.me/photos/pendits_thumb.jpg"),
+            new Place(6, "Első Mádi Borház", "", "21.27930729", "48.18370715", "Restaurant",
+                    "http://tokajiwines.me/photos/5elso_madi_borhaz_thumb.jpg"),
+            new Place(3, "Disznókő", "", "21.303", "48.1654", "Producer",
+                    "http://tokajiwines.me/photos/disznoko_thumb.jpg"),
+            new Place(6, "Grof Degenfeld ****", "", "21.334291", "48.143589", "Hotel",
+                    "http://tokajiwines.me/photos/6grof_degenfeld_kastely_thumb.jpg"),
+            new Place(17, "Tokaj Kikelet Pince", "", "21.34924", "48.127754", "Producer",
+                    "http://tokajiwines.me/photos/takaji_kikelet_price_thumb.jpg")
+    };
+
     public static MapFragment newInstance(Context ctx) {
         MapFragment fragment = new MapFragment(ctx);
 
@@ -245,7 +258,7 @@ public class MapFragment extends BaseFragment {
                     final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                             getActivity(), android.R.layout.select_dialog_singlechoice);
                     arrayAdapter.add("W stronę Tokaju");
-
+                    arrayAdapter.add("W Tokaju");
                     builderSingle.setNegativeButton(getResources().getString(R.string.cancel),
                             new DialogInterface.OnClickListener() {
 
@@ -281,7 +294,24 @@ public class MapFragment extends BaseFragment {
                                         }
                                     }
                                     break;
+                                case 1:
+                                    addMarkers(wStroneTokaju);
+                                    CameraPosition cameraPosition2 = new CameraPosition.Builder()
+                                            .target(wTokaju[1].getLatLng()).zoom(10).build();
+                                    googleMap.animateCamera(CameraUpdateFactory
+                                            .newCameraPosition(cameraPosition2));
+                                    if (App.isOnline(getActivity())) {
+                                        for (int i = 0; i < wTokaju.length - 1; i++) {
+                                            String url = getDirectionsUrl(wTokaju[i].getLatLng(),
+                                                    wTokaju[i + 1].getLatLng());
 
+                                            DownloadTask downloadTask = new DownloadTask();
+
+                                            // Start downloading json data from Google Directions API
+                                            downloadTask.execute(url);
+                                        }
+                                    }
+                                    break;
                                 default:
                                     break;
                             }
@@ -347,7 +377,6 @@ public class MapFragment extends BaseFragment {
 
             MarkerOptions marker = new MarkerOptions().position(pozycja.getLatLng()).title(
                     pozycja.mPlaceType + ": " + pozycja.mName);
-
             // Changing marker icon
             if (pozycja.mPlaceType.contains("Hotel")) {
                 //marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
