@@ -115,8 +115,8 @@
     <string name="no_points">No points</string>
     <string name="route_to">Route to</string>
     <string name="check_route">Do You want to check route?</string>
-	<string name="cancel_tour">Hide tour</string>
-	
+    <string name="cancel_tour">Hide tour</string>
+
     <!-- Guide -->
 
     <string name="curiosities">Curiosities</string>
@@ -178,7 +178,7 @@
 
     <!-- Developers -->
 
-    <string name="gabriel_kurczewski">Gabriel Kurczewski - originator</string>
+    <string name="gabriel_kurczewski">Gabriel Kurczewski - content provider</string>
     <string name="gabriel_kurczewski_email">gabriel.kurczewski@gmail.com</string>
     <string name="krzysztof_wasko">Krzysztof Wasko - originator</string>
     <string name="krzysztof_wasko_email">k.wasko@mikrozet.pl</string>
