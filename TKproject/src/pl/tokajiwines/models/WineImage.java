@@ -27,4 +27,8 @@ public class WineImage implements Serializable {
         mIdImage_ = IdImage_;
         mLastUpdate = LastUpdate;
     }
+
+    public WineImage() {
+        // TODO Auto-generated constructor stub
+    }
 }

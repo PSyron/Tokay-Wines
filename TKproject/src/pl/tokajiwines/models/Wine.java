@@ -39,6 +39,7 @@ public class Wine implements Serializable {
     @SerializedName("IdImageCover_")
     public int mIdImageCover_;
 
+    public Image big;
     public Image imageCover;
     public Producer producer;
     public Grade grade;

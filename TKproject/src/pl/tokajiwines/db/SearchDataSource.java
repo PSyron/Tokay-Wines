@@ -108,6 +108,26 @@ public class SearchDataSource {
         return search;
     }
 
+    public SearchItem[] getSearchItems() {
+        SearchItem[] search = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_SEARCH, allColumns, null, null, null,
+                null, null);
+        if (cursor.getCount() == 0)
+            Log.w("SearchDataSource", "Database is empty");
+        else {
+            search = new SearchItem[cursor.getCount()];
+            cursor.moveToFirst();
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                SearchItem si = cursorToSearchItem(cursor);
+                search[i] = si;
+                i++;
+                cursor.moveToNext();
+            }
+        }
+        return search;
+    }
+
     private Search cursorToSearch(Cursor cursor) {
         Search search = new Search();
         search.mId = cursor.getInt(0);

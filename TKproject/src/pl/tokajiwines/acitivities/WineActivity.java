@@ -22,6 +22,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.db.WinesDataSource;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.WineDetails;
@@ -68,6 +69,7 @@ public class WineActivity extends BaseActivity {
     ProgressDialog mProgDial;
     JSONParser mParser;
     LoadWineTask mLoadWineTask;
+    LoadWineOnlineTask mLoadWineOnlineTask;
 
     public static String TAG_CALLED_FROM_PRODUCER = "called_from_producer";
     public static String TAG_WINE = "wine";
@@ -92,18 +94,15 @@ public class WineActivity extends BaseActivity {
         }
 
         mIsViewFilled = false;
-        
-        if (mWine.mIdProducer != 0)
-        {
+
+        if (mWine.mIdProducer != 0) {
             mIsFromList = true;
-        }
-        else
-        {
+        } else {
             mIsFromList = false;
         }
-        
+
         initView();
-        
+
     }
 
     public void initView() {
@@ -124,14 +123,12 @@ public class WineActivity extends BaseActivity {
         mUiYearLayout = (LinearLayout) findViewById(R.id.activity_wine_year_layout);
         mUiPriceLayout = (LinearLayout) findViewById(R.id.activity_wine_price_layout);
 
-        if (mIsFromList)
-        {
+        if (mIsFromList) {
             fillWithBasics();
         }
     }
-    
-    public void fillWithBasics()
-    {
+
+    public void fillWithBasics() {
         mUiName.setText(mWine.mName);
         mUiProducerName.setText(mWine.mProducerName);
 
@@ -207,9 +204,8 @@ public class WineActivity extends BaseActivity {
                 }, 50);
             }
         }
-        
-        if (!mIsFromList)
-        {
+
+        if (!mIsFromList) {
             fillWithBasics();
         }
         mIsViewFilled = true;
@@ -224,8 +220,8 @@ public class WineActivity extends BaseActivity {
             // if there is an access to the Internet, try to load data from remote database
 
             if (App.isOnline(WineActivity.this)) {
-                mLoadWineTask = new LoadWineTask();
-                mLoadWineTask.execute();
+                mLoadWineOnlineTask = new LoadWineOnlineTask();
+                mLoadWineOnlineTask.execute();
             }
 
             // otherwise, show message
@@ -234,6 +230,8 @@ public class WineActivity extends BaseActivity {
                 Toast.makeText(WineActivity.this,
                         getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG)
                         .show();
+                mLoadWineTask = new LoadWineTask();
+                mLoadWineTask.execute();
             }
         }
 
@@ -284,11 +282,63 @@ public class WineActivity extends BaseActivity {
         @Override
         protected String doInBackground(Void... args) {
 
+            WinesDataSource wDs = new WinesDataSource(mContext);
+            wDs.open();
+            mWineDetails = wDs.getProducerWineDetailsFill(mWine.mIdWine);
+            if (mWineDetails.mImageUrl == null) mWineDetails.mImageUrl = mWine.mImageUrl;
+
+            if (!mIsFromList) {
+                mWine = wDs.getWineDetails(mWine.mIdWine);
+            }
+            wDs.close();
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of producers
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mWineDetails != null) {
+                fillView();
+            }
+
+            mLoadWineTask = null;
+        }
+
+    }
+
+    class LoadWineOnlineTask extends AsyncTask<Void, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDial == null) {
+                mProgDial = new ProgressDialog(WineActivity.this);
+            }
+            mProgDial.setMessage(getResources().getString(R.string.loading_wine));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
+
+        }
+
+        // retrieving wine data
+
+        @Override
+        protected String doInBackground(Void... args) {
+
             mParser = new JSONParser();
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("idWine", "" + mWine.mIdWine));
-            params.add(new BasicNameValuePair("hasBasics", ""+mIsFromList));
+            params.add(new BasicNameValuePair("hasBasics", "" + mIsFromList));
             params.add(new BasicNameValuePair("lang", ""
                     + SharedPreferencesHelper.getSharedPreferencesInt(mContext,
                             SettingsFragment.SharedKeyLanguage, SettingsFragment.DefLanguage)));
@@ -303,8 +353,7 @@ public class WineActivity extends BaseActivity {
 
                 if (response != null) {
                     mWineDetails = response;
-                    if (!mIsFromList)
-                    {
+                    if (!mIsFromList) {
                         mWine = mWineDetails.mBasics;
                     }
                 }
@@ -323,7 +372,7 @@ public class WineActivity extends BaseActivity {
                 fillView();
             }
 
-            mLoadWineTask = null;
+            mLoadWineOnlineTask = null;
         }
 
     }

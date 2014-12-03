@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.google.gson.annotations.SerializedName;
 
+import pl.tokajiwines.jsonresponses.WineDetails;
 import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.models.Wine;
 import pl.tokajiwines.utils.Log;
@@ -67,6 +68,25 @@ public class WinesDataSource {
         cursor.close();
         if (wines == null) Log.w(LOG, "Producer wines are empty()");
         return wines;
+    }
+
+    public WineListItem getWineDetails(int idWine) {
+        Log.i(LOG, "getWineDetails");
+        Cursor cursor = database.query(DatabaseHelper.TABLE_WINES, allColumns, "IdProducer_ = ?",
+                new String[] {
+                    idWine + ""
+                }, null, null, null);
+        WineListItem wine = null;
+        if (cursor == null)
+            Log.w(LOG, "Details for wine with id= " + idWine + " don't exist");
+        else {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                wine = cursorToWineListItem(cursor);
+            }
+        }
+        cursor.close();
+        return wine;
     }
 
     private WineListItem cursorToWineListItem(Cursor cursor) {
@@ -129,6 +149,21 @@ public class WinesDataSource {
         else {
             cursor.moveToFirst();
             w = cursorToProducerBestWine(cursor);
+        }
+        return w;
+    }
+
+    public WineDetails getProducerWineDetailsFill(int id) {
+        Log.i(LOG, "getWine(id=" + id + ")");
+        WineDetails w = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_WINES, new String[] {
+                "IdWine", "IdDescription_"
+        }, "IdWine" + "=" + id, null, null, null, null);
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Wine with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            w = cursorToWineDetailsFill(cursor);
         }
         return w;
     }
@@ -251,4 +286,16 @@ public class WinesDataSource {
         return w;
     }
 
+    private WineDetails cursorToWineDetailsFill(Cursor cursor) {
+        Wine w = new Wine();
+        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+        dDs.open();
+        w.description = dDs.getDescriptionVast(cursor.getInt(1));
+        dDs.close();
+        WineImagesDataSource wDs = new WineImagesDataSource(mContext);
+        wDs.open();
+        w.big = wDs.getWineImage(cursor.getInt(0));
+        wDs.close();
+        return new WineDetails(w);
+    }
 }

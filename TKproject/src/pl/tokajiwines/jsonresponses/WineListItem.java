@@ -43,13 +43,13 @@ public class WineListItem implements Serializable {
         mIdWine = w.mIdWine;
         mIdProducer = w.mIdProducer_;
         mName = w.mName;
-        mGrade = w.grade.mName;
+        if (w.grade != null) mGrade = w.grade.mName;
         mYear = w.mProdDate + "";
         mProducerName = w.producer.mName;
-        mFlavourName = w.flavour.mNameEng;
+        if (w.flavour != null) mFlavourName = w.flavour.mNameEng;
         mImageUrl = w.imageCover.mImage;
         mPrice = w.mPrice + "";
-        mStrains = w.strainsToString();
+        if (w.strains != null) mStrains = w.strainsToString();
     }
 
 }

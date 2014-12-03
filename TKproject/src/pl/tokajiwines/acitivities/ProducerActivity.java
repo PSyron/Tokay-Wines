@@ -287,7 +287,7 @@ public class ProducerActivity extends BaseActivity {
                     fillView();
                 }
             }
-            /*
+
             if (mImagesUrl == null) {
                 mLoadProducerImagesTask = new LoadProducerImagesTask();
                 mLoadProducerImagesTask.execute();
@@ -297,7 +297,7 @@ public class ProducerActivity extends BaseActivity {
                 if (!mIsPagerFilled) {
                     fillPager();
                 }
-            }*/
+            }
 
         }
 
