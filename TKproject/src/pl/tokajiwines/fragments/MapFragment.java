@@ -124,16 +124,17 @@ public class MapFragment extends BaseFragment {
     ImageView mUiInfo;
 
     Place[] wTokaju = {
-            new Place(2, "1. Bonchidai Csarda", "Bajcsy-Zsilinszky 21 Tokaj", "21.1151", "48.333",
-                    "Restaurant", "http://tokajiwines.me/photos/2bonchidaiCsarda_thumb.jpg"),
+            new Place(2, "1. Bonchidai Csarda", "Bajcsy-Zsilinszky 21 Tokaj", "18.660259",
+                    "47.719631", "Restaurant",
+                    "http://tokajiwines.me/photos/2bonchidaiCsarda_thumb.jpg"),
             new Place(18, "2. TOKAJ HÉTSZŐLŐ", "Bajcsy-Zs. 19-21 Tokaj", "21.412537", "48.119366",
                     "Producer", "http://tokajiwines.me/photos/tokaji_hetszolo_thumb.jpg"),
             new Place(19, "3. Hímesudvar", "Bem József 2 Tokaj", "21.40633", "48.126122",
                     "Producer", "http://tokajiwines.me/photos/himesudvar_thumb.jpg"),
             new Place(4, "4. Dobogó Pincészet", "Dózsa György 1 Tokaj", "21.4043", "48.1253",
                     "Producer", "http://tokajiwines.me/photos/dobogo_thumb.jpg"),
-            new Place(7, "5. Tokaj Coffee Roastin", "Bethlen Gábor 10 Tokaj", "21.2428",
-                    "48.07602", "Restaurant",
+            new Place(7, "5. Tokaj Coffee Roastin", "Bethlen Gábor 10 Tokaj", "21.40803",
+                    "48.126789", "Restaurant",
                     "http://tokajiwines.me/photos/tokaj_coffee_roasting_company_thumb.jpg"),
             new Place(21, "6. Sauska Tokaj", "József Attila  2 Tokaj", "21.40815", "48.12735",
                     "Producer", "http://tokajiwines.me/photos/sauska_thumb.jpg"),
