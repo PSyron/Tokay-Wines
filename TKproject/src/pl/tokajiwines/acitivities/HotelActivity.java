@@ -23,6 +23,8 @@ import org.apache.http.message.BasicNameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.db.HotelImagesDataSource;
+import pl.tokajiwines.db.HotelsDataSource;
 import pl.tokajiwines.jsonresponses.HotelDetails;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.models.Place;
@@ -54,9 +56,10 @@ public class HotelActivity extends BaseActivity {
     TextView mUiDescription;
     ImageView mUiNavigate;
     LoadHotelTask mLoadHotelTask;
+    LoadHotelOnlineTask mLoadHotelOnlineTask;
     private String sUsername;
     private String sPassword;
-    
+
     public static final String HOTEL_TAG = "hotel";
 
     @Override
@@ -118,30 +121,21 @@ public class HotelActivity extends BaseActivity {
         mUiAddress.setText(mHotelFromBase.mStreetName + " " + mHotelFromBase.mStreetNumber + " "
                 + mHotelFromBase.mHouseNumber + " " + mHotelFromBase.mCity + " "
                 + mHotelFromBase.mPostCode);
-        if (mHotelFromBase.mLink != null)
-        {
+        if (mHotelFromBase.mLink != null) {
             mUiUrl.setText(mHotelFromBase.mLink);
-        }
-        else
-        {
+        } else {
             mUiUrl.setVisibility(View.GONE);
         }
-        
-        if (mHotelFromBase.mVast != null)
-        {
+
+        if (mHotelFromBase.mVast != null) {
             mUiDescription.setText(mHotelFromBase.mVast);
-        }
-        else
-        {
+        } else {
             mUiDescription.setVisibility(View.GONE);
         }
-        
-        if (mHotelFromBase.mPhone != null)
-        {
+
+        if (mHotelFromBase.mPhone != null) {
             mUiPhoneNumber.setText(mHotelFromBase.mPhone);
-        }
-        else
-        {
+        } else {
             mUiPhoneNumber.setVisibility(View.GONE);
         }
 
@@ -175,15 +169,18 @@ public class HotelActivity extends BaseActivity {
             // if there is an access to the Internet, try to load data from remote database
 
             if (App.isOnline(HotelActivity.this)) {
-                mLoadHotelTask = new LoadHotelTask();
-                mLoadHotelTask.execute();
+                mLoadHotelOnlineTask = new LoadHotelOnlineTask();
+                mLoadHotelOnlineTask.execute();
             }
 
             // otherwise, show message
 
             else {
-                Toast.makeText(HotelActivity.this, "Cannot connect to the Internet",
-                        Toast.LENGTH_LONG).show();
+                /*Toast.makeText(HotelActivity.this, "Cannot connect to the Internet",
+                        Toast.LENGTH_LONG).show();*/
+                Toast.makeText(HotelActivity.this, "Offline database", Toast.LENGTH_LONG).show();
+                mLoadHotelTask = new LoadHotelTask();
+                mLoadHotelTask.execute();
             }
         }
 
@@ -211,6 +208,57 @@ public class HotelActivity extends BaseActivity {
     }
 
     class LoadHotelTask extends AsyncTask<Void, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDial == null) {
+                mProgDial = new ProgressDialog(HotelActivity.this);
+            }
+            mProgDial.setMessage(getResources().getString(R.string.loading_hotel));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
+
+        }
+
+        // retrieving Hotels data
+
+        @Override
+        protected String doInBackground(Void... args) {
+            HotelImagesDataSource hiDs = new HotelImagesDataSource(HotelActivity.this);
+            HotelsDataSource hDs = new HotelsDataSource(HotelActivity.this);
+            hDs.open();
+            hiDs.open();
+            mHotelFromBase = hDs.getHotelDetails(mHotel.mIdHotel);
+            mHotelFromBase.mImageUrl = (hiDs.getHotelImagesPager(mHotel.mIdHotel))[0].ImageUrl;
+            hDs.close();
+            hiDs.close();
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of Hotels
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mHotelFromBase != null) {
+                fillView();
+            }
+
+            mLoadHotelTask = null;
+
+        }
+
+    }
+
+    class LoadHotelOnlineTask extends AsyncTask<Void, String, String> {
 
         boolean failure = false;
 
@@ -266,7 +314,7 @@ public class HotelActivity extends BaseActivity {
                 fillView();
             }
 
-            mLoadHotelTask = null;
+            mLoadHotelOnlineTask = null;
 
         }
 

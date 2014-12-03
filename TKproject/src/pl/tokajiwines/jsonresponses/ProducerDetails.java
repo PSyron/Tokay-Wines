@@ -3,6 +3,8 @@ package pl.tokajiwines.jsonresponses;
 
 import com.google.gson.annotations.SerializedName;
 
+import pl.tokajiwines.models.Producer;
+
 import java.io.Serializable;
 
 public class ProducerDetails implements Serializable {
@@ -27,6 +29,25 @@ public class ProducerDetails implements Serializable {
         mLastUpdate = lastUpdate;
     }
 
+    public ProducerDetails(Producer p) {
+        mIdProducer = p.mIdProducer;
+        mEmail = p.mEmail;
+        mLink = p.mLink;
+        mName = p.mName;
+        mPhone = p.mPhone;
+        mVast = p.description.mVast;
+        mStreetName = p.address.mStreetName;
+        mStreetNumber = p.address.mStreetNumber + "";
+        mHouseNumber = p.address.mHouseNumber + "";
+        mCity = p.address.mCity;
+        mLat = p.address.mLatitude + "";
+        mLng = p.address.mLongitude + "";
+        mPostCode = p.address.mPostcode;
+        mLastUpdate = p.mLastUpdate;
+        mWineImageUrl = p.wineBest.imageCover.mImage;
+        mWineName = p.wineBest.mName;
+    }
+
     /**
      * 
      */
@@ -44,7 +65,7 @@ public class ProducerDetails implements Serializable {
     @SerializedName("name")
     public String mName;
     @SerializedName("phone")
-    public String mPhone;  
+    public String mPhone;
     @SerializedName("image")
     public String mImageUrl;
 
@@ -64,7 +85,7 @@ public class ProducerDetails implements Serializable {
     public String mLng;
     @SerializedName("postCode")
     public String mPostCode;
-    
+
     @SerializedName("wineImage")
     public String mWineImageUrl;
     @SerializedName("wineName")

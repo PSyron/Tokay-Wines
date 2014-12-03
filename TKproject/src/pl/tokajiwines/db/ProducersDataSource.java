@@ -7,12 +7,10 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import pl.tokajiwines.jsonresponses.ProducerDetails;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.models.Producer;
 import pl.tokajiwines.utils.Log;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProducersDataSource {
     // LogCat tag
@@ -33,7 +31,7 @@ public class ProducersDataSource {
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
-        Log.i(LOG, database + " ");
+        //Log.i(LOG, database + " ");
     }
 
     public void close() {
@@ -91,28 +89,50 @@ public class ProducersDataSource {
         Producer producer = null;
         Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, allColumns, "IdProducer"
                 + "=" + id, null, null, null, null);
-        if (cursor.getCount() == 0)
+        if (cursor == null && cursor.getCount() == 0)
             Log.w(LOG, "Producer with id= " + id + " doesn't exists");
         else {
             cursor.moveToFirst();
             producer = cursorToProducer(cursor);
         }
+        cursor.close();
         return producer;
     }
 
-    public List<Producer> getAllProducers() {
-        Log.i(LOG, "getAllProducers()");
-        List<Producer> producers = new ArrayList<Producer>();
-        Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, allColumns, null, null,
-                null, null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Producer producer = cursorToProducer(cursor);
-            producers.add(producer);
-            cursor.moveToNext();
+    public ProducerDetails getProducerDetails(int id) {
+        Log.i(LOG, "getProducer(id=" + id + ")");
+        ProducerDetails pd = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, allColumns, "IdProducer"
+                + "=" + id, null, null, null, null);
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Producer with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            pd = cursorToProducerDetails(cursor);
         }
         cursor.close();
-        if (producers.isEmpty()) Log.w(LOG, "Producers are empty()");
+        return pd;
+    }
+
+    public Producer[] getAllProducers() {
+        Log.i(LOG, "getAllStrains()");
+        Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, allColumns, null, null,
+                null, null, null);
+
+        Producer[] producers = null;
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            producers = new Producer[cursor.getCount()];
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                Producer producer = cursorToProducer(cursor);
+                producers[i] = producer;
+                cursor.moveToNext();
+                i++;
+            }
+        } else
+            Log.w(LOG, "Producers are empty()");
+        cursor.close();
         return producers;
     }
 
@@ -127,12 +147,11 @@ public class ProducersDataSource {
         while (!cursor.isAfterLast()) {
             ProducerListItem producer = cursorToProducerListItem(cursor);
             producers[i] = producer;
-            ;
             cursor.moveToNext();
             i++;
         }
         cursor.close();
-        if (producers.length == 0) Log.w(LOG, "Producers are empty()");
+        if (producers == null) Log.w(LOG, "Producers are empty()");
 
         return producers;
     }
@@ -168,4 +187,32 @@ public class ProducersDataSource {
         return new ProducerListItem(p);
     }
 
+    private ProducerDetails cursorToProducerDetails(Cursor cursor) {
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+        AddressesDataSource aDs = new AddressesDataSource(mContext);
+        WinesDataSource wDs = new WinesDataSource(mContext);
+        Producer producer = new Producer();
+        producer.mIdProducer = cursor.getInt(0);
+        producer.mEmail = cursor.getString(1);
+        producer.mLink = cursor.getString(2);
+        producer.mName = cursor.getString(3);
+        producer.mPhone = cursor.getString(4);
+        dDs.open();
+        producer.description = dDs.getDescriptionVast(cursor.getInt(5));
+        dDs.close();
+        aDs.open();
+        producer.address = aDs.getAddress(cursor.getInt(6));
+        aDs.close();
+        producer.mIdUser_ = cursor.getInt(7);
+        iDs.open();
+        producer.imageCover = iDs.getImageUrl(cursor.getInt(8));
+        iDs.close();
+        wDs.open();
+        producer.wineBest = wDs.getProducerWineBest(cursor.getInt(9));
+        wDs.close();
+        producer.mLastUpdate = cursor.getString(10);
+
+        return new ProducerDetails(producer);
+    }
 }

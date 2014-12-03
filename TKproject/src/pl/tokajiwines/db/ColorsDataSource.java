@@ -10,9 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import pl.tokajiwines.models.Color;
 import pl.tokajiwines.utils.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ColorsDataSource {
     // LogCat tag
     private static final String LOG = "ColorsDataSource";
@@ -34,6 +31,19 @@ public class ColorsDataSource {
 
     public void close() {
         if (database != null && database.isOpen()) dbHelper.close();
+    }
+
+    public Color getColor(int id) {
+        Color color = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_COLORS, allColumns, "IdColor" + "="
+                + id, null, null, null, null);
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Color with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            color = cursorToColor(cursor);
+        }
+        return color;
     }
 
     public long insertColor(Color color) {
@@ -63,20 +73,26 @@ public class ColorsDataSource {
         Log.i(LOG, "Updated color with id: " + colorOld.mIdColor + " on: " + rows + " row(s)");
     }
 
-    public List<Color> getAllColors() {
-        Log.i(LOG, "getAllColors()");
-        List<Color> colores = new ArrayList<Color>();
+    public Color[] getAllColors() {
+        Log.i(LOG, "getAllStrains()");
         Cursor cursor = database.query(DatabaseHelper.TABLE_COLORS, allColumns, null, null, null,
                 null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Color color = cursorToColor(cursor);
-            colores.add(color);
-            cursor.moveToNext();
-        }
+
+        Color[] colors = null;
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            colors = new Color[cursor.getCount()];
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                Color color = cursorToColor(cursor);
+                colors[i] = color;
+                cursor.moveToNext();
+                i++;
+            }
+        } else
+            Log.w(LOG, "Colors are empty()");
         cursor.close();
-        if (colores.isEmpty()) Log.w(LOG, "Colors are empty()");
-        return colores;
+        return colors;
     }
 
     private Color cursorToColor(Cursor cursor) {

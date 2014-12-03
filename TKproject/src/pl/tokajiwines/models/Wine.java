@@ -39,6 +39,15 @@ public class Wine implements Serializable {
     @SerializedName("IdImageCover_")
     public int mIdImageCover_;
 
+    public Image big;
+    public Image imageCover;
+    public Producer producer;
+    public Grade grade;
+    public WineStrain[] strains;
+    public Description description;
+    public Color color;
+    public Flavour flavour;
+
     public Wine(int IdWine, String Name, int ProdDate, double Price, int AvailablePL, int Volume,
             String LastUpdate, int IdColor_, int IdFlavour_, int IdProducer_, int IdDescription_,
             int IdGrade_, int IdImageCover_) {
@@ -62,4 +71,13 @@ public class Wine implements Serializable {
         // TODO Auto-generated constructor stub
     }
 
+    public String strainsToString() {
+        String strain = "";
+        if (strains != null) {
+            for (int i = 0; i < strains.length; i++) {
+                strain += strains[i].strain.mName;
+            }
+        }
+        return strain;
+    }
 }

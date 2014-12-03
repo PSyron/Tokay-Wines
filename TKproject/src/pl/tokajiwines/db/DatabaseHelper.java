@@ -18,7 +18,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // ------------------------ Database settings ----------------//
     private static final String DATABASE_NAME = "tokaji_release.db";
     private static final int DATABASE_VERSION = 1;
-    private static String DATABASE_PATH = "/data/data/pl.tokajiwines/databases/";
+    private static String DATABASE_PATH;
+
     private static final String LOG = "DatabaseHelper"; // LogCat tag
 
     // ------------------------ Table names ----------------//
@@ -42,6 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_PRODUCER_IMAGES = "tProducerImages";
     public static final String TABLE_RESTAURANTS = "tRestaurants";
     public static final String TABLE_RESTAURANT_IMAGES = "tRestaurantImages";
+    public static final String TABLE_SEARCH = "tSearch";
     public static final String TABLE_STRAINS = "tStrains";
     public static final String TABLE_WINES = "tWines";
     public static final String TABLE_WINE_IMAGES = "tWineImages";
@@ -133,6 +135,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "tRestaurantImages" + "(" + "IdRestaurantImage INTEGER PRIMARY KEY,"
             + "IdRestaurant_ INTEGER," + "IdImage_ INTEGER," + "LastUpdate TEXT" + ")";
 
+    private static final String CREATE_TABLE_SEARCH = "CREATE TABLE " + "tSearch" + "("
+            + "Id INTEGER PRIMARY KEY," + "IdSearch INTEGER," + "Name TEXT,"
+            + "SearchType INTEGER," + "LastUpdate TEXT" + ")";
+
     private static final String CREATE_TABLE_STRAINS = "CREATE TABLE " + "tStrains" + "("
             + "IdStrain INTEGER PRIMARY KEY," + "Name TEXT" + ")";
 
@@ -154,6 +160,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         mContext = context;
+        if (android.os.Build.VERSION.SDK_INT >= 4.2) {
+            DATABASE_PATH = context.getApplicationInfo().dataDir + "/databases/";
+        } else {
+            DATABASE_PATH = "/data/data/pl.tokajiwines/databases/";
+        }
     }
 
     @Override
@@ -180,6 +191,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_PRODUCER_IMAGES);
         db.execSQL(CREATE_TABLE_RESTAURANTS);
         db.execSQL(CREATE_TABLE_RESTAURANT_IMAGES);
+        db.execSQL(CREATE_TABLE_SEARCH);
         db.execSQL(CREATE_TABLE_STRAINS);
         db.execSQL(CREATE_TABLE_WINES);
         db.execSQL(CREATE_TABLE_WINE_IMAGES);
@@ -211,6 +223,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCER_IMAGES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESTAURANTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESTAURANT_IMAGES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SEARCH);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_STRAINS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_WINES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_WINE_IMAGES);

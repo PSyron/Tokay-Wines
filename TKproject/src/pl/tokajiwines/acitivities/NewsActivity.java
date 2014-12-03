@@ -24,6 +24,8 @@ import org.apache.http.message.BasicNameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.db.NewsDataSource;
+import pl.tokajiwines.db.NewsImagesDataSource;
 import pl.tokajiwines.fragments.NewsFragment;
 import pl.tokajiwines.jsonresponses.NewsDetails;
 import pl.tokajiwines.jsonresponses.NewsDetailsResponse;
@@ -51,6 +53,7 @@ public class NewsActivity extends BaseActivity {
     boolean mIsViewFilled;
     private NewsDetails mNews;
     LoadNewsDetailsTask mTask;
+    LoadNewsDetailsOnlineTask mOnlineTask;
     ProgressDialog mProgDial;
     Context mContext;
     JSONParser mParser;
@@ -153,8 +156,8 @@ public class NewsActivity extends BaseActivity {
         if (mNews == null) {
 
             if (App.isOnline(mContext)) {
-                mTask = new LoadNewsDetailsTask();
-                mTask.execute();
+                mOnlineTask = new LoadNewsDetailsOnlineTask();
+                mOnlineTask.execute();
             }
 
             // otherwise, show message
@@ -162,8 +165,11 @@ public class NewsActivity extends BaseActivity {
             else {
                 Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
                         Toast.LENGTH_LONG).show();
+                mTask = new LoadNewsDetailsTask();
+                mTask.execute();
             }
         } else {
+
             if (!mIsViewFilled) {
                 fillView();
             }
@@ -188,8 +194,53 @@ public class NewsActivity extends BaseActivity {
     }
 
     // async task class that loads news data from remote database
-
     class LoadNewsDetailsTask extends AsyncTask<String, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDial == null) {
+                mProgDial = new ProgressDialog(mContext);
+            }
+            mProgDial.setMessage(getResources().getString(R.string.loading_news));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
+
+        }
+
+        @Override
+        protected String doInBackground(String... args) {
+            NewsImagesDataSource niDs = new NewsImagesDataSource(mContext);
+            NewsDataSource nDs = new NewsDataSource(mContext);
+            nDs.open();
+            niDs.open();
+            mNews = nDs.getNewsDetails(mIdNews);
+            mNews.mImage = (niDs.getNewsImagesPager(mIdNews))[0].ImageUrl;
+            nDs.close();
+            niDs.close();
+
+            return null;
+        }
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mNews != null) {
+                fillView();
+            }
+
+            mTask = null;
+
+        }
+    }
+
+    class LoadNewsDetailsOnlineTask extends AsyncTask<String, String, String> {
 
         boolean failure = false;
 
@@ -241,7 +292,7 @@ public class NewsActivity extends BaseActivity {
                 fillView();
             }
 
-            mTask = null;
+            mOnlineTask = null;
 
         }
     }

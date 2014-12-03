@@ -90,6 +90,21 @@ public class DescriptionsDataSource {
         return description;
     }
 
+    public Description getDescriptionVast(int id) {
+        Log.i(LOG, "getDescriptionVast(id=" + id + ")");
+        Description description = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_DESCRIPTIONS, new String[] {
+                "IdLang_", "Vast"
+        }, "IdDescription" + "=" + id, null, null, null, null);
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Description with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            description = cursorToDescriptionVast(cursor);
+        }
+        return description;
+    }
+
     public List<Description> getAllDescriptions() {
         Log.i(LOG, "getAllDescriptions()");
         List<Description> descriptions = new ArrayList<Description>();
@@ -122,6 +137,13 @@ public class DescriptionsDataSource {
         Description description = new Description();
         description.mIdLang_ = cursor.getInt(0);
         description.mShort = cursor.getString(1);
+        return description;
+    }
+
+    private Description cursorToDescriptionVast(Cursor cursor) {
+        Description description = new Description();
+        description.mIdLang_ = cursor.getInt(0);
+        description.mVast = cursor.getString(1);
         return description;
     }
 

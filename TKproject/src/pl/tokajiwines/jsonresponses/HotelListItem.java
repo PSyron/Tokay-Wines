@@ -3,6 +3,8 @@ package pl.tokajiwines.jsonresponses;
 
 import com.google.gson.annotations.SerializedName;
 
+import pl.tokajiwines.models.Hotel;
+
 import java.io.Serializable;
 
 public class HotelListItem implements Serializable {
@@ -40,10 +42,21 @@ public class HotelListItem implements Serializable {
         mPostCode = postCode;
 
     }
-    
-    public HotelListItem(int id, String name)
-    {
+
+    public HotelListItem(int id, String name) {
         mIdHotel = id;
         mName = name;
+    }
+
+    public HotelListItem(Hotel h) {
+        mIdHotel = h.mIdHotel;
+        mName = h.mName;
+        mPhone = h.mPhone;
+        mImageUrl = h.imageCover.mImage;
+        mStreetName = h.address.mStreetName;
+        mStreetNumber = h.address.mStreetNumber + "";
+        mHouseNumber = h.address.mHouseNumber + "";
+        mCity = h.address.mCity;
+        mPostCode = h.address.mPostcode;
     }
 }

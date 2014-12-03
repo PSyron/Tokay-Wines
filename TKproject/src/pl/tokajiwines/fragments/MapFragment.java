@@ -5,10 +5,13 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +38,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
+import com.koushikdutta.ion.Ion;
 
 import org.json.JSONObject;
 
@@ -47,6 +53,7 @@ import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -80,17 +87,30 @@ public class MapFragment extends BaseFragment {
     public static final String TAG_ID_PLACE = "IdPlace";
     GPSTracker mGPStrack;
     Place[] wStroneTokaju = {
-            new Place(16, "Pendits", "", "21.1853", "48.2742", "Producer",
+            new Place(16, "Pendits", "Béke 111 Abaújszántó", "21.1853", "48.2742", "Producer",
                     "http://tokajiwines.me/photos/pendits_thumb.jpg"),
-            new Place(6, "Első Mádi Borház", "", "21.27930729", "48.18370715", "Restaurant",
-                    "http://tokajiwines.me/photos/5elso_madi_borhaz_thumb.jpg"),
-            new Place(3, "Disznókő", "", "21.303", "48.1654", "Producer",
+            new Place(6, "Első Mádi Borház", "Hunyadi 2 Mád", "21.27930729", "48.18370715",
+                    "Restaurant", "http://tokajiwines.me/photos/5elso_madi_borhaz_thumb.jpg"),
+            new Place(3, "Disznókő", "Hrsz.0202  Mezőzombo", "21.303", "48.1654", "Producer",
                     "http://tokajiwines.me/photos/disznoko_thumb.jpg"),
-            new Place(6, "Grof Degenfeld ****", "", "21.334291", "48.143589", "Hotel",
-                    "http://tokajiwines.me/photos/6grof_degenfeld_kastely_thumb.jpg"),
-            new Place(17, "Tokaj Kikelet Pince", "", "21.34924", "48.127754", "Producer",
+            new Place(6, "Grof Degenfeld ****", "Terézia kert 9 Tarcal", "21.334291", "48.143589",
+                    "Hotel", "http://tokajiwines.me/photos/6grof_degenfeld_kastely_thumb.jpg"),
+            new Place(17, "Tokaj Kikelet Pince", "Könyves Kálmán  62 Tarcal", "21.34924",
+                    "48.127754", "Producer",
                     "http://tokajiwines.me/photos/takaji_kikelet_price_thumb.jpg")
     };
+    Place[] choosenTrip;
+
+    View mUiPlaceBox;
+    ImageView mUiPlaceImage;
+    TextView mUiPlaceTitle;
+    TextView mUiPlaceAddress;
+
+    LinearLayout mUiPlaceDistance;
+    LinearLayout mUiPlaceDuration;
+    LinearLayout mUiPlacePhone;
+    ImageView mUiNavigateTo;
+    ImageView mUiInfo;
 
     Place[] wTokaju = {
             new Place(16, "Pendits", "", "21.1853", "48.2742", "Producer",
@@ -139,8 +159,52 @@ public class MapFragment extends BaseFragment {
         mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
         mUiTours = (TextView) v.findViewById(R.id.map_tours);
         //To laguje wlaczanie
+        mUiPlaceBox = v.findViewById(R.id.fragment_map_box);
+        mUiPlaceImage = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_image);
+        mUiPlaceTitle = (TextView) mUiPlaceBox.findViewById(R.id.item_map_title);
+        mUiPlaceAddress = (TextView) mUiPlaceBox.findViewById(R.id.item_map_address);
+
+        mUiPlaceDistance = (LinearLayout) mUiPlaceBox.findViewById(R.id.item_map_linear_distance);
+        mUiPlaceDuration = (LinearLayout) mUiPlaceBox.findViewById(R.id.item_map_linear_duration);
+        mUiPlacePhone = (LinearLayout) mUiPlaceBox.findViewById(R.id.item_map_linear_phone);
+        mUiPlaceDistance.setVisibility(View.GONE);
+        mUiPlaceDuration.setVisibility(View.GONE);
+        mUiPlacePhone.setVisibility(View.GONE);
+        mUiNavigateTo = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_navigate);
+        mUiNavigateTo.setVisibility(View.GONE);
+        mUiInfo = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_info);
+        mUiInfo.setVisibility(View.GONE);
 
         return v;
+    }
+
+    public void fillBox(final Place clicked) {
+
+        mUiPlaceBox.setVisibility(View.VISIBLE);
+        mUiPlaceTitle.setText(clicked.mPlaceType + ": " + clicked.mName);
+
+        mUiPlaceAddress.setText(clicked.mAddress);
+        if (!clicked.mImageUrl.equals("")) {
+            Ion.with(mUiPlaceImage).placeholder(R.drawable.placeholder_image)
+                    .error(R.drawable.error_image).load(clicked.mImageUrl);
+            final File imgFile = new File(getActivity().getFilesDir().getAbsolutePath()
+                    + "/"
+                    + clicked.mImageUrl.substring(clicked.mImageUrl.lastIndexOf('/') + 1,
+                            clicked.mImageUrl.length()));
+            if (imgFile.exists()) {
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+                mUiPlaceImage.setImageBitmap(myBitmap);
+            } else {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        //  App.downloadImagesToSdCard(mHotels[position].mImageUrl, mActivity, holder.img);
+                        App.downloadAndRun(clicked.mImageUrl, getActivity(), mUiPlaceImage);
+                    }
+                }, 50);
+            }
+        }
+
     }
 
     @Override
@@ -175,17 +239,18 @@ public class MapFragment extends BaseFragment {
 
             @Override
             public boolean onMarkerClick(final Marker arg0) {
-                if (arg0.getPosition() != myPosition) {
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(
-                                    getResources().getString(R.string.route_to) + " "
-                                            + arg0.getTitle())
-                            .setMessage(getResources().getString(R.string.check_route))
-                            .setPositiveButton(android.R.string.yes,
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // Getting URL to the Google Directions API
-                                            if (!trasaIsPicked) {
+                if (!trasaIsPicked) {
+                    if (arg0.getPosition() != myPosition) {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(
+                                        getResources().getString(R.string.route_to) + " "
+                                                + arg0.getTitle())
+                                .setMessage(getResources().getString(R.string.check_route))
+                                .setPositiveButton(android.R.string.yes,
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // Getting URL to the Google Directions API
+
                                                 if (mRoute != null) {
 
                                                     mRoute.remove();
@@ -199,18 +264,30 @@ public class MapFragment extends BaseFragment {
                                                 // Start downloading json data from Google Directions API
                                                 downloadTask.execute(url);
                                             }
-                                        }
-                                    })
-                            .setNegativeButton(android.R.string.no,
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // do nothing
-                                        }
-                                    }).setIcon(android.R.drawable.ic_dialog_alert).show();
-                }
-                return false;
-            }
 
+                                        })
+                                .setNegativeButton(android.R.string.no,
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // do nothing
+                                            }
+                                        }).setIcon(android.R.drawable.ic_dialog_alert).show();
+                    }
+                    return false;
+                } else {
+                    for (Place pl : choosenTrip) {
+                        if (arg0.getPosition().latitude == Double.parseDouble(pl.mLat)
+                                && arg0.getPosition().longitude == Double.parseDouble(pl.mLng)) {
+                            fillBox(pl);
+
+                            return false;
+                        }
+                    }
+
+                    return false;
+                }
+
+            }
         });
         CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(12)
                 .build();
@@ -277,6 +354,7 @@ public class MapFragment extends BaseFragment {
                             switch (which) {
                                 case 0:
                                     addMarkers(wStroneTokaju);
+                                    choosenTrip = wStroneTokaju;
                                     CameraPosition cameraPosition = new CameraPosition.Builder()
                                             .target(wStroneTokaju[1].getLatLng()).zoom(10).build();
                                     googleMap.animateCamera(CameraUpdateFactory
@@ -325,8 +403,13 @@ public class MapFragment extends BaseFragment {
                 } else {
                     trasaIsPicked = false;
                     googleMap.clear();
+                    mUiPlaceBox.setVisibility(View.GONE);
                     mUiTours.setText(getResources().getString(R.string.preffered_tours));
-                    ;
+                    mNearbyPlaces = null;
+                    if (App.isOnline(mCtx)) {
+
+                        new LoadNearPlaces().execute(myPosition);
+                    }
                     CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition)
                             .zoom(10).build();
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));

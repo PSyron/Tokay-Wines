@@ -3,6 +3,7 @@ package pl.tokajiwines.acitivities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.WinesGridViewAdapter;
+import pl.tokajiwines.db.WinesDataSource;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.WineListItem;
@@ -43,8 +45,9 @@ public class WinesGridViewActivity extends BaseActivity {
     private JSONParser mParser;
     private ProgressDialog mProgDial;
     LoadWinesTask mLoadWinesTask;
+    LoadWinesOnlineTask mLoadWinesOnlineTask;
     boolean mIsViewFilled;
-
+    private Context mContext;
     private String sUrl;
     private String sUsername;
     private String sPassword;
@@ -63,7 +66,7 @@ public class WinesGridViewActivity extends BaseActivity {
         getActionBar().setTitle(
                 mProducer.mName + " - " + getResources().getString(R.string.all_wines_available));
         mAct = this;
-
+        mContext = this;
         sUrl = getResources().getString(R.string.UrlWinesGridViewList);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
@@ -99,15 +102,18 @@ public class WinesGridViewActivity extends BaseActivity {
         if (mWinesList.length == 0) {
 
             if (App.isOnline(mAct)) {
-                mLoadWinesTask = new LoadWinesTask();
-                mLoadWinesTask.execute();
+                mLoadWinesOnlineTask = new LoadWinesOnlineTask();
+                mLoadWinesOnlineTask.execute();
             }
 
             // otherwise, show message
 
             else {
-                Toast.makeText(mAct, getResources().getString(R.string.cannot_connect),
-                        Toast.LENGTH_LONG).show();
+                /*Toast.makeText(mAct, getResources().getString(R.string.cannot_connect),
+                        Toast.LENGTH_LONG).show();*/
+                Toast.makeText(mAct, "Baza offline", Toast.LENGTH_LONG).show();
+                mLoadWinesTask = new LoadWinesTask();
+                mLoadWinesTask.execute();
             }
         } else {
             if (!mIsViewFilled) {
@@ -166,6 +172,56 @@ public class WinesGridViewActivity extends BaseActivity {
 
         @Override
         protected String doInBackground(String... args) {
+            WinesDataSource wDs = new WinesDataSource(WinesGridViewActivity.this);
+            wDs.open();
+            WineListItem[] response = wDs.getProducerWines(mProducer.mIdProducer);
+            if (response != null) {
+                mWinesList = response;
+            }
+            wDs.close();
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of news
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mWinesList != null) {
+                fillView();
+            }
+
+            mLoadWinesTask = null;
+
+        }
+
+    }
+
+    class LoadWinesOnlineTask extends AsyncTask<String, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDial == null) {
+                mProgDial = new ProgressDialog(mAct);
+            }
+            mProgDial.setMessage(getResources().getString(R.string.loading_wines));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(false);
+            mProgDial.show();
+
+        }
+
+        // retrieving news data
+
+        @Override
+        protected String doInBackground(String... args) {
 
             mParser = new JSONParser();
             List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -200,7 +256,7 @@ public class WinesGridViewActivity extends BaseActivity {
                 fillView();
             }
 
-            mLoadWinesTask = null;
+            mLoadWinesOnlineTask = null;
 
         }
 

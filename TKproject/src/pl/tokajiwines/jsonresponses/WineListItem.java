@@ -1,10 +1,13 @@
-package pl.tokajiwines.jsonresponses;
 
-import java.io.Serializable;
+package pl.tokajiwines.jsonresponses;
 
 import com.google.gson.annotations.SerializedName;
 
-public class WineListItem implements Serializable{
+import pl.tokajiwines.models.Wine;
+
+import java.io.Serializable;
+
+public class WineListItem implements Serializable {
 
     /**
      * 
@@ -30,13 +33,23 @@ public class WineListItem implements Serializable{
     public String mPrice;
     @SerializedName("strains")
     public String mStrains;
-    
-    public WineListItem(int id, String name)
-    {
-        mIdWine = id;
-        mName = name;       
-    }
-    
 
+    public WineListItem(int id, String name) {
+        mIdWine = id;
+        mName = name;
+    }
+
+    public WineListItem(Wine w) {
+        mIdWine = w.mIdWine;
+        mIdProducer = w.mIdProducer_;
+        mName = w.mName;
+        if (w.grade != null) mGrade = w.grade.mName;
+        mYear = w.mProdDate + "";
+        mProducerName = w.producer.mName;
+        if (w.flavour != null) mFlavourName = w.flavour.mNameEng;
+        mImageUrl = w.imageCover.mImage;
+        mPrice = w.mPrice + "";
+        if (w.strains != null) mStrains = w.strainsToString();
+    }
 
 }

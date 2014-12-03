@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ProducerImagesDataSource {
     // LogCat tag
-    private static final String LOG = "ImagesDataSource";
+    private static final String LOG = "ProducerImagesDataSource";
     // Database fields
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
@@ -96,22 +96,26 @@ public class ProducerImagesDataSource {
         Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCER_IMAGES, new String[] {
             "IdImage_"
         }, "IdProducer_" + "=" + idProducer, null, null, null, null);
-        cursor.moveToFirst();
-        ImagePagerItem[] pImages = new ImagePagerItem[cursor.getCount()];
-        ImagesDataSource iDs = new ImagesDataSource(mContext);
-        iDs.open();
-        int i = 0;
-        while (!cursor.isAfterLast()) {
-            pImages[i] = new ImagePagerItem(iDs.getImageUrl(cursorToImageId(cursor)));
-            cursor.moveToNext();
+        ImagePagerItem[] pImages = null;
+
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "Images for producer with id= " + idProducer + " don't exist");
+        else {
+            cursor.moveToFirst();
+            pImages = new ImagePagerItem[cursor.getCount()];
+            int i = 0;
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            iDs.open();
+            while (!cursor.isAfterLast()) {
+                pImages[i] = new ImagePagerItem(iDs.getImageUrl(cursor.getInt(0)));
+                cursor.moveToNext();
+                i++;
+            }
+            iDs.close();
         }
+
         cursor.close();
-        iDs.close();
         if (pImages.length == 0) Log.w(LOG, "Producer images are empty()");
         return pImages;
-    }
-
-    private int cursorToImageId(Cursor cursor) {
-        return cursor.getInt(0);
     }
 }

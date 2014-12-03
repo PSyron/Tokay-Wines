@@ -19,6 +19,7 @@ import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.HotelActivity;
 import pl.tokajiwines.adapters.HotelsAdapter;
+import pl.tokajiwines.db.HotelsDataSource;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.jsonresponses.HotelsResponse;
 import pl.tokajiwines.utils.JSONParser;
@@ -33,6 +34,7 @@ public class TabHotelsFragment extends BaseFragment {
     HotelsAdapter mAdapter;
     boolean mIsViewFilled;
     LoadHotelTask mLoadHotelTask;
+    LoadHotelOnlineTask mLoadHotelOnlineTask;
     Context mContext;
     JSONParser mParser;
     ProgressDialog mProgDial;
@@ -91,8 +93,8 @@ public class TabHotelsFragment extends BaseFragment {
         super.onResume();
         if (mHotelList.length == 0) {
             if (App.isOnline(mContext)) {
-                mLoadHotelTask = new LoadHotelTask();
-                mLoadHotelTask.execute();
+                mLoadHotelOnlineTask = new LoadHotelOnlineTask();
+                mLoadHotelOnlineTask.execute();
             }
 
             // otherwise, show message
@@ -100,6 +102,8 @@ public class TabHotelsFragment extends BaseFragment {
             else {
                 Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
                         Toast.LENGTH_LONG).show();
+                mLoadHotelTask = new LoadHotelTask();
+                mLoadHotelTask.execute();
             }
         }
 
@@ -152,6 +156,53 @@ public class TabHotelsFragment extends BaseFragment {
         @Override
         protected String doInBackground(String... args) {
 
+            HotelsDataSource hDs = new HotelsDataSource(mContext);
+            hDs.open();
+            mHotelList = hDs.getHotelList();
+            hDs.close();
+
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of Hotel
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mHotelList != null) {
+                fillView();
+            }
+            mLoadHotelTask = null;
+
+        }
+    }
+
+    class LoadHotelOnlineTask extends AsyncTask<String, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDial == null) {
+                mProgDial = new ProgressDialog(mContext);
+            }
+            mProgDial.setMessage(getResources().getString(R.string.loading_hotels));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
+
+        }
+
+        // retrieving Hotel data
+
+        @Override
+        protected String doInBackground(String... args) {
+
             mParser = new JSONParser();
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
@@ -179,7 +230,7 @@ public class TabHotelsFragment extends BaseFragment {
             if (mHotelList != null) {
                 fillView();
             }
-            mLoadHotelTask = null;
+            mLoadHotelOnlineTask = null;
 
         }
     }

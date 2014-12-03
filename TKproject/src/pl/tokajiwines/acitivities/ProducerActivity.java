@@ -25,6 +25,8 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.ImagePagerAdapter;
+import pl.tokajiwines.db.ProducerImagesDataSource;
+import pl.tokajiwines.db.ProducersDataSource;
 import pl.tokajiwines.jsonresponses.ImagePagerItem;
 import pl.tokajiwines.jsonresponses.ImagesResponse;
 import pl.tokajiwines.jsonresponses.ProducerDetails;
@@ -71,7 +73,9 @@ public class ProducerActivity extends BaseActivity {
     ImagePagerAdapter mAdapter;
 
     LoadProducerTask mLoadProducerTask;
+    LoadProducerOnlineTask mLoadProducerOnlineTask;
     LoadProducerImagesTask mLoadProducerImagesTask;
+    LoadProducerImagesOnlineTask mLoadProducerImagesOnlineTask;
 
     public static final String TAG_ID_PRODUCER = "IdProducer";
     public static final String PRODUCER_TAG = "producer";
@@ -186,32 +190,23 @@ public class ProducerActivity extends BaseActivity {
         mUiAddress.setText(mProducerFromBase.mStreetName + " " + mProducerFromBase.mStreetNumber
                 + " " + mProducerFromBase.mHouseNumber + " " + mProducerFromBase.mCity + " "
                 + mProducerFromBase.mPostCode);
-        if (mProducerFromBase.mLink != null)
-        {
+        if (mProducerFromBase.mLink != null) {
             mUiUrl.setText(mProducerFromBase.mLink);
-        }
-        else
-        {
+        } else {
             mUiUrl.setVisibility(View.GONE);
         }
-        if (mProducerFromBase.mVast != null)
-        {
+        if (mProducerFromBase.mVast != null) {
             mUiDescription.setText(mProducerFromBase.mVast);
-        }
-        else
-        {
+        } else {
             mUiDescription.setVisibility(View.GONE);
         }
-        
-        if (mProducerFromBase.mPhone != null)
-        {
+
+        if (mProducerFromBase.mPhone != null) {
             mUiPhoneNumber.setText(mProducerFromBase.mPhone);
+        } else {
+            mUiPhoneNumber.setVisibility(View.GONE);
         }
-        else
-        {
-            mUiPhoneNumber.setVisibility(View.GONE); 
-        }
-        
+
         mUiWineName.setText(mProducerFromBase.mWineName);
 
         final File imgFile = new File(ProducerActivity.this.getFilesDir().getAbsolutePath()
@@ -254,6 +249,35 @@ public class ProducerActivity extends BaseActivity {
         if (App.isOnline(ProducerActivity.this)) {
 
             if (mProducerFromBase == null) {
+                mLoadProducerOnlineTask = new LoadProducerOnlineTask();
+                mLoadProducerOnlineTask.execute();
+            }
+
+            else {
+                if (!mIsViewFilled) {
+                    fillView();
+                }
+            }
+
+            if (mImagesUrl == null) {
+                mLoadProducerImagesOnlineTask = new LoadProducerImagesOnlineTask();
+                mLoadProducerImagesOnlineTask.execute();
+            }
+
+            else {
+                if (!mIsPagerFilled) {
+                    fillPager();
+                }
+            }
+        }
+
+        // otherwise, show message
+
+        else {
+            Toast.makeText(ProducerActivity.this,
+                    getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG).show();
+            Toast.makeText(ProducerActivity.this, "Offline database", Toast.LENGTH_LONG).show();
+            if (mProducerFromBase == null) {
                 mLoadProducerTask = new LoadProducerTask();
                 mLoadProducerTask.execute();
             }
@@ -274,13 +298,7 @@ public class ProducerActivity extends BaseActivity {
                     fillPager();
                 }
             }
-        }
 
-        // otherwise, show message
-
-        else {
-            Toast.makeText(ProducerActivity.this,
-                    getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG).show();
         }
 
     }
@@ -296,10 +314,21 @@ public class ProducerActivity extends BaseActivity {
 
             mLoadProducerTask = null;
         }
+        if (mLoadProducerOnlineTask != null) {
+            mLoadProducerOnlineTask.cancel(true);
+            if (mProgDial != null) {
+                mProgDial.dismiss();
+            }
 
+            mLoadProducerOnlineTask = null;
+        }
         if (mLoadProducerImagesTask != null) {
             mLoadProducerImagesTask.cancel(true);
             mLoadProducerImagesTask = null;
+        }
+        if (mLoadProducerImagesOnlineTask != null) {
+            mLoadProducerImagesOnlineTask.cancel(true);
+            mLoadProducerImagesOnlineTask = null;
         }
         super.onPause();
     }
@@ -314,6 +343,54 @@ public class ProducerActivity extends BaseActivity {
     }
 
     class LoadProducerTask extends AsyncTask<Void, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDial == null) {
+                mProgDial = new ProgressDialog(ProducerActivity.this);
+            }
+            mProgDial.setMessage(getResources().getString(R.string.loading_producer));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
+
+        }
+
+        // retrieving producers data
+
+        @Override
+        protected String doInBackground(Void... args) {
+
+            ProducersDataSource pDs = new ProducersDataSource(ProducerActivity.this);
+            pDs.open();
+            mProducerFromBase = pDs.getProducerDetails(mProducer.mIdProducer);
+            pDs.close();
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of producers
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mProducerFromBase != null) {
+                fillView();
+                /* Ion.with(mUiWineImage).placeholder(R.drawable.no_image)
+                         .error(R.drawable.error_image).load(mProducerFromBase.mWineImageUrl);*/
+            }
+            mLoadProducerTask = null;
+        }
+
+    }
+
+    class LoadProducerOnlineTask extends AsyncTask<Void, String, String> {
 
         boolean failure = false;
 
@@ -370,12 +447,49 @@ public class ProducerActivity extends BaseActivity {
                 /* Ion.with(mUiWineImage).placeholder(R.drawable.no_image)
                          .error(R.drawable.error_image).load(mProducerFromBase.mWineImageUrl);*/
             }
-            mLoadProducerTask = null;
+            mLoadProducerOnlineTask = null;
         }
 
     }
 
     class LoadProducerImagesTask extends AsyncTask<Void, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(Void... args) {
+            ProducerImagesDataSource piDs = new ProducerImagesDataSource(ProducerActivity.this);
+            piDs.open();
+            ImagePagerItem[] response = piDs.getProducerImagesPager(mProducer.mIdProducer);
+            piDs.close();
+            if (response != null) mImagesUrl = response;
+            return null;
+
+        }
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            //     mProgDial.dismiss();
+            if (mImagesUrl != null && mImagesUrl.length > 0) {
+                fillPager();
+            }
+
+            mLoadProducerImagesTask = null;
+
+        }
+
+    }
+
+    class LoadProducerImagesOnlineTask extends AsyncTask<Void, String, String> {
 
         boolean failure = false;
 
@@ -428,7 +542,7 @@ public class ProducerActivity extends BaseActivity {
                 fillPager();
             }
 
-            mLoadProducerImagesTask = null;
+            mLoadProducerImagesOnlineTask = null;
 
         }
 

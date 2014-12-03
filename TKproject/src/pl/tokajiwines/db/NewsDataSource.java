@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import pl.tokajiwines.jsonresponses.NewsDetails;
+import pl.tokajiwines.jsonresponses.NewsListItem;
 import pl.tokajiwines.models.News;
 import pl.tokajiwines.utils.Log;
 
@@ -19,6 +21,7 @@ public class NewsDataSource {
     // Database fields
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
+    private Context mContext;
 
     private String[] allColumns = {
             "IdNews", "HeaderPl", "HeaderEng", "EntryDate", "StartDate", "EndDate",
@@ -27,6 +30,7 @@ public class NewsDataSource {
 
     public NewsDataSource(Context context) {
         dbHelper = new DatabaseHelper(context);
+        mContext = context;
     }
 
     public void open() throws SQLException {
@@ -36,6 +40,81 @@ public class NewsDataSource {
 
     public void close() {
         if (database != null && database.isOpen()) dbHelper.close();
+    }
+
+    public NewsListItem[] getNewsList() {
+        Log.i(LOG, "getProducerList()");
+        Cursor cursor = database.query(DatabaseHelper.TABLE_NEWS, new String[] {
+                "IdNews", "HeaderEng", "HeaderPl", "IdImageCover_", "IdDescription_"
+        }, null, null, null, null, null);
+        cursor.moveToFirst();
+        NewsListItem[] newses = new NewsListItem[cursor.getCount()];
+        int i = 0;
+        while (!cursor.isAfterLast()) {
+            NewsListItem news = cursorToNewsListItem(cursor);
+            newses[i] = news;
+            cursor.moveToNext();
+            i++;
+        }
+        cursor.close();
+        if (newses == null) Log.w(LOG, "Newses are empty()");
+
+        return newses;
+    }
+
+    private NewsListItem cursorToNewsListItem(Cursor cursor) {
+        News n = new News();
+        n.mIdNews = cursor.getInt(0);
+        n.mHeaderEng = cursor.getString(1);
+        n.mHeaderPl = cursor.getString(2);
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        iDs.open();
+        n.mIdImageCover_ = cursor.getInt(3);
+        n.imageCover = iDs.getImageUrl(n.mIdImageCover_);
+        iDs.close();
+        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+        dDs.open();
+        n.mIdDescription_ = cursor.getInt(4);
+        n.description = dDs.getDescriptionShort(n.mIdDescription_);
+        dDs.close();
+        return new NewsListItem(n);
+    }
+
+    public NewsDetails getNewsDetails(int id) {
+        Log.i(LOG, "getProducer(id=" + id + ")");
+        NewsDetails nd = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_NEWS, new String[] {
+                "IdNews", "HeaderEng", "HeaderPl", "IdImageCover_", "IdDescription_", "StartDate",
+                "EndDate", "EntryDate"
+        }, "IdNews" + "=" + id, null, null, null, null);
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "News with id= " + id + " doesn't exists");
+        else {
+            cursor.moveToFirst();
+            nd = cursorToNewsDetails(cursor);
+        }
+        return nd;
+    }
+
+    private NewsDetails cursorToNewsDetails(Cursor cursor) {
+        News n = new News();
+        n.mIdNews = cursor.getInt(0);
+        n.mHeaderEng = cursor.getString(1);
+        n.mHeaderPl = cursor.getString(2);
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        iDs.open();
+        n.mIdImageCover_ = cursor.getInt(3);
+        n.imageCover = iDs.getImageUrl(n.mIdImageCover_);
+        iDs.close();
+        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+        dDs.open();
+        n.mIdDescription_ = cursor.getInt(4);
+        n.description = dDs.getDescriptionVast(n.mIdDescription_);
+        dDs.close();
+        n.mStartDate = cursor.getString(5);
+        n.mEndDate = cursor.getString(6);
+        n.mEntryDate = cursor.getString(7);
+        return new NewsDetails(n);
     }
 
     public long insertNews(News news) {

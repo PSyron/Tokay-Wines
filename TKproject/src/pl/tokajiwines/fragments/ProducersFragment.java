@@ -20,6 +20,7 @@ import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.ProducerActivity;
 import pl.tokajiwines.adapters.ProducersAdapter;
+import pl.tokajiwines.db.ProducersDataSource;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.ProducersResponse;
 import pl.tokajiwines.utils.JSONParser;
@@ -36,6 +37,7 @@ public class ProducersFragment extends BaseFragment {
     JSONParser mParser;
     ProgressDialog mProgDial;
     LoadProducersTask mLoadProducersTask;
+    LoadProducersOnlineTask mLoadProducersOnlineTask;
     Context mContext;
     private String sUrl;
     private String sUsername;
@@ -95,33 +97,20 @@ public class ProducersFragment extends BaseFragment {
         // TODO Auto-generated method stub
         super.onResume();
 
-        // if there is an access to the Internet, try to load data from remote database
-
         if (mProducersList.length == 0) {
-
             if (App.isOnline(mContext)) {
-                mLoadProducersTask = new LoadProducersTask();
-                mLoadProducersTask.execute();
-                /*DatabaseHelper dbh = new DatabaseHelper(mContext);
-
-                try {
-                    dbh.createDataBase();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                ProducersDataSource pDs = new ProducersDataSource(mContext);
-                pDs.open();
-                ProducersAdapter mAdapter = new ProducersAdapter(getActivity(),
-                        pDs.getProducerList());
-                mUiList.setAdapter(mAdapter);*/
+                mLoadProducersOnlineTask = new LoadProducersOnlineTask();
+                mLoadProducersOnlineTask.execute();
             }
-
             // otherwise, show message
 
             else {
-                Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
-                        Toast.LENGTH_LONG).show();
+                /*Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
+                    Toast.LENGTH_LONG).show();
+                */
+                Toast.makeText(mContext, "Offline database", Toast.LENGTH_LONG).show();
+                mLoadProducersTask = new LoadProducersTask();
+                mLoadProducersTask.execute();
             }
         }
 
@@ -174,6 +163,53 @@ public class ProducersFragment extends BaseFragment {
         @Override
         protected String doInBackground(String... args) {
 
+            ProducersDataSource pDs = new ProducersDataSource(mContext);
+            pDs.open();
+            mProducersList = pDs.getProducerList();
+            pDs.close();
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of producers
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mProducersList != null) {
+                fillView();
+            }
+
+            mLoadProducersTask = null;
+
+        }
+
+    }
+
+    class LoadProducersOnlineTask extends AsyncTask<String, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDial == null) {
+                mProgDial = new ProgressDialog(mContext);
+            }
+            mProgDial.setMessage(getResources().getString(R.string.loading_producers));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
+
+        }
+
+        // retrieving producers data
+
+        @Override
+        protected String doInBackground(String... args) {
             mParser = new JSONParser();
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
@@ -187,7 +223,6 @@ public class ProducersFragment extends BaseFragment {
                     mProducersList = response.producers;
                 }
             }
-
             return null;
 
         }

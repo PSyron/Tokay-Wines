@@ -21,6 +21,7 @@ import org.apache.http.NameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.db.DatabaseHelper;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.DownloadImagesRespons;
 import pl.tokajiwines.jsonresponses.WineListItem;
@@ -56,6 +57,7 @@ public class StartWineImageActivity extends BaseActivity {
     Image[] mImagesList;
     LoadImages mDownloadImagesTask;
     LoadWineImageTask mLoadWine;
+    LoadDatabase mLoadDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +98,8 @@ public class StartWineImageActivity extends BaseActivity {
     public void onResume() {
 
         super.onResume();
-
+        mLoadDatabase = new LoadDatabase();
+        mLoadDatabase.execute();
         if (App.isOnline(this)) {
 
             if (mWinesList == null) {
@@ -368,6 +371,35 @@ public class StartWineImageActivity extends BaseActivity {
 
             mLoadWine = null;
 
+        }
+
+    }
+
+    class LoadDatabase extends AsyncTask<Void, Void, Void> {
+
+        boolean failure = false;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            DatabaseHelper dbh = new DatabaseHelper(StartWineImageActivity.this);
+            Log.i("StartWineImage", " database loading");
+            try {
+                dbh.createDataBase();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        protected void onPostExecute() {
+            super.onPostExecute(null);
+            Log.i("StartWineImage", "onPostExecute database loaded");
+            mLoadDatabase = null;
         }
 
     }
