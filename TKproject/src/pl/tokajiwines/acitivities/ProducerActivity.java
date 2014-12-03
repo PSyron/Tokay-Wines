@@ -91,7 +91,9 @@ public class ProducerActivity extends BaseActivity {
         sUrlImage = getResources().getString(R.string.UrlProducerImages);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+
             mProducer = (ProducerListItem) extras.getSerializable(PRODUCER_TAG);
+
         }
         Log.e(ProducerActivity.class.getName(), mProducer + " ");
         initView();

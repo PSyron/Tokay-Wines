@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -44,7 +45,13 @@ import org.json.JSONObject;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.acitivities.HotelActivity;
+import pl.tokajiwines.acitivities.ProducerActivity;
+import pl.tokajiwines.acitivities.RestaurantActivity;
+import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.jsonresponses.NearPlacesResponse;
+import pl.tokajiwines.jsonresponses.ProducerListItem;
+import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.models.Place;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.DirectionsJSONParser;
@@ -78,6 +85,7 @@ public class MapFragment extends BaseFragment {
     JSONParser mParser;
     LatLng myPosition; //TODO temp
     boolean trasaIsPicked = false;
+    Place mSelectedPlace;
 
     private Place[] mNearbyPlaces;
 
@@ -179,7 +187,7 @@ public class MapFragment extends BaseFragment {
         mUiNavigateTo = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_navigate);
         mUiNavigateTo.setVisibility(View.GONE);
         mUiInfo = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_info);
-        mUiInfo.setVisibility(View.GONE);
+        //mUiInfo.setVisibility(View.GONE);
 
         return v;
     }
@@ -188,7 +196,7 @@ public class MapFragment extends BaseFragment {
 
         mUiPlaceBox.setVisibility(View.VISIBLE);
         mUiPlaceTitle.setText(clicked.mName);
-
+        mSelectedPlace = clicked;
         mUiPlaceAddress.setText(clicked.mAddress);
         if (!clicked.mImageUrl.equals("")) {
             Ion.with(mUiPlaceImage).placeholder(R.drawable.placeholder_image)
@@ -231,7 +239,7 @@ public class MapFragment extends BaseFragment {
         googleMap = mMapView.getMap();
 
         // create marker
-        googleMap.setMyLocationEnabled(true);
+        googleMap.setMyLocationEnabled(false);
         MarkerOptions marker = new MarkerOptions().position(myPosition).title(
                 getResources().getString(R.string.here_u_are));
 
@@ -424,7 +432,36 @@ public class MapFragment extends BaseFragment {
                 }
             }
         });
+        mUiInfo.setOnClickListener(new OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+
+                if (mSelectedPlace.mPlaceType.contains("Hotel")) {
+                    HotelListItem temp = new HotelListItem(mSelectedPlace.mIdPlace,
+                            mSelectedPlace.mName, mSelectedPlace.mPhone, "",
+                            mSelectedPlace.mImageUrl, "", "", "", "");
+                    Intent intent = new Intent(getActivity(), HotelActivity.class);
+                    intent.putExtra(HotelActivity.HOTEL_TAG, temp);
+                    startActivityForResult(intent, HotelActivity.REQUEST);
+                } else if (mSelectedPlace.mPlaceType.contains("Restaurant")) {
+                    RestaurantListItem temp = new RestaurantListItem(mSelectedPlace.mIdPlace,
+                            mSelectedPlace.mName, mSelectedPlace.mPhone, "",
+                            mSelectedPlace.mImageUrl, "", "", "", "");
+                    Intent intent = new Intent(getActivity(), RestaurantActivity.class);
+                    intent.putExtra(RestaurantActivity.RESTAURANT_TAG, temp);
+
+                    startActivityForResult(intent, RestaurantActivity.REQUEST);
+                } else if (mSelectedPlace.mPlaceType.contains("Producer")) {
+                    Intent intent = new Intent(getActivity(), ProducerActivity.class);
+                    intent.putExtra(ProducerActivity.PRODUCER_TAG, new ProducerListItem(
+                            mSelectedPlace.mIdPlace, mSelectedPlace.mName, ""));
+
+                    startActivityForResult(intent, ProducerActivity.REQUEST);
+                }
+            }
+
+        });
     }
 
     private String getDirectionsUrl(LatLng origin, LatLng dest) {
