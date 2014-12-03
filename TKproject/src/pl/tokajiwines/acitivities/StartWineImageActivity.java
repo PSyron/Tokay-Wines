@@ -98,8 +98,7 @@ public class StartWineImageActivity extends BaseActivity {
     public void onResume() {
 
         super.onResume();
-        mLoadDatabase = new LoadDatabase();
-        mLoadDatabase.execute();
+
         if (App.isOnline(this)) {
 
             if (mWinesList == null) {
@@ -116,6 +115,8 @@ public class StartWineImageActivity extends BaseActivity {
                 mDownloadImagesTask = new LoadImages();
                 mDownloadImagesTask.execute();
             }
+            mLoadDatabase = new LoadDatabase();
+            mLoadDatabase.execute();
         }
 
         // otherwise, show message

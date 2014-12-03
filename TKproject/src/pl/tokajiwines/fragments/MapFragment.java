@@ -87,17 +87,20 @@ public class MapFragment extends BaseFragment {
     public static final String TAG_ID_PLACE = "IdPlace";
     GPSTracker mGPStrack;
     Place[] wStroneTokaju = {
-            new Place(16, "Pendits", "Béke 111 Abaújszántó", "21.1853", "48.2742", "Producer",
+            new Place(16, "1. Pendits", "Béke 111 Abaújszántó", "21.1853", "48.2742", "Producer",
                     "http://tokajiwines.me/photos/pendits_thumb.jpg"),
-            new Place(6, "Első Mádi Borház", "Hunyadi 2 Mád", "21.27930729", "48.18370715",
+            new Place(6, "2. Első Mádi Borház", "Hunyadi 2 Mád", "21.27930729", "48.18370715",
                     "Restaurant", "http://tokajiwines.me/photos/5elso_madi_borhaz_thumb.jpg"),
-            new Place(3, "Disznókő", "Hrsz.0202  Mezőzombo", "21.303", "48.1654", "Producer",
+            new Place(3, "3. Disznókő", "Hrsz.0202  Mezőzombo", "21.303", "48.1654", "Producer",
                     "http://tokajiwines.me/photos/disznoko_thumb.jpg"),
-            new Place(6, "Grof Degenfeld ****", "Terézia kert 9 Tarcal", "21.334291", "48.143589",
-                    "Hotel", "http://tokajiwines.me/photos/6grof_degenfeld_kastely_thumb.jpg"),
-            new Place(17, "Tokaj Kikelet Pince", "Könyves Kálmán  62 Tarcal", "21.34924",
+            new Place(6, "4. Grof Degenfeld ****", "Terézia kert 9 Tarcal", "21.334291",
+                    "48.143589", "Hotel",
+                    "http://tokajiwines.me/photos/6grof_degenfeld_kastely_thumb.jpg"),
+            new Place(17, "5. Tokaj Kikelet Pince", "Könyves Kálmán  62 Tarcal", "21.34924",
                     "48.127754", "Producer",
-                    "http://tokajiwines.me/photos/takaji_kikelet_price_thumb.jpg")
+                    "http://tokajiwines.me/photos/takaji_kikelet_price_thumb.jpg"),
+            new Place(18, "6. TOKAJ HÉTSZŐLŐ", "Bajcsy-Zs. 19-21 Tokaj", "21.412537", "48.119366",
+                    "Producer", "http://tokajiwines.me/photos/tokaji_hetszolo_thumb.jpg")
     };
     Place[] choosenTrip;
 
@@ -113,16 +116,19 @@ public class MapFragment extends BaseFragment {
     ImageView mUiInfo;
 
     Place[] wTokaju = {
-            new Place(16, "Pendits", "", "21.1853", "48.2742", "Producer",
-                    "http://tokajiwines.me/photos/pendits_thumb.jpg"),
-            new Place(6, "Első Mádi Borház", "", "21.27930729", "48.18370715", "Restaurant",
-                    "http://tokajiwines.me/photos/5elso_madi_borhaz_thumb.jpg"),
-            new Place(3, "Disznókő", "", "21.303", "48.1654", "Producer",
-                    "http://tokajiwines.me/photos/disznoko_thumb.jpg"),
-            new Place(6, "Grof Degenfeld ****", "", "21.334291", "48.143589", "Hotel",
-                    "http://tokajiwines.me/photos/6grof_degenfeld_kastely_thumb.jpg"),
-            new Place(17, "Tokaj Kikelet Pince", "", "21.34924", "48.127754", "Producer",
-                    "http://tokajiwines.me/photos/takaji_kikelet_price_thumb.jpg")
+            new Place(2, "1. Bonchidai Csarda", "Bajcsy-Zsilinszky 21 Tokaj", "21.1151", "48.333",
+                    "Restaurant", "http://tokajiwines.me/photos/2bonchidaiCsarda_thumb.jpg"),
+            new Place(18, "2. TOKAJ HÉTSZŐLŐ", "Bajcsy-Zs. 19-21 Tokaj", "21.412537", "48.119366",
+                    "Producer", "http://tokajiwines.me/photos/tokaji_hetszolo_thumb.jpg"),
+            new Place(19, "3. Hímesudvar", "Bem József 2 Tokaj", "21.40633", "48.126122",
+                    "Producer", "http://tokajiwines.me/photos/himesudvar_thumb.jpg"),
+            new Place(4, "4. Dobogó Pincészet", "Dózsa György 1 Tokaj", "21.4043", "48.1253",
+                    "Producer", "http://tokajiwines.me/photos/dobogo_thumb.jpg"),
+            new Place(7, "5. Tokaj Coffee Roastin", "Bethlen Gábor 10 Tokaj", "21.2428",
+                    "48.07602", "Restaurant",
+                    "http://tokajiwines.me/photos/tokaj_coffee_roasting_company_thumb.jpg"),
+            new Place(21, "6. Sauska Tokaj", "József Attila  2 Tokaj", "21.40815", "48.12735",
+                    "Producer", "http://tokajiwines.me/photos/sauska_thumb.jpg"),
     };
 
     public static MapFragment newInstance(Context ctx) {
@@ -181,7 +187,7 @@ public class MapFragment extends BaseFragment {
     public void fillBox(final Place clicked) {
 
         mUiPlaceBox.setVisibility(View.VISIBLE);
-        mUiPlaceTitle.setText(clicked.mPlaceType + ": " + clicked.mName);
+        mUiPlaceTitle.setText(clicked.mName);
 
         mUiPlaceAddress.setText(clicked.mAddress);
         if (!clicked.mImageUrl.equals("")) {
@@ -373,9 +379,10 @@ public class MapFragment extends BaseFragment {
                                     }
                                     break;
                                 case 1:
-                                    addMarkers(wStroneTokaju);
+                                    addMarkers(wTokaju);
+                                    choosenTrip = wTokaju;
                                     CameraPosition cameraPosition2 = new CameraPosition.Builder()
-                                            .target(wTokaju[1].getLatLng()).zoom(10).build();
+                                            .target(wTokaju[0].getLatLng()).zoom(15).build();
                                     googleMap.animateCamera(CameraUpdateFactory
                                             .newCameraPosition(cameraPosition2));
                                     if (App.isOnline(getActivity())) {
@@ -459,7 +466,7 @@ public class MapFragment extends BaseFragment {
         for (Place pozycja : pozycje) {
 
             MarkerOptions marker = new MarkerOptions().position(pozycja.getLatLng()).title(
-                    pozycja.mPlaceType + ": " + pozycja.mName);
+                    pozycja.mName);
             // Changing marker icon
             if (pozycja.mPlaceType.contains("Hotel")) {
                 //marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
