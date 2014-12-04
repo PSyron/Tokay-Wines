@@ -22,11 +22,13 @@ public class NotificationService extends Service {
         if (SharedPreferencesHelper.getSharedPreferencesBoolean(this,
                 SettingsFragment.SharedKeyNotif, SettingsFragment.DefNotif)) {
             Log.e("onStartCommand", "execute ");
-            GPSTracker gps = new GPSTracker(this);
-
-            if (App.isOnline(this) && gps.canGetLocation()) {
-                Log.e("serwis", "GetNearPlaces.execute");
-                new GetNearPlacesAsync(this).execute(gps.getLocationLatLng());
+            if (App.isOnline(this)) {
+                GPSTracker gps = new GPSTracker(this);
+                if (gps.canGetLocation()) {
+                    Log.e("serwis", "GetNearPlaces.execute");
+                    new GetNearPlacesAsync(this).execute(gps.getLocationLatLng());
+                    //TODO check gps.stopUsingGPS();
+                }
             }
         }
         // Log.e("serwis", "execute " + wyswietlone.size());
