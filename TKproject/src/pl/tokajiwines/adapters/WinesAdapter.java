@@ -13,7 +13,10 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import pl.tokajiwines.R;
+import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.WineListItem;
+import pl.tokajiwines.utils.Constans;
+import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 import java.io.File;
 
@@ -22,11 +25,14 @@ public class WinesAdapter extends BaseAdapter {
     Activity mActivity;
     private static LayoutInflater inflater = null;
     private WineListItem[] mWines = null;
+    private int mCurrency;
 
     public WinesAdapter(Activity act, WineListItem[] wines) {
         mActivity = act;
         mWines = wines;
         inflater = (LayoutInflater) mActivity.getSystemService(mActivity.LAYOUT_INFLATER_SERVICE);
+        mCurrency = SharedPreferencesHelper.getSharedPreferencesInt(
+                mActivity, SettingsFragment.SharedKeyCurrency, SettingsFragment.DefCurrency);
 
     }
 
@@ -102,7 +108,20 @@ public class WinesAdapter extends BaseAdapter {
         }
 
         if (mWines[position].mPrice != null) {
-            holder.price.setText(mWines[position].mPrice + " ft");
+            StringBuilder price = new StringBuilder();
+            price.append(mWines[position].mPrice);
+            price.append(" ft");
+            
+            if (mCurrency != 2)
+            {
+                price.append(" (");
+                price.append(String.format("%.2f", Float.parseFloat(mWines[position].mPrice)*Constans.sCurrencyRatio[mCurrency]));
+                price.append(" ");
+                price.append(Constans.sCurrencyShorts[mCurrency]);
+                price.append(")"); 
+            }
+                holder.price.setText(price);               
+            
         } else {
             holder.priceLayout.setVisibility(View.GONE);
         }

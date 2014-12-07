@@ -27,6 +27,7 @@ import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.WineDetails;
 import pl.tokajiwines.jsonresponses.WineListItem;
+import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
@@ -44,6 +45,7 @@ public class WineActivity extends BaseActivity {
 
     boolean mIsViewFilled;
     boolean mIsFromList;
+    int mCurrency;
     TextView mUiName;
     ImageView mUiImage;
     TextView mUiProducerName;
@@ -85,6 +87,9 @@ public class WineActivity extends BaseActivity {
         sPassword = getResources().getString(R.string.Password);
 
         mContext = this;
+        
+        mCurrency = SharedPreferencesHelper.getSharedPreferencesInt(
+                mContext, SettingsFragment.SharedKeyCurrency, SettingsFragment.DefCurrency);
 
         Bundle extras = getIntent().getExtras();
 
@@ -157,7 +162,20 @@ public class WineActivity extends BaseActivity {
         }
 
         if (mWine.mPrice != null) {
-            mUiPrice.setText(mWine.mPrice);
+            
+            StringBuilder price = new StringBuilder();
+            price.append(mWine.mPrice);
+            price.append(" ft");
+            
+            if (mCurrency != 2)
+            {
+                price.append(" (");
+                price.append(String.format("%.2f", Float.parseFloat(mWine.mPrice)*Constans.sCurrencyRatio[mCurrency]));
+                price.append(" ");
+                price.append(Constans.sCurrencyShorts[mCurrency]);
+                price.append(")"); 
+            } 
+            mUiPrice.setText(price);
         } else {
             mUiPriceLayout.setVisibility(View.GONE);
         }

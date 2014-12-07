@@ -56,15 +56,15 @@ public class Constans {
             "Furmint", "Hárslevelű", "Sárga Muskotály", "Zéta", "Kabar", "Kövérszőlő"
     };
     public static final String[] sWinePricesPLN = {
-            "< 2000 HUF (30 PLN)", "2000 - 4000 HUF (30 - 60 PLN)",
-            "4000 - 8000 HUF (60 - 120 PLN)", "> 8000 HUF (120 PLN)"
+            "< 2000 ft (30 zł)", "2000 - 4000 ft (30 - 60 zł)",
+            "4000 - 8000 ft (60 - 120 zł)", "> 8000 ft (120 zł)"
     };
     public static final String[] sWinePricesEuro = {
-            "< 2000 HUF (7 EUR)", "2000 - 4000 HUF (7 - 14 EUR)", "4000 - 8000 HUF (14 - 28 EUR)",
-            "> 8000 HUF (28 EUR)"
+            "< 2000 ft (7 €)", "2000 - 4000 ft (7 - 14 €)", "4000 - 8000 ft (14 - 28 €)",
+            "> 8000 ft (28 €)"
     };
     public static final String[] sWinePricesForint = {
-            "< 2000 HUF", "2000 - 4000 HUF", "4000 - 8000 HUF", "> 8000 HUF"
+            "< 2000 ft", "2000 - 4000 ft", "4000 - 8000 ft", "> 8000 ft"
     };
 
     public static final String[] sWinePricesQuery = {
@@ -80,6 +80,15 @@ public class Constans {
     public static final String[] sSettingsCurrency = {
             "PLN", "Euro", "Forint"
     };
+    
+    // ratio for currencies (forint/currency)
+    public static final float[] sCurrencyRatio = {
+        0.01354f, 0.00326f, 1.f
+    };
+    
+    public static final String[] sCurrencyShorts = {
+        "zł", "€", "ft"
+    };
 
     public static final String[] sSettingsRange = {
             "5km = 3.1mil", "10km = 6.2mil", "15km = 9.3mil", "20km = 12.4mil", "25km = 15.5mil"
@@ -90,7 +99,6 @@ public class Constans {
     };
 
     //Guide 
-    //TODO do stringow
     public static final int[] sGuideTabTitle = new int[] {
             R.string.tab_tours, 
             R.string.hotels, R.string.restaurants
