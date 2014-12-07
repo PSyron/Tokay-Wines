@@ -195,5 +195,6 @@
     <string name="search_hint">Type name to search</string>
     <string name="title_activity_searchable">SearchableActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="tab_tours">Tours</string>
 
 </resources>

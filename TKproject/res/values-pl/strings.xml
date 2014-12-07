@@ -161,5 +161,6 @@
     <string name="wojciech_klimczyk">Wojciech Klimczyk - programista</string>
     <string name="paulina_malinka">Paulina Malinka - grafik</string>
     <string name="search_hint">Wpisz szukaną nazwę</string>
+    <string name="tab_tours">Wycieczki</string>
 
 </resources>
