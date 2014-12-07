@@ -124,8 +124,8 @@ public class MapFragment extends BaseFragment {
     ImageView mUiInfo;
 
     Place[] wTokaju = {
-            new Place(2, "1. Bonchidai Csarda", "Bajcsy-Zsilinszky 21 Tokaj", "18.660259",
-                    "47.719631", "Restaurant",
+            new Place(2, "1. Bonchidai Csarda", "Bajcsy-Zsilinszky 21 Tokaj", "21.412635",
+                    "48.119600", "Restaurant",
                     "http://tokajiwines.me/photos/2bonchidaiCsarda_thumb.jpg"),
             new Place(18, "2. TOKAJ HÉTSZŐLŐ", "Bajcsy-Zs. 19-21 Tokaj", "21.412537", "48.119366",
                     "Producer", "http://tokajiwines.me/photos/tokaji_hetszolo_thumb.jpg"),
@@ -394,17 +394,19 @@ public class MapFragment extends BaseFragment {
                                             .target(wTokaju[0].getLatLng()).zoom(15).build();
                                     googleMap.animateCamera(CameraUpdateFactory
                                             .newCameraPosition(cameraPosition2));
-                                    if (App.isOnline(getActivity())) {
-                                        for (int i = 0; i < wTokaju.length - 1; i++) {
-                                            String url = getDirectionsUrl(wTokaju[i].getLatLng(),
-                                                    wTokaju[i + 1].getLatLng());
+                                    /* za blisko siebie 
+                                     if (App.isOnline(getActivity())) {
+                                         for (int i = 0; i < wTokaju.length - 1; i++) {
+                                             String url = getDirectionsUrl(wTokaju[i].getLatLng(),
+                                                     wTokaju[i + 1].getLatLng());
 
-                                            DownloadTask downloadTask = new DownloadTask();
+                                             DownloadTask downloadTask = new DownloadTask();
 
-                                            // Start downloading json data from Google Directions API
-                                            downloadTask.execute(url);
-                                        }
-                                    }
+                                             // Start downloading json data from Google Directions API
+                                             downloadTask.execute(url);
+                                         }
+                                     }
+                                     */
                                     break;
                                 default:
                                     break;
