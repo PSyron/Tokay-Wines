@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.WinesListActivity;
+import pl.tokajiwines.activities.WinesListActivity;
 import pl.tokajiwines.db.FlavoursDataSource;
 import pl.tokajiwines.db.GradesDataSource;
 import pl.tokajiwines.db.ProducersDataSource;

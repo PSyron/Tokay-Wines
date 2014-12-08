@@ -11,9 +11,6 @@ import pl.tokajiwines.jsonresponses.SearchItem;
 import pl.tokajiwines.models.Search;
 import pl.tokajiwines.utils.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SearchDataSource {
     // LogCat tag
     private static final String LOG = "SearchesDataSource";
@@ -65,24 +62,25 @@ public class SearchDataSource {
         Log.i(LOG, "Updated search with id: " + searchOld.mIdSearch + " on: " + rows + " row(s)");
     }
 
-    public List<Search> getAllSearches() {
-        Log.i(LOG, "getAllSearches()");
-        List<Search> searches = new ArrayList<Search>();
+    public SearchItem[] getAllSearchItems() {
+        SearchItem[] search = null;
         Cursor cursor = database.query(DatabaseHelper.TABLE_SEARCH, allColumns, null, null, null,
-                null, null);
+                null, "Name");
         if (cursor.getCount() == 0)
-            Log.w(LOG, "Search is empty");
+            Log.w(LOG, "Suggestions are empty");
         else {
+            search = new SearchItem[cursor.getCount()];
             cursor.moveToFirst();
+            int i = 0;
             while (!cursor.isAfterLast()) {
-                Search search = cursorToSearch(cursor);
-                searches.add(search);
+                SearchItem si = cursorToSearchItem(cursor);
+                search[i] = si;
+                i++;
                 cursor.moveToNext();
             }
+            cursor.close();
         }
-        cursor.close();
-        if (searches.isEmpty()) Log.w(LOG, "Searches are empty()");
-        return searches;
+        return search;
     }
 
     public SearchItem[] getSearchItems(String s) {
@@ -104,6 +102,7 @@ public class SearchDataSource {
                 i++;
                 cursor.moveToNext();
             }
+            cursor.close();
         }
         return search;
     }
@@ -139,6 +138,6 @@ public class SearchDataSource {
     }
 
     private SearchItem cursorToSearchItem(Cursor cursor) {
-        return new SearchItem(cursor.getInt(0), cursor.getString(2), cursor.getString(1));
+        return new SearchItem(cursor.getInt(1), cursor.getString(3), cursor.getString(2));
     }
 }

@@ -18,8 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.AboutAppActivity;
-import pl.tokajiwines.acitivities.MainActivity;
+import pl.tokajiwines.activities.AboutAppActivity;
+import pl.tokajiwines.activities.MainActivity;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
 

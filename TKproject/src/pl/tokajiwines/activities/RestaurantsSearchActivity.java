@@ -1,25 +1,24 @@
 
-package pl.tokajiwines.fragments;
+package pl.tokajiwines.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.activities.RestaurantActivity;
 import pl.tokajiwines.adapters.RestaurantsAdapter;
-import pl.tokajiwines.db.RestaurantsDataSource;
 import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.jsonresponses.RestaurantsResponse;
 import pl.tokajiwines.utils.JSONParser;
@@ -27,42 +26,43 @@ import pl.tokajiwines.utils.Log;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TabRestaurantsFragment extends BaseFragment {
+public class RestaurantsSearchActivity extends BaseActivity {
 
     ListView mUiList;
     RestaurantsAdapter mAdapter;
     boolean mIsViewFilled;
-    LoadRestaurantTask mLoadRestaurantTask;
-    LoadRestaurantOnlineTask mLoadRestaurantOnlineTask;
+    LoadRestaurantsTask mLoadRestaurantsTask;
     Context mContext;
     JSONParser mParser;
     ProgressDialog mProgDial;
     private String sUrl;
     private String sUsername;
     private String sPassword;
-
-    private RestaurantListItem[] mRestaurantList;
-
-    public static TabRestaurantsFragment newInstance() {
-        TabRestaurantsFragment fragment = new TabRestaurantsFragment();
-
-        return fragment;
-    }
-
-    public TabRestaurantsFragment() {
-    }
+    private String mName;
+    private RestaurantListItem[] mRestaurantsList;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_restaurants_search);
+        getActionBar().setTitle(getResources().getString(R.string.restaurants));
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            mName = (String) extras.getString(SearchableActivity.TAG_NAME);
+        }
+        mContext = this;
+
         sUrl = getResources().getString(R.string.UrlRestaurantsList);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
 
-        View rootView = inflater.inflate(R.layout.fragment_restaurants, container, false);
-        mUiList = (ListView) rootView.findViewById(R.id.frag_restaurants_list);
-        mRestaurantList = new RestaurantListItem[0];
-        mAdapter = new RestaurantsAdapter(getActivity(), mRestaurantList);
+        mRestaurantsList = new RestaurantListItem[0];
+        mUiList = (ListView) findViewById(R.id.activity_restaurants_search_list);
+        mAdapter = new RestaurantsAdapter(this, mRestaurantsList);
         mUiList.setAdapter(mAdapter);
 
         mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -70,33 +70,29 @@ public class TabRestaurantsFragment extends BaseFragment {
                 RestaurantListItem temp = (RestaurantListItem) mAdapter.getItem(position);
                 Intent intent = new Intent(mContext, RestaurantActivity.class);
                 intent.putExtra(RestaurantActivity.RESTAURANT_TAG, temp);
-                System.out.println(temp.mIdRestaurant);
                 startActivityForResult(intent, RestaurantActivity.REQUEST);
             }
         });
-        mContext = getActivity();
         mIsViewFilled = false;
-
-        return rootView;
     }
 
     public void fillView() {
-        Log.e("fillView", "Restaurant view filled");
-        mAdapter = new RestaurantsAdapter(getActivity(), mRestaurantList);
+
+        Log.e("fillView", "View filled");
+        mAdapter = new RestaurantsAdapter(this, mRestaurantsList);
         mUiList.setAdapter(mAdapter);
         mIsViewFilled = true;
     }
 
-    // if there is an access to the Internet, try to load data from remote database
-
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        if (mRestaurantList.length == 0) {
+
+        if (mRestaurantsList.length == 0) {
 
             if (App.isOnline(mContext)) {
-                mLoadRestaurantOnlineTask = new LoadRestaurantOnlineTask();
-                mLoadRestaurantOnlineTask.execute();
+                mLoadRestaurantsTask = new LoadRestaurantsTask();
+                mLoadRestaurantsTask.execute();
             }
 
             // otherwise, show message
@@ -104,8 +100,6 @@ public class TabRestaurantsFragment extends BaseFragment {
             else {
                 Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
                         Toast.LENGTH_LONG).show();
-                mLoadRestaurantTask = new LoadRestaurantTask();
-                mLoadRestaurantTask.execute();
             }
         } else {
             if (!mIsViewFilled) {
@@ -116,23 +110,21 @@ public class TabRestaurantsFragment extends BaseFragment {
     }
 
     @Override
-    public void onPause() {
+    protected void onPause() {
 
-        if (mLoadRestaurantTask != null) {
+        if (mLoadRestaurantsTask != null) {
 
-            mLoadRestaurantTask.cancel(true);
+            mLoadRestaurantsTask.cancel(true);
             if (mProgDial != null) {
                 mProgDial.dismiss();
             }
 
-            mLoadRestaurantTask = null;
+            mLoadRestaurantsTask = null;
         }
         super.onPause();
     }
 
-    // async task class that loads Hotel data from remote database
-
-    class LoadRestaurantTask extends AsyncTask<String, String, String> {
+    class LoadRestaurantsTask extends AsyncTask<String, String, String> {
 
         boolean failure = false;
 
@@ -151,61 +143,17 @@ public class TabRestaurantsFragment extends BaseFragment {
 
         }
 
-        // retrieving restaurant data
-
-        @Override
-        protected String doInBackground(String... args) {
-
-            RestaurantsDataSource rDs = new RestaurantsDataSource(mContext);
-            rDs.open();
-            mRestaurantList = rDs.getRestaurantList();
-            rDs.close();
-
-            return null;
-
-        }
-
-        // create adapter that contains loaded data and show list of Hotel
-
-        protected void onPostExecute(String file_url) {
-
-            super.onPostExecute(file_url);
-            mProgDial.dismiss();
-            if (mRestaurantList != null) {
-                fillView();
-            }
-            mLoadRestaurantTask = null;
-
-        }
-    }
-
-    class LoadRestaurantOnlineTask extends AsyncTask<String, String, String> {
-
-        boolean failure = false;
-
-        // while data are loading, show progress dialog
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if (mProgDial == null) {
-                mProgDial = new ProgressDialog(mContext);
-            }
-            mProgDial.setMessage(getResources().getString(R.string.loading_restaurants));
-            mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
-            mProgDial.show();
-
-        }
-
-        // retrieving restaurant data
+        // retrieving news data
 
         @Override
         protected String doInBackground(String... args) {
 
             mParser = new JSONParser();
 
-            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, null);
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("name", mName)); 
+
+            InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
             if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
@@ -213,7 +161,7 @@ public class TabRestaurantsFragment extends BaseFragment {
                 RestaurantsResponse response = gson.fromJson(reader, RestaurantsResponse.class);
 
                 if (response != null) {
-                    mRestaurantList = response.restaurants;
+                    mRestaurantsList = response.restaurants;
                 }
             }
 
@@ -221,17 +169,20 @@ public class TabRestaurantsFragment extends BaseFragment {
 
         }
 
-        // create adapter that contains loaded data and show list of Hotel
+        // create adapter that contains loaded data and show list of news
 
         protected void onPostExecute(String file_url) {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            if (mRestaurantList != null) {
+            if (mRestaurantsList != null) {
                 fillView();
             }
-            mLoadRestaurantOnlineTask = null;
+
+            mLoadRestaurantsTask = null;
 
         }
+
     }
+
 }

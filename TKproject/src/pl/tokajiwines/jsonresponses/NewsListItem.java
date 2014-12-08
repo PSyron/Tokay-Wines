@@ -24,7 +24,7 @@ public class NewsListItem {
 
     public NewsListItem(News n) {
         mIdNews = n.mIdNews;
-        mHeader = n.mHeaderEng;
+        mHeader = n.mHeaderPl;
         mDescription = n.description.mShort;
         mImageUrl = n.imageCover.mImage;
 
