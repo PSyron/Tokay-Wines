@@ -151,11 +151,10 @@ public class NearPlaceActivity extends BaseActivity {
         if (mLoadNearPlaces != null) {
 
             mLoadNearPlaces.cancel(true);
-            if (mProgDial != null)
-            {
+            if (mProgDial != null) {
                 mProgDial.dismiss();
             }
-            
+
             mLoadNearPlaces = null;
         }
         super.onPause();
@@ -291,7 +290,7 @@ public class NearPlaceActivity extends BaseActivity {
                     && pl.getLatLng().longitude == arg0.getPosition().longitude) {
                 mSelectedPlace = pl;
                 mUiPlaceBox.setVisibility(View.VISIBLE);
-                mUiPlaceTitle.setText(pl.mPlaceType + ": " + pl.mName);
+                mUiPlaceTitle.setText(pl.mName);
                 if (pl.mPhone != null && !pl.mPhone.equals("")) {
                     mUiPhone.setText(pl.mPhone);
                 } else {
@@ -353,7 +352,7 @@ public class NearPlaceActivity extends BaseActivity {
         for (Place pozycja : pozycje) {
             if (!pozycja.mName.equals(mPlace.mName)) {
                 MarkerOptions marker = new MarkerOptions().position(pozycja.getLatLng()).title(
-                        pozycja.mPlaceType + ": " + pozycja.mName);
+                        pozycja.mName);
 
                 // Changing marker icon
                 if (pozycja.mPlaceType.contains("Hotel")) {
@@ -377,7 +376,7 @@ public class NearPlaceActivity extends BaseActivity {
                 googleMap.addMarker(marker);
             } else {
                 MarkerOptions marker = new MarkerOptions().position(pozycja.getLatLng()).title(
-                        pozycja.mPlaceType + ": " + pozycja.mName);
+                        pozycja.mName);
 
                 if (pozycja.mPlaceType.contains("Hotel")) {
 
@@ -411,13 +410,12 @@ public class NearPlaceActivity extends BaseActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.e("Async on PreExecute", "Executing create progress bar");
-            if (mProgDial == null)
-            {
+            if (mProgDial == null) {
                 mProgDial = new ProgressDialog(NearPlaceActivity.this);
             }
-                mProgDial.setMessage(getResources().getString(R.string.loading_near));
-                mProgDial.setIndeterminate(false);
-                mProgDial.setCancelable(true);
+            mProgDial.setMessage(getResources().getString(R.string.loading_near));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
             mProgDial.show();
             // clearing markers
             googleMap.clear();

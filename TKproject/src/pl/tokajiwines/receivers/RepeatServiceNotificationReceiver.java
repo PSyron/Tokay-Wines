@@ -1,5 +1,5 @@
 
-package pl.tokajiwines.recivers;
+package pl.tokajiwines.receivers;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

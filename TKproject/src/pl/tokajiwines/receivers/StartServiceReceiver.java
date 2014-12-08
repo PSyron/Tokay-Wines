@@ -1,5 +1,5 @@
 
-package pl.tokajiwines.recivers;
+package pl.tokajiwines.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

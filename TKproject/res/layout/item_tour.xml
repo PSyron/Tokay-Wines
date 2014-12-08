@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="16dp"
     android:orientation="horizontal" >
 
     <ImageView
@@ -9,16 +10,18 @@
         android:layout_width="@dimen/item_lists_height"
         android:layout_height="@dimen/item_lists_height"
         android:layout_margin="5dp"
-        android:src="@drawable/no_image" />
+        android:src="@drawable/no_image"
+        android:visibility="gone" />
 
-	<TextView
-	    android:id="@+id/item_tour_name"
-	    style="@style/ItemText"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_gravity="center"
-	    android:layout_marginLeft="5dp"
-	    android:gravity="start"
-	    android:text=" " />
+    <TextView
+        android:id="@+id/item_tour_name"
+        style="@style/ItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:gravity="start"
+        android:text=" "
+        android:textSize="24sp" />
 
 </LinearLayout>

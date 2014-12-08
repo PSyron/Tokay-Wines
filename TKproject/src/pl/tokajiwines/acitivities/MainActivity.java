@@ -25,19 +25,20 @@ import pl.tokajiwines.fragments.NavigationDrawerFragment;
 import pl.tokajiwines.fragments.NewsFragment;
 import pl.tokajiwines.fragments.ProducersFragment;
 import pl.tokajiwines.fragments.SettingsFragment;
+import pl.tokajiwines.fragments.TabToursFragment.OnTourPickedListener;
 import pl.tokajiwines.fragments.WinesFilterFragment;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
 import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.models.Place;
-import pl.tokajiwines.recivers.RepeatServiceNotificationReceiver;
+import pl.tokajiwines.receivers.RepeatServiceNotificationReceiver;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
 import pl.tokajiwines.utils.SuggestionProvider;
 
 import java.util.Locale;
 
 public class MainActivity extends Activity implements
-        NavigationDrawerFragment.NavigationDrawerCallbacks {
+        NavigationDrawerFragment.NavigationDrawerCallbacks, OnTourPickedListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the
@@ -200,6 +201,14 @@ public class MainActivity extends Activity implements
             fragmentManager.beginTransaction()
                     .replace(R.id.container, SettingsFragment.newInstance(this)).commit();
         }
+    }
+
+    @Override
+    public void OnTourPicked(int position) {
+        FragmentManager fragmentManager = getFragmentManager();
+        mTitle = getString(R.string.title_map);
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, MapFragment.newInstance(this, position, true)).commit();
     }
 
     public void onSectionAttached(int number) {

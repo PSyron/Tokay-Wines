@@ -22,7 +22,7 @@ import pl.tokajiwines.acitivities.MainActivity;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.NearPlacesResponse;
 import pl.tokajiwines.models.Place;
-import pl.tokajiwines.recivers.RepeatServiceNotificationReceiver;
+import pl.tokajiwines.receivers.RepeatServiceNotificationReceiver;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;

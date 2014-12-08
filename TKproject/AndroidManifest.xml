@@ -155,12 +155,12 @@
             android:label="@string/app_name" >
         </service>
 
-        <receiver android:name=".recivers.RepeatServiceNotificationReceiver" >
+        <receiver android:name="pl.tokajiwines.receivers.RepeatServiceNotificationReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".recivers.StartServiceReceiver" >
+        <receiver android:name="pl.tokajiwines.receivers.StartServiceReceiver" >
         </receiver>
 
         <provider
