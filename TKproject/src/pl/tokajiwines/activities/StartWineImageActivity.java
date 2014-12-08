@@ -1,5 +1,5 @@
 
-package pl.tokajiwines.acitivities;
+package pl.tokajiwines.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -92,6 +92,8 @@ public class StartWineImageActivity extends BaseActivity {
 
             }
         });
+        mLoadDatabase = new LoadDatabase();
+        mLoadDatabase.execute();
 
     }
 
@@ -115,8 +117,7 @@ public class StartWineImageActivity extends BaseActivity {
                 mDownloadImagesTask = new LoadImages();
                 mDownloadImagesTask.execute();
             }
-            mLoadDatabase = new LoadDatabase();
-            mLoadDatabase.execute();
+
         }
 
         // otherwise, show message
@@ -135,6 +136,10 @@ public class StartWineImageActivity extends BaseActivity {
         if (mLoadWine != null) {
             mLoadWine.cancel(true);
             mLoadWine = null;
+        }
+        if (mLoadDatabase != null) {
+            mLoadDatabase.cancel(true);
+            mLoadDatabase = null;
         }
         if (mDownloadImagesTask != null) {
             mDownloadImagesTask.cancel(true);

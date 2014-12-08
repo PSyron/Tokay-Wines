@@ -140,7 +140,7 @@ public class ProducersDataSource {
         Log.i(LOG, "getProducerList()");
         Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, new String[] {
                 "IdProducer", "Name", "IdDescription_", "IdImageCover_"
-        }, null, null, null, null, null);
+        }, null, null, null, null, "Name");
         cursor.moveToFirst();
         ProducerListItem[] producers = new ProducerListItem[cursor.getCount()];
         int i = 0;

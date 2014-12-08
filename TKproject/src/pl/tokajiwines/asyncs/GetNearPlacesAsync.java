@@ -18,11 +18,12 @@ import com.google.gson.Gson;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.MainActivity;
+import pl.tokajiwines.activities.MainActivity;
+import pl.tokajiwines.db.PlacesDataSource;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.NearPlacesResponse;
 import pl.tokajiwines.models.Place;
-import pl.tokajiwines.recivers.RepeatServiceNotificationReceiver;
+import pl.tokajiwines.receivers.RepeatServiceNotificationReceiver;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
@@ -76,38 +77,43 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
 
         mParser = new JSONParser();
         double tempRange = Constans.sMapRadiusInKm[mRangePicked];
-        String tempUrl;
-        if (!App.debug_mode) {
-            tempUrl = sUrl + "?lat=" + args[0].latitude + "&lng=" + args[0].longitude + "&radius="
-                    + tempRange;
-        } else {
-            LatLng myPosition = new LatLng(48.1295, 21.4089);
-            tempUrl = sUrl + "?lat=" + myPosition.latitude + "&lng=" + myPosition.longitude
-                    + "&radius=" + tempRange;
-        }
-        //TODO change below sUrl for tempUrl
-        Log.e("pobieranie URL", tempUrl + "     ");
-        InputStream source = mParser.retrieveStream(tempUrl, sUsername, sPassword, null);
-        if (source != null) {
 
-            Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
-
-            NearPlacesResponse response = gson.fromJson(reader, NearPlacesResponse.class);
-
-            if (response != null) {
-
-                if (response.success == 1)
-                    mNearbyPlaces = response.places;
-
-                else
-                    mNearbyPlaces = new Place[0];
+        if (App.isOnline(mContext)) {
+            String tempUrl;
+            if (!App.debug_mode) {
+                tempUrl = sUrl + "?lat=" + args[0].latitude + "&lng=" + args[0].longitude
+                        + "&radius=" + tempRange;
+            } else {
+                LatLng myPosition = new LatLng(48.1295, 21.4089);
+                tempUrl = sUrl + "?lat=" + myPosition.latitude + "&lng=" + myPosition.longitude
+                        + "&radius=" + tempRange;
             }
-        }
+            //TODO change below sUrl for tempUrl
+            Log.e("pobieranie URL", tempUrl + "     ");
+            InputStream source = mParser.retrieveStream(tempUrl, sUsername, sPassword, null);
+            if (source != null) {
 
-        else {
-            mNearbyPlaces = new Place[0];
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+
+                NearPlacesResponse response = gson.fromJson(reader, NearPlacesResponse.class);
+
+                if (response != null) {
+
+                    if (response.success == 1)
+                        mNearbyPlaces = response.places;
+
+                    else
+                        mNearbyPlaces = new Place[0];
+                }
+            }
+        } else {
+            PlacesDataSource pDs = new PlacesDataSource(mContext);
+            pDs.open();
+            mNearbyPlaces = pDs.getPlaces(args[0].latitude, args[0].longitude, tempRange);
+            pDs.close();
         }
+        if (mNearbyPlaces == null) mNearbyPlaces = new Place[0];
         return null;
 
     }

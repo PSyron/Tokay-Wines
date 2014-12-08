@@ -45,9 +45,9 @@ import org.json.JSONObject;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.HotelActivity;
-import pl.tokajiwines.acitivities.ProducerActivity;
-import pl.tokajiwines.acitivities.RestaurantActivity;
+import pl.tokajiwines.activities.HotelActivity;
+import pl.tokajiwines.activities.ProducerActivity;
+import pl.tokajiwines.activities.RestaurantActivity;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.jsonresponses.NearPlacesResponse;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
@@ -94,7 +94,7 @@ public class MapFragment extends BaseFragment {
     private String sPassword;
     public static final String TAG_ID_PLACE = "IdPlace";
     GPSTracker mGPStrack;
-    Place[] wStroneTokaju = {
+    static Place[] wStroneTokaju = {
             new Place(16, "1. Pendits", "Béke 111 Abaújszántó", "21.1853", "48.2742", "Producer",
                     "http://tokajiwines.me/photos/pendits_thumb.jpg"),
             new Place(6, "2. Első Mádi Borház", "Hunyadi 2 Mád", "21.27930729", "48.18370715",
@@ -122,8 +122,10 @@ public class MapFragment extends BaseFragment {
     LinearLayout mUiPlacePhone;
     ImageView mUiNavigateTo;
     ImageView mUiInfo;
+    int mPassedTrip;
+    boolean mFromGuide = false;
 
-    Place[] wTokaju = {
+    static Place[] wTokaju = {
             new Place(2, "1. Bonchidai Csarda", "Bajcsy-Zsilinszky 21 Tokaj", "21.412635",
                     "48.119600", "Restaurant",
                     "http://tokajiwines.me/photos/2bonchidaiCsarda_thumb.jpg"),
@@ -146,9 +148,21 @@ public class MapFragment extends BaseFragment {
         return fragment;
     }
 
+    public static MapFragment newInstance(Context ctx, int trip, boolean guide) {
+        MapFragment fragment = new MapFragment(ctx, trip, guide);
+
+        return fragment;
+    }
+
     public MapFragment(Context ctx) {
         mCtx = ctx;
 
+    }
+
+    public MapFragment(Context ctx, int trip, boolean guide) {
+        mCtx = ctx;
+        mPassedTrip = trip;
+        mFromGuide = guide;
     }
 
     @Override
@@ -364,56 +378,8 @@ public class MapFragment extends BaseFragment {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            trasaIsPicked = true;
-                            googleMap.clear();
-                            switch (which) {
-                                case 0:
-                                    addMarkers(wStroneTokaju);
-                                    choosenTrip = wStroneTokaju;
-                                    CameraPosition cameraPosition = new CameraPosition.Builder()
-                                            .target(wStroneTokaju[1].getLatLng()).zoom(10).build();
-                                    googleMap.animateCamera(CameraUpdateFactory
-                                            .newCameraPosition(cameraPosition));
-                                    if (App.isOnline(getActivity())) {
-                                        for (int i = 0; i < wStroneTokaju.length - 1; i++) {
-                                            String url = getDirectionsUrl(
-                                                    wStroneTokaju[i].getLatLng(),
-                                                    wStroneTokaju[i + 1].getLatLng());
-
-                                            DownloadTask downloadTask = new DownloadTask();
-
-                                            // Start downloading json data from Google Directions API
-                                            downloadTask.execute(url);
-                                        }
-                                    }
-                                    break;
-                                case 1:
-                                    addMarkers(wTokaju);
-                                    choosenTrip = wTokaju;
-                                    CameraPosition cameraPosition2 = new CameraPosition.Builder()
-                                            .target(wTokaju[0].getLatLng()).zoom(15).build();
-                                    googleMap.animateCamera(CameraUpdateFactory
-                                            .newCameraPosition(cameraPosition2));
-                                    /* za blisko siebie 
-                                     if (App.isOnline(getActivity())) {
-                                         for (int i = 0; i < wTokaju.length - 1; i++) {
-                                             String url = getDirectionsUrl(wTokaju[i].getLatLng(),
-                                                     wTokaju[i + 1].getLatLng());
-
-                                             DownloadTask downloadTask = new DownloadTask();
-
-                                             // Start downloading json data from Google Directions API
-                                             downloadTask.execute(url);
-                                         }
-                                     }
-                                     */
-                                    break;
-                                default:
-                                    break;
-                            }
-
+                            pickTrip(which);
                             dialog.dismiss();
-                            mUiTours.setText(getResources().getString(R.string.cancel_tour));
                         }
                     });
                     builderSingle.show();
@@ -465,6 +431,55 @@ public class MapFragment extends BaseFragment {
             }
 
         });
+    }
+
+    public void pickTrip(int which) {
+        trasaIsPicked = true;
+        googleMap.clear();
+        switch (which) {
+            case 0:
+                addMarkers(wStroneTokaju);
+                choosenTrip = wStroneTokaju;
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(wStroneTokaju[1].getLatLng()).zoom(10).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                if (App.isOnline(getActivity())) {
+                    for (int i = 0; i < wStroneTokaju.length - 1; i++) {
+                        String url = getDirectionsUrl(wStroneTokaju[i].getLatLng(),
+                                wStroneTokaju[i + 1].getLatLng());
+
+                        DownloadTask downloadTask = new DownloadTask();
+
+                        // Start downloading json data from Google Directions API
+                        downloadTask.execute(url);
+                    }
+                }
+                break;
+            case 1:
+                addMarkers(wTokaju);
+                choosenTrip = wTokaju;
+                CameraPosition cameraPosition2 = new CameraPosition.Builder()
+                        .target(wTokaju[0].getLatLng()).zoom(15).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition2));
+                /* za blisko siebie 
+                 if (App.isOnline(getActivity())) {
+                     for (int i = 0; i < wTokaju.length - 1; i++) {
+                         String url = getDirectionsUrl(wTokaju[i].getLatLng(),
+                                 wTokaju[i + 1].getLatLng());
+
+                         DownloadTask downloadTask = new DownloadTask();
+
+                         // Start downloading json data from Google Directions API
+                         downloadTask.execute(url);
+                     }
+                 }
+                 */
+                break;
+            default:
+                break;
+        }
+
+        mUiTours.setText(getResources().getString(R.string.cancel_tour));
     }
 
     private String getDirectionsUrl(LatLng origin, LatLng dest) {
@@ -541,9 +556,12 @@ public class MapFragment extends BaseFragment {
         super.onResume();
 
         mMapView.onResume();
-
-        if (App.isOnline(mCtx) && mFirstRun) {
-            new LoadNearPlaces().execute(myPosition);
+        if (mFromGuide) {
+            pickTrip(mPassedTrip);
+        } else {
+            if (App.isOnline(mCtx) && mFirstRun) {
+                new LoadNearPlaces().execute(myPosition);
+            }
         }
 
     }

@@ -49,7 +49,7 @@ public class WinesDataSource {
         Cursor cursor = database.query(DatabaseHelper.TABLE_WINES, allColumns, "IdProducer_ = ?",
                 new String[] {
                     idProducer + ""
-                }, null, null, null);
+                }, null, null, "Name");
         WineListItem[] wines = null;
 
         if (cursor == null && cursor.getCount() == 0)
@@ -219,7 +219,7 @@ public class WinesDataSource {
         Log.i(LOG, "getAllWines()");
         List<Wine> wines = new ArrayList<Wine>();
         Cursor cursor = database.query(DatabaseHelper.TABLE_WINES, allColumns, null, null, null,
-                null, null);
+                null, "Name");
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Wine wine = cursorToWine(cursor);

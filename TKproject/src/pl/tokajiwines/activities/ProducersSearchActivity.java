@@ -1,5 +1,5 @@
 
-package pl.tokajiwines.acitivities;
+package pl.tokajiwines.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -15,12 +16,12 @@ import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.adapters.HotelsAdapter;
-import pl.tokajiwines.jsonresponses.HotelListItem;
-import pl.tokajiwines.jsonresponses.HotelsResponse;
+import pl.tokajiwines.adapters.ProducersAdapter;
+import pl.tokajiwines.fragments.ProducersFragment;
+import pl.tokajiwines.jsonresponses.ProducerListItem;
+import pl.tokajiwines.jsonresponses.ProducersResponse;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
@@ -29,51 +30,56 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HotelsSearchActivity extends BaseActivity {
+public class ProducersSearchActivity extends BaseActivity {
 
-    ListView mUiList;
-    HotelsAdapter mAdapter;
     boolean mIsViewFilled;
-    LoadHotelsTask mLoadHotelsTask;
-    Context mContext;
+    ListView mUiList;
+    ProducersAdapter mAdapter;
     JSONParser mParser;
     ProgressDialog mProgDial;
+    LoadProducersTask mLoadProducersTask;
+    Context mContext;
     private String sUrl;
     private String sUsername;
     private String sPassword;
+    private ProducerListItem[] mProducersList;
     private String mName;
-    private HotelListItem[] mHotelsList;
+    public static final String PRODUCER_TAG = "producer";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hotels_search);
-        getActionBar().setTitle(getResources().getString(R.string.hotels));
+        setContentView(R.layout.activity_producers_search);
+        getActionBar().setTitle(getResources().getString(R.string.title_wineyards));
         Bundle extras = getIntent().getExtras();
-        
         if (extras != null) {
             mName = (String) extras.getString(SearchableActivity.TAG_NAME);
         }
-        
         mContext = this;
 
-        sUrl = getResources().getString(R.string.UrlHotelsList);
+        sUrl = getResources().getString(R.string.UrlProducersList);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
 
-        mHotelsList = new HotelListItem[0];
-        mUiList = (ListView) findViewById(R.id.activity_hotels_search_list);
-        mAdapter = new HotelsAdapter(this, mHotelsList);
+        mProducersList = new ProducerListItem[0];
+        mUiList = (ListView) findViewById(R.id.activity_producers_search_list);
+        mAdapter = new ProducersAdapter(this, mProducersList);
         mUiList.setAdapter(mAdapter);
 
-        mUiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                HotelListItem temp = (HotelListItem) mAdapter.getItem(position);
-                Intent intent = new Intent(mContext, HotelActivity.class);
-                intent.putExtra(HotelActivity.HOTEL_TAG, temp);
-                startActivityForResult(intent, HotelActivity.REQUEST);
+        mUiList.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ProducerListItem temp = (ProducerListItem) mAdapter.getItem(position);
+                Log.e(ProducersFragment.class.getName(), temp + " ");
+                Intent intent = new Intent(mContext, ProducerActivity.class);
+                intent.putExtra(PRODUCER_TAG, temp);
+
+                startActivityForResult(intent, ProducerActivity.REQUEST);
+
             }
+
         });
         mIsViewFilled = false;
     }
@@ -81,7 +87,7 @@ public class HotelsSearchActivity extends BaseActivity {
     public void fillView() {
 
         Log.e("fillView", "View filled");
-        mAdapter = new HotelsAdapter(this, mHotelsList);
+        mAdapter = new ProducersAdapter(this, mProducersList);
         mUiList.setAdapter(mAdapter);
         mIsViewFilled = true;
     }
@@ -90,11 +96,11 @@ public class HotelsSearchActivity extends BaseActivity {
         // TODO Auto-generated method stub
         super.onResume();
 
-        if (mHotelsList.length == 0) {
+        if (mProducersList.length == 0) {
 
             if (App.isOnline(mContext)) {
-                mLoadHotelsTask = new LoadHotelsTask();
-                mLoadHotelsTask.execute();
+                mLoadProducersTask = new LoadProducersTask();
+                mLoadProducersTask.execute();
             }
 
             // otherwise, show message
@@ -114,19 +120,19 @@ public class HotelsSearchActivity extends BaseActivity {
     @Override
     protected void onPause() {
 
-        if (mLoadHotelsTask != null) {
+        if (mLoadProducersTask != null) {
 
-            mLoadHotelsTask.cancel(true);
+            mLoadProducersTask.cancel(true);
             if (mProgDial != null) {
                 mProgDial.dismiss();
             }
 
-            mLoadHotelsTask = null;
+            mLoadProducersTask = null;
         }
         super.onPause();
     }
 
-    class LoadHotelsTask extends AsyncTask<String, String, String> {
+    class LoadProducersTask extends AsyncTask<String, String, String> {
 
         boolean failure = false;
 
@@ -138,7 +144,7 @@ public class HotelsSearchActivity extends BaseActivity {
             if (mProgDial == null) {
                 mProgDial = new ProgressDialog(mContext);
             }
-            mProgDial.setMessage(getResources().getString(R.string.loading_hotels));
+            mProgDial.setMessage(getResources().getString(R.string.loading_producers));
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(true);
             mProgDial.show();
@@ -153,17 +159,17 @@ public class HotelsSearchActivity extends BaseActivity {
             mParser = new JSONParser();
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("name", mName));  
+            params.add(new BasicNameValuePair("name", mName));            
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
             if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
 
-                HotelsResponse response = gson.fromJson(reader, HotelsResponse.class);
+                ProducersResponse response = gson.fromJson(reader, ProducersResponse.class);
 
                 if (response != null) {
-                    mHotelsList = response.hotels;
+                    mProducersList = response.producers;
                 }
             }
 
@@ -177,11 +183,11 @@ public class HotelsSearchActivity extends BaseActivity {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            if (mHotelsList != null) {
+            if (mProducersList != null) {
                 fillView();
             }
 
-            mLoadHotelsTask = null;
+            mLoadProducersTask = null;
 
         }
 

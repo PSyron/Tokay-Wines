@@ -1,5 +1,5 @@
 
-package pl.tokajiwines.acitivities;
+package pl.tokajiwines.activities;
 
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
@@ -133,7 +133,7 @@ public class NavigateToActivity extends BaseActivity {
     public void fillBox() {
 
         mUiPlaceBox.setVisibility(View.VISIBLE);
-        mUiPlaceTitle.setText(mPlaceTo.mPlaceType + ": " + mPlaceTo.mName);
+        mUiPlaceTitle.setText(mPlaceTo.mName);
 
         mUiPlaceAddress.setText(mPlaceTo.mAddress);
         if (!mUiPlaceImageUrl.equals("")) {
@@ -141,8 +141,7 @@ public class NavigateToActivity extends BaseActivity {
                     .error(R.drawable.error_image).load(mUiPlaceImageUrl);
             final File imgFile = new File(NavigateToActivity.this.getFilesDir().getAbsolutePath()
                     + "/"
-                    + mUiPlaceImageUrl.substring(
-                            mUiPlaceImageUrl.lastIndexOf('/') + 1,
+                    + mUiPlaceImageUrl.substring(mUiPlaceImageUrl.lastIndexOf('/') + 1,
                             mUiPlaceImageUrl.length()));
             if (imgFile.exists()) {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());

@@ -13,7 +13,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.widget.ImageView;
 
-import pl.tokajiwines.acitivities.BaseActivity;
+import pl.tokajiwines.activities.BaseActivity;
 import pl.tokajiwines.utils.Log;
 
 import java.io.BufferedInputStream;

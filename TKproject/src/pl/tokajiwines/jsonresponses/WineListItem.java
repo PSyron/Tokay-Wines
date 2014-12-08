@@ -48,7 +48,7 @@ public class WineListItem implements Serializable {
         mProducerName = w.producer.mName;
         if (w.flavour != null) mFlavourName = w.flavour.mNameEng;
         mImageUrl = w.imageCover.mImage;
-        mPrice = w.mPrice + "";
+        if (w.mPrice != 0.0) mPrice = w.mPrice + "";
         if (w.strains != null) mStrains = w.strainsToString();
     }
 
