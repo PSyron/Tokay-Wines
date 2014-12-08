@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -108,7 +107,7 @@ public class ProducersFragment extends BaseFragment {
                 /*Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
                     Toast.LENGTH_LONG).show();
                 */
-                Toast.makeText(mContext, "Offline database", Toast.LENGTH_LONG).show();
+                /*Toast.makeText(mContext, "Offline database", Toast.LENGTH_LONG).show();*/
                 mLoadProducersTask = new LoadProducersTask();
                 mLoadProducersTask.execute();
             }

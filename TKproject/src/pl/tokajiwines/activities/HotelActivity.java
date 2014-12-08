@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -178,7 +177,7 @@ public class HotelActivity extends BaseActivity {
             else {
                 /*Toast.makeText(HotelActivity.this, "Cannot connect to the Internet",
                         Toast.LENGTH_LONG).show();*/
-                Toast.makeText(HotelActivity.this, "Offline database", Toast.LENGTH_LONG).show();
+                /*Toast.makeText(HotelActivity.this, "Offline database", Toast.LENGTH_LONG).show();*/
                 mLoadHotelTask = new LoadHotelTask();
                 mLoadHotelTask.execute();
             }

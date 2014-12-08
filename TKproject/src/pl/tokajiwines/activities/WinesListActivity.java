@@ -109,19 +109,18 @@ public class WinesListActivity extends BaseActivity {
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        
-        if (mWinesList != null)
-        {
-    
+
+        if (mWinesList != null) {
+
             if (mWinesList.length == 0) {
-    
+
                 if (App.isOnline(mAct)) {
                     mLoadWinesTask = new LoadWinesTask();
                     mLoadWinesTask.execute();
                 }
-    
+
                 // otherwise, show message
-    
+
                 else {
                     Toast.makeText(mAct, getResources().getString(R.string.cannot_connect),
                             Toast.LENGTH_LONG).show();
@@ -131,7 +130,7 @@ public class WinesListActivity extends BaseActivity {
                     fillView();
                 }
             }
-        
+
         }
 
     }
@@ -188,7 +187,9 @@ public class WinesListActivity extends BaseActivity {
             params.add(new BasicNameValuePair("years", mYears));
             params.add(new BasicNameValuePair("prices", mPrices));
             params.add(new BasicNameValuePair("name", mName));
-
+            Log.e("Flavours", mFlavours);
+            Log.e("Grades", mGrades);
+            Log.e("Producers", mProducers);
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
             if (source != null) {
                 Gson gson = new Gson();

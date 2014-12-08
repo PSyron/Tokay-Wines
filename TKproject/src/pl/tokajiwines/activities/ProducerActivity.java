@@ -14,7 +14,6 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -276,9 +275,9 @@ public class ProducerActivity extends BaseActivity {
         // otherwise, show message
 
         else {
-            Toast.makeText(ProducerActivity.this,
-                    getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG).show();
-            Toast.makeText(ProducerActivity.this, "Offline database", Toast.LENGTH_LONG).show();
+            /* Toast.makeText(ProducerActivity.this,
+                     getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG).show();
+             Toast.makeText(ProducerActivity.this, "Offline database", Toast.LENGTH_LONG).show();*/
             if (mProducerFromBase == null) {
                 mLoadProducerTask = new LoadProducerTask();
                 mLoadProducerTask.execute();

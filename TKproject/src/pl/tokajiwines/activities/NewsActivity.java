@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -163,8 +162,8 @@ public class NewsActivity extends BaseActivity {
             // otherwise, show message
 
             else {
-                Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
-                        Toast.LENGTH_LONG).show();
+                /*    Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
+                            Toast.LENGTH_LONG).show();*/
                 mTask = new LoadNewsDetailsTask();
                 mTask.execute();
             }

@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -87,9 +86,9 @@ public class WineActivity extends BaseActivity {
         sPassword = getResources().getString(R.string.Password);
 
         mContext = this;
-        
-        mCurrency = SharedPreferencesHelper.getSharedPreferencesInt(
-                mContext, SettingsFragment.SharedKeyCurrency, SettingsFragment.DefCurrency);
+
+        mCurrency = SharedPreferencesHelper.getSharedPreferencesInt(mContext,
+                SettingsFragment.SharedKeyCurrency, SettingsFragment.DefCurrency);
 
         Bundle extras = getIntent().getExtras();
 
@@ -162,19 +161,19 @@ public class WineActivity extends BaseActivity {
         }
 
         if (mWine.mPrice != null) {
-            
+
             StringBuilder price = new StringBuilder();
             price.append(mWine.mPrice);
             price.append(" ft");
-            
-            if (mCurrency != 2)
-            {
+
+            if (mCurrency != 2) {
                 price.append(" (");
-                price.append(String.format("%.2f", Float.parseFloat(mWine.mPrice)*Constans.sCurrencyRatio[mCurrency]));
+                price.append(String.format("%.2f", Float.parseFloat(mWine.mPrice)
+                        * Constans.sCurrencyRatio[mCurrency]));
                 price.append(" ");
                 price.append(Constans.sCurrencyShorts[mCurrency]);
-                price.append(")"); 
-            } 
+                price.append(")");
+            }
             mUiPrice.setText(price);
         } else {
             mUiPriceLayout.setVisibility(View.GONE);
@@ -245,9 +244,9 @@ public class WineActivity extends BaseActivity {
             // otherwise, show message
 
             else {
-                Toast.makeText(WineActivity.this,
-                        getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG)
-                        .show();
+                /*   Toast.makeText(WineActivity.this,
+                           getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG)
+                           .show();*/
                 mLoadWineTask = new LoadWineTask();
                 mLoadWineTask.execute();
             }

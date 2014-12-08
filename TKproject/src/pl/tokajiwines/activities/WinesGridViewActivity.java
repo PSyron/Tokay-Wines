@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -51,7 +50,6 @@ public class WinesGridViewActivity extends BaseActivity {
     private String sUrl;
     private String sUsername;
     private String sPassword;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +109,7 @@ public class WinesGridViewActivity extends BaseActivity {
             else {
                 /*Toast.makeText(mAct, getResources().getString(R.string.cannot_connect),
                         Toast.LENGTH_LONG).show();*/
-                Toast.makeText(mAct, "Baza offline", Toast.LENGTH_LONG).show();
+                /*Toast.makeText(mAct, "Baza offline", Toast.LENGTH_LONG).show();*/
                 mLoadWinesTask = new LoadWinesTask();
                 mLoadWinesTask.execute();
             }
