@@ -240,6 +240,9 @@ public class MapFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mMapView.onCreate(savedInstanceState);
         initView();
+        if (mFromGuide) {
+            pickTrip(mPassedTrip);
+        }
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -379,6 +382,7 @@ public class MapFragment extends BaseFragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             pickTrip(which);
+                            mFromGuide = false;
                             dialog.dismiss();
                         }
                     });
@@ -556,9 +560,7 @@ public class MapFragment extends BaseFragment {
         super.onResume();
 
         mMapView.onResume();
-        if (mFromGuide) {
-            pickTrip(mPassedTrip);
-        } else {
+        if (!mFromGuide) {
             if (App.isOnline(mCtx) && mFirstRun) {
                 new LoadNearPlaces().execute(myPosition);
             }
