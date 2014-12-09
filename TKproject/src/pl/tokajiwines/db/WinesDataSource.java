@@ -14,9 +14,6 @@ import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.models.Wine;
 import pl.tokajiwines.utils.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class WinesDataSource {
     // LogCat tag
     private static final String LOG = "WinesDataSource";
@@ -67,6 +64,122 @@ public class WinesDataSource {
 
         cursor.close();
         if (wines == null) Log.w(LOG, "Producer wines are empty()");
+        return wines;
+    }
+
+    public WineListItem[] getWineItems(String s) {
+        WineListItem[] wine = null;
+        Cursor cursor = database.query(DatabaseHelper.TABLE_WINES, allColumns, "'Name'" + "LIKE ?",
+                new String[] {
+                    "%" + s + "%"
+                }, null, null, "Name");
+        if (cursor.getCount() == 0)
+            Log.w(LOG, "String \"" + s + "\" doesn't exists");
+        else {
+            wine = new WineListItem[cursor.getCount()];
+            cursor.moveToFirst();
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                WineListItem si = cursorToWineListItem(cursor);
+                wine[i] = si;
+                i++;
+                cursor.moveToNext();
+            }
+        }
+        return wine;
+    }
+
+    public void test() {
+        Log.i(LOG, "getProducerWines");
+        String flavours = "(1,2,4)";
+        String producers = "(1,2,3)";
+        String strains = "(1,3,4)";
+        String sql = "select IdWine From (tWines LEFT JOIN tWineStrains ON tWines.IdWine = tWineStrains.IdWine_) as t1 where (IdFlavour_ IN "
+                + flavours
+                + "AND IdProducer_ IN "
+                + producers
+                + "AND IdWineStrain IN "
+                + strains
+                + ")";
+        Cursor cursor = database.rawQuery(sql, null);
+        WineListItem[] wines = null;
+
+        if (cursor == null && cursor.getCount() == 0)
+            Log.e(LOG, "EMPTY");
+        else {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Log.e(LOG, cursor.getString(0));
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+    }
+
+    public WineListItem[] getFilterWines(String flavours, String grades, String strains,
+            String producers, String years, String prices) {
+        String sql = "select * From (tWines LEFT JOIN tWineStrains ON tWines.IdWine = tWineStrains.IdWine_) as t1";
+        String query = "";
+        if (flavours.length() > 2) {
+            if (query == "") query += " WHERE (";
+            query += ("IdFlavour_ IN" + fixString(flavours));
+        }
+        if (grades.length() > 2) {
+            if (query == "")
+                query += " WHERE (";
+            else
+                query += ") AND (";
+            query += ("IdGrade_ IN" + fixString(grades));
+        }
+        if (strains.length() > 2) {
+            if (query == "")
+                query += " WHERE (";
+            else
+                query += ") AND (";
+            query += ("IdWineStrain IN" + fixString(strains));
+        }
+        if (producers.length() > 2) {
+            if (query == "")
+                query += " WHERE (";
+            else
+                query += ") AND (";
+            query += ("IdProducer_ IN " + fixString(producers));
+        }
+        if (years.length() > 2) {
+            if (query == "")
+                query += " WHERE (";
+            else
+                query += ") AND (";
+            query += ("ProdDate IN" + fixYear(fixString(years)));
+        }
+        if (prices.length() > 2) {
+            if (query == "")
+                query += " WHERE (";
+            else
+                query += ") AND (";
+            String[] price = getPrice(fixString(prices));
+            query += ("Price >" + price[0] + " AND Price <" + price[1]);
+        }
+        if (query != "") query += ")";
+        sql += query;
+        sql += " GROUP BY IdWine ORDER BY Name";
+        Cursor cursor = database.rawQuery(sql, null);
+        WineListItem[] wines = null;
+
+        if (cursor == null)
+            Log.w(LOG, "Filter EMPTY");
+        else {
+            cursor.moveToFirst();
+            wines = new WineListItem[cursor.getCount()];
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                wines[i] = cursorToWineListItem(cursor);
+                cursor.moveToNext();
+                i++;
+            }
+        }
+
+        cursor.close();
         return wines;
     }
 
@@ -168,6 +281,47 @@ public class WinesDataSource {
         return w;
     }
 
+    public String fixString(String s) {
+        s = s.replace("[", "(");
+        s = s.replace("]", ")");
+        return s;
+    }
+
+    public String fixYear(String s) {
+        s = s.replace("\"", "");
+        return s;
+    }
+
+    public String[] getPrice(String s) {
+        s = s.replace("\"", " ");
+        s = s.replace("u003", " ");
+        s = s.replace("(", " ");
+        s = s.replace(")", " ");
+        String max = "";
+        String min = "";
+
+        if (s.contains("Price \u003e 4000")) {
+            min = 4000 + "";
+            max = 8000 + "";
+        }
+        if (s.contains("\u003e 2000")) {
+            min = 2000 + "";
+            if (max == "") max = 4000 + "";
+        }
+        if (s.contains("\u003c\u003d 2000")) {
+            min = 0 + "";
+            if (max == "") max = 2000 + "";
+        }
+        if (s.contains("\u003e 8000")) {
+            if (min == "") min = 8000 + "";
+            max = 2000000 + "";
+        }
+        String[] sa = {
+                min, max
+        };
+        return sa;
+    }
+
     public long insertWine(Wine wine) {
         Log.i(LOG, "insertWine()");
         ContentValues values = new ContentValues();
@@ -215,19 +369,26 @@ public class WinesDataSource {
         Log.i(LOG, "Updated wine with id: " + wineOld.mIdWine + " on: " + rows + " row(s)");
     }
 
-    public List<Wine> getAllWines() {
-        Log.i(LOG, "getAllWines()");
-        List<Wine> wines = new ArrayList<Wine>();
+    public WineListItem[] getAllWines() {
+        Log.i(LOG, "getProducerWines");
         Cursor cursor = database.query(DatabaseHelper.TABLE_WINES, allColumns, null, null, null,
                 null, "Name");
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Wine wine = cursorToWine(cursor);
-            wines.add(wine);
-            cursor.moveToNext();
+        WineListItem[] wines = null;
+
+        if (cursor == null && cursor.getCount() == 0)
+            Log.w(LOG, "Wines  don't exist");
+        else {
+            cursor.moveToFirst();
+            wines = new WineListItem[cursor.getCount()];
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                wines[i] = cursorToWineListItem(cursor);
+                cursor.moveToNext();
+                i++;
+            }
         }
+
         cursor.close();
-        if (wines.isEmpty()) Log.w(LOG, "Wines are empty()");
         return wines;
     }
 
@@ -298,4 +459,5 @@ public class WinesDataSource {
         wDs.close();
         return new WineDetails(w);
     }
+
 }

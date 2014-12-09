@@ -26,6 +26,7 @@ import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.ImagePagerAdapter;
 import pl.tokajiwines.db.ProducerImagesDataSource;
 import pl.tokajiwines.db.ProducersDataSource;
+import pl.tokajiwines.db.WinesDataSource;
 import pl.tokajiwines.jsonresponses.ImagePagerItem;
 import pl.tokajiwines.jsonresponses.ImagesResponse;
 import pl.tokajiwines.jsonresponses.ProducerDetails;
@@ -414,7 +415,10 @@ public class ProducerActivity extends BaseActivity {
 
         @Override
         protected String doInBackground(Void... args) {
-
+            WinesDataSource wDs = new WinesDataSource(ProducerActivity.this);
+            wDs.open();
+            wDs.test();
+            wDs.close();
             mParser = new JSONParser();
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
