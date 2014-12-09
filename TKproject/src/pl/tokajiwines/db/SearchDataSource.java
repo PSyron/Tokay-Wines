@@ -91,7 +91,7 @@ public class SearchDataSource {
                 "Id", "Name", "SearchType"
         }, "'Name'" + "LIKE ?", new String[] {
             "%" + s + "%"
-        }, null, null, null);
+        }, null, null, "Name");
         if (cursor.getCount() == 0)
             Log.w(LOG, "String \"" + s + "\" doesn't exists");
         else {
@@ -108,10 +108,10 @@ public class SearchDataSource {
         return search;
     }
 
-    public SearchItem[] getSearchItems() {
+    public SearchItem[] getAllSearchItems() {
         SearchItem[] search = null;
         Cursor cursor = database.query(DatabaseHelper.TABLE_SEARCH, allColumns, null, null, null,
-                null, null);
+                null, "Name");
         if (cursor.getCount() == 0)
             Log.w("SearchDataSource", "Database is empty");
         else {
@@ -124,6 +124,7 @@ public class SearchDataSource {
                 i++;
                 cursor.moveToNext();
             }
+            cursor.close();
         }
         return search;
     }
@@ -139,6 +140,6 @@ public class SearchDataSource {
     }
 
     private SearchItem cursorToSearchItem(Cursor cursor) {
-        return new SearchItem(cursor.getInt(0), cursor.getString(2), cursor.getString(1));
+        return new SearchItem(cursor.getInt(1), cursor.getString(3), cursor.getString(2));
     }
 }
