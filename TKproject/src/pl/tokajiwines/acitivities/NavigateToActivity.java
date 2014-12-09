@@ -107,6 +107,7 @@ public class NavigateToActivity extends BaseActivity {
             mGPStrack = new GPSTracker(this);
             mGPStrack.getLocation();
             mStartPosition = mGPStrack.getLocationLatLng();
+            mGPStrack.stopUsingGPS();
             mFinishPosition = mPlaceTo.getLatLng();
         }
         getActionBar().setTitle(

@@ -184,6 +184,7 @@ public class MapFragment extends BaseFragment {
             mGPStrack = new GPSTracker(getActivity());
             mGPStrack.getLocation();
             myPosition = mGPStrack.getLocationLatLng();
+            mGPStrack.stopUsingGPS();
         }
         mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
         mUiTours = (TextView) v.findViewById(R.id.map_tours);
