@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -172,8 +171,8 @@ public class RestaurantActivity extends BaseActivity {
                 /*Toast.makeText(RestaurantActivity.this,
                         getResources().getString(R.string.cannot_connect), Toast.LENGTH_LONG)
                         .show();*/
-                Toast.makeText(RestaurantActivity.this, "Offline database", Toast.LENGTH_LONG)
-                        .show();
+                /* Toast.makeText(RestaurantActivity.this, "Offline database", Toast.LENGTH_LONG)
+                         .show();*/
                 mLoadRestaurantTask = new LoadRestaurantTask();
                 mLoadRestaurantTask.execute();
             }

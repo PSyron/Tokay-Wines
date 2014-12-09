@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -104,7 +103,7 @@ public class NewsFragment extends BaseFragment {
             else {
                 /*Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
                         Toast.LENGTH_LONG).show();*/
-                Toast.makeText(mContext, "Baza offline", Toast.LENGTH_LONG).show();
+                /*Toast.makeText(mContext, "Baza offline", Toast.LENGTH_LONG).show();*/
                 mLoadNewsTask = new LoadNewsTask();
                 mLoadNewsTask.execute();
             }

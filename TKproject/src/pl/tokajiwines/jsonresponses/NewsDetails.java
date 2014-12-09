@@ -30,7 +30,7 @@ public class NewsDetails implements Serializable {
 
     public NewsDetails(News n) {
         mIdNews = n.mIdNews;
-        mHeader = n.mHeaderEng;
+        mHeader = n.mHeaderPl;
         mVast = n.description.mVast;
         mImage = n.imageCover.mImage;
         mEndDate = n.mEndDate;
