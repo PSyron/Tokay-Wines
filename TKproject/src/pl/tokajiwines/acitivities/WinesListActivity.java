@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -124,8 +123,8 @@ public class WinesListActivity extends BaseActivity {
                 // otherwise, show message
 
                 else {
-                    Toast.makeText(mAct, getResources().getString(R.string.cannot_connect),
-                            Toast.LENGTH_LONG).show();
+                    /* Toast.makeText(mAct, getResources().getString(R.string.cannot_connect),
+                             Toast.LENGTH_LONG).show();*/
                     mLoadWinesTask = new LoadWinesTask();
                     mLoadWinesTask.execute();
                 }

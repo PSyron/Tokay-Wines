@@ -14,6 +14,8 @@ import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.models.Wine;
 import pl.tokajiwines.utils.Log;
 
+import java.util.regex.Pattern;
+
 public class WinesDataSource {
     // LogCat tag
     private static final String LOG = "WinesDataSource";
@@ -157,8 +159,7 @@ public class WinesDataSource {
                 query += " WHERE (";
             else
                 query += ") AND (";
-            String[] price = getPrice(fixString(prices));
-            query += ("Price >" + price[0] + " AND Price <" + price[1]);
+            query += getPrice(prices);
         }
         if (query != "") query += ")";
         sql += query;
@@ -292,34 +293,30 @@ public class WinesDataSource {
         return s;
     }
 
-    public String[] getPrice(String s) {
-        s = s.replace("\"", " ");
-        s = s.replace("u003", " ");
-        s = s.replace("(", " ");
-        s = s.replace(")", " ");
-        String max = "";
-        String min = "";
+    public String getPrice(String s) {
+        String cena = "(";
 
-        if (s.contains("Price \u003e 4000")) {
-            min = 4000 + "";
-            max = 8000 + "";
+        if (Pattern.compile(Pattern.quote("u003e 4000"), Pattern.CASE_INSENSITIVE).matcher(s)
+                .find()) {
+            cena += "(Price > 4000 AND Price < 8000)";
         }
-        if (s.contains("\u003e 2000")) {
-            min = 2000 + "";
-            if (max == "") max = 4000 + "";
+        if (Pattern.compile(Pattern.quote("u003e 2000"), Pattern.CASE_INSENSITIVE).matcher(s)
+                .find()) {
+            if (cena != "(") cena += " OR ";
+            cena += " (Price > 2000 AND Price < 4000)";
         }
-        if (s.contains("\u003c\u003d 2000")) {
-            min = 0 + "";
-            if (max == "") max = 2000 + "";
+        if (Pattern.compile(Pattern.quote("u003d 2000"), Pattern.CASE_INSENSITIVE).matcher(s)
+                .find()) {
+            if (cena != "(") cena += " OR ";
+            cena += " (Price > 0 AND Price < 2000)";
         }
-        if (s.contains("\u003e 8000")) {
-            if (min == "") min = 8000 + "";
-            max = 2000000 + "";
+        if (Pattern.compile(Pattern.quote("u003e 8000"), Pattern.CASE_INSENSITIVE).matcher(s)
+                .find()) {
+            if (cena != "(") cena += " OR ";
+            cena += "  (Price > 8000)";
         }
-        String[] sa = {
-                min, max
-        };
-        return sa;
+        cena += ")";
+        return cena;
     }
 
     public long insertWine(Wine wine) {
