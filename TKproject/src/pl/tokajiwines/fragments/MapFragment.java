@@ -182,7 +182,7 @@ public class MapFragment extends BaseFragment {
             myPosition = new LatLng(48.1295, 21.4089);
         } else {
             mGPStrack = new GPSTracker(getActivity());
-            mGPStrack.getLocation();
+
             myPosition = mGPStrack.getLocationLatLng();
         }
         mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
