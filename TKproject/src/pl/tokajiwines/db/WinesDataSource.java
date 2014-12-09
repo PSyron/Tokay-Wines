@@ -91,33 +91,6 @@ public class WinesDataSource {
         return wine;
     }
 
-    public void test() {
-        Log.i(LOG, "getProducerWines");
-        String flavours = "(1,2,4)";
-        String producers = "(1,2,3)";
-        String strains = "(1,3,4)";
-        String sql = "select IdWine From (tWines LEFT JOIN tWineStrains ON tWines.IdWine = tWineStrains.IdWine_) as t1 where (IdFlavour_ IN "
-                + flavours
-                + "AND IdProducer_ IN "
-                + producers
-                + "AND IdWineStrain IN "
-                + strains
-                + ")";
-        Cursor cursor = database.rawQuery(sql, null);
-        WineListItem[] wines = null;
-
-        if (cursor == null && cursor.getCount() == 0)
-            Log.e(LOG, "EMPTY");
-        else {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                Log.e(LOG, cursor.getString(0));
-                cursor.moveToNext();
-            }
-        }
-        cursor.close();
-    }
-
     public WineListItem[] getFilterWines(String flavours, String grades, String strains,
             String producers, String years, String prices) {
         String sql = "select * From (tWines LEFT JOIN tWineStrains ON tWines.IdWine = tWineStrains.IdWine_) as t1";

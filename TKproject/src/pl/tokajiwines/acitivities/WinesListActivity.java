@@ -252,12 +252,6 @@ public class WinesListActivity extends BaseActivity {
             params.add(new BasicNameValuePair("years", mYears));
             params.add(new BasicNameValuePair("prices", mPrices));
             params.add(new BasicNameValuePair("name", mName));
-            Log.e("Flavours", mFlavours);
-            Log.e("Grades", mGrades);
-            Log.e("Producers", mProducers);
-            Log.e("strains", mStrains);
-            Log.e("years", mYears);
-            Log.e("prices", mPrices);
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
             if (source != null) {
                 Gson gson = new Gson();
