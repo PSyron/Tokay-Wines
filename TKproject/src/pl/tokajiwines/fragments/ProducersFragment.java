@@ -133,6 +133,15 @@ public class ProducersFragment extends BaseFragment {
 
             mLoadProducersTask = null;
         }
+        if (mLoadProducersOnlineTask != null) {
+
+            mLoadProducersOnlineTask.cancel(true);
+            if (mProgDial != null) {
+                mProgDial.dismiss();
+            }
+
+            mLoadProducersOnlineTask = null;
+        }
         super.onPause();
     }
 

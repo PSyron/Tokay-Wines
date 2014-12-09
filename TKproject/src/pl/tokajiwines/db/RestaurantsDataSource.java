@@ -74,8 +74,8 @@ public class RestaurantsDataSource {
     public RestaurantListItem[] getRestaurantList() {
         Log.i(LOG, "getRestaurantList()");
         Cursor cursor = database.query(DatabaseHelper.TABLE_RESTAURANTS, new String[] {
-                "IdRestaurant", "Name", "IdAddress_", "IdImageCover_"
-        }, null, null, null, null, null);
+                "IdRestaurant", "Name", "IdAddress_", "IdImageCover_", "Phone"
+        }, null, null, null, null, "Name");
         cursor.moveToFirst();
         RestaurantListItem[] restaurants = new RestaurantListItem[cursor.getCount()];
         int i = 0;
@@ -87,6 +87,31 @@ public class RestaurantsDataSource {
         }
         cursor.close();
         if (restaurants == null) Log.w(LOG, "Restaurants are empty()");
+
+        return restaurants;
+    }
+
+    public RestaurantListItem[] getRestaurants(String s) {
+        Cursor cursor = database.query(DatabaseHelper.TABLE_RESTAURANTS, new String[] {
+                "IdRestaurant", "Name", "IdAddress_", "IdImageCover_", "Phone"
+        }, "'Name'" + "LIKE ?", new String[] {
+            "%" + s + "%"
+        }, null, null, "Name");
+        RestaurantListItem[] restaurants = null;
+        if (cursor.getCount() == 0) {
+            Log.e(LOG, "Restaurants are empty()");
+        } else {
+            cursor.moveToFirst();
+            restaurants = new RestaurantListItem[cursor.getCount()];
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                RestaurantListItem restaurant = cursorToRestaurantListItem(cursor);
+                restaurants[i] = restaurant;
+                cursor.moveToNext();
+                i++;
+            }
+            cursor.close();
+        }
 
         return restaurants;
     }
@@ -136,8 +161,6 @@ public class RestaurantsDataSource {
     public List<Restaurant> getAllRestaurants() {
         Log.i(LOG, "getAllRestaurants()");
         List<Restaurant> restaurants = new ArrayList<Restaurant>();
-        /* insertRestaurant(new Restaurant(1, "Email", "www.test.pl", "Testowy", "666666666", 1, 1, 1, 1,
-        "Dawno"));*/
         Cursor cursor = database.query(DatabaseHelper.TABLE_RESTAURANTS, allColumns, null, null,
                 null, null, null);
         cursor.moveToFirst();
@@ -178,6 +201,7 @@ public class RestaurantsDataSource {
         aDs.open();
         r.address = aDs.getAddress(cursor.getInt(2));
         aDs.close();
+        r.mPhone = cursor.getString(4);
         return new RestaurantListItem(r);
     }
 

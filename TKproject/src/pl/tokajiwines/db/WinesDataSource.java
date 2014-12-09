@@ -76,7 +76,7 @@ public class WinesDataSource {
                     "%" + s + "%"
                 }, null, null, "Name");
         if (cursor.getCount() == 0)
-            Log.w(LOG, "String \"" + s + "\" doesn't exists");
+            Log.w(LOG, "Wine " + s + "\" doesn't exists");
         else {
             wine = new WineListItem[cursor.getCount()];
             cursor.moveToFirst();
@@ -95,39 +95,39 @@ public class WinesDataSource {
             String producers, String years, String prices) {
         String sql = "select * From (tWines LEFT JOIN tWineStrains ON tWines.IdWine = tWineStrains.IdWine_) as t1";
         String query = "";
-        if (flavours.length() > 2) {
+        if (flavours != null && flavours.length() > 2) {
             if (query == "") query += " WHERE (";
             query += ("IdFlavour_ IN" + fixString(flavours));
         }
-        if (grades.length() > 2) {
+        if (grades != null && grades.length() > 2) {
             if (query == "")
                 query += " WHERE (";
             else
                 query += ") AND (";
             query += ("IdGrade_ IN" + fixString(grades));
         }
-        if (strains.length() > 2) {
+        if (strains != null && strains.length() > 2) {
             if (query == "")
                 query += " WHERE (";
             else
                 query += ") AND (";
             query += ("IdWineStrain IN" + fixString(strains));
         }
-        if (producers.length() > 2) {
+        if (producers != null && producers.length() > 2) {
             if (query == "")
                 query += " WHERE (";
             else
                 query += ") AND (";
             query += ("IdProducer_ IN " + fixString(producers));
         }
-        if (years.length() > 2) {
+        if (years != null && years.length() > 2) {
             if (query == "")
                 query += " WHERE (";
             else
                 query += ") AND (";
             query += ("ProdDate IN" + fixYear(fixString(years)));
         }
-        if (prices.length() > 2) {
+        if (prices != null && prices.length() > 2) {
             if (query == "")
                 query += " WHERE (";
             else
