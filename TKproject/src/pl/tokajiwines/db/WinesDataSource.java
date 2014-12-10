@@ -57,11 +57,29 @@ public class WinesDataSource {
             cursor.moveToFirst();
             wines = new WineListItem[cursor.getCount()];
             int i = 0;
+            ColorsDataSource cDs = new ColorsDataSource(mContext);
+            FlavoursDataSource fDs = new FlavoursDataSource(mContext);
+            ProducersDataSource pDs = new ProducersDataSource(mContext);
+            GradesDataSource gDs = new GradesDataSource(mContext);
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            WineStrainsDataSource wsDs = new WineStrainsDataSource(mContext);
+            cDs.open();
+            fDs.open();
+            pDs.open();
+            gDs.open();
+            iDs.open();
+            wsDs.open();
             while (!cursor.isAfterLast()) {
-                wines[i] = cursorToWineListItem(cursor);
+                wines[i] = cursorToWineListItem(cursor, cDs, fDs, pDs, gDs, iDs, wsDs);
                 cursor.moveToNext();
                 i++;
             }
+            cDs.close();
+            fDs.close();
+            pDs.close();
+            gDs.close();
+            iDs.close();
+            wsDs.close();
         }
 
         cursor.close();
@@ -82,12 +100,30 @@ public class WinesDataSource {
             wine = new WineListItem[cursor.getCount()];
             cursor.moveToFirst();
             int i = 0;
+            ColorsDataSource cDs = new ColorsDataSource(mContext);
+            FlavoursDataSource fDs = new FlavoursDataSource(mContext);
+            ProducersDataSource pDs = new ProducersDataSource(mContext);
+            GradesDataSource gDs = new GradesDataSource(mContext);
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            WineStrainsDataSource wsDs = new WineStrainsDataSource(mContext);
+            cDs.open();
+            fDs.open();
+            pDs.open();
+            gDs.open();
+            iDs.open();
+            wsDs.open();
             while (!cursor.isAfterLast()) {
-                WineListItem si = cursorToWineListItem(cursor);
+                WineListItem si = cursorToWineListItem(cursor, cDs, fDs, pDs, gDs, iDs, wsDs);
                 wine[i] = si;
                 i++;
                 cursor.moveToNext();
             }
+            cDs.close();
+            fDs.close();
+            pDs.close();
+            gDs.close();
+            iDs.close();
+            wsDs.close();
         }
         return wine;
     }
@@ -144,14 +180,32 @@ public class WinesDataSource {
         if (cursor == null)
             Log.w(LOG, "Filter EMPTY");
         else {
+            ColorsDataSource cDs = new ColorsDataSource(mContext);
+            FlavoursDataSource fDs = new FlavoursDataSource(mContext);
+            ProducersDataSource pDs = new ProducersDataSource(mContext);
+            GradesDataSource gDs = new GradesDataSource(mContext);
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            WineStrainsDataSource wsDs = new WineStrainsDataSource(mContext);
+            cDs.open();
+            fDs.open();
+            pDs.open();
+            gDs.open();
+            iDs.open();
+            wsDs.open();
             cursor.moveToFirst();
             wines = new WineListItem[cursor.getCount()];
             int i = 0;
             while (!cursor.isAfterLast()) {
-                wines[i] = cursorToWineListItem(cursor);
+                wines[i] = cursorToWineListItem(cursor, cDs, fDs, pDs, gDs, iDs, wsDs);
                 cursor.moveToNext();
                 i++;
             }
+            cDs.close();
+            fDs.close();
+            pDs.close();
+            gDs.close();
+            iDs.close();
+            wsDs.close();
         }
 
         cursor.close();
@@ -168,23 +222,37 @@ public class WinesDataSource {
         if (cursor == null)
             Log.w(LOG, "Details for wine with id= " + idWine + " don't exist");
         else {
+            ColorsDataSource cDs = new ColorsDataSource(mContext);
+            FlavoursDataSource fDs = new FlavoursDataSource(mContext);
+            ProducersDataSource pDs = new ProducersDataSource(mContext);
+            GradesDataSource gDs = new GradesDataSource(mContext);
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            WineStrainsDataSource wsDs = new WineStrainsDataSource(mContext);
+            cDs.open();
+            fDs.open();
+            pDs.open();
+            gDs.open();
+            iDs.open();
+            wsDs.open();
             cursor.moveToFirst();
-                wine = cursorToWineListItem(cursor);
+            wine = cursorToWineListItem(cursor, cDs, fDs, pDs, gDs, iDs, wsDs);
+            cDs.close();
+            fDs.close();
+            pDs.close();
+            gDs.close();
+            iDs.close();
+            wsDs.close();
+            cursor.close();
         }
-        cursor.close();
-        
+
         System.out.println("Done getting details");
         return wine;
     }
 
-    private WineListItem cursorToWineListItem(Cursor cursor) {
+    private WineListItem cursorToWineListItem(Cursor cursor, ColorsDataSource cDs,
+            FlavoursDataSource fDs, ProducersDataSource pDs, GradesDataSource gDs,
+            ImagesDataSource iDs, WineStrainsDataSource wsDs) {
         Wine wine = new Wine();
-        ColorsDataSource cDs = new ColorsDataSource(mContext);
-        FlavoursDataSource fDs = new FlavoursDataSource(mContext);
-        ProducersDataSource pDs = new ProducersDataSource(mContext);
-        GradesDataSource gDs = new GradesDataSource(mContext);
-        ImagesDataSource iDs = new ImagesDataSource(mContext);
-        WineStrainsDataSource wsDs = new WineStrainsDataSource(mContext);
         wine.mIdWine = cursor.getInt(0);
         wine.mName = cursor.getString(1);
         wine.mProdDate = cursor.getInt(2);
@@ -197,31 +265,19 @@ public class WinesDataSource {
         wine.mIdColor_ = cursor.getInt(7);
         if (cursor.isNull(8) == false) {
             wine.mIdFlavour_ = cursor.getInt(8);
-            fDs.open();
             wine.flavour = fDs.getFlavour(wine.mIdFlavour_);
-            fDs.close();
         }
         wine.mIdProducer_ = cursor.getInt(9);
         wine.mIdDescription_ = cursor.getInt(10);
         if (cursor.isNull(11) == false) {
             wine.mIdGrade_ = cursor.getInt(11);
-            gDs.open();
             wine.grade = gDs.getGrade(wine.mIdGrade_);
-            gDs.close();
         }
         wine.mIdImageCover_ = cursor.getInt(12);
-        cDs.open();
         wine.color = cDs.getColor(wine.mIdColor_);
-        cDs.close();
-        pDs.open();
         wine.producer = pDs.getProducer(wine.mIdProducer_);
-        pDs.close();
-        iDs.open();
         wine.imageCover = iDs.getImageUrl(wine.mIdImageCover_);
-        iDs.close();
-        wsDs.open();
         wine.strains = wsDs.getWineStrains(wine.mIdWine);
-        wsDs.close();
 
         return new WineListItem(wine);
     }
@@ -236,7 +292,10 @@ public class WinesDataSource {
             Log.w(LOG, "Wine with id= " + id + " doesn't exists");
         else {
             cursor.moveToFirst();
-            w = cursorToProducerBestWine(cursor);
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            iDs.open();
+            w = cursorToProducerBestWine(cursor, iDs);
+            iDs.close();
         }
         return w;
     }
@@ -250,8 +309,14 @@ public class WinesDataSource {
         if (cursor.getCount() == 0)
             Log.w(LOG, "Wine with id= " + id + " doesn't exists");
         else {
+            DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+            WineImagesDataSource wDs = new WineImagesDataSource(mContext);
+            dDs.open();
+            wDs.open();
             cursor.moveToFirst();
-            w = cursorToWineDetailsFill(cursor);
+            w = cursorToWineDetailsFill(cursor, dDs, wDs);
+            dDs.close();
+            wDs.close();
         }
         return w;
     }
@@ -349,14 +414,32 @@ public class WinesDataSource {
         if (cursor == null && cursor.getCount() == 0)
             Log.w(LOG, "Wines  don't exist");
         else {
+            ColorsDataSource cDs = new ColorsDataSource(mContext);
+            FlavoursDataSource fDs = new FlavoursDataSource(mContext);
+            ProducersDataSource pDs = new ProducersDataSource(mContext);
+            GradesDataSource gDs = new GradesDataSource(mContext);
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            WineStrainsDataSource wsDs = new WineStrainsDataSource(mContext);
+            cDs.open();
+            fDs.open();
+            pDs.open();
+            gDs.open();
+            iDs.open();
+            wsDs.open();
             cursor.moveToFirst();
             wines = new WineListItem[cursor.getCount()];
             int i = 0;
             while (!cursor.isAfterLast()) {
-                wines[i] = cursorToWineListItem(cursor);
+                wines[i] = cursorToWineListItem(cursor, cDs, fDs, pDs, gDs, iDs, wsDs);
                 cursor.moveToNext();
                 i++;
             }
+            cDs.close();
+            fDs.close();
+            pDs.close();
+            gDs.close();
+            iDs.close();
+            wsDs.close();
         }
 
         cursor.close();
@@ -408,26 +491,18 @@ public class WinesDataSource {
     @SerializedName("wineName")
     public String mWineName;
 
-    private Wine cursorToProducerBestWine(Cursor cursor) {
+    private Wine cursorToProducerBestWine(Cursor cursor, ImagesDataSource iDs) {
         Wine w = new Wine();
         w.mName = cursor.getString(0);
-        ImagesDataSource iDs = new ImagesDataSource(mContext);
-        iDs.open();
         w.imageCover = iDs.getImageUrl(cursor.getInt(1));
-        iDs.close();
         return w;
     }
 
-    private WineDetails cursorToWineDetailsFill(Cursor cursor) {
+    private WineDetails cursorToWineDetailsFill(Cursor cursor, DescriptionsDataSource dDs,
+            WineImagesDataSource wDs) {
         Wine w = new Wine();
-        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
-        dDs.open();
         w.description = dDs.getDescriptionVast(cursor.getInt(1));
-        dDs.close();
-        WineImagesDataSource wDs = new WineImagesDataSource(mContext);
-        wDs.open();
         w.big = wDs.getWineImage(cursor.getInt(0));
-        wDs.close();
         return new WineDetails(w);
     }
 

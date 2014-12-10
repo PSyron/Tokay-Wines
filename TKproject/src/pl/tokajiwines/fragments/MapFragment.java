@@ -55,7 +55,7 @@ import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.models.Place;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.DirectionsJSONParser;
-import pl.tokajiwines.utils.GPSTracker;
+//import pl.tokajiwines.utils.GPSTracker;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
@@ -93,7 +93,7 @@ public class MapFragment extends BaseFragment {
     private String sUsername;
     private String sPassword;
     public static final String TAG_ID_PLACE = "IdPlace";
-    GPSTracker mGPStrack;
+    //GPSTracker mGPStrack;
     static Place[] wStroneTokaju = {
             new Place(16, "1. Pendits", "Béke 111 Abaújszántó", "21.1853", "48.2742", "Producer",
                     "http://tokajiwines.me/photos/pendits_thumb.jpg"),
@@ -181,10 +181,11 @@ public class MapFragment extends BaseFragment {
         if (App.debug_mode) {
             myPosition = new LatLng(48.1295, 21.4089);
         } else {
-            mGPStrack = new GPSTracker(getActivity());
-            mGPStrack.getLocation();
-            myPosition = mGPStrack.getLocationLatLng();
-            mGPStrack.stopUsingGPS();
+            //            mGPStrack = new GPSTracker(getActivity());
+            //            mGPStrack.getLocation();
+            //            myPosition = mGPStrack.getLocationLatLng();
+            //            mGPStrack.stopUsingGPS();
+            myPosition = App.getCurrentLatLng(getActivity());
         }
         mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
         mUiTours = (TextView) v.findViewById(R.id.map_tours);
@@ -338,8 +339,8 @@ public class MapFragment extends BaseFragment {
                         if (App.debug_mode) {
                             new LoadNearPlaces().execute(myPosition);
                         } else {
-
-                            new LoadNearPlaces().execute(new GPSTracker(mCtx).getLocationLatLng());
+                            new LoadNearPlaces().execute(App.getCurrentLatLng(getActivity()));
+                            // new LoadNearPlaces().execute(new GPSTracker(mCtx).getLocationLatLng());
                         }
 
                     }

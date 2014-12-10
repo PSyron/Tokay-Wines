@@ -126,8 +126,8 @@ public class DescriptionsDataSource {
         description.mIdDescription = cursor.getInt(0);
         description.mIdLang_ = cursor.getInt(1);
         description.mVersion = cursor.getInt(2);
-        description.mShort = cursor.getString(3);
-        description.mVast = cursor.getString(4);
+        description.mShort = cursor.getString(3).replace("\\n", "\n").replace("\\r", "");
+        description.mVast = cursor.getString(4).replace("\\n", "\n").replace("\\r", "");
         description.mIdUser_ = cursor.getInt(5);
         description.mLastUpdate = cursor.getString(6);
         return description;
@@ -136,14 +136,14 @@ public class DescriptionsDataSource {
     private Description cursorToDescriptionShort(Cursor cursor) {
         Description description = new Description();
         description.mIdLang_ = cursor.getInt(0);
-        description.mShort = cursor.getString(1);
+        description.mShort = cursor.getString(1).replace("\\n", "\n").replace("\\r", "");
         return description;
     }
 
     private Description cursorToDescriptionVast(Cursor cursor) {
         Description description = new Description();
         description.mIdLang_ = cursor.getInt(0);
-        description.mVast = cursor.getString(1);
+        description.mVast = cursor.getString(1).replace("\\n", "\n").replace("\\r", "");
         return description;
     }
 

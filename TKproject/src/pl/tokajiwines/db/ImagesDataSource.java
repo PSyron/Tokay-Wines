@@ -114,7 +114,7 @@ public class ImagesDataSource {
         image.mHeight = cursor.getInt(3);
         image.mWeight = cursor.getInt(4);
         image.mAuthor = cursor.getString(5);
-        image.mImage = cursor.getString(6);
+        image.mImage = cursor.getString(6).replace("\\n", "\n").replace("\\r", "");
         image.mIdUser_ = cursor.getInt(7);
         image.mLastUpdate = cursor.getString(8);
         return image;
@@ -123,7 +123,8 @@ public class ImagesDataSource {
     private Image cursorToImageUrl(Cursor cursor) {
         Image image = new Image();
         image.mIdImage = cursor.getInt(0);
-        image.mImage = cursor.getString(1);
+        image.mImage = cursor.getString(1).replace("\\n", "\n").replace("\\r", "");
+        ;
         return image;
     }
 }

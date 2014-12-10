@@ -13,8 +13,12 @@ import android.os.Environment;
 import android.os.Handler;
 import android.widget.ImageView;
 
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.maps.model.LatLng;
+
 import pl.tokajiwines.acitivities.BaseActivity;
 import pl.tokajiwines.utils.Log;
+import pl.tokajiwines.utils.SimpleLocation;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -30,6 +34,7 @@ public class App extends Application {
 
     public static boolean debug_mode = false;// emulating positionublic static String fileAbsPath = Environment.getExternalStorageDirectory() + "/Tokaji Wines/";
     public static BaseActivity sMapAct = null;
+    LocationClient mLocationClient;
 
     public static boolean isOnline(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
@@ -158,4 +163,31 @@ public class App extends Application {
         return wallpaperBitmap;
     }
 
+    public static LatLng getCurrentLatLng(Context ctx) {
+
+        // construct a new instance for this library
+        SimpleLocation location = new SimpleLocation(ctx);
+
+        if (location.hasLocationEnabled()) {
+            // ask the device to update the location data
+            location.beginUpdates();
+
+            // get the location from the device (alternative A)
+            double lat = location.getLatitude();
+            double lng = location.getLongitude();
+
+            // get the location from the device (alternative B)
+            //SimpleLocation.Point coords = location.getPosition();
+
+            // ask the device to stop location updates to save battery
+            location.endUpdates();
+            return new LatLng(lat, lng);
+        } else {
+            // ask the user to enable location access
+            location.openSettings(ctx);
+            getCurrentLatLng(ctx);
+        }
+        return null;
+
+    }
 }

@@ -107,8 +107,20 @@ public class ProducersDataSource {
         if (cursor.getCount() == 0)
             Log.w(LOG, "Producer with id= " + id + " doesn't exists");
         else {
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+            AddressesDataSource aDs = new AddressesDataSource(mContext);
+            WinesDataSource wDs = new WinesDataSource(mContext);
+            dDs.open();
+            aDs.open();
+            iDs.open();
+            wDs.open();
             cursor.moveToFirst();
-            pd = cursorToProducerDetails(cursor);
+            pd = cursorToProducerDetails(cursor, iDs, dDs, aDs, wDs);
+            dDs.close();
+            aDs.close();
+            iDs.close();
+            wDs.close();
         }
         cursor.close();
         return pd;
@@ -141,11 +153,15 @@ public class ProducersDataSource {
         Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, new String[] {
                 "IdProducer", "Name", "IdDescription_", "IdImageCover_"
         }, null, null, null, null, "Name");
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        iDs.open();
+        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+        dDs.open();
         cursor.moveToFirst();
         ProducerListItem[] producers = new ProducerListItem[cursor.getCount()];
         int i = 0;
         while (!cursor.isAfterLast()) {
-            ProducerListItem producer = cursorToProducerListItem(cursor);
+            ProducerListItem producer = cursorToProducerListItem(cursor, iDs, dDs);
             producers[i] = producer;
             cursor.moveToNext();
             i++;
@@ -153,6 +169,8 @@ public class ProducersDataSource {
         cursor.close();
         if (producers == null) Log.w(LOG, "Producers are empty()");
 
+        iDs.close();
+        dDs.close();
         return producers;
     }
 
@@ -166,17 +184,23 @@ public class ProducersDataSource {
         if (cursor.getCount() == 0) {
             Log.e("Producers", "empty");
         } else {
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            iDs.open();
+            DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+            dDs.open();
             cursor.moveToFirst();
             producers = new ProducerListItem[cursor.getCount()];
             int i = 0;
             while (!cursor.isAfterLast()) {
-                ProducerListItem producer = cursorToProducerListItem(cursor);
+                ProducerListItem producer = cursorToProducerListItem(cursor, iDs, dDs);
                 producers[i] = producer;
                 Log.e("Producer", producer.mName);
                 cursor.moveToNext();
                 i++;
             }
             cursor.close();
+            iDs.close();
+            dDs.close();
         }
         return producers;
     }
@@ -197,45 +221,30 @@ public class ProducersDataSource {
         return producer;
     }
 
-    private ProducerListItem cursorToProducerListItem(Cursor cursor) {
+    private ProducerListItem cursorToProducerListItem(Cursor cursor, ImagesDataSource iDs,
+            DescriptionsDataSource dDs) {
         Producer p = new Producer();
         p.mIdProducer = cursor.getInt(0);
         p.mName = cursor.getString(1);
-        ImagesDataSource iDs = new ImagesDataSource(mContext);
-        iDs.open();
         p.imageCover = iDs.getImageUrl(cursor.getInt(3));
-        iDs.close();
-        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
-        dDs.open();
         p.description = dDs.getDescriptionShort(cursor.getInt(2));
-        dDs.close();
+
         return new ProducerListItem(p);
     }
 
-    private ProducerDetails cursorToProducerDetails(Cursor cursor) {
-        ImagesDataSource iDs = new ImagesDataSource(mContext);
-        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
-        AddressesDataSource aDs = new AddressesDataSource(mContext);
-        WinesDataSource wDs = new WinesDataSource(mContext);
+    private ProducerDetails cursorToProducerDetails(Cursor cursor, ImagesDataSource iDs,
+            DescriptionsDataSource dDs, AddressesDataSource aDs, WinesDataSource wDs) {
         Producer producer = new Producer();
         producer.mIdProducer = cursor.getInt(0);
         producer.mEmail = cursor.getString(1);
         producer.mLink = cursor.getString(2);
         producer.mName = cursor.getString(3);
         producer.mPhone = cursor.getString(4);
-        dDs.open();
         producer.description = dDs.getDescriptionVast(cursor.getInt(5));
-        dDs.close();
-        aDs.open();
         producer.address = aDs.getAddress(cursor.getInt(6));
-        aDs.close();
         producer.mIdUser_ = cursor.getInt(7);
-        iDs.open();
         producer.imageCover = iDs.getImageUrl(cursor.getInt(8));
-        iDs.close();
-        wDs.open();
         producer.wineBest = wDs.getProducerWineBest(cursor.getInt(9));
-        wDs.close();
         producer.mLastUpdate = cursor.getString(10);
 
         return new ProducerDetails(producer);
