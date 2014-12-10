@@ -99,7 +99,7 @@ public class DatabaseTester {
 
     public void testWines() {
         wDs.open();
-        List<Wine> wl = wDs.getAllWines();
+        List<Wine> wl = null;
         Wine p = wDs.getProducerWineBest(5);
         WineListItem[] d = wDs.getProducerWines(1);
         wDs.close();

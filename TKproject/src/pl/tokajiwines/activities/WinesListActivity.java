@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -24,6 +23,7 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.WinesAdapter;
+import pl.tokajiwines.db.WinesDataSource;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.fragments.WinesFilterFragment;
 import pl.tokajiwines.jsonresponses.WineListItem;
@@ -57,6 +57,7 @@ public class WinesListActivity extends BaseActivity {
     private String mPrices;
     private String mName = "";
     LoadWinesTask mLoadWinesTask;
+    LoadWinesOnlineTask mLoadWinesOnlineTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,15 +116,17 @@ public class WinesListActivity extends BaseActivity {
             if (mWinesList.length == 0) {
 
                 if (App.isOnline(mAct)) {
-                    mLoadWinesTask = new LoadWinesTask();
-                    mLoadWinesTask.execute();
+                    mLoadWinesOnlineTask = new LoadWinesOnlineTask();
+                    mLoadWinesOnlineTask.execute();
                 }
 
                 // otherwise, show message
 
                 else {
-                    Toast.makeText(mAct, getResources().getString(R.string.cannot_connect),
-                            Toast.LENGTH_LONG).show();
+                    /* Toast.makeText(mAct, getResources().getString(R.string.cannot_connect),
+                             Toast.LENGTH_LONG).show();*/
+                    mLoadWinesTask = new LoadWinesTask();
+                    mLoadWinesTask.execute();
                 }
             } else {
                 if (!mIsViewFilled) {
@@ -174,6 +177,68 @@ public class WinesListActivity extends BaseActivity {
         @Override
         protected String doInBackground(String... args) {
 
+            WinesDataSource wDs = new WinesDataSource(WinesListActivity.this);
+            wDs.open();
+            mWinesList = wDs.getFilterWines(mFlavours, mGrades, mStrains, mProducers, mYears,
+                    mPrices);
+            wDs.close();
+
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of news
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mWinesList != null) {
+                fillView();
+            } else {
+                LinearLayout layout = new LinearLayout(mAct);
+                setContentView(layout);
+                layout.setOrientation(LinearLayout.VERTICAL);
+                TextView tv = new TextView(getApplicationContext());
+                tv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+                        LayoutParams.MATCH_PARENT));
+                tv.setText(getResources().getString(R.string.no_results));
+                tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+                tv.setTextSize(16);
+                tv.setTypeface(Typeface.DEFAULT_BOLD);
+                tv.setTextColor(getResources().getColor(R.color.filter_text));
+                layout.addView(tv);
+            }
+
+            mLoadWinesTask = null;
+
+        }
+    }
+
+    class LoadWinesOnlineTask extends AsyncTask<String, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDial == null) {
+                mProgDial = new ProgressDialog(mAct);
+            }
+            mProgDial.setMessage(getResources().getString(R.string.loading_wines));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
+
+        }
+
+        // retrieving news data
+
+        @Override
+        protected String doInBackground(String... args) {
+
             mParser = new JSONParser();
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -187,9 +252,6 @@ public class WinesListActivity extends BaseActivity {
             params.add(new BasicNameValuePair("years", mYears));
             params.add(new BasicNameValuePair("prices", mPrices));
             params.add(new BasicNameValuePair("name", mName));
-            Log.e("Flavours", mFlavours);
-            Log.e("Grades", mGrades);
-            Log.e("Producers", mProducers);
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
             if (source != null) {
                 Gson gson = new Gson();
@@ -229,7 +291,7 @@ public class WinesListActivity extends BaseActivity {
                 layout.addView(tv);
             }
 
-            mLoadWinesTask = null;
+            mLoadWinesOnlineTask = null;
 
         }
     }

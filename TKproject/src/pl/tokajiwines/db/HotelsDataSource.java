@@ -114,8 +114,8 @@ public class HotelsDataSource {
     public HotelListItem[] getHotelList() {
         Log.i(LOG, "getHotelList()");
         Cursor cursor = database.query(DatabaseHelper.TABLE_HOTELS, new String[] {
-                "IdHotel", "Name", "IdAddress_", "IdImageCover_"
-        }, null, null, null, null, null);
+                "IdHotel", "Name", "IdAddress_", "IdImageCover_", "Phone"
+        }, null, null, null, null, "Name");
         cursor.moveToFirst();
         HotelListItem[] hotels = new HotelListItem[cursor.getCount()];
         int i = 0;
@@ -131,11 +131,35 @@ public class HotelsDataSource {
         return hotels;
     }
 
+    public HotelListItem[] getHotels(String s) {
+        Cursor cursor = database.query(DatabaseHelper.TABLE_HOTELS, new String[] {
+                "IdHotel", "Name", "IdAddress_", "IdImageCover_", "Phone"
+        }, "'Name'" + "LIKE ?", new String[] {
+            "%" + s + "%"
+        }, null, null, "Name");
+        HotelListItem[] hotels = null;
+        if (cursor.getCount() == 0) {
+            Log.e(LOG, "Hotels are empty()");
+        } else {
+            cursor.moveToFirst();
+            hotels = new HotelListItem[cursor.getCount()];
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                HotelListItem hotel = cursorToHotelListItem(cursor);
+                hotels[i] = hotel;
+                Log.e("Hotel", hotel.mName);
+                cursor.moveToNext();
+                i++;
+            }
+            cursor.close();
+        }
+
+        return hotels;
+    }
+
     public List<Hotel> getAllHotels() {
         Log.i(LOG, "getAllHotels()");
         List<Hotel> hotels = new ArrayList<Hotel>();
-        /* insertHotel(new Hotel(1, "Email", "www.test.pl", "Testowy", "666666666", 1, 1, 1, 1,
-        "Dawno"));*/
         Cursor cursor = database.query(DatabaseHelper.TABLE_HOTELS, allColumns, null, null, null,
                 null, null);
         cursor.moveToFirst();
@@ -201,6 +225,7 @@ public class HotelsDataSource {
         aDs.open();
         h.address = aDs.getAddress(cursor.getInt(2));
         aDs.close();
+        h.mPhone = cursor.getString(4);
         return new HotelListItem(h);
     }
 

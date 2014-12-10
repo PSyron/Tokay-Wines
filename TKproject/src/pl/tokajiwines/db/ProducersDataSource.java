@@ -156,6 +156,31 @@ public class ProducersDataSource {
         return producers;
     }
 
+    public ProducerListItem[] getProducers(String s) {
+        Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, new String[] {
+                "IdProducer", "Name", "IdDescription_", "IdImageCover_"
+        }, "'Name'" + "LIKE ?", new String[] {
+            "%" + s + "%"
+        }, null, null, "Name");
+        ProducerListItem[] producers = null;
+        if (cursor.getCount() == 0) {
+            Log.e("Producers", "empty");
+        } else {
+            cursor.moveToFirst();
+            producers = new ProducerListItem[cursor.getCount()];
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                ProducerListItem producer = cursorToProducerListItem(cursor);
+                producers[i] = producer;
+                Log.e("Producer", producer.mName);
+                cursor.moveToNext();
+                i++;
+            }
+            cursor.close();
+        }
+        return producers;
+    }
+
     private Producer cursorToProducer(Cursor cursor) {
         Producer producer = new Producer();
         producer.mIdProducer = cursor.getInt(0);

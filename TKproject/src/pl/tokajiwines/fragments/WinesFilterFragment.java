@@ -447,7 +447,7 @@ public class WinesFilterFragment extends BaseFragment {
             } else {
                 /*Toast.makeText(mCtx, getResources().getString(R.string.cannot_connect),
                         Toast.LENGTH_LONG).show();*/
-                /*Toast.makeText(mCtx, "Offline Database", Toast.LENGTH_LONG).show();*/
+
                 new LoadFilterTask().execute();
             }
         }

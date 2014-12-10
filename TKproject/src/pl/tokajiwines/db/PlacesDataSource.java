@@ -19,7 +19,6 @@ public class PlacesDataSource {
     // Database fields
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
-
     private String[] allColumns = {
             "Id", "IdPlace", "Name", "Address", "Latitude", "Longitude", "PlaceType", "Phone",
             "Image", "LastUpdate"

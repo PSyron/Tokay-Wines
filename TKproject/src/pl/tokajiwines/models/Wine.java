@@ -75,7 +75,9 @@ public class Wine implements Serializable {
         String strain = "";
         if (strains != null) {
             for (int i = 0; i < strains.length; i++) {
-                strain += strains[i].strain.mName;
+                strain += strains[i].strain.mName + " ";
+                if (strains[i].mContent != 0) strain += strains[i].mContent + "%";
+                if (i < strains.length - 1) strain += "\n";
             }
         }
         return strain;

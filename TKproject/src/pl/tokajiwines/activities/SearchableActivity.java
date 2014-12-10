@@ -26,6 +26,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
+import pl.tokajiwines.db.SearchDataSource;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
@@ -44,7 +45,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchableActivity extends BaseActivity {
-
     ProgressDialog mProgDial;
     boolean mIsViewFilled;
     int mSelectedId;
@@ -57,7 +57,7 @@ public class SearchableActivity extends BaseActivity {
     private String sPassword;
     private SearchResultResponse mSearchResult;
     private LoadSearchResultTask mLoadSearchResult;
-
+    private LoadSearchResultOnlineTask mLoadSearchOnlineResult;
     LinearLayout mWineLayout;
     LinearLayout mWineItem;
     LinearLayout mWineTasteLayout;
@@ -488,15 +488,17 @@ public class SearchableActivity extends BaseActivity {
         if (mSearchResult == null) {
 
             if (App.isOnline(mContext)) {
-                mLoadSearchResult = new LoadSearchResultTask();
-                mLoadSearchResult.execute();
+                mLoadSearchOnlineResult = new LoadSearchResultOnlineTask();
+                mLoadSearchOnlineResult.execute();
             }
 
             // otherwise, show message
 
             else {
-                Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
-                        Toast.LENGTH_LONG).show();
+                /*Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
+                        Toast.LENGTH_LONG).show();*/
+                mLoadSearchResult = new LoadSearchResultTask();
+                mLoadSearchResult.execute();
             }
         } else {
             if (!mIsViewFilled) {
@@ -517,6 +519,15 @@ public class SearchableActivity extends BaseActivity {
 
             mLoadSearchResult = null;
         }
+        if (mLoadSearchOnlineResult != null) {
+
+            mLoadSearchOnlineResult.cancel(true);
+            if (mProgDial != null) {
+                mProgDial.dismiss();
+            }
+
+            mLoadSearchOnlineResult = null;
+        }
         super.onPause();
     }
 
@@ -533,10 +544,19 @@ public class SearchableActivity extends BaseActivity {
 
                 mLoadSearchResult = null;
             }
+            if (mLoadSearchOnlineResult != null) {
+
+                mLoadSearchOnlineResult.cancel(true);
+                if (mProgDial != null) {
+                    mProgDial.dismiss();
+                }
+
+                mLoadSearchOnlineResult = null;
+            }
 
             if (App.isOnline(mContext)) {
-                mLoadSearchResult = new LoadSearchResultTask();
-                mLoadSearchResult.execute();
+                mLoadSearchOnlineResult = new LoadSearchResultOnlineTask();
+                mLoadSearchOnlineResult.execute();
             }
 
             // otherwise, show message
@@ -544,6 +564,8 @@ public class SearchableActivity extends BaseActivity {
             else {
                 Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
                         Toast.LENGTH_LONG).show();
+                mLoadSearchResult = new LoadSearchResultTask();
+                mLoadSearchResult.execute();
             }
 
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
@@ -588,6 +610,67 @@ public class SearchableActivity extends BaseActivity {
     }
 
     class LoadSearchResultTask extends AsyncTask<String, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDial == null) {
+                mProgDial = new ProgressDialog(mContext);
+            }
+            mProgDial.setMessage(getResources().getString(R.string.loading_search));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(false);
+            mProgDial.show();
+        }
+
+        // retrieving news data
+
+        @Override
+        protected String doInBackground(String... args) {
+
+            SearchDataSource sDs = new SearchDataSource(mContext);
+            sDs.open();
+            mSearchResult = sDs.getSearch(query);
+            sDs.close();
+
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of news
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mSearchResult != null) {
+                fillView();
+                if (mSearchResult.wine == null && mSearchResult.producer == null
+                        && mSearchResult.hotel == null && mSearchResult.restaurant == null) {
+                    LinearLayout layout = new LinearLayout(mContext);
+                    setContentView(layout);
+                    layout.setOrientation(LinearLayout.VERTICAL);
+                    TextView tv = new TextView(getApplicationContext());
+                    tv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+                            LayoutParams.MATCH_PARENT));
+                    tv.setText(getResources().getString(R.string.no_results));
+                    tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+                    tv.setTextSize(16);
+                    tv.setTypeface(Typeface.DEFAULT_BOLD);
+                    tv.setTextColor(getResources().getColor(R.color.filter_text));
+                    layout.addView(tv);
+                }
+            }
+            mLoadSearchResult = null;
+        }
+
+    }
+
+    class LoadSearchResultOnlineTask extends AsyncTask<String, String, String> {
 
         boolean failure = false;
 
@@ -660,7 +743,7 @@ public class SearchableActivity extends BaseActivity {
                     layout.addView(tv);
                 }
             }
-            mLoadSearchResult = null;
+            mLoadSearchOnlineResult = null;
         }
 
     }

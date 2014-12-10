@@ -49,12 +49,13 @@ public class GPSTracker extends Service implements LocationListener {
     }
 
     public LatLng getLocationLatLng() {
-        Location temp = getLocation();
-        return new LatLng(temp.getLatitude(), temp.getLongitude());
+        
+        return new LatLng(location.getLatitude(), location.getLongitude());
     }
 
     public Location getLocation() {
         try {
+            
             locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
 
             // getting GPS status

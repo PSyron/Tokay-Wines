@@ -113,7 +113,9 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
             mNearbyPlaces = pDs.getPlaces(args[0].latitude, args[0].longitude, tempRange);
             pDs.close();
         }
+
         if (mNearbyPlaces == null) mNearbyPlaces = new Place[0];
+
         return null;
 
     }
