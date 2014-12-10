@@ -1,52 +1,44 @@
 
 package pl.tokajiwines.fragments;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import pl.tokajiwines.R;
+import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 public class MapOfflineFragment extends BaseFragment {
-    /*
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //        mResourceProxy = new ResourceProxyImpl(inflater.getContext().getApplicationContext());
-        //        mMapView = new MapView(inflater.getContext(), 256, mResourceProxy);
-        //        return mMapView;
-        
-                final Context context = getActivity();
-                final Context applicationContext = context.getApplicationContext();
-                final IRegisterReceiver registerReceiver = new SimpleRegisterReceiver(applicationContext);
 
-                // Create a custom tile source
-                //        final ITileSource tileSource = new XYTileSource("Mapnik", ResourceProxy.string.mapnik, 1,
-                //                18, 256, ".png", "http://tile.openstreetmap.org/");
+    Context mCtx;
+    ImageView mUiImage;
 
-                // Create a file cache modular provider
-                final TileWriter tileWriter = new TileWriter();
-                final MapTileFilesystemProvider fileSystemProvider = new MapTileFilesystemProvider(
-                        registerReceiver, tileSource);
+    public MapOfflineFragment(Context ctx) {
+        mCtx = ctx;
 
-                // Create an archive file modular tile provider
-                GEMFFileArchive gemfFileArchive = GEMFFileArchive.getGEMFFileArchive(mGemfArchiveFilename); // Requires try/catch
-                MapTileFileArchiveProvider fileArchiveProvider = new MapTileFileArchiveProvider(
-                        registerReceiver, tileSource, new IArchiveFile[] {
-                            gemfFileArchive
-                        });
-
-                // Create a download modular tile provider
-                final NetworkAvailabliltyCheck networkAvailabliltyCheck = new NetworkAvailabliltyCheck(
-                        context);
-                final MapTileDownloader downloaderProvider = new MapTileDownloader(tileSource, tileWriter,
-                        networkAvailablityCheck);
-
-                // Create a custom tile provider array with the custom tile source and the custom tile providers
-                final MapTileProviderArray tileProviderArray = new MapTileProviderArray(tileSource,
-                        registerReceiver, new MapTileModuleProviderBase[] {
-                                fileSystemProvider, fileArchiveProvider, downloaderProvider
-                        });
-
-                // Create the mapview with the custom tile provider array
-                mMapView = new MapView(context, 256, new DefaultResourceProxyImpl(context),
-                        tileProviderArray);
-                return new View(context);
-                
     }
-    */
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            final Bundle savedInstanceState) {
+
+        View v = inflater.inflate(R.layout.fragment_map_offline, container, false);
+        mUiImage = (ImageView) v.findViewById(R.id.fragment_map_offline_image);
+        if (SharedPreferencesHelper.getSharedPreferencesInt(mCtx,
+                SettingsFragment.SharedKeyLanguage, SettingsFragment.DefLanguage) == 0) {
+            mUiImage.setImageResource(R.drawable.connection_failed_bg_pl);
+        } else {
+            mUiImage.setImageResource(R.drawable.connection_failed_bg_eng);
+        }
+        return v;
+    }
+
+    public static MapOfflineFragment newInstance(Context ctx) {
+        MapOfflineFragment fragment = new MapOfflineFragment(ctx);
+
+        return fragment;
+    }
 }

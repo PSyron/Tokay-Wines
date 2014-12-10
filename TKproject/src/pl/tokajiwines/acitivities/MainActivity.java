@@ -21,6 +21,7 @@ import pl.tokajiwines.R;
 import pl.tokajiwines.asyncs.GetSearchItemsAsync;
 import pl.tokajiwines.fragments.GuideFragment;
 import pl.tokajiwines.fragments.MapFragment;
+import pl.tokajiwines.fragments.MapOfflineFragment;
 import pl.tokajiwines.fragments.NavigationDrawerFragment;
 import pl.tokajiwines.fragments.NewsFragment;
 import pl.tokajiwines.fragments.ProducersFragment;
@@ -190,8 +191,14 @@ public class MainActivity extends Activity implements
                     .replace(R.id.container, ProducersFragment.newInstance()).commit();
         } else if (position == 3) {
             mTitle = getString(R.string.title_map);
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, MapFragment.newInstance(this)).commit();
+            if (App.isOnline(this)) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, MapFragment.newInstance(this)).commit();
+            } else {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, MapOfflineFragment.newInstance(this)).commit();
+            }
+
         } else if (position == 4) {
             mTitle = getString(R.string.title_tour);
             fragmentManager.beginTransaction().replace(R.id.container, GuideFragment.newInstance())
