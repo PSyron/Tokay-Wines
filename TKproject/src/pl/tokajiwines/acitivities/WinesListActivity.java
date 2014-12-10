@@ -179,8 +179,15 @@ public class WinesListActivity extends BaseActivity {
 
             WinesDataSource wDs = new WinesDataSource(WinesListActivity.this);
             wDs.open();
-            mWinesList = wDs.getFilterWines(mFlavours, mGrades, mStrains, mProducers, mYears,
+            if (mName == null)
+            {
+                mWinesList = wDs.getFilterWines(mFlavours, mGrades, mStrains, mProducers, mYears,
                     mPrices);
+            }
+            else
+            {
+                mWinesList = wDs.getWineItems(mName);
+            }
             wDs.close();
 
             return null;

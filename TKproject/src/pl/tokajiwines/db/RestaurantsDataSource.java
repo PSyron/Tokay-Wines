@@ -94,7 +94,7 @@ public class RestaurantsDataSource {
     public RestaurantListItem[] getRestaurants(String s) {
         Cursor cursor = database.query(DatabaseHelper.TABLE_RESTAURANTS, new String[] {
                 "IdRestaurant", "Name", "IdAddress_", "IdImageCover_", "Phone"
-        }, "'Name'" + "LIKE ?", new String[] {
+        }, "Name LIKE ?", new String[] {
             "%" + s + "%"
         }, null, null, "Name");
         RestaurantListItem[] restaurants = null;

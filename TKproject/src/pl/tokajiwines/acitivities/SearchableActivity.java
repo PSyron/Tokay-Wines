@@ -571,8 +571,8 @@ public class SearchableActivity extends BaseActivity {
             // otherwise, show message
 
             else {
-                Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
-                        Toast.LENGTH_LONG).show();
+           //     Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
+            //            Toast.LENGTH_LONG).show();
                 mLoadSearchResult = new LoadSearchResultTask();
                 mLoadSearchResult.execute();
             }
