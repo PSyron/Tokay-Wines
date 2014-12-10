@@ -37,13 +37,7 @@
     </style>
 
     <style name="CustomDialogTitle" parent="@android:style/TextAppearance.Holo.DialogWindowTitle">
-        <item name="android:textSize">24sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/filter_text</item>
-    </style>
-
-    <style name="CustomDialogTitleDivider">
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/filter_text</item>
     </style>
