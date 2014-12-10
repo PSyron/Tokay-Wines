@@ -126,6 +126,16 @@ public class TabHotelsFragment extends BaseFragment {
 
             mLoadHotelTask = null;
         }
+        
+        if (mLoadHotelOnlineTask != null) {
+
+            mLoadHotelOnlineTask.cancel(true);
+            if (mProgDial != null) {
+                mProgDial.dismiss();
+            }
+
+            mLoadHotelOnlineTask = null;
+        }
         super.onPause();
     }
 

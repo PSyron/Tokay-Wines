@@ -180,14 +180,22 @@ public class NewsActivity extends BaseActivity {
     protected void onPause() {
         if (mTask != null) {
 
-            System.out.println("TASK NOT NULL!");
-
             mTask.cancel(true);
             if (mProgDial != null) {
                 mProgDial.dismiss();
             }
 
             mTask = null;
+        }
+        
+        if (mOnlineTask != null) {
+
+            mOnlineTask.cancel(true);
+            if (mProgDial != null) {
+                mProgDial.dismiss();
+            }
+
+            mOnlineTask = null;
         }
         super.onPause();
     }

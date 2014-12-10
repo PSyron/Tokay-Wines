@@ -19,6 +19,8 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.HotelsAdapter;
+import pl.tokajiwines.db.HotelsDataSource;
+import pl.tokajiwines.db.WinesDataSource;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.jsonresponses.HotelsResponse;
 import pl.tokajiwines.utils.JSONParser;
@@ -35,6 +37,7 @@ public class HotelsSearchActivity extends BaseActivity {
     HotelsAdapter mAdapter;
     boolean mIsViewFilled;
     LoadHotelsTask mLoadHotelsTask;
+    LoadHotelsOnlineTask mLoadHotelsOnlineTask;
     Context mContext;
     JSONParser mParser;
     ProgressDialog mProgDial;
@@ -93,15 +96,15 @@ public class HotelsSearchActivity extends BaseActivity {
         if (mHotelsList.length == 0) {
 
             if (App.isOnline(mContext)) {
-                mLoadHotelsTask = new LoadHotelsTask();
-                mLoadHotelsTask.execute();
+                mLoadHotelsOnlineTask = new LoadHotelsOnlineTask();
+                mLoadHotelsOnlineTask.execute();
             }
 
             // otherwise, show message
 
             else {
-                Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
-                        Toast.LENGTH_LONG).show();
+                mLoadHotelsTask = new LoadHotelsTask();
+                mLoadHotelsTask.execute();
             }
         } else {
             if (!mIsViewFilled) {
@@ -123,10 +126,68 @@ public class HotelsSearchActivity extends BaseActivity {
 
             mLoadHotelsTask = null;
         }
+        
+        if (mLoadHotelsOnlineTask != null) {
+
+            mLoadHotelsOnlineTask.cancel(true);
+            if (mProgDial != null) {
+                mProgDial.dismiss();
+            }
+
+            mLoadHotelsOnlineTask = null;
+        }
         super.onPause();
     }
-
+    
     class LoadHotelsTask extends AsyncTask<String, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDial == null) {
+                mProgDial = new ProgressDialog(mContext);
+            }
+            mProgDial.setMessage(getResources().getString(R.string.loading_hotels));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
+
+        }
+
+        // retrieving news data
+
+        @Override
+        protected String doInBackground(String... args) {
+
+            HotelsDataSource hDs = new HotelsDataSource(HotelsSearchActivity.this);
+            hDs.open();
+            mHotelsList = hDs.getHotels(mName);
+            hDs.close();
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of news
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mHotelsList != null) {
+                fillView();
+            }
+
+            mLoadHotelsTask = null;
+
+        }
+
+    }
+
+    class LoadHotelsOnlineTask extends AsyncTask<String, String, String> {
 
         boolean failure = false;
 
@@ -181,7 +242,7 @@ public class HotelsSearchActivity extends BaseActivity {
                 fillView();
             }
 
-            mLoadHotelsTask = null;
+            mLoadHotelsOnlineTask = null;
 
         }
 

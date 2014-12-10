@@ -245,7 +245,7 @@ public class ProducersFragment extends BaseFragment {
                 fillView();
             }
 
-            mLoadProducersTask = null;
+            mLoadProducersOnlineTask = null;
 
         }
 

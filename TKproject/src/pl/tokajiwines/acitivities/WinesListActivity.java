@@ -150,6 +150,16 @@ public class WinesListActivity extends BaseActivity {
 
             mLoadWinesTask = null;
         }
+        
+        if (mLoadWinesOnlineTask != null) {
+
+            mLoadWinesOnlineTask.cancel(true);
+            if (mProgDial != null) {
+                mProgDial.dismiss();
+            }
+
+            mLoadWinesOnlineTask = null;
+        }
         super.onPause();
     }
 

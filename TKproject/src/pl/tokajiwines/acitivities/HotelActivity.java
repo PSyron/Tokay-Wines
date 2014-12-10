@@ -220,6 +220,16 @@ public class HotelActivity extends BaseActivity {
 
             mLoadHotelTask = null;
         }
+        
+        if (mLoadHotelOnlineTask != null) {
+
+            mLoadHotelOnlineTask.cancel(true);
+            if (mProgDial != null) {
+                mProgDial.dismiss();
+            }
+
+            mLoadHotelOnlineTask = null;
+        }
         super.onPause();
     }
 

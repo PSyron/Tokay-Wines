@@ -208,14 +208,22 @@ public class RestaurantActivity extends BaseActivity {
 
         if (mLoadRestaurantTask != null) {
 
-            System.out.println("TASK NOT NULL");
-
             mLoadRestaurantTask.cancel(true);
             if (mProgDial != null) {
                 mProgDial.dismiss();
             }
 
             mLoadRestaurantTask = null;
+        }
+        
+        if (mLoadRestaurantOnlineTask != null) {
+
+            mLoadRestaurantOnlineTask.cancel(true);
+            if (mProgDial != null) {
+                mProgDial.dismiss();
+            }
+
+            mLoadRestaurantOnlineTask = null;
         }
         super.onPause();
     }

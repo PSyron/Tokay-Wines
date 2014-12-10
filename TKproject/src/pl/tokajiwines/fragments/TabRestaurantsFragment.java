@@ -127,6 +127,16 @@ public class TabRestaurantsFragment extends BaseFragment {
 
             mLoadRestaurantTask = null;
         }
+        
+        if (mLoadRestaurantOnlineTask != null) {
+
+            mLoadRestaurantOnlineTask.cancel(true);
+            if (mProgDial != null) {
+                mProgDial.dismiss();
+            }
+
+            mLoadRestaurantOnlineTask = null;
+        }
         super.onPause();
     }
 

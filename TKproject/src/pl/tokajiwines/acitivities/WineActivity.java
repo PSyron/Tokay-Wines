@@ -272,6 +272,16 @@ public class WineActivity extends BaseActivity {
 
             mLoadWineTask = null;
         }
+        
+        if (mLoadWineOnlineTask != null) {
+
+            mLoadWineOnlineTask.cancel(true);
+            if (mProgDial != null) {
+                mProgDial.dismiss();
+            }
+
+            mLoadWineOnlineTask = null;
+        }
         super.onPause();
     }
 
