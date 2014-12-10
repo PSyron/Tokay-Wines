@@ -26,7 +26,7 @@
     </style>
 
     <style name="MyActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:text">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="CustomAlertDialog" parent="@android:style/Theme.Holo.Light.Dialog">
@@ -42,7 +42,7 @@
         <item name="android:textColor">@color/filter_text</item>
     </style>
 
-    <style name="CustomDialogTitleDivider" >
+    <style name="CustomDialogTitleDivider">
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/filter_text</item>
