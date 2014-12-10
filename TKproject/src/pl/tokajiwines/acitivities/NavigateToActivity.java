@@ -104,10 +104,12 @@ public class NavigateToActivity extends BaseActivity {
             Toast.makeText(NavigateToActivity.this, "404 Error", Toast.LENGTH_LONG).show();
             finish();
         } else {
-            mGPStrack = new GPSTracker(this);
-            mGPStrack.getLocation();
-            mStartPosition = mGPStrack.getLocationLatLng();
-            mGPStrack.stopUsingGPS();
+            //            mGPStrack = new GPSTracker(this);
+            //            mGPStrack.getLocation();
+            //            mStartPosition = mGPStrack.getLocationLatLng();
+            //            mGPStrack.stopUsingGPS();
+
+            mStartPosition = App.getCurrentLatLng(this);
             mFinishPosition = mPlaceTo.getLatLng();
         }
         getActionBar().setTitle(
