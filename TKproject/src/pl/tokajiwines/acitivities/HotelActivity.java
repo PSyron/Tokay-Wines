@@ -1,7 +1,9 @@
 
 package pl.tokajiwines.acitivities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -97,16 +99,31 @@ public class HotelActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                Place extraPlace = new Place(mHotelFromBase.mIdHotel, mHotelFromBase.mName,
-                        mHotelFromBase.mStreetName + " " + mHotelFromBase.mStreetNumber + " "
-                                + mHotelFromBase.mHouseNumber + " " + mHotelFromBase.mCity + " "
-                                + mHotelFromBase.mPostCode, mHotelFromBase.mLng,
-                        mHotelFromBase.mLat, "Hotel", mHotelFromBase.mImageUrl);
-
-                Intent intent = new Intent(HotelActivity.this, NavigateToActivity.class);
-                intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
-                intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE, mHotelFromBase.mImageUrl);
-                startActivityForResult(intent, NavigateToActivity.REQUEST);
+                if (App.isOnline(HotelActivity.this))
+                {
+                    Place extraPlace = new Place(mHotelFromBase.mIdHotel, mHotelFromBase.mName,
+                            mHotelFromBase.mStreetName + " " + mHotelFromBase.mStreetNumber + " "
+                                    + mHotelFromBase.mHouseNumber + " " + mHotelFromBase.mCity + " "
+                                    + mHotelFromBase.mPostCode, mHotelFromBase.mLng,
+                            mHotelFromBase.mLat, "Hotel", mHotelFromBase.mImageUrl);
+    
+                    Intent intent = new Intent(HotelActivity.this, NavigateToActivity.class);
+                    intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
+                    intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE, mHotelFromBase.mImageUrl);
+                    startActivityForResult(intent, NavigateToActivity.REQUEST);
+                }
+                else
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HotelActivity.this);
+                    builder.setMessage(getResources().getString(R.string.map_offline))
+                           .setCancelable(false)
+                           .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                               public void onClick(DialogInterface dialog, int id) {
+                               }
+                           });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
             }
         });
     }

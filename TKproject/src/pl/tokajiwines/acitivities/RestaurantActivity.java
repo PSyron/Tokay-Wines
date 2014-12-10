@@ -1,7 +1,9 @@
 
 package pl.tokajiwines.acitivities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -101,19 +103,34 @@ public class RestaurantActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                Place extraPlace = new Place(mRestaurantFromBase.mIdRestaurant,
-                        mRestaurantFromBase.mName, mRestaurantFromBase.mStreetName + " "
-                                + mRestaurantFromBase.mStreetNumber + " "
-                                + mRestaurantFromBase.mHouseNumber + " "
-                                + mRestaurantFromBase.mCity + " " + mRestaurantFromBase.mPostCode,
-                        mRestaurantFromBase.mLng, mRestaurantFromBase.mLat, "Restaurant",
-                        mRestaurantFromBase.mImageUrl);
-
-                Intent intent = new Intent(RestaurantActivity.this, NavigateToActivity.class);
-                intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
-                intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE,
-                        mRestaurantFromBase.mImageUrl);
-                startActivityForResult(intent, NavigateToActivity.REQUEST);
+                if (App.isOnline(RestaurantActivity.this))
+                {
+                    Place extraPlace = new Place(mRestaurantFromBase.mIdRestaurant,
+                            mRestaurantFromBase.mName, mRestaurantFromBase.mStreetName + " "
+                                    + mRestaurantFromBase.mStreetNumber + " "
+                                    + mRestaurantFromBase.mHouseNumber + " "
+                                    + mRestaurantFromBase.mCity + " " + mRestaurantFromBase.mPostCode,
+                            mRestaurantFromBase.mLng, mRestaurantFromBase.mLat, "Restaurant",
+                            mRestaurantFromBase.mImageUrl);
+    
+                    Intent intent = new Intent(RestaurantActivity.this, NavigateToActivity.class);
+                    intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
+                    intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE,
+                            mRestaurantFromBase.mImageUrl);
+                    startActivityForResult(intent, NavigateToActivity.REQUEST);
+                }
+                else
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RestaurantActivity.this);
+                    builder.setMessage(getResources().getString(R.string.map_offline))
+                           .setCancelable(false)
+                           .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                               public void onClick(DialogInterface dialog, int id) {
+                               }
+                           });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
             }
         });
     }

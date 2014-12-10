@@ -162,5 +162,6 @@
     <string name="paulina_malinka">Paulina Malinka - grafik</string>
     <string name="search_hint">Wpisz szukaną nazwę</string>
     <string name="tab_tours">Wycieczki</string>
+    <string name="map_offline">Do wyświetlenia mapy potrzebne jest połączenie z Internetem.</string>
 
 </resources>

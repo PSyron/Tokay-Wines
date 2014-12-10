@@ -1,7 +1,9 @@
 
 package pl.tokajiwines.acitivities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -132,18 +135,34 @@ public class ProducerActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                String tempAddress = mProducerFromBase.mStreetName + " "
-                        + mProducerFromBase.mStreetNumber + " " + mProducerFromBase.mHouseNumber
-                        + " " + mProducerFromBase.mCity + " " + mProducerFromBase.mPostCode;
-
-                Place extraPlace = new Place(mProducerFromBase.mIdProducer,
-                        mProducerFromBase.mName, tempAddress, mProducerFromBase.mLng,
-                        mProducerFromBase.mLat, "Producer", mProducerFromBase.mImageUrl);
-
-                Intent intent = new Intent(ProducerActivity.this, NearPlaceActivity.class);
-                intent.putExtra(NearPlaceActivity.TAG_PLACE, extraPlace);
-
-                startActivityForResult(intent, NearPlaceActivity.REQUEST);
+                
+                if (App.isOnline(ProducerActivity.this))
+                {
+                    String tempAddress = mProducerFromBase.mStreetName + " "
+                            + mProducerFromBase.mStreetNumber + " " + mProducerFromBase.mHouseNumber
+                            + " " + mProducerFromBase.mCity + " " + mProducerFromBase.mPostCode;
+    
+                    Place extraPlace = new Place(mProducerFromBase.mIdProducer,
+                            mProducerFromBase.mName, tempAddress, mProducerFromBase.mLng,
+                            mProducerFromBase.mLat, "Producer", mProducerFromBase.mImageUrl);
+    
+                    Intent intent = new Intent(ProducerActivity.this, NearPlaceActivity.class);
+                    intent.putExtra(NearPlaceActivity.TAG_PLACE, extraPlace);
+    
+                    startActivityForResult(intent, NearPlaceActivity.REQUEST);
+                }
+                else
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ProducerActivity.this);
+                    builder.setMessage(getResources().getString(R.string.map_offline))
+                           .setCancelable(false)
+                           .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                               public void onClick(DialogInterface dialog, int id) {
+                               }
+                           });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
 
             }
         });
@@ -151,18 +170,33 @@ public class ProducerActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                String tempAddress = mProducerFromBase.mStreetName + " "
-                        + mProducerFromBase.mStreetNumber + " " + mProducerFromBase.mHouseNumber
-                        + " " + mProducerFromBase.mCity + " " + mProducerFromBase.mPostCode;
-
-                Place extraPlace = new Place(mProducerFromBase.mIdProducer,
-                        mProducerFromBase.mName, tempAddress, mProducerFromBase.mLng,
-                        mProducerFromBase.mLat, "Producer", mProducerFromBase.mImageUrl);
-
-                Intent intent = new Intent(ProducerActivity.this, NavigateToActivity.class);
-                intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
-                intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE, mProducerFromBase.mImageUrl);
-                startActivityForResult(intent, NavigateToActivity.REQUEST);
+                if (App.isOnline(ProducerActivity.this))
+                {
+                    String tempAddress = mProducerFromBase.mStreetName + " "
+                            + mProducerFromBase.mStreetNumber + " " + mProducerFromBase.mHouseNumber
+                            + " " + mProducerFromBase.mCity + " " + mProducerFromBase.mPostCode;
+    
+                    Place extraPlace = new Place(mProducerFromBase.mIdProducer,
+                            mProducerFromBase.mName, tempAddress, mProducerFromBase.mLng,
+                            mProducerFromBase.mLat, "Producer", mProducerFromBase.mImageUrl);
+    
+                    Intent intent = new Intent(ProducerActivity.this, NavigateToActivity.class);
+                    intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
+                    intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE, mProducerFromBase.mImageUrl);
+                    startActivityForResult(intent, NavigateToActivity.REQUEST);
+                }
+                else
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ProducerActivity.this);
+                    builder.setMessage(getResources().getString(R.string.map_offline))
+                           .setCancelable(false)
+                           .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                               public void onClick(DialogInterface dialog, int id) {
+                               }
+                           });
+                    AlertDialog alert = builder.create();
+                    alert.show();   
+                }
 
             }
         });

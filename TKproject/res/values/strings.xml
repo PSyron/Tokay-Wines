@@ -196,5 +196,6 @@
     <string name="title_activity_searchable">SearchableActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="tab_tours">Tours</string>
+    <string name="map_offline">You shoud have an Internet connection to see map.</string>
 
 </resources>

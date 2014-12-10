@@ -168,6 +168,8 @@ public class SearchableActivity extends BaseActivity {
 
     public void fillView() {
         if (mSearchResult.wine != null) {
+            
+            mWineLayout.setVisibility(View.VISIBLE);
 
             mWineItem.setOnClickListener(new View.OnClickListener() {
 
@@ -247,6 +249,8 @@ public class SearchableActivity extends BaseActivity {
         }
 
         if (mSearchResult.producer != null) {
+            
+            mProducerLayout.setVisibility(View.VISIBLE);
 
             mProducerItem.setOnClickListener(new View.OnClickListener() {
 
@@ -296,6 +300,8 @@ public class SearchableActivity extends BaseActivity {
         }
 
         if (mSearchResult.hotel != null) {
+            
+            mHotelLayout.setVisibility(View.VISIBLE);
 
             mHotelItem.setOnClickListener(new View.OnClickListener() {
 
@@ -356,6 +362,8 @@ public class SearchableActivity extends BaseActivity {
 
         }
         if (mSearchResult.restaurant != null) {
+            
+            mRestaurantLayout.setVisibility(View.VISIBLE);
 
             mRestaurantItem.setOnClickListener(new View.OnClickListener() {
 
