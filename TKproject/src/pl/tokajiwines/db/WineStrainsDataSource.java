@@ -47,15 +47,18 @@ public class WineStrainsDataSource {
         if (cursor.getCount() == 0)
             Log.w(LOG, "Wine strains for wine with id= " + idWine + " don't exist");
         else {
+            StrainsDataSource sDs = new StrainsDataSource(mContext);
+            sDs.open();
             cursor.moveToFirst();
             strains = new WineStrain[cursor.getCount()];
             int i = 0;
             while (!cursor.isAfterLast()) {
-                strains[i] = cursorToWineStrain(cursor);
+                strains[i] = cursorToWineStrain(cursor, sDs);
                 cursor.moveToNext();
                 i++;
             }
             cursor.close();
+            sDs.close();
         }
 
         if (strains == null) Log.w(LOG, "Wine's strains are empty()");
@@ -98,26 +101,26 @@ public class WineStrainsDataSource {
         Cursor cursor = database.query(DatabaseHelper.TABLE_WINE_STRAINS, allColumns, null, null,
                 null, null, null);
         cursor.moveToFirst();
+        StrainsDataSource sDs = new StrainsDataSource(mContext);
+        sDs.open();
         while (!cursor.isAfterLast()) {
-            WineStrain wineStrain = cursorToWineStrain(cursor);
+            WineStrain wineStrain = cursorToWineStrain(cursor, sDs);
             wineStrains.add(wineStrain);
             cursor.moveToNext();
         }
+        sDs.close();
         cursor.close();
         if (wineStrains.isEmpty()) Log.w(LOG, "WineStrains are empty()");
         return wineStrains;
     }
 
-    private WineStrain cursorToWineStrain(Cursor cursor) {
+    private WineStrain cursorToWineStrain(Cursor cursor, StrainsDataSource sDs) {
         WineStrain wineStrain = new WineStrain();
-        StrainsDataSource sDs = new StrainsDataSource(mContext);
         wineStrain.mIdWineStrain = cursor.getInt(0);
         wineStrain.mContent = cursor.getInt(1);
         wineStrain.mIdStrain_ = cursor.getInt(2);
         wineStrain.mIdWine_ = cursor.getInt(3);
-        sDs.open();
         wineStrain.strain = sDs.getStrain(wineStrain.mIdStrain_);
-        sDs.close();
         return wineStrain;
     }
 

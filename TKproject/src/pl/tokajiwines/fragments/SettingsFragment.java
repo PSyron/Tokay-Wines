@@ -157,6 +157,14 @@ public class SettingsFragment extends BaseFragment {
             public void onClick(View v) {
                 languageDialog.show();
 
+                //changing color of divider
+                /*                AlertDialog dialog = languageDialog.show();
+                                int titleDividerId = getResources().getIdentifier("titleDivider", "id", "android");
+                                View titleDivider = dialog.findViewById(titleDividerId);
+                                if (titleDivider != null)
+                                    titleDivider.setBackgroundColor(getResources().getColor(
+                                            R.color.filter_text));*/
+
             }
         });
 

@@ -50,33 +50,34 @@ public class NewsDataSource {
         cursor.moveToFirst();
         NewsListItem[] newses = new NewsListItem[cursor.getCount()];
         int i = 0;
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+        dDs.open();
+        iDs.open();
         while (!cursor.isAfterLast()) {
-            NewsListItem news = cursorToNewsListItem(cursor);
+            NewsListItem news = cursorToNewsListItem(cursor, iDs, dDs);
             newses[i] = news;
             cursor.moveToNext();
             i++;
         }
+        iDs.close();
+        dDs.close();
         cursor.close();
         if (newses == null) Log.w(LOG, "Newses are empty()");
 
         return newses;
     }
 
-    private NewsListItem cursorToNewsListItem(Cursor cursor) {
+    private NewsListItem cursorToNewsListItem(Cursor cursor, ImagesDataSource iDs,
+            DescriptionsDataSource dDs) {
         News n = new News();
         n.mIdNews = cursor.getInt(0);
         n.mHeaderEng = cursor.getString(1);
         n.mHeaderPl = cursor.getString(2);
-        ImagesDataSource iDs = new ImagesDataSource(mContext);
-        iDs.open();
         n.mIdImageCover_ = cursor.getInt(3);
         n.imageCover = iDs.getImageUrl(n.mIdImageCover_);
-        iDs.close();
-        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
-        dDs.open();
         n.mIdDescription_ = cursor.getInt(4);
         n.description = dDs.getDescriptionShort(n.mIdDescription_);
-        dDs.close();
         return new NewsListItem(n);
     }
 
@@ -90,27 +91,28 @@ public class NewsDataSource {
         if (cursor.getCount() == 0)
             Log.w(LOG, "News with id= " + id + " doesn't exists");
         else {
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+            iDs.open();
+            dDs.open();
             cursor.moveToFirst();
-            nd = cursorToNewsDetails(cursor);
+            nd = cursorToNewsDetails(cursor, iDs, dDs);
+            iDs.close();
+            dDs.close();
         }
         return nd;
     }
 
-    private NewsDetails cursorToNewsDetails(Cursor cursor) {
+    private NewsDetails cursorToNewsDetails(Cursor cursor, ImagesDataSource iDs,
+            DescriptionsDataSource dDs) {
         News n = new News();
         n.mIdNews = cursor.getInt(0);
         n.mHeaderEng = cursor.getString(1);
         n.mHeaderPl = cursor.getString(2);
-        ImagesDataSource iDs = new ImagesDataSource(mContext);
-        iDs.open();
         n.mIdImageCover_ = cursor.getInt(3);
         n.imageCover = iDs.getImageUrl(n.mIdImageCover_);
-        iDs.close();
-        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
-        dDs.open();
         n.mIdDescription_ = cursor.getInt(4);
         n.description = dDs.getDescriptionVast(n.mIdDescription_);
-        dDs.close();
         n.mStartDate = cursor.getString(5);
         n.mEndDate = cursor.getString(6);
         n.mEntryDate = cursor.getString(7);
