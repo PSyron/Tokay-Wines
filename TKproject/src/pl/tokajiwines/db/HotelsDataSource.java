@@ -64,8 +64,17 @@ public class HotelsDataSource {
         if (cursor == null)
             Log.w(LOG, "Hotel with id= " + id + " doesn't exists");
         else {
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+            AddressesDataSource aDs = new AddressesDataSource(mContext);
+            dDs.open();
+            aDs.open();
+            iDs.open();
             cursor.moveToFirst();
-            hotel = cursorToHotelDetails(cursor);
+            hotel = cursorToHotelDetails(cursor, iDs, dDs, aDs);
+            iDs.close();
+            aDs.close();
+            dDs.close();
         }
         cursor.close();
         return hotel;
@@ -119,12 +128,18 @@ public class HotelsDataSource {
         cursor.moveToFirst();
         HotelListItem[] hotels = new HotelListItem[cursor.getCount()];
         int i = 0;
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        AddressesDataSource aDs = new AddressesDataSource(mContext);
+        iDs.open();
+        aDs.open();
         while (!cursor.isAfterLast()) {
-            HotelListItem hotel = cursorToHotelListItem(cursor);
+            HotelListItem hotel = cursorToHotelListItem(cursor, iDs, aDs);
             hotels[i] = hotel;
             cursor.moveToNext();
             i++;
         }
+        aDs.close();
+        iDs.close();
         cursor.close();
         if (hotels == null) Log.w(LOG, "Hotels are empty()");
 
@@ -141,16 +156,22 @@ public class HotelsDataSource {
         if (cursor.getCount() == 0) {
             Log.e(LOG, "Hotels are empty()");
         } else {
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            AddressesDataSource aDs = new AddressesDataSource(mContext);
+            iDs.open();
+            aDs.open();
             cursor.moveToFirst();
             hotels = new HotelListItem[cursor.getCount()];
             int i = 0;
             while (!cursor.isAfterLast()) {
-                HotelListItem hotel = cursorToHotelListItem(cursor);
+                HotelListItem hotel = cursorToHotelListItem(cursor, iDs, aDs);
                 hotels[i] = hotel;
                 Log.e("Hotel", hotel.mName);
                 cursor.moveToNext();
                 i++;
             }
+            aDs.close();
+            iDs.close();
             cursor.close();
         }
 
@@ -188,43 +209,30 @@ public class HotelsDataSource {
         return hotel;
     }
 
-    private HotelDetails cursorToHotelDetails(Cursor cursor) {
-        ImagesDataSource iDs = new ImagesDataSource(mContext);
-        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
-        AddressesDataSource aDs = new AddressesDataSource(mContext);
+    private HotelDetails cursorToHotelDetails(Cursor cursor, ImagesDataSource iDs,
+            DescriptionsDataSource dDs, AddressesDataSource aDs) {
         Hotel hotel = new Hotel();
         hotel.mIdHotel = cursor.getInt(0);
         hotel.mEmail = cursor.getString(1);
         hotel.mLink = cursor.getString(2);
         hotel.mName = cursor.getString(3);
         hotel.mPhone = cursor.getString(4);
-        dDs.open();
         hotel.description = dDs.getDescriptionVast(cursor.getInt(5));
-        dDs.close();
-        aDs.open();
         hotel.address = aDs.getAddress(cursor.getInt(6));
-        aDs.close();
         hotel.mIdUser_ = cursor.getInt(7);
-        iDs.open();
         hotel.imageCover = iDs.getImageUrl(cursor.getInt(8));
-        iDs.close();
         hotel.mLastUpdate = cursor.getString(9);
 
         return new HotelDetails(hotel);
     }
 
-    private HotelListItem cursorToHotelListItem(Cursor cursor) {
+    private HotelListItem cursorToHotelListItem(Cursor cursor, ImagesDataSource iDs,
+            AddressesDataSource aDs) {
         Hotel h = new Hotel();
         h.mIdHotel = cursor.getInt(0);
         h.mName = cursor.getString(1);
-        ImagesDataSource iDs = new ImagesDataSource(mContext);
-        AddressesDataSource aDs = new AddressesDataSource(mContext);
-        iDs.open();
         h.imageCover = iDs.getImageUrl(cursor.getInt(3));
-        iDs.close();
-        aDs.open();
         h.address = aDs.getAddress(cursor.getInt(2));
-        aDs.close();
         h.mPhone = cursor.getString(4);
         return new HotelListItem(h);
     }

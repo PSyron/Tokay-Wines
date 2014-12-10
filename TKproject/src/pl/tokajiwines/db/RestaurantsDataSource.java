@@ -64,8 +64,17 @@ public class RestaurantsDataSource {
         if (cursor == null)
             Log.w(LOG, "Restaurant with id= " + id + " doesn't exists");
         else {
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
+            AddressesDataSource aDs = new AddressesDataSource(mContext);
+            dDs.open();
+            aDs.open();
+            iDs.open();
             cursor.moveToFirst();
-            restaurant = cursorToRestaurantDetails(cursor);
+            restaurant = cursorToRestaurantDetails(cursor, iDs, dDs, aDs);
+            dDs.close();
+            aDs.close();
+            iDs.close();
         }
         cursor.close();
         return restaurant;
@@ -79,13 +88,19 @@ public class RestaurantsDataSource {
         cursor.moveToFirst();
         RestaurantListItem[] restaurants = new RestaurantListItem[cursor.getCount()];
         int i = 0;
+        ImagesDataSource iDs = new ImagesDataSource(mContext);
+        AddressesDataSource aDs = new AddressesDataSource(mContext);
+        iDs.open();
+        aDs.open();
         while (!cursor.isAfterLast()) {
-            RestaurantListItem restaurant = cursorToRestaurantListItem(cursor);
+            RestaurantListItem restaurant = cursorToRestaurantListItem(cursor, iDs, aDs);
             restaurants[i] = restaurant;
             cursor.moveToNext();
             i++;
         }
         cursor.close();
+        iDs.close();
+        aDs.close();
         if (restaurants == null) Log.w(LOG, "Restaurants are empty()");
 
         return restaurants;
@@ -101,16 +116,22 @@ public class RestaurantsDataSource {
         if (cursor.getCount() == 0) {
             Log.e(LOG, "Restaurants are empty()");
         } else {
+            ImagesDataSource iDs = new ImagesDataSource(mContext);
+            AddressesDataSource aDs = new AddressesDataSource(mContext);
+            iDs.open();
+            aDs.open();
             cursor.moveToFirst();
             restaurants = new RestaurantListItem[cursor.getCount()];
             int i = 0;
             while (!cursor.isAfterLast()) {
-                RestaurantListItem restaurant = cursorToRestaurantListItem(cursor);
+                RestaurantListItem restaurant = cursorToRestaurantListItem(cursor, iDs, aDs);
                 restaurants[i] = restaurant;
                 cursor.moveToNext();
                 i++;
             }
             cursor.close();
+            iDs.close();
+            aDs.close();
         }
 
         return restaurants;
@@ -189,42 +210,29 @@ public class RestaurantsDataSource {
         return restaurant;
     }
 
-    private RestaurantListItem cursorToRestaurantListItem(Cursor cursor) {
+    private RestaurantListItem cursorToRestaurantListItem(Cursor cursor, ImagesDataSource iDs,
+            AddressesDataSource aDs) {
         Restaurant r = new Restaurant();
         r.mIdRestaurant = cursor.getInt(0);
         r.mName = cursor.getString(1);
-        ImagesDataSource iDs = new ImagesDataSource(mContext);
-        AddressesDataSource aDs = new AddressesDataSource(mContext);
-        iDs.open();
         r.imageCover = iDs.getImageUrl(cursor.getInt(3));
-        iDs.close();
-        aDs.open();
         r.address = aDs.getAddress(cursor.getInt(2));
-        aDs.close();
         r.mPhone = cursor.getString(4);
         return new RestaurantListItem(r);
     }
 
-    private RestaurantDetails cursorToRestaurantDetails(Cursor cursor) {
-        ImagesDataSource iDs = new ImagesDataSource(mContext);
-        DescriptionsDataSource dDs = new DescriptionsDataSource(mContext);
-        AddressesDataSource aDs = new AddressesDataSource(mContext);
+    private RestaurantDetails cursorToRestaurantDetails(Cursor cursor, ImagesDataSource iDs,
+            DescriptionsDataSource dDs, AddressesDataSource aDs) {
         Restaurant restaurant = new Restaurant();
         restaurant.mIdRestaurant = cursor.getInt(0);
         restaurant.mEmail = cursor.getString(1);
         restaurant.mLink = cursor.getString(2);
         restaurant.mName = cursor.getString(3);
         restaurant.mPhone = cursor.getString(4);
-        dDs.open();
         restaurant.description = dDs.getDescriptionVast(cursor.getInt(5));
-        dDs.close();
-        aDs.open();
         restaurant.address = aDs.getAddress(cursor.getInt(6));
-        aDs.close();
         restaurant.mIdUser_ = cursor.getInt(7);
-        iDs.open();
         restaurant.imageCover = iDs.getImageUrl(cursor.getInt(8));
-        iDs.close();
         restaurant.mLastUpdate = cursor.getString(9);
 
         return new RestaurantDetails(restaurant);
