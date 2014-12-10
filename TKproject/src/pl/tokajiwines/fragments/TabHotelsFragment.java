@@ -99,8 +99,6 @@ public class TabHotelsFragment extends BaseFragment {
             // otherwise, show message
 
             else {
-                /*  Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
-                          Toast.LENGTH_LONG).show();*/
                 mLoadHotelTask = new LoadHotelTask();
                 mLoadHotelTask.execute();
             }
@@ -126,7 +124,7 @@ public class TabHotelsFragment extends BaseFragment {
 
             mLoadHotelTask = null;
         }
-        
+
         if (mLoadHotelOnlineTask != null) {
 
             mLoadHotelOnlineTask.cancel(true);

@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -102,8 +101,6 @@ public class TabRestaurantsFragment extends BaseFragment {
             // otherwise, show message
 
             else {
-                Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
-                        Toast.LENGTH_LONG).show();
                 mLoadRestaurantTask = new LoadRestaurantTask();
                 mLoadRestaurantTask.execute();
             }
@@ -127,7 +124,7 @@ public class TabRestaurantsFragment extends BaseFragment {
 
             mLoadRestaurantTask = null;
         }
-        
+
         if (mLoadRestaurantOnlineTask != null) {
 
             mLoadRestaurantOnlineTask.cancel(true);
