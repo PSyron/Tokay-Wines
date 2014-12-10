@@ -116,6 +116,9 @@
     <string name="route_to">Route to</string>
     <string name="check_route">Do You want to check route?</string>
     <string name="cancel_tour">Hide tour</string>
+    <string name="no_google_services_location_title">No permission for location service</string>
+    <string name="no_google_services_location">Would You like to allow localization Your device now? </string>
+     <string name="no_google_services_location_disabled">Localization service disabled, turn it on to use this feature </string>
 
     <!-- Guide -->
 

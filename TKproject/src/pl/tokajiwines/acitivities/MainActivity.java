@@ -3,13 +3,16 @@ package pl.tokajiwines.acitivities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +36,7 @@ import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.models.Place;
 import pl.tokajiwines.receivers.RepeatServiceNotificationReceiver;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
+import pl.tokajiwines.utils.SimpleLocation;
 import pl.tokajiwines.utils.SuggestionProvider;
 
 import java.util.Locale;
@@ -47,6 +51,7 @@ public class MainActivity extends Activity implements
     private NavigationDrawerFragment mNavigationDrawerFragment;
     boolean doubleBackToExitPressedOnce = false;
     public GetSearchItemsAsync mLoadSearchItemsTask;
+    static int currentFragment;
 
     public static final String FROM_NOTIFICATION = "tPlaceFromNotification";
     /**
@@ -96,7 +101,8 @@ public class MainActivity extends Activity implements
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-        onNavigationDrawerItemSelected(1);
+        currentFragment = 1;
+
         // Moved to StartWineImageActivity
         //initLanguage();
 
@@ -177,38 +183,83 @@ public class MainActivity extends Activity implements
         FragmentManager fragmentManager = getFragmentManager();
         position -= 1;
         if (position == 0) {
+            currentFragment = position + 1;
             mTitle = getString(R.string.title_news);
             fragmentManager.beginTransaction().replace(R.id.container, NewsFragment.newInstance())
                     .commit();
         } else if (position == 1) {
+            currentFragment = position + 1;
             mTitle = getString(R.string.title_wines);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, WinesFilterFragment.newInstance(this)).commit();
         } else if (position == 2) {
+            currentFragment = position + 1;
             mTitle = getString(R.string.title_wineyards);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, ProducersFragment.newInstance()).commit();
         } else if (position == 3) {
-            mTitle = getString(R.string.title_map);
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, MapFragment.newInstance(this)).commit();
+
+            SimpleLocation location = new SimpleLocation(this);
+            if (location.hasLocationEnabled()) {
+                currentFragment = position + 1;
+                mTitle = getString(R.string.title_map);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, MapFragment.newInstance(this)).commit();
+            } else {
+                showDialogWhenNoLocationService();
+            }
+            //dialog
         } else if (position == 4) {
+            currentFragment = position + 1;
             mTitle = getString(R.string.title_tour);
             fragmentManager.beginTransaction().replace(R.id.container, GuideFragment.newInstance())
                     .commit();
+
         } else {
+            currentFragment = position + 1;
             mTitle = getString(R.string.title_settings);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, SettingsFragment.newInstance(this)).commit();
         }
     }
 
+    public void showDialogWhenNoLocationService() {
+        new AlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.no_google_services_location_title))
+                .setMessage(getResources().getString(R.string.no_google_services_location))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Getting URL to the Google Directions API
+
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+
+                }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        onNavigationDrawerItemSelected(currentFragment);
+                        dialog.dismiss();
+                    }
+                }).show();
+    }
+
     @Override
     public void OnTourPicked(int position) {
-        FragmentManager fragmentManager = getFragmentManager();
-        mTitle = getString(R.string.title_map);
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, MapFragment.newInstance(this, position, true)).commit();
+        SimpleLocation sl = new SimpleLocation(this);
+        if (sl.hasLocationEnabled()) {
+            currentFragment = 4;
+            FragmentManager fragmentManager = getFragmentManager();
+            mTitle = getString(R.string.title_map);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, MapFragment.newInstance(this, position, true))
+                    .commit();
+        } else {
+            Toast.makeText(this,
+                    getResources().getString(R.string.no_google_services_location_disabled),
+                    Toast.LENGTH_LONG).show();
+            ;
+        }
+
     }
 
     public void onSectionAttached(int number) {

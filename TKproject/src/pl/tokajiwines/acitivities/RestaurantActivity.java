@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -31,6 +32,7 @@ import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.models.Place;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
+import pl.tokajiwines.utils.SimpleLocation;
 
 import java.io.File;
 import java.io.InputStream;
@@ -103,31 +105,40 @@ public class RestaurantActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                if (App.isOnline(RestaurantActivity.this))
-                {
-                    Place extraPlace = new Place(mRestaurantFromBase.mIdRestaurant,
-                            mRestaurantFromBase.mName, mRestaurantFromBase.mStreetName + " "
-                                    + mRestaurantFromBase.mStreetNumber + " "
-                                    + mRestaurantFromBase.mHouseNumber + " "
-                                    + mRestaurantFromBase.mCity + " " + mRestaurantFromBase.mPostCode,
-                            mRestaurantFromBase.mLng, mRestaurantFromBase.mLat, "Restaurant",
-                            mRestaurantFromBase.mImageUrl);
-    
-                    Intent intent = new Intent(RestaurantActivity.this, NavigateToActivity.class);
-                    intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
-                    intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE,
-                            mRestaurantFromBase.mImageUrl);
-                    startActivityForResult(intent, NavigateToActivity.REQUEST);
-                }
-                else
-                {
+                if (App.isOnline(RestaurantActivity.this)) {
+                    SimpleLocation sl = new SimpleLocation(RestaurantActivity.this);
+                    if (!sl.hasLocationEnabled()) {
+
+                        Toast.makeText(
+                                RestaurantActivity.this,
+                                getResources().getString(
+                                        R.string.no_google_services_location_disabled),
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Place extraPlace = new Place(mRestaurantFromBase.mIdRestaurant,
+                                mRestaurantFromBase.mName, mRestaurantFromBase.mStreetName + " "
+                                        + mRestaurantFromBase.mStreetNumber + " "
+                                        + mRestaurantFromBase.mHouseNumber + " "
+                                        + mRestaurantFromBase.mCity + " "
+                                        + mRestaurantFromBase.mPostCode, mRestaurantFromBase.mLng,
+                                mRestaurantFromBase.mLat, "Restaurant",
+                                mRestaurantFromBase.mImageUrl);
+
+                        Intent intent = new Intent(RestaurantActivity.this,
+                                NavigateToActivity.class);
+                        intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
+                        intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE,
+                                mRestaurantFromBase.mImageUrl);
+                        startActivityForResult(intent, NavigateToActivity.REQUEST);
+                    }
+                } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(RestaurantActivity.this);
                     builder.setMessage(getResources().getString(R.string.map_offline))
-                           .setCancelable(false)
-                           .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                               public void onClick(DialogInterface dialog, int id) {
-                               }
-                           });
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
@@ -215,7 +226,7 @@ public class RestaurantActivity extends BaseActivity {
 
             mLoadRestaurantTask = null;
         }
-        
+
         if (mLoadRestaurantOnlineTask != null) {
 
             mLoadRestaurantOnlineTask.cancel(true);

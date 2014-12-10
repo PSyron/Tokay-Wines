@@ -58,6 +58,7 @@ import pl.tokajiwines.utils.DirectionsJSONParser;
 //import pl.tokajiwines.utils.GPSTracker;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
+import pl.tokajiwines.utils.SimpleLocation;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -86,6 +87,7 @@ public class MapFragment extends BaseFragment {
     LatLng myPosition; //TODO temp
     boolean trasaIsPicked = false;
     Place mSelectedPlace;
+    SimpleLocation mSLocation;
 
     private Place[] mNearbyPlaces;
 
@@ -172,11 +174,12 @@ public class MapFragment extends BaseFragment {
         if (container == null) {
             return null;
         }
+
         sUrl = getResources().getString(R.string.UrlNearLatLngPlace);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
         View v = inflater.inflate(R.layout.fragment_map, container, false);
-
+        mSLocation = new SimpleLocation(getActivity());
         mMapView = (MapView) v.findViewById(R.id.map);
         if (App.debug_mode) {
             myPosition = new LatLng(48.1295, 21.4089);
@@ -185,7 +188,9 @@ public class MapFragment extends BaseFragment {
             //            mGPStrack.getLocation();
             //            myPosition = mGPStrack.getLocationLatLng();
             //            mGPStrack.stopUsingGPS();
+
             myPosition = App.getCurrentLatLng(getActivity());
+
         }
         mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
         mUiTours = (TextView) v.findViewById(R.id.map_tours);
@@ -387,19 +392,28 @@ public class MapFragment extends BaseFragment {
                     builderSingle.show();
 
                 } else {
-                    trasaIsPicked = false;
-                    googleMap.clear();
-                    mUiPlaceBox.setVisibility(View.GONE);
-                    mUiTours.setText(getResources().getString(R.string.preffered_tours));
-                    mNearbyPlaces = null;
-                    if (App.isOnline(mCtx)) {
 
-                        new LoadNearPlaces().execute(myPosition);
+                    if (mSLocation.hasLocationEnabled()) {
+                        trasaIsPicked = false;
+                        googleMap.clear();
+                        mUiPlaceBox.setVisibility(View.GONE);
+                        mUiTours.setText(getResources().getString(R.string.preffered_tours));
+                        mNearbyPlaces = null;
+                        if (App.isOnline(mCtx)) {
+
+                            new LoadNearPlaces().execute(myPosition);
+                        }
+                        MarkerOptions marker = new MarkerOptions().position(myPosition).title(
+                                getResources().getString(R.string.here_u_are));
+                        marker.icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                        googleMap.addMarker(marker);
+
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(myPosition).zoom(10).build();
+                        googleMap.animateCamera(CameraUpdateFactory
+                                .newCameraPosition(cameraPosition));
                     }
-                    CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition)
-                            .zoom(10).build();
-                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
                 }
             }
         });
@@ -657,6 +671,10 @@ public class MapFragment extends BaseFragment {
             super.onPostExecute(file_url);
             Log.e("Async on PostExecute", "Executing dissmis progress bar");
             mProgDial.dismiss();
+            MarkerOptions marker = new MarkerOptions().position(myPosition).title(
+                    getResources().getString(R.string.here_u_are));
+            marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            googleMap.addMarker(marker);
 
             if (!(mNearbyPlaces.length < 1)) {
                 addMarkers(mNearbyPlaces);

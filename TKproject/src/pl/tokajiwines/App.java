@@ -1,9 +1,12 @@
 
 package pl.tokajiwines;
 
+import android.app.AlertDialog;
 import android.app.Application;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -11,6 +14,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
 import android.widget.ImageView;
 
 import com.google.android.gms.location.LocationClient;
@@ -184,10 +188,54 @@ public class App extends Application {
             return new LatLng(lat, lng);
         } else {
             // ask the user to enable location access
-            location.openSettings(ctx);
-            getCurrentLatLng(ctx);
+            SimpleLocation.openSettings(ctx);
+
         }
         return null;
 
     }
+
+    public static LatLng getCurrentLatLngService(Context ctx) {
+
+        // construct a new instance for this library
+        SimpleLocation location = new SimpleLocation(ctx);
+
+        if (location.hasLocationEnabled()) {
+            // ask the device to update the location data
+            location.beginUpdates();
+
+            // get the location from the device (alternative A)
+            double lat = location.getLatitude();
+            double lng = location.getLongitude();
+
+            // get the location from the device (alternative B)
+            //SimpleLocation.Point coords = location.getPosition();
+
+            // ask the device to stop location updates to save battery
+            location.endUpdates();
+            return new LatLng(lat, lng);
+        }
+        return null;
+
+    }
+
+    public void showDialogWhenNoLocationService() {
+        new AlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.no_google_services_location_title))
+                .setMessage(getResources().getString(R.string.no_google_services_location))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Getting URL to the Google Directions API
+
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+
+                }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                    }
+                }).show();
+    }
+
 }

@@ -1,6 +1,7 @@
 
 package pl.tokajiwines.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -419,6 +420,7 @@ public class SimpleLocation {
         if (mCachedPosition != null) {
             return mCachedPosition;
         } else {
+
             return mLocationManager.getLastKnownLocation(getProviderName());
         }
     }
@@ -437,7 +439,9 @@ public class SimpleLocation {
      *            the Context reference to start the Intent from
      */
     public static void openSettings(final Context context) {
-        context.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        ((Activity) context).startActivityForResult(new Intent(
+                Settings.ACTION_LOCATION_SOURCE_SETTINGS), 0);
+
     }
 
     /**

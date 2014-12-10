@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -31,6 +32,7 @@ import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.models.Place;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
+import pl.tokajiwines.utils.SimpleLocation;
 
 import java.io.File;
 import java.io.InputStream;
@@ -99,28 +101,37 @@ public class HotelActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                if (App.isOnline(HotelActivity.this))
-                {
-                    Place extraPlace = new Place(mHotelFromBase.mIdHotel, mHotelFromBase.mName,
-                            mHotelFromBase.mStreetName + " " + mHotelFromBase.mStreetNumber + " "
-                                    + mHotelFromBase.mHouseNumber + " " + mHotelFromBase.mCity + " "
-                                    + mHotelFromBase.mPostCode, mHotelFromBase.mLng,
-                            mHotelFromBase.mLat, "Hotel", mHotelFromBase.mImageUrl);
-    
-                    Intent intent = new Intent(HotelActivity.this, NavigateToActivity.class);
-                    intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
-                    intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE, mHotelFromBase.mImageUrl);
-                    startActivityForResult(intent, NavigateToActivity.REQUEST);
-                }
-                else
-                {
+                if (App.isOnline(HotelActivity.this)) {
+                    SimpleLocation sl = new SimpleLocation(HotelActivity.this);
+                    if (!sl.hasLocationEnabled()) {
+
+                        Toast.makeText(
+                                HotelActivity.this,
+                                getResources().getString(
+                                        R.string.no_google_services_location_disabled),
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Place extraPlace = new Place(mHotelFromBase.mIdHotel, mHotelFromBase.mName,
+                                mHotelFromBase.mStreetName + " " + mHotelFromBase.mStreetNumber
+                                        + " " + mHotelFromBase.mHouseNumber + " "
+                                        + mHotelFromBase.mCity + " " + mHotelFromBase.mPostCode,
+                                mHotelFromBase.mLng, mHotelFromBase.mLat, "Hotel",
+                                mHotelFromBase.mImageUrl);
+
+                        Intent intent = new Intent(HotelActivity.this, NavigateToActivity.class);
+                        intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
+                        intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE,
+                                mHotelFromBase.mImageUrl);
+                        startActivityForResult(intent, NavigateToActivity.REQUEST);
+                    }
+                } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(HotelActivity.this);
                     builder.setMessage(getResources().getString(R.string.map_offline))
-                           .setCancelable(false)
-                           .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                               public void onClick(DialogInterface dialog, int id) {
-                               }
-                           });
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
@@ -220,7 +231,7 @@ public class HotelActivity extends BaseActivity {
 
             mLoadHotelTask = null;
         }
-        
+
         if (mLoadHotelOnlineTask != null) {
 
             mLoadHotelOnlineTask.cancel(true);

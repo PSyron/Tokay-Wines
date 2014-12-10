@@ -8,9 +8,9 @@ import android.os.IBinder;
 import pl.tokajiwines.App;
 import pl.tokajiwines.asyncs.GetNearPlacesAsync;
 import pl.tokajiwines.fragments.SettingsFragment;
-import pl.tokajiwines.utils.GPSTracker;
 import pl.tokajiwines.utils.Log;
 import pl.tokajiwines.utils.SharedPreferencesHelper;
+import pl.tokajiwines.utils.SimpleLocation;
 
 public class NotificationService extends Service {
 
@@ -23,10 +23,13 @@ public class NotificationService extends Service {
                 SettingsFragment.SharedKeyNotif, SettingsFragment.DefNotif)) {
             Log.e("onStartCommand", "execute ");
             if (App.isOnline(this)) {
-                GPSTracker gps = new GPSTracker(this);
-                if (gps.canGetLocation()) {
+                SimpleLocation sl = new SimpleLocation(this);
+                if (sl.hasLocationEnabled()) {
+
+                    // GPSTracker gps = new GPSTracker(this);
+                    //  if (gps.canGetLocation()) {
                     Log.e("serwis", "GetNearPlaces.execute");
-                    new GetNearPlacesAsync(this).execute(gps.getLocationLatLng());
+                    new GetNearPlacesAsync(this).execute(App.getCurrentLatLngService(this));
                     //TODO check gps.stopUsingGPS();
                 }
             }

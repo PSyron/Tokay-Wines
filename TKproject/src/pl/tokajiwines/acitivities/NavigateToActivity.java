@@ -31,7 +31,6 @@ import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.models.Place;
 import pl.tokajiwines.utils.DirectionsJSONParser;
-import pl.tokajiwines.utils.GPSTracker;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
 
@@ -64,7 +63,7 @@ public class NavigateToActivity extends BaseActivity {
     private GoogleMap googleMap;
     static String sUrl;
     private Place[] mNearbyPlaces;
-    GPSTracker mGPStrack;
+    // GPSTracker mGPStrack;
 
     View mUiPlaceBox;
     ImageView mUiPlaceImage;
