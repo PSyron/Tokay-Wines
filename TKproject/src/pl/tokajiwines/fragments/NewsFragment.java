@@ -129,6 +129,16 @@ public class NewsFragment extends BaseFragment {
 
             mLoadNewsTask = null;
         }
+        
+        if (mLoadNewsOnlineTask != null) {
+
+            mLoadNewsOnlineTask.cancel(true);
+            if (mProgDial != null) {
+                mProgDial.dismiss();
+            }
+
+            mLoadNewsOnlineTask = null;
+        }
         super.onPause();
     }
 

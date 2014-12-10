@@ -71,10 +71,11 @@ public class WinesDataSource {
 
     public WineListItem[] getWineItems(String s) {
         WineListItem[] wine = null;
-        Cursor cursor = database.query(DatabaseHelper.TABLE_WINES, allColumns, "'Name'" + "LIKE ?",
+        Cursor cursor = database.query(DatabaseHelper.TABLE_WINES, allColumns, "Name LIKE ?",
                 new String[] {
                     "%" + s + "%"
                 }, null, null, "Name");
+        System.out.println(cursor.getCount());
         if (cursor.getCount() == 0)
             Log.w(LOG, "Wine " + s + "\" doesn't exists");
         else {
@@ -159,7 +160,7 @@ public class WinesDataSource {
 
     public WineListItem getWineDetails(int idWine) {
         Log.i(LOG, "getWineDetails");
-        Cursor cursor = database.query(DatabaseHelper.TABLE_WINES, allColumns, "IdProducer_ = ?",
+        Cursor cursor = database.query(DatabaseHelper.TABLE_WINES, allColumns, "IdWine = ?",
                 new String[] {
                     idWine + ""
                 }, null, null, null);
@@ -168,11 +169,11 @@ public class WinesDataSource {
             Log.w(LOG, "Details for wine with id= " + idWine + " don't exist");
         else {
             cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
                 wine = cursorToWineListItem(cursor);
-            }
         }
         cursor.close();
+        
+        System.out.println("Done getting details");
         return wine;
     }
 

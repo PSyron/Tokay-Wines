@@ -19,6 +19,8 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.RestaurantsAdapter;
+import pl.tokajiwines.db.HotelsDataSource;
+import pl.tokajiwines.db.RestaurantsDataSource;
 import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.jsonresponses.RestaurantsResponse;
 import pl.tokajiwines.utils.JSONParser;
@@ -35,6 +37,7 @@ public class RestaurantsSearchActivity extends BaseActivity {
     RestaurantsAdapter mAdapter;
     boolean mIsViewFilled;
     LoadRestaurantsTask mLoadRestaurantsTask;
+    LoadRestaurantsOnlineTask mLoadRestaurantsOnlineTask;
     Context mContext;
     JSONParser mParser;
     ProgressDialog mProgDial;
@@ -91,15 +94,15 @@ public class RestaurantsSearchActivity extends BaseActivity {
         if (mRestaurantsList.length == 0) {
 
             if (App.isOnline(mContext)) {
-                mLoadRestaurantsTask = new LoadRestaurantsTask();
-                mLoadRestaurantsTask.execute();
+                mLoadRestaurantsOnlineTask = new LoadRestaurantsOnlineTask();
+                mLoadRestaurantsOnlineTask.execute();
             }
 
             // otherwise, show message
 
             else {
-                Toast.makeText(mContext, getResources().getString(R.string.cannot_connect),
-                        Toast.LENGTH_LONG).show();
+                mLoadRestaurantsTask = new LoadRestaurantsTask();
+                mLoadRestaurantsTask.execute();
             }
         } else {
             if (!mIsViewFilled) {
@@ -121,10 +124,69 @@ public class RestaurantsSearchActivity extends BaseActivity {
 
             mLoadRestaurantsTask = null;
         }
+        
+        if (mLoadRestaurantsOnlineTask != null) {
+
+            mLoadRestaurantsOnlineTask.cancel(true);
+            if (mProgDial != null) {
+                mProgDial.dismiss();
+            }
+
+            mLoadRestaurantsOnlineTask = null;
+        }
         super.onPause();
     }
-
+    
     class LoadRestaurantsTask extends AsyncTask<String, String, String> {
+
+        boolean failure = false;
+
+        // while data are loading, show progress dialog
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDial == null) {
+                mProgDial = new ProgressDialog(mContext);
+            }
+            mProgDial.setMessage(getResources().getString(R.string.loading_restaurants));
+            mProgDial.setIndeterminate(false);
+            mProgDial.setCancelable(true);
+            mProgDial.show();
+
+        }
+
+        // retrieving news data
+
+        @Override
+        protected String doInBackground(String... args) {
+
+            RestaurantsDataSource rDs = new RestaurantsDataSource(RestaurantsSearchActivity.this);
+            rDs.open();
+            mRestaurantsList = rDs.getRestaurants(mName);
+            rDs.close();
+
+            return null;
+
+        }
+
+        // create adapter that contains loaded data and show list of news
+
+        protected void onPostExecute(String file_url) {
+
+            super.onPostExecute(file_url);
+            mProgDial.dismiss();
+            if (mRestaurantsList != null) {
+                fillView();
+            }
+
+            mLoadRestaurantsTask = null;
+
+        }
+
+    }
+
+    class LoadRestaurantsOnlineTask extends AsyncTask<String, String, String> {
 
         boolean failure = false;
 
@@ -179,7 +241,7 @@ public class RestaurantsSearchActivity extends BaseActivity {
                 fillView();
             }
 
-            mLoadRestaurantsTask = null;
+            mLoadRestaurantsOnlineTask = null;
 
         }
 

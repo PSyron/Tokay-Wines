@@ -134,7 +134,7 @@ public class HotelsDataSource {
     public HotelListItem[] getHotels(String s) {
         Cursor cursor = database.query(DatabaseHelper.TABLE_HOTELS, new String[] {
                 "IdHotel", "Name", "IdAddress_", "IdImageCover_", "Phone"
-        }, "'Name'" + "LIKE ?", new String[] {
+        }, "Name LIKE ?", new String[] {
             "%" + s + "%"
         }, null, null, "Name");
         HotelListItem[] hotels = null;

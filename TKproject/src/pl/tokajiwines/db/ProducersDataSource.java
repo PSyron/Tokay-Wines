@@ -159,7 +159,7 @@ public class ProducersDataSource {
     public ProducerListItem[] getProducers(String s) {
         Cursor cursor = database.query(DatabaseHelper.TABLE_PRODUCERS, new String[] {
                 "IdProducer", "Name", "IdDescription_", "IdImageCover_"
-        }, "'Name'" + "LIKE ?", new String[] {
+        }, "Name LIKE ?", new String[] {
             "%" + s + "%"
         }, null, null, "Name");
         ProducerListItem[] producers = null;
