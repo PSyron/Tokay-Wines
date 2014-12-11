@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.acitivities.WinesListActivity;
 import pl.tokajiwines.db.FlavoursDataSource;
@@ -441,15 +440,15 @@ public class WinesFilterFragment extends BaseFragment {
         // TODO Auto-generated method stub
         super.onResume();
         if (mWineStrains.length == 0) {
-
-            if (App.isOnline(mCtx)) {
+            new LoadFilterTask().execute();
+            /*if (App.isOnline(mCtx)) {
                 new LoadFilterOnlineTask().execute();
             } else {
-                /*Toast.makeText(mCtx, getResources().getString(R.string.cannot_connect),
-                        Toast.LENGTH_LONG).show();*/
-                /* Toast.makeText(mCtx, "Offline Database", Toast.LENGTH_LONG).show();*/
-                new LoadFilterTask().execute();
-            }
+                Toast.makeText(mCtx, getResources().getString(R.string.cannot_connect),
+                        Toast.LENGTH_LONG).show();
+                 Toast.makeText(mCtx, "Offline Database", Toast.LENGTH_LONG).show();
+                
+            }*/
         }
     }
 
