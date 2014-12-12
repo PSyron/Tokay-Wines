@@ -177,7 +177,7 @@ public class WinesListActivity extends BaseActivity {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_wines));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -246,7 +246,7 @@ public class WinesListActivity extends BaseActivity {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_wines));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }

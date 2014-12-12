@@ -243,6 +243,15 @@ public class HotelActivity extends BaseActivity {
         }
         super.onPause();
     }
+    
+    public void onDestroy()
+    {
+        if (mHotelFromBase == null)
+        {
+            Toast.makeText(HotelActivity.this, getResources().getString(R.string.cant_load_hotel), Toast.LENGTH_LONG).show();          
+        }
+        super.onDestroy();
+    }
 
     class LoadHotelTask extends AsyncTask<Void, String, String> {
 
@@ -258,7 +267,7 @@ public class HotelActivity extends BaseActivity {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_hotel));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -309,7 +318,7 @@ public class HotelActivity extends BaseActivity {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_hotel));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -335,6 +344,10 @@ public class HotelActivity extends BaseActivity {
                 if (response != null) {
                     mHotelFromBase = response;
                 }
+            }
+            else
+            {
+                HotelActivity.this.finish();
             }
 
             return null;

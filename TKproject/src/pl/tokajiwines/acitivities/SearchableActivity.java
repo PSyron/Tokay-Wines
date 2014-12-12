@@ -539,6 +539,15 @@ public class SearchableActivity extends BaseActivity {
         }
         super.onPause();
     }
+    
+    public void onDestroy()
+    {
+        if (mSearchResult == null)
+        {
+            Toast.makeText(mContext, getResources().getString(R.string.cant_load_search), Toast.LENGTH_LONG).show();          
+        }
+        super.onDestroy();
+    }
 
     private void handleIntent(Intent intent) {
 
@@ -722,6 +731,10 @@ public class SearchableActivity extends BaseActivity {
                 if (response != null) {
                     mSearchResult = response;
                 }
+            }
+            else
+            {
+                SearchableActivity.this.finish();
             }
 
             return null;

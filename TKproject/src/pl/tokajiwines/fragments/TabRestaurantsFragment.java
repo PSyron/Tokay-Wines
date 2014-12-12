@@ -153,7 +153,7 @@ public class TabRestaurantsFragment extends BaseFragment {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_restaurants));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -200,7 +200,7 @@ public class TabRestaurantsFragment extends BaseFragment {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_restaurants));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }

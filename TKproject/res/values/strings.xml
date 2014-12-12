@@ -200,5 +200,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="tab_tours">Tours</string>
     <string name="map_offline">You shoud have an Internet connection to see map.</string>
+    <string name="cant_load_wine">Cannot load wine data</string>
+    <string name="cant_load_producer">Cannot load producer data</string>
+    <string name="cant_load_hotel">Cannot load hotel data</string>
+    <string name="cant_load_restaurant">Cannot load restaurant data</string>
+    <string name="cant_load_news">Cannot load news data</string>
+    <string name="cant_load_search">Cannot load search result</string>
 
 </resources>

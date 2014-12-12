@@ -279,6 +279,8 @@ public class StartWineImageActivity extends BaseActivity {
                     int value = 0;
                     mProgDial.setProgress(value);
                     for (Image i : mImagesList) {
+                        if (isCancelled())
+                        {break;}
                         if (!App.isOnline(StartWineImageActivity.this)) {
                             mDownloadImagesTask.cancel(true);
                             if (mProgDial != null) {
@@ -366,7 +368,6 @@ public class StartWineImageActivity extends BaseActivity {
         // create adapter that contains loaded data and show list of news
 
         protected void onPostExecute(String file_url) {
-            Log.e("StartWineImage", "onPostExecute" + mWinesList.length);
             super.onPostExecute(file_url);
             //      mProgDial.dismiss();
             if (mWinesList != null) {

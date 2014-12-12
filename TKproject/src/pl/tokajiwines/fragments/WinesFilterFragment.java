@@ -463,7 +463,7 @@ public class WinesFilterFragment extends BaseFragment {
             mProgDial = new ProgressDialog(mCtx);
             mProgDial.setMessage(getResources().getString(R.string.loading));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
         }
 
@@ -523,7 +523,7 @@ public class WinesFilterFragment extends BaseFragment {
             mProgDial = new ProgressDialog(mCtx);
             mProgDial.setMessage(getResources().getString(R.string.loading));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }

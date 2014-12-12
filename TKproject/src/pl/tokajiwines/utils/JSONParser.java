@@ -8,7 +8,11 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.SocketTimeoutException;
 import java.util.List;
 
 public class JSONParser {
@@ -77,7 +82,6 @@ public class JSONParser {
 
         // return JSON String
 
-        System.out.println(sJSONObj.toString());
         return sJSONObj;
 
     }
@@ -87,8 +91,12 @@ public class JSONParser {
 
         // Making HTTP request
         try {
+            
+            HttpParams my_httpParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(my_httpParams, 10000);
+            HttpConnectionParams.setSoTimeout(my_httpParams, 30000);
             // defaultHttpClient
-            DefaultHttpClient httpClient = new DefaultHttpClient();
+            DefaultHttpClient httpClient = new DefaultHttpClient(my_httpParams);
             HttpPost httpPost = new HttpPost(url);
 
             StringBuilder authentication = new StringBuilder().append(username).append(":")
@@ -113,9 +121,19 @@ public class JSONParser {
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        } catch (ClientProtocolException e) {
+        } 
+        catch (SocketTimeoutException e)
+        {
             e.printStackTrace();
-        } catch (IOException e) {
+        }
+        catch (ConnectTimeoutException e)
+        {
+            e.printStackTrace();
+        }
+         catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } 
+        catch (IOException e) {
             e.printStackTrace();
         }
 

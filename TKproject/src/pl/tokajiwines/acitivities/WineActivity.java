@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -284,6 +285,15 @@ public class WineActivity extends BaseActivity {
         }
         super.onPause();
     }
+    
+    public void onDestroy()
+    {
+        if (mWineDetails == null)
+        {
+            Toast.makeText(WineActivity.this, getResources().getString(R.string.cant_load_wine), Toast.LENGTH_LONG).show();          
+        }
+        super.onDestroy();
+    }
 
     class LoadWineTask extends AsyncTask<Void, String, String> {
 
@@ -299,7 +309,7 @@ public class WineActivity extends BaseActivity {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_wine));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -351,7 +361,7 @@ public class WineActivity extends BaseActivity {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_wine));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -384,6 +394,10 @@ public class WineActivity extends BaseActivity {
                         mWine = mWineDetails.mBasics;
                     }
                 }
+            }
+            else
+            {
+                WineActivity.this.finish();
             }
             return null;
 

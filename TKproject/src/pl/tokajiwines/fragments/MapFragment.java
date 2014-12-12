@@ -624,7 +624,7 @@ public class MapFragment extends BaseFragment {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_near));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
             // clearing markers
             googleMap.clear();
@@ -645,9 +645,9 @@ public class MapFragment extends BaseFragment {
             InputStream source = mParser.retrieveStream(tempUrl, sUsername, sPassword, null);
 
             Gson gson = new Gson();
-            InputStreamReader reader = new InputStreamReader(source);
 
             if (source != null) {
+                InputStreamReader reader = new InputStreamReader(source);
 
                 NearPlacesResponse response = gson.fromJson(reader, NearPlacesResponse.class);
 

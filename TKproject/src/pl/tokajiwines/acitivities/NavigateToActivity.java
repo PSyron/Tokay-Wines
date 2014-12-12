@@ -23,7 +23,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.koushikdutta.ion.Ion;
 
 import org.json.JSONObject;
 
@@ -139,8 +138,6 @@ public class NavigateToActivity extends BaseActivity {
 
         mUiPlaceAddress.setText(mPlaceTo.mAddress);
         if (!mUiPlaceImageUrl.equals("")) {
-            Ion.with(mUiPlaceImage).placeholder(R.drawable.placeholder_image)
-                    .error(R.drawable.error_image).load(mUiPlaceImageUrl);
             final File imgFile = new File(NavigateToActivity.this.getFilesDir().getAbsolutePath()
                     + "/"
                     + mUiPlaceImageUrl.substring(mUiPlaceImageUrl.lastIndexOf('/') + 1,

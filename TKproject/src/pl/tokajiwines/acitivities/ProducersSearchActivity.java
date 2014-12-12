@@ -159,7 +159,7 @@ public class ProducersSearchActivity extends BaseActivity {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_producers));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -208,7 +208,7 @@ public class ProducersSearchActivity extends BaseActivity {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_producers));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }

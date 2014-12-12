@@ -165,5 +165,11 @@
     <string name="search_hint">Wpisz szukaną nazwę</string>
     <string name="tab_tours">Wycieczki</string>
     <string name="map_offline">Do wyświetlenia mapy potrzebne jest połączenie z Internetem.</string>
+    <string name="cant_load_wine">Nie udało się wczytać informacji o winie</string>
+    <string name="cant_load_producer">Nie udało się wczytać informacji o producencie</string>
+    <string name="cant_load_hotel">Nie udało się wczytać informacji o hotelu</string>
+    <string name="cant_load_restaurant">Nie udało się wczytać informacji o restauracji</string>
+    <string name="cant_load_news">Nie udało się wczytać aktualności</string>
+    <string name="cant_load_search">Nie udało się wczytać wyników wyszukiwania</string>
 
 </resources>

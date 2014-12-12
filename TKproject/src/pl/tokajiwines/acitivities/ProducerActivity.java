@@ -154,7 +154,7 @@ public class ProducerActivity extends BaseActivity {
 
                         Place extraPlace = new Place(mProducerFromBase.mIdProducer,
                                 mProducerFromBase.mName, tempAddress, mProducerFromBase.mLng,
-                                mProducerFromBase.mLat, "Producer", mProducerFromBase.mImageUrl);
+                                mProducerFromBase.mLat, "Producer", mProducer.mImageUrl);
 
                         Intent intent = new Intent(ProducerActivity.this, NearPlaceActivity.class);
                         intent.putExtra(NearPlaceActivity.TAG_PLACE, extraPlace);
@@ -201,7 +201,7 @@ public class ProducerActivity extends BaseActivity {
                         Intent intent = new Intent(ProducerActivity.this, NavigateToActivity.class);
                         intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
                         intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE,
-                                mProducerFromBase.mImageUrl);
+                                mProducer.mImageUrl);
                         startActivityForResult(intent, NavigateToActivity.REQUEST);
                     }
                 } else {
@@ -385,6 +385,15 @@ public class ProducerActivity extends BaseActivity {
         }
         super.onPause();
     }
+    
+    public void onDestroy()
+    {
+        if (mProducerFromBase == null)
+        {
+            Toast.makeText(ProducerActivity.this, getResources().getString(R.string.cant_load_producer), Toast.LENGTH_LONG).show();          
+        }
+        super.onDestroy();
+    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -409,7 +418,7 @@ public class ProducerActivity extends BaseActivity {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_producer));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -457,7 +466,7 @@ public class ProducerActivity extends BaseActivity {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_producer));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -578,6 +587,10 @@ public class ProducerActivity extends BaseActivity {
                 if (response != null) {
                     mImagesUrl = response.images;
                 }
+            }
+            else
+            {
+                ProducerActivity.this.finish();
             }
 
             return null;

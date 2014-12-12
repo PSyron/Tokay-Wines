@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -199,6 +200,15 @@ public class NewsActivity extends BaseActivity {
         }
         super.onPause();
     }
+    
+    public void onDestroy()
+    {
+        if (mNews == null)
+        {
+            Toast.makeText(mContext, getResources().getString(R.string.cant_load_news), Toast.LENGTH_LONG).show();          
+        }
+        super.onDestroy();
+    }
 
     // async task class that loads news data from remote database
     class LoadNewsDetailsTask extends AsyncTask<String, String, String> {
@@ -215,7 +225,7 @@ public class NewsActivity extends BaseActivity {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_news));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -261,7 +271,7 @@ public class NewsActivity extends BaseActivity {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_news));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -283,6 +293,10 @@ public class NewsActivity extends BaseActivity {
 
                 NewsDetailsResponse response = gson.fromJson(reader, NewsDetailsResponse.class);
                 mNews = response.news;
+            }
+            else
+            {
+                NewsActivity.this.finish();
             }
 
             return null;

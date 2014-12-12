@@ -238,6 +238,15 @@ public class RestaurantActivity extends BaseActivity {
         }
         super.onPause();
     }
+    
+    public void onDestroy()
+    {
+        if (mRestaurantFromBase == null)
+        {
+            Toast.makeText(RestaurantActivity.this, getResources().getString(R.string.cant_load_restaurant), Toast.LENGTH_LONG).show();          
+        }
+        super.onDestroy();
+    }
 
     class LoadRestaurantTask extends AsyncTask<Void, String, String> {
 
@@ -253,7 +262,7 @@ public class RestaurantActivity extends BaseActivity {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_restaurant));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -308,7 +317,7 @@ public class RestaurantActivity extends BaseActivity {
             }
             mProgDial.setMessage(getResources().getString(R.string.loading_restaurant));
             mProgDial.setIndeterminate(false);
-            mProgDial.setCancelable(true);
+            mProgDial.setCancelable(false);
             mProgDial.show();
 
         }
@@ -333,6 +342,10 @@ public class RestaurantActivity extends BaseActivity {
                 if (response != null) {
                     mRestaurantFromBase = response;
                 }
+            }
+            else
+            {
+                RestaurantActivity.this.finish();
             }
 
             return null;
