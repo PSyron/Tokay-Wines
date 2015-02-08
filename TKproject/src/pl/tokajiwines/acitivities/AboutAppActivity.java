@@ -24,6 +24,7 @@ public class AboutAppActivity extends BaseActivity {
 
     public void initView() {
 
+
         mContext = this;
         getActionBar().setTitle(getResources().getString(R.string.about_the_application));
         mUiVersion = (TextView) findViewById(R.id.activity_about_app_version_tV);
