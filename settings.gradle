@@ -1,0 +1,3 @@
+include ':TKproject'
+include ':google-play-services_lib'
+include ':VPI'
