@@ -57,7 +57,7 @@
       <file leaf-file-name="workspace.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8947368" vertical-offset="0" max-vertical-offset="52564">
+            <state vertical-scroll-proportion="0.8947368" vertical-offset="0" max-vertical-offset="52581">
               <caret line="31" column="29" selection-start-line="31" selection-start-column="29" selection-end-line="31" selection-end-column="29" />
               <folding />
             </state>
@@ -2660,7 +2660,11 @@
       <created>1425241721037</created>
       <updated>1425241721037</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Android Studio maker">
+      <created>1425247461905</created>
+      <updated>1425247461905</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
