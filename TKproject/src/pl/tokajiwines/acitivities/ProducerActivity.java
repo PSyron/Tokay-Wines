@@ -201,7 +201,7 @@ public class ProducerActivity extends BaseActivity {
                         Intent intent = new Intent(ProducerActivity.this, NavigateToActivity.class);
                         intent.putExtra(NavigateToActivity.TAG_PLACE_TO, extraPlace);
                         intent.putExtra(NavigateToActivity.TAG_PLACE_TO_IMAGE,
-                                mProducer.mImageUrl);
+                                mProducerFromBase.mImageUrl);
                         startActivityForResult(intent, NavigateToActivity.REQUEST);
                     }
                 } else {

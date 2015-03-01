@@ -93,7 +93,12 @@ public class NavigateToActivity extends BaseActivity {
 
             mPlaceTo = (Place) extras.getSerializable(NavigateToActivity.TAG_PLACE_TO);
             if (extras.containsKey(NavigateToActivity.TAG_PLACE_TO_IMAGE)) {
+
                 mUiPlaceImageUrl = extras.getString(NavigateToActivity.TAG_PLACE_TO_IMAGE);
+                if( mUiPlaceImageUrl == null) {
+                    mUiPlaceImageUrl = "";
+                }
+
                 Log.e(LOG_TAG, mUiPlaceImageUrl);
             }
         }
