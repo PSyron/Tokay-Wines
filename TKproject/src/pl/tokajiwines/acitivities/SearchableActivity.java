@@ -542,7 +542,7 @@ public class SearchableActivity extends BaseActivity {
     
     public void onDestroy()
     {
-        if (mSearchResult == null)
+        if (mSearchResult == null && mSelectedItem == null)
         {
             Toast.makeText(mContext, getResources().getString(R.string.cant_load_search), Toast.LENGTH_LONG).show();          
         }
