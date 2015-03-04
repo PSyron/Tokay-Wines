@@ -2,6 +2,7 @@
 package pl.tokajiwines.adapters;
 
 import android.app.Activity;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.WineListItem;
@@ -97,23 +99,27 @@ public class WinesAdapter extends BaseAdapter {
 
         if (mWines[position].mFlavourName != null) {
             holder.taste.setText(mWines[position].mFlavourName);
+            holder.tasteLayout.setVisibility(View.VISIBLE);
         } else {
             holder.tasteLayout.setVisibility(View.GONE);
         }
 
         if (mWines[position].mGrade != null) {
             holder.type.setText(mWines[position].mGrade);
+            holder.typeLayout.setVisibility(View.VISIBLE);
         } else {
             holder.typeLayout.setVisibility(View.GONE);
         }
 
         if (mWines[position].mStrains != null) {
             holder.strain.setText(mWines[position].mStrains);
+            holder.strainLayout.setVisibility(View.VISIBLE);
         } else {
             holder.strainLayout.setVisibility(View.GONE);
         }
 
         if (mWines[position].mPrice != null) {
+            holder.priceLayout.setVisibility(View.VISIBLE);
             StringBuilder price = new StringBuilder();
             price.append(mWines[position].mPrice);
             price.append(" ft");
@@ -133,6 +139,7 @@ public class WinesAdapter extends BaseAdapter {
         }
 
         if (mWines[position].mYear != null) {
+            holder.yearLayout.setVisibility(View.VISIBLE);
             holder.year.setText(mWines[position].mYear);
         } else {
             holder.yearLayout.setVisibility(View.GONE);
@@ -140,7 +147,6 @@ public class WinesAdapter extends BaseAdapter {
 
         holder.producer.setText(mWines[position].mProducerName);
 
-        holder.year.setText(mWines[position].mYear);
         //        Ion.with(holder.img)
         //        .placeholder(R.drawable.placeholder_image)
         //        .error(R.drawable.error_image)
@@ -153,13 +159,16 @@ public class WinesAdapter extends BaseAdapter {
                         mWines[position].mImageUrl.length()));
         if (imgFile.exists()) {
             Picasso.with(mActivity).load(imgFile).into(holder.img);
-        } /*else {
+        } else {
+            final ImageView tempIv = holder.img;
+            holder.img.setImageResource(R.drawable.no_image);
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     // App.downloadImagesToSdCard(mWines[position].mImageUrl, mActivity, holder.img);
-                    App.downloadAndRun(mWines[position].mImageUrl, mActivity, holder.img);
+                    App.downloadAndRun(mWines[position].mImageUrl, mActivity, tempIv);
                 }
-            }, 50);*/
+            }, 50);
+        }
 
         //        rowView.setOnClickListener(new OnClickListener() {
         //            @Override
