@@ -69,24 +69,30 @@ public class WinesAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final Holder holder = new Holder();
-        View rowView;
-        rowView = inflater.inflate(R.layout.item_wine, null);
-        holder.name = (TextView) rowView.findViewById(R.id.item_wine_name);
-        holder.taste = (TextView) rowView.findViewById(R.id.item_wine_taste);
-        holder.type = (TextView) rowView.findViewById(R.id.item_wine_type);
-        holder.strain = (TextView) rowView.findViewById(R.id.item_wine_strain);
-        holder.price = (TextView) rowView.findViewById(R.id.item_wine_price);
-        holder.year = (TextView) rowView.findViewById(R.id.item_wine_year);
-        holder.producer = (TextView) rowView.findViewById(R.id.item_wine_producer);
-        holder.img = (ImageView) rowView.findViewById(R.id.item_wine_image);
+         Holder holder = new Holder();
+       // View rowView;
+        if(convertView == null) {
+            convertView = inflater.inflate(R.layout.item_wine, null);
 
-        holder.tasteLayout = (LinearLayout) rowView.findViewById(R.id.item_wine_taste_layout);
-        holder.typeLayout = (LinearLayout) rowView.findViewById(R.id.item_wine_type_layout);
-        holder.strainLayout = (LinearLayout) rowView.findViewById(R.id.item_wine_strain_layout);
-        holder.priceLayout = (LinearLayout) rowView.findViewById(R.id.item_wine_price_layout);
-        holder.yearLayout = (LinearLayout) rowView.findViewById(R.id.item_wine_year_layout);
+            holder.name = (TextView) convertView.findViewById(R.id.item_wine_name);
+            holder.taste = (TextView) convertView.findViewById(R.id.item_wine_taste);
+            holder.type = (TextView) convertView.findViewById(R.id.item_wine_type);
+            holder.strain = (TextView) convertView.findViewById(R.id.item_wine_strain);
+            holder.price = (TextView) convertView.findViewById(R.id.item_wine_price);
+            holder.year = (TextView) convertView.findViewById(R.id.item_wine_year);
+            holder.producer = (TextView) convertView.findViewById(R.id.item_wine_producer);
+            holder.img = (ImageView) convertView.findViewById(R.id.item_wine_image);
 
+            holder.tasteLayout = (LinearLayout) convertView.findViewById(R.id.item_wine_taste_layout);
+            holder.typeLayout = (LinearLayout) convertView.findViewById(R.id.item_wine_type_layout);
+            holder.strainLayout = (LinearLayout) convertView.findViewById(R.id.item_wine_strain_layout);
+            holder.priceLayout = (LinearLayout) convertView.findViewById(R.id.item_wine_price_layout);
+            holder.yearLayout = (LinearLayout) convertView.findViewById(R.id.item_wine_year_layout);
+            convertView.setTag(holder);
+        }
+        else{
+            holder = (Holder) convertView.getTag();
+        }
         holder.name.setText(mWines[position].mName);
 
         if (mWines[position].mFlavourName != null) {
@@ -163,6 +169,6 @@ public class WinesAdapter extends BaseAdapter {
         //                        .show();
         //            }
         //        });
-        return rowView;
+        return convertView;
     }
 }

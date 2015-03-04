@@ -58,12 +58,17 @@ public class ProducersAdapter extends BaseAdapter {
     //TODO 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final Holder holder = new Holder();
-        View rowView;
-        rowView = inflater.inflate(R.layout.item_producer, null);
-        holder.title = (TextView) rowView.findViewById(R.id.item_wineyard_title);
-        holder.content = (TextView) rowView.findViewById(R.id.item_wineyard_content);
-        holder.img = (ImageView) rowView.findViewById(R.id.item_wineyard_image);
+         Holder holder = new Holder();
+
+        if(convertView==null) {
+            convertView = inflater.inflate(R.layout.item_producer, null);
+            holder.title = (TextView) convertView.findViewById(R.id.item_wineyard_title);
+            holder.content = (TextView) convertView.findViewById(R.id.item_wineyard_content);
+            holder.img = (ImageView) convertView.findViewById(R.id.item_wineyard_image);
+            convertView.setTag(holder);
+        }else{
+            holder = (Holder) convertView.getTag();
+        }
         holder.title.setText(mProducers[position].mName);
         holder.img.setImageResource(R.drawable.no_image);
         holder.content.setText(mProducers[position].mDescription);
@@ -79,18 +84,18 @@ public class ProducersAdapter extends BaseAdapter {
         if (imgFile.exists()) {
             Picasso.with(mActivity).load(imgFile).into(holder.img);
         } else {
-
+            final ImageView tempIv = holder.img;
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     //                    App.downloadImagesToSdCard(mProducers[position].mImageUrl, mActivity,
                     //                            holder.img);
-                    App.downloadAndRun(mProducers[position].mImageUrl, mActivity, holder.img);
+                    App.downloadAndRun(mProducers[position].mImageUrl, mActivity, tempIv);
 
                 }
             }, 50);
         }
 
-        System.out.println(mProducers[position].mImageUrl);
+       // System.out.println(mProducers[position].mImageUrl);
         //        rowView.setOnClickListener(new OnClickListener() {
         //            @Override
         //            public void onClick(View v) {
@@ -99,6 +104,6 @@ public class ProducersAdapter extends BaseAdapter {
         //                        .show();
         //            }
         //        });
-        return rowView;
+        return convertView;
     }
 }

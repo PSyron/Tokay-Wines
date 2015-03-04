@@ -1,0 +1,322 @@
+-- Merging decision tree log ---
+manifest
+ADDED from AndroidManifest.xml:2:1
+	package
+		ADDED from AndroidManifest.xml:3:5
+	android:versionName
+		ADDED from AndroidManifest.xml:5:5
+	android:versionCode
+		ADDED from AndroidManifest.xml:4:5
+		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from AndroidManifest.xml:0:0
+	xmlns:android
+		ADDED from AndroidManifest.xml:2:11
+uses-permission#android.permission.INTERNET
+ADDED from AndroidManifest.xml:7:5
+	android:name
+		ADDED from AndroidManifest.xml:7:22
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from AndroidManifest.xml:8:5
+	android:name
+		ADDED from AndroidManifest.xml:8:22
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from AndroidManifest.xml:9:5
+	android:name
+		ADDED from AndroidManifest.xml:9:22
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from AndroidManifest.xml:10:5
+	android:name
+		ADDED from AndroidManifest.xml:10:22
+uses-permission#com.google.android.providers.gsf.permission.READ_GSERVICES
+ADDED from AndroidManifest.xml:11:5
+	android:name
+		ADDED from AndroidManifest.xml:11:22
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from AndroidManifest.xml:12:5
+	android:name
+		ADDED from AndroidManifest.xml:12:22
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from AndroidManifest.xml:13:5
+	android:name
+		ADDED from AndroidManifest.xml:13:22
+uses-permission#android.permission.VIBRATE
+ADDED from AndroidManifest.xml:14:5
+	android:name
+		ADDED from AndroidManifest.xml:14:22
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from AndroidManifest.xml:15:5
+	android:name
+		ADDED from AndroidManifest.xml:15:22
+permission#pl.tokajiwines.permission.MAPS_RECEIVE
+ADDED from AndroidManifest.xml:17:5
+	android:protectionLevel
+		ADDED from AndroidManifest.xml:19:9
+	android:name
+		ADDED from AndroidManifest.xml:18:9
+uses-permission#pl.tokajiwines.permission.MAPS_RECEIVE
+ADDED from AndroidManifest.xml:21:5
+	android:name
+		ADDED from AndroidManifest.xml:21:22
+uses-sdk
+ADDED from AndroidManifest.xml:23:5
+MERGED from Tokay-Wines:VPI:unspecified:7:5
+MERGED from com.android.support:support-v13:21.0.3:15:5
+MERGED from com.android.support:support-v4:21.0.3:15:5
+MERGED from com.android.support:support-v13:21.0.3:15:5
+MERGED from com.android.support:support-v4:21.0.3:15:5
+MERGED from Tokay-Wines:google-play-services_lib:unspecified:23:5
+	android:targetSdkVersion
+		ADDED from AndroidManifest.xml:25:9
+	android:minSdkVersion
+		ADDED from AndroidManifest.xml:24:9
+uses-feature#0x00020000
+ADDED from AndroidManifest.xml:27:5
+	android:glEsVersion
+		ADDED from AndroidManifest.xml:28:9
+	android:required
+		ADDED from AndroidManifest.xml:29:9
+application
+ADDED from AndroidManifest.xml:31:5
+MERGED from com.android.support:support-v13:21.0.3:16:5
+MERGED from com.android.support:support-v4:21.0.3:16:5
+MERGED from com.android.support:support-v13:21.0.3:16:5
+MERGED from com.android.support:support-v4:21.0.3:16:5
+MERGED from Tokay-Wines:google-play-services_lib:unspecified:25:5
+	android:label
+		ADDED from AndroidManifest.xml:35:9
+	android:hardwareAccelerated
+		ADDED from AndroidManifest.xml:33:9
+	android:allowBackup
+		ADDED from AndroidManifest.xml:32:9
+	android:icon
+		ADDED from AndroidManifest.xml:34:9
+	android:theme
+		ADDED from AndroidManifest.xml:36:9
+meta-data#com.google.android.gms.version
+ADDED from AndroidManifest.xml:37:9
+	android:value
+		ADDED from AndroidManifest.xml:39:13
+	android:name
+		ADDED from AndroidManifest.xml:38:13
+meta-data#com.google.android.maps.v2.API_KEY
+ADDED from AndroidManifest.xml:40:9
+	android:value
+		ADDED from AndroidManifest.xml:42:13
+	android:name
+		ADDED from AndroidManifest.xml:41:13
+meta-data#android.app.default_searchable
+ADDED from AndroidManifest.xml:43:9
+	android:value
+		ADDED from AndroidManifest.xml:45:13
+	android:name
+		ADDED from AndroidManifest.xml:44:13
+activity#pl.tokajiwines.acitivities.StartWineImageActivity
+ADDED from AndroidManifest.xml:47:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:50:13
+	android:label
+		ADDED from AndroidManifest.xml:49:13
+	android:name
+		ADDED from AndroidManifest.xml:48:13
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from AndroidManifest.xml:51:13
+action#android.intent.action.MAIN
+ADDED from AndroidManifest.xml:52:17
+	android:name
+		ADDED from AndroidManifest.xml:52:25
+category#android.intent.category.LAUNCHER
+ADDED from AndroidManifest.xml:54:17
+	android:name
+		ADDED from AndroidManifest.xml:54:27
+activity#pl.tokajiwines.acitivities.MainActivity
+ADDED from AndroidManifest.xml:57:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:60:13
+	android:label
+		ADDED from AndroidManifest.xml:59:13
+	android:name
+		ADDED from AndroidManifest.xml:58:13
+activity#pl.tokajiwines.acitivities.NewsActivity
+ADDED from AndroidManifest.xml:62:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:65:13
+	android:label
+		ADDED from AndroidManifest.xml:64:13
+	android:name
+		ADDED from AndroidManifest.xml:63:13
+meta-data#android.support.PARENT_ACTIVITY
+ADDED from AndroidManifest.xml:66:13
+	android:value
+		ADDED from AndroidManifest.xml:68:17
+	android:name
+		ADDED from AndroidManifest.xml:67:17
+activity#pl.tokajiwines.acitivities.PlaceAcitvity
+ADDED from AndroidManifest.xml:70:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:73:13
+	android:label
+		ADDED from AndroidManifest.xml:72:13
+	android:name
+		ADDED from AndroidManifest.xml:71:13
+activity#pl.tokajiwines.acitivities.WinesListActivity
+ADDED from AndroidManifest.xml:75:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:78:13
+	android:label
+		ADDED from AndroidManifest.xml:77:13
+	android:name
+		ADDED from AndroidManifest.xml:76:13
+activity#pl.tokajiwines.acitivities.ProducerActivity
+ADDED from AndroidManifest.xml:80:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:83:13
+	android:label
+		ADDED from AndroidManifest.xml:82:13
+	android:name
+		ADDED from AndroidManifest.xml:81:13
+activity#pl.tokajiwines.acitivities.WinesGridViewActivity
+ADDED from AndroidManifest.xml:85:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:88:13
+	android:label
+		ADDED from AndroidManifest.xml:87:13
+	android:name
+		ADDED from AndroidManifest.xml:86:13
+activity#pl.tokajiwines.acitivities.NearPlaceActivity
+ADDED from AndroidManifest.xml:90:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:93:13
+	android:label
+		ADDED from AndroidManifest.xml:92:13
+	android:name
+		ADDED from AndroidManifest.xml:91:13
+activity#pl.tokajiwines.acitivities.NavigateToActivity
+ADDED from AndroidManifest.xml:95:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:98:13
+	android:label
+		ADDED from AndroidManifest.xml:97:13
+	android:name
+		ADDED from AndroidManifest.xml:96:13
+activity#pl.tokajiwines.acitivities.HotelActivity
+ADDED from AndroidManifest.xml:100:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:103:13
+	android:label
+		ADDED from AndroidManifest.xml:102:13
+	android:name
+		ADDED from AndroidManifest.xml:101:13
+activity#pl.tokajiwines.acitivities.RestaurantActivity
+ADDED from AndroidManifest.xml:105:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:108:13
+	android:label
+		ADDED from AndroidManifest.xml:107:13
+	android:name
+		ADDED from AndroidManifest.xml:106:13
+activity#pl.tokajiwines.acitivities.WineActivity
+ADDED from AndroidManifest.xml:110:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:113:13
+	android:label
+		ADDED from AndroidManifest.xml:112:13
+	android:name
+		ADDED from AndroidManifest.xml:111:13
+activity#pl.tokajiwines.acitivities.AboutAppActivity
+ADDED from AndroidManifest.xml:115:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:118:13
+	android:label
+		ADDED from AndroidManifest.xml:117:13
+	android:name
+		ADDED from AndroidManifest.xml:116:13
+activity#pl.tokajiwines.acitivities.ProducersSearchActivity
+ADDED from AndroidManifest.xml:120:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:123:13
+	android:label
+		ADDED from AndroidManifest.xml:122:13
+	android:name
+		ADDED from AndroidManifest.xml:121:13
+activity#pl.tokajiwines.acitivities.HotelsSearchActivity
+ADDED from AndroidManifest.xml:125:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:128:13
+	android:label
+		ADDED from AndroidManifest.xml:127:13
+	android:name
+		ADDED from AndroidManifest.xml:126:13
+activity#pl.tokajiwines.acitivities.RestaurantsSearchActivity
+ADDED from AndroidManifest.xml:130:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:133:13
+	android:label
+		ADDED from AndroidManifest.xml:132:13
+	android:name
+		ADDED from AndroidManifest.xml:131:13
+activity#pl.tokajiwines.acitivities.SearchableActivity
+ADDED from AndroidManifest.xml:135:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:139:13
+	android:label
+		ADDED from AndroidManifest.xml:137:13
+	android:launchMode
+		ADDED from AndroidManifest.xml:138:13
+	android:name
+		ADDED from AndroidManifest.xml:136:13
+meta-data#android.app.searchable
+ADDED from AndroidManifest.xml:140:13
+	android:resource
+		ADDED from AndroidManifest.xml:142:17
+	android:name
+		ADDED from AndroidManifest.xml:141:17
+intent-filter#android.intent.action.SEARCH
+ADDED from AndroidManifest.xml:144:13
+action#android.intent.action.SEARCH
+ADDED from AndroidManifest.xml:145:17
+	android:name
+		ADDED from AndroidManifest.xml:145:25
+intent-filter#android.intent.action.VIEW
+ADDED from AndroidManifest.xml:147:13
+action#android.intent.action.VIEW
+ADDED from AndroidManifest.xml:148:17
+	android:name
+		ADDED from AndroidManifest.xml:148:25
+service#pl.tokajiwines.services.NotificationService
+ADDED from AndroidManifest.xml:152:9
+	android:label
+		ADDED from AndroidManifest.xml:155:13
+	android:icon
+		ADDED from AndroidManifest.xml:154:13
+	android:name
+		ADDED from AndroidManifest.xml:153:13
+receiver#pl.tokajiwines.receivers.RepeatServiceNotificationReceiver
+ADDED from AndroidManifest.xml:158:9
+	android:name
+		ADDED from AndroidManifest.xml:158:19
+intent-filter#android.intent.action.BOOT_COMPLETED
+ADDED from AndroidManifest.xml:159:13
+action#android.intent.action.BOOT_COMPLETED
+ADDED from AndroidManifest.xml:160:17
+	android:name
+		ADDED from AndroidManifest.xml:160:25
+receiver#pl.tokajiwines.receivers.StartServiceReceiver
+ADDED from AndroidManifest.xml:163:9
+	android:name
+		ADDED from AndroidManifest.xml:163:19
+provider#pl.tokajiwines.utils.SuggestionProvider
+ADDED from AndroidManifest.xml:166:9
+	android:readPermission
+		ADDED from AndroidManifest.xml:169:13
+	android:authorities
+		ADDED from AndroidManifest.xml:168:13
+	android:name
+		ADDED from AndroidManifest.xml:167:13
+	android:writePermission
+		ADDED from AndroidManifest.xml:170:13
+path-permission
+ADDED from AndroidManifest.xml:171:13
+	android:readPermission
+		ADDED from AndroidManifest.xml:173:17
+	android:pathPrefix
+		ADDED from AndroidManifest.xml:172:17

@@ -21,26 +21,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="904604af-fb51-4abf-b42f-7a3ae7dc9c4c" name="Default" comment="Android Studio maker">
-      <change type="DELETED" beforePath="C:\Users\paulc_000\Documents\GitHub\Tokay-Wines\.idea\libraries\android_support_v13.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\paulc_000\Documents\GitHub\Tokay-Wines\.idea\libraries\android_support_v4.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\paulc_000\Documents\GitHub\Tokay-Wines\.idea\libraries\androidasync_1_3_8.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\paulc_000\Documents\GitHub\Tokay-Wines\.idea\libraries\google_play_services.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\paulc_000\Documents\GitHub\Tokay-Wines\.idea\libraries\gson_2_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\paulc_000\Documents\GitHub\Tokay-Wines\.idea\libraries\ion_1_3_8.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\paulc_000\Documents\GitHub\Tokay-Wines\.idea\libraries\picasso_2_4_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\paulc_000\Documents\GitHub\Tokay-Wines\TKproject\libs\android-support-v13.jar" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\paulc_000\Documents\GitHub\Tokay-Wines\Tokay-Wines.iml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\paulc_000\Documents\GitHub\Tokay-Wines\VPI\libs\android-support-v4.jar" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/VPI/.classpath" afterPath="$PROJECT_DIR$/VPI/.classpath" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TKproject/AndroidManifest.xml" afterPath="$PROJECT_DIR$/TKproject/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/VPI/AndroidManifest.xml" afterPath="$PROJECT_DIR$/VPI/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/VPI/src/com/viewpagerindicator/CirclePageIndicator.java" afterPath="$PROJECT_DIR$/VPI/src/com/viewpagerindicator/CirclePageIndicator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/NavigateToActivity.java" afterPath="$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/NavigateToActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/ProducerActivity.java" afterPath="$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/ProducerActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TKproject/build.gradle" afterPath="$PROJECT_DIR$/TKproject/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/VPI/build.gradle" afterPath="$PROJECT_DIR$/VPI/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/google-play-services_lib/build.gradle" afterPath="$PROJECT_DIR$/google-play-services_lib/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TKproject/src/pl/tokajiwines/adapters/ProducersAdapter.java" afterPath="$PROJECT_DIR$/TKproject/src/pl/tokajiwines/adapters/ProducersAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TKproject/src/pl/tokajiwines/adapters/WinesAdapter.java" afterPath="$PROJECT_DIR$/TKproject/src/pl/tokajiwines/adapters/WinesAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_v13_21_0_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_v13_21_0_3.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_v4_21_0_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_v4_21_0_3.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Tokay-Wines.iws" />
@@ -64,35 +48,111 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="NavigateToActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/NavigateToActivity.java">
+      <file leaf-file-name="ProducerActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/ProducerActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1057" max-vertical-offset="6409">
-              <caret line="117" column="8" selection-start-line="117" selection-start-column="8" selection-end-line="117" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="7820" max-vertical-offset="9877">
+              <caret line="509" column="13" selection-start-line="509" selection-start-column="13" selection-end-line="509" selection-end-column="13" />
               <folding>
-                <element signature="e#3729#3777#0" expanded="true" />
+                <element signature="e#2817#2870#0" expanded="true" />
+                <element signature="e#2892#2935#0" expanded="true" />
+                <element signature="e#2957#3000#0" expanded="true" />
+                <element signature="e#3022#3074#0" expanded="true" />
+                <element signature="e#5146#7276#0" expanded="true" />
+                <element signature="e#5558#5670#0" expanded="true" />
+                <element signature="e#6799#6845#0" expanded="true" />
+                <element signature="e#7265#7266#0" expanded="true" />
+                <element signature="e#7318#9601#0" expanded="true" />
+                <element signature="e#7729#7841#0" expanded="true" />
+                <element signature="e#9124#9170#0" expanded="true" />
+                <element signature="e#9590#9591#0" expanded="true" />
+                <element signature="e#9644#10125#0" expanded="true" />
+                <element signature="e#10114#10115#0" expanded="true" />
+                <element signature="e#12024#12350#0" expanded="true" />
+                <element signature="e#12335#12336#0" expanded="true" />
+                <element signature="e#15519#15572#0" expanded="true" />
+                <element signature="e#16295#16346#0" expanded="true" />
+                <element signature="e#17788#17839#0" expanded="true" />
+                <element signature="e#18182#18197#0" expanded="true" />
+                <element signature="e#21185#21200#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProducerActivity.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/ProducerActivity.java">
+      <file leaf-file-name="ProducersAdapter.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/adapters/ProducersAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5880399" vertical-offset="7126" max-vertical-offset="9605">
-              <caret line="497" column="9" selection-start-line="497" selection-start-column="9" selection-end-line="497" selection-end-column="9" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="644" max-vertical-offset="1666">
+              <caret line="67" column="39" selection-start-line="67" selection-start-column="39" selection-end-line="67" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RestaurantActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/RestaurantActivity.java">
+      <file leaf-file-name="NewsAdapter.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/adapters/NewsAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1071" max-vertical-offset="5644">
-              <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+            <state vertical-scroll-proportion="-1.5705882" vertical-offset="619" max-vertical-offset="1513">
+              <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
               <folding />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WinesAdapter.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/adapters/WinesAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="900" max-vertical-offset="2669">
+              <caret line="78" column="18" selection-start-line="78" selection-start-column="18" selection-end-line="78" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="support_v13_21_0_3.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.idea/libraries/support_v13_21_0_3.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="272">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="item_wine.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TKproject/res/layout/item_wine.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.6296296" vertical-offset="0" max-vertical-offset="2618">
+              <caret line="1" column="12" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WinesListActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/WinesListActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="242" max-vertical-offset="4862">
+              <caret line="58" column="33" selection-start-line="58" selection-start-column="33" selection-end-line="58" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_wines.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TKproject/res/layout/activity_wines.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="306">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
           </provider>
         </entry>
       </file>
@@ -104,7 +164,7 @@
     </FindUsagesManager>
   </component>
   <component name="GenerateSignedApkSettings">
-    <option name="KEY_STORE_PATH" value="E:\Dysk Google\Tokaji Vines\Eclipse\tokaji_release.keystore" />
+    <option name="KEY_STORE_PATH" value="C:\tokaji_release.keystore" />
     <option name="KEY_ALIAS" value="tokaji wines" />
     <option name="REMEMBER_PASSWORDS" value="true" />
   </component>
@@ -1867,7 +1927,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="7126148769022" />
+        <entry key="$PROJECT_DIR$" value="7126211101928" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -2265,15 +2325,17 @@
         <option value="$PROJECT_DIR$/TKproject/build.gradle" />
         <option value="$PROJECT_DIR$/TKproject/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/NavigateToActivity.java" />
+        <option value="$PROJECT_DIR$/TKproject/src/pl/tokajiwines/adapters/WinesAdapter.java" />
         <option value="$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/ProducerActivity.java" />
+        <option value="$PROJECT_DIR$/TKproject/src/pl/tokajiwines/adapters/ProducersAdapter.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="54" />
+    <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1874" />
-    <option name="height" value="1096" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -2338,9 +2400,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="AndroidView">
-        <subPane />
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -2417,11 +2476,40 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="adapters" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Tokay-Wines" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Tokay-Wines" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TKproject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tokajiwines" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="acitivities" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
+      </pane>
+      <pane id="AndroidView">
+        <subPane />
       </pane>
       <pane id="PackagesPane">
         <subPane />
@@ -2437,22 +2525,17 @@
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="android.project.structure.last.selected" value="TKproject" />
-    <property name="android.project.structure.proportion" value="0.15" />
-    <property name="restartRequiresConfirmation" value="true" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="203d4227" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="Nexus5" />
-    <property name="last_opened_file_path" value="C:/" />
-    <property name="ExportApk.ApkPath" value="C:\tu" />
-    <property name="ExportApk.Flavors" value="" />
-    <property name="ExportApk.BuildType" value="release" />
-    <property name="options.lastSelected" value="Errors" />
+    <property name="options.lastSelected" value="vcs.Git" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
-    <property name="DEBUGGABLE_DEVICE" value="oneplus-a0001-203d4227" />
-    <property name="DEBUGGABLE_PROCESS" value="pl.tokajiwines" />
-    <property name="SHOW_ALL_PROCESSES" value="false" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="203d4227" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="Nexus_5_API_21_x86" />
+    <property name="FullScreen" value="false" />
+    <property name="last_opened_file_path" value="C:/tokaji_release.keystore" />
+    <property name="ExportApk.ApkPath" value="C:\Users\Syron\Documents\GitHub\Tokay-Wines\TKproject" />
+    <property name="ExportApk.Flavors" value="" />
+    <property name="ExportApk.BuildType" value="release" />
   </component>
   <component name="RunManager" selected="Android Application.TKproject">
     <configuration default="false" name="All Tests" type="AndroidTestRunConfigurationType" factoryName="Android Tests" temporary="true" nameIsGenerated="true">
@@ -2679,28 +2762,27 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="54" y="-8" width="1874" height="1096" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29982963" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21938232" sideWeight="0.30981258" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21805792" sideWeight="0.42813918" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3290735" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37308347" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32980332" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30664396" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37308347" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21223815" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2118003" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.399361" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2708,9 +2790,11 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.399361" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -2790,10 +2874,102 @@
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="4" />
+      <option name="time" value="5" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/NavigateToActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7140">
+          <caret line="117" column="8" selection-start-line="117" selection-start-column="8" selection-end-line="117" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/ProducerActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="7837" max-vertical-offset="9877">
+          <caret line="502" column="0" selection-start-line="502" selection-start-column="0" selection-end-line="502" selection-end-column="0" />
+          <folding>
+            <element signature="e#2817#2870#0" expanded="true" />
+            <element signature="e#2892#2935#0" expanded="true" />
+            <element signature="e#2957#3000#0" expanded="true" />
+            <element signature="e#3022#3074#0" expanded="true" />
+            <element signature="e#5146#7276#0" expanded="true" />
+            <element signature="e#5558#5670#0" expanded="true" />
+            <element signature="e#6799#6845#0" expanded="true" />
+            <element signature="e#7265#7266#0" expanded="true" />
+            <element signature="e#7318#9601#0" expanded="true" />
+            <element signature="e#7729#7841#0" expanded="true" />
+            <element signature="e#9124#9170#0" expanded="true" />
+            <element signature="e#9590#9591#0" expanded="true" />
+            <element signature="e#9644#10125#0" expanded="true" />
+            <element signature="e#10114#10115#0" expanded="true" />
+            <element signature="e#12024#12350#0" expanded="true" />
+            <element signature="e#12335#12336#0" expanded="true" />
+            <element signature="e#15519#15572#0" expanded="true" />
+            <element signature="e#16295#16346#0" expanded="true" />
+            <element signature="e#17788#17839#0" expanded="true" />
+            <element signature="e#18182#18197#0" expanded="true" />
+            <element signature="e#21185#21200#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/RestaurantActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="714" max-vertical-offset="6392">
+          <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/NavigateToActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7140">
+          <caret line="117" column="8" selection-start-line="117" selection-start-column="8" selection-end-line="117" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/ProducerActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="7752" max-vertical-offset="9877">
+          <caret line="515" column="43" selection-start-line="515" selection-start-column="43" selection-end-line="515" selection-end-column="43" />
+          <folding>
+            <element signature="e#2817#2870#0" expanded="true" />
+            <element signature="e#2892#2935#0" expanded="true" />
+            <element signature="e#2957#3000#0" expanded="true" />
+            <element signature="e#3022#3074#0" expanded="true" />
+            <element signature="e#5146#7276#0" expanded="true" />
+            <element signature="e#5558#5670#0" expanded="true" />
+            <element signature="e#6799#6845#0" expanded="true" />
+            <element signature="e#7265#7266#0" expanded="true" />
+            <element signature="e#7318#9601#0" expanded="true" />
+            <element signature="e#7729#7841#0" expanded="true" />
+            <element signature="e#9124#9170#0" expanded="true" />
+            <element signature="e#9590#9591#0" expanded="true" />
+            <element signature="e#9644#10125#0" expanded="true" />
+            <element signature="e#10114#10115#0" expanded="true" />
+            <element signature="e#12024#12350#0" expanded="true" />
+            <element signature="e#12335#12336#0" expanded="true" />
+            <element signature="e#15519#15572#0" expanded="true" />
+            <element signature="e#16295#16346#0" expanded="true" />
+            <element signature="e#17788#17839#0" expanded="true" />
+            <element signature="e#18182#18197#0" expanded="true" />
+            <element signature="e#21185#21200#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/RestaurantActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="714" max-vertical-offset="6392">
+          <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/TKproject/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3094">
@@ -2806,15 +2982,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="697" max-vertical-offset="901">
           <caret line="41" column="30" selection-start-line="41" selection-start-column="21" selection-end-line="41" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="1156">
-          <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2830,14 +2997,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="214" max-vertical-offset="816">
           <caret line="41" column="30" selection-start-line="41" selection-start-column="21" selection-end-line="41" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TKproject/gen/pl/tokajiwines/Manifest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.07464325" vertical-offset="0" max-vertical-offset="911">
-          <caret line="9" column="19" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -2845,7 +3004,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="602">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2853,7 +3011,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.1490468" vertical-offset="86" max-vertical-offset="663">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2861,7 +3018,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="680">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2869,7 +3025,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1071">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2877,7 +3032,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="602">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2886,7 +3040,7 @@
         <state vertical-scroll-proportion="0.78571427" vertical-offset="54" max-vertical-offset="8993">
           <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2903,15 +3057,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="602">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="48314">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2919,7 +3064,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.36710963" vertical-offset="0" max-vertical-offset="1360">
           <caret line="13" column="44" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2927,15 +3071,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5880399" vertical-offset="71" max-vertical-offset="4199">
           <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5215947" vertical-offset="383" max-vertical-offset="1088">
-          <caret line="41" column="9" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2943,39 +3078,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.8023256" vertical-offset="129" max-vertical-offset="816">
           <caret line="41" column="30" selection-start-line="41" selection-start-column="21" selection-end-line="41" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/libraries/ion_1_3_8.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="602">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/libraries/support_v4_21_0_3.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/libraries/google_play_services.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="602">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/libraries/support_v13_21_0_3.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33887044" vertical-offset="0" max-vertical-offset="602">
-          <caret line="12" column="12" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2983,7 +3085,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="705">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2991,7 +3092,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="705">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3007,7 +3107,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="12767">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3031,7 +3130,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.35455543" vertical-offset="0" max-vertical-offset="911">
           <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3039,7 +3137,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.09514926" vertical-offset="0" max-vertical-offset="536">
           <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3047,6 +3144,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.9347014" vertical-offset="1122" max-vertical-offset="5695">
           <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/NavigateToActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1057" max-vertical-offset="6409">
+          <caret line="117" column="8" selection-start-line="117" selection-start-column="8" selection-end-line="117" selection-end-column="8" />
           <folding />
         </state>
       </provider>
@@ -3059,20 +3163,110 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/NavigateToActivity.java">
+    <entry file="file://$PROJECT_DIR$/TKproject/res/layout/item_wine.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1057" max-vertical-offset="6409">
-          <caret line="117" column="8" selection-start-line="117" selection-start-column="8" selection-end-line="117" selection-end-column="8" />
-          <folding>
-            <element signature="e#3729#3777#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="-0.6296296" vertical-offset="0" max-vertical-offset="2618">
+          <caret line="1" column="12" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TKproject/res/layout/activity_wines.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="532">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/WinesListActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="242" max-vertical-offset="4862">
+          <caret line="58" column="33" selection-start-line="58" selection-start-column="33" selection-end-line="58" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/AppData/Local/Android/sdk/platforms/android-19/android.jar!/android/view/LayoutInflater.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="294" max-vertical-offset="1003">
+          <caret line="29" column="29" selection-start-line="29" selection-start-column="29" selection-end-line="29" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/libraries/support_v13_21_0_3.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="433">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="55131">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/acitivities/ProducerActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5880399" vertical-offset="7126" max-vertical-offset="9605">
-          <caret line="497" column="9" selection-start-line="497" selection-start-column="9" selection-end-line="497" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="7820" max-vertical-offset="9877">
+          <caret line="509" column="13" selection-start-line="509" selection-start-column="13" selection-end-line="509" selection-end-column="13" />
+          <folding>
+            <element signature="e#2817#2870#0" expanded="true" />
+            <element signature="e#2892#2935#0" expanded="true" />
+            <element signature="e#2957#3000#0" expanded="true" />
+            <element signature="e#3022#3074#0" expanded="true" />
+            <element signature="e#5146#7276#0" expanded="true" />
+            <element signature="e#5558#5670#0" expanded="true" />
+            <element signature="e#6799#6845#0" expanded="true" />
+            <element signature="e#7265#7266#0" expanded="true" />
+            <element signature="e#7318#9601#0" expanded="true" />
+            <element signature="e#7729#7841#0" expanded="true" />
+            <element signature="e#9124#9170#0" expanded="true" />
+            <element signature="e#9590#9591#0" expanded="true" />
+            <element signature="e#9644#10125#0" expanded="true" />
+            <element signature="e#10114#10115#0" expanded="true" />
+            <element signature="e#12024#12350#0" expanded="true" />
+            <element signature="e#12335#12336#0" expanded="true" />
+            <element signature="e#15519#15572#0" expanded="true" />
+            <element signature="e#16295#16346#0" expanded="true" />
+            <element signature="e#17788#17839#0" expanded="true" />
+            <element signature="e#18182#18197#0" expanded="true" />
+            <element signature="e#21185#21200#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/adapters/WinesAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1441" max-vertical-offset="2669">
+          <caret line="78" column="18" selection-start-line="78" selection-start-column="18" selection-end-line="78" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/adapters/ProducersAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="644" max-vertical-offset="1666">
+          <caret line="67" column="39" selection-start-line="67" selection-start-column="39" selection-end-line="67" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TKproject/src/pl/tokajiwines/adapters/NewsAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.5705882" vertical-offset="619" max-vertical-offset="1513">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
           <folding />
         </state>
       </provider>
