@@ -10,6 +10,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,6 +45,17 @@ import com.koushikdutta.ion.Ion;
 
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.activities.HotelActivity;
@@ -55,23 +68,12 @@ import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.models.Place;
 import pl.tokajiwines.utils.Constans;
 import pl.tokajiwines.utils.DirectionsJSONParser;
-//import pl.tokajiwines.utils.GPSTracker;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
-import pl.tokajiwines.utils.SimpleLocation;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+//import pl.tokajiwines.utils.GPSTracker;
 
-public class MapFragment extends BaseFragment {
+public class MapFragment extends BaseFragment  {
 
     private GoogleMap googleMap;
     Context mCtx;
@@ -87,8 +89,9 @@ public class MapFragment extends BaseFragment {
     LatLng myPosition; //TODO temp
     boolean trasaIsPicked = false;
     Place mSelectedPlace;
-    SimpleLocation mSLocation;
-
+    //SimpleLocation mSLocation;
+    LocationListener mLocationHelper;
+    LocationManager mLocationManager;
     private Place[] mNearbyPlaces;
 
     private static String sUrl;
@@ -113,17 +116,21 @@ public class MapFragment extends BaseFragment {
                     "Producer", "http://tokajiwines.me/photos/tokaji_hetszolo_thumb.jpg")
     };
     Place[] choosenTrip;
+    boolean isGPSEnabled ;
 
+    // getting network status
+    boolean isNetworkEnabled;
     View mUiPlaceBox;
     ImageView mUiPlaceImage;
     TextView mUiPlaceTitle;
     TextView mUiPlaceAddress;
-
+    MarkerOptions myPositionMarker;
     LinearLayout mUiPlaceDistance;
     LinearLayout mUiPlaceDuration;
     LinearLayout mUiPlacePhone;
     ImageView mUiNavigateTo;
     ImageView mUiInfo;
+    ProgressDialog mProgressDialog;
     int mPassedTrip;
     boolean mFromGuide = false;
 
@@ -179,8 +186,9 @@ public class MapFragment extends BaseFragment {
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
         View v = inflater.inflate(R.layout.fragment_map, container, false);
-        mSLocation = new SimpleLocation(getActivity());
+       // mSLocation = new SimpleLocation(getActivity());
         mMapView = (MapView) v.findViewById(R.id.map);
+
         if (App.debug_mode) {
             myPosition = new LatLng(48.1295, 21.4089);
         } else {
@@ -190,6 +198,31 @@ public class MapFragment extends BaseFragment {
             //            mGPStrack.stopUsingGPS();
 
             myPosition = App.getCurrentLatLng(getActivity());
+
+            mLocationHelper = new LocationHelp(!mFromGuide);
+            mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+             isGPSEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            // getting network status
+             isNetworkEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+            if(isNetworkEnabled){
+                mLocationManager.requestLocationUpdates( LocationManager.NETWORK_PROVIDER, 2500, 10, mLocationHelper);
+                if(!mFromGuide)
+                    showDialogProgress();
+            }else
+            if(isGPSEnabled){
+            mLocationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 2500, 10, mLocationHelper);
+                if(!mFromGuide)
+                showDialogProgress();
+
+
+            }
+            else{
+                Toast.makeText(getActivity(),"No provider enabled" , Toast.LENGTH_SHORT ).show();
+            }
+
 
         }
         mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
@@ -212,6 +245,20 @@ public class MapFragment extends BaseFragment {
         //mUiInfo.setVisibility(View.GONE);
 
         return v;
+    }
+
+    public void showDialogProgress(){
+        //mProgressDialog = ProgressDialog.show(getActivity(), getResources().getString(R.string.please_wait), getResources().getString(R.string.acquiring_position), true);
+
+      //  mProgressDialog.setCancelable(false);
+
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(mCtx);
+        }
+        mProgressDialog.setMessage(getResources().getString(R.string.acquiring_position));
+        mProgressDialog.setIndeterminate(false);
+        mProgressDialog.setCancelable(true);
+        mProgressDialog.show();
     }
 
     public void fillBox(final Place clicked) {
@@ -254,29 +301,31 @@ public class MapFragment extends BaseFragment {
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         googleMap = mMapView.getMap();
 
         // create marker
         googleMap.setMyLocationEnabled(false);
-        MarkerOptions marker = new MarkerOptions().position(myPosition).title(
+        myPositionMarker = new MarkerOptions().position(myPosition).title(
                 getResources().getString(R.string.here_u_are));
 
         // Changing marker icon
-        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        myPositionMarker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
         // adding marker
-        googleMap.addMarker(marker);
+        googleMap.addMarker(myPositionMarker);
 
         googleMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
             @Override
             public boolean onMarkerClick(final Marker arg0) {
                 if (!trasaIsPicked) {
-                    if (arg0.getPosition() != myPosition) {
+                    if (arg0.getPosition().latitude != myPositionMarker.getPosition().latitude && arg0.getPosition().longitude != myPositionMarker.getPosition().longitude) {
                         new AlertDialog.Builder(getActivity())
                                 .setTitle(
                                         getResources().getString(R.string.route_to) + " "
@@ -393,7 +442,8 @@ public class MapFragment extends BaseFragment {
 
                 } else {
 
-                    if (mSLocation.hasLocationEnabled()) {
+
+
                         trasaIsPicked = false;
                         googleMap.clear();
                         mUiPlaceBox.setVisibility(View.GONE);
@@ -403,11 +453,11 @@ public class MapFragment extends BaseFragment {
 
                             new LoadNearPlaces().execute(myPosition);
                         }
-                        MarkerOptions marker = new MarkerOptions().position(myPosition).title(
+                        myPositionMarker = new MarkerOptions().position(myPosition).title(
                                 getResources().getString(R.string.here_u_are));
-                        marker.icon(BitmapDescriptorFactory
+                        myPositionMarker.icon(BitmapDescriptorFactory
                                 .defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                        googleMap.addMarker(marker);
+                        googleMap.addMarker(myPositionMarker);
 
                         CameraPosition cameraPosition = new CameraPosition.Builder()
                                 .target(myPosition).zoom(10).build();
@@ -415,7 +465,7 @@ public class MapFragment extends BaseFragment {
                                 .newCameraPosition(cameraPosition));
                     }
                 }
-            }
+
         });
         mUiInfo.setOnClickListener(new OnClickListener() {
 
@@ -570,7 +620,12 @@ public class MapFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        mLocationHelper = new  LocationHelp(false);
+        if (isGPSEnabled) {
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 50, mLocationHelper);
+        } else if (isNetworkEnabled) {
+            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60000, 50, mLocationHelper);
+        }
         mMapView.onResume();
         if (mFromGuide) {
             pickTrip(mPassedTrip);
@@ -584,6 +639,8 @@ public class MapFragment extends BaseFragment {
 
     @Override
     public void onPause() {
+        mLocationManager.removeUpdates(mLocationHelper);
+
         if (mLoadNearPlaces != null) {
 
             mLoadNearPlaces.cancel(true);
@@ -599,12 +656,16 @@ public class MapFragment extends BaseFragment {
 
     @Override
     public void onDestroy() {
+        mLocationManager.removeUpdates(mLocationHelper);
+
         super.onDestroy();
         mMapView.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
+        mLocationManager.removeUpdates(mLocationHelper);
+
         super.onLowMemory();
         mMapView.onLowMemory();
     }
@@ -837,5 +898,62 @@ public class MapFragment extends BaseFragment {
             mLoadNearPlaces = null;
         }
     }
+    private class LocationHelp implements LocationListener{
 
+        boolean isFirstRequest = true;
+
+        public LocationHelp(boolean isFirst){
+            isFirstRequest=isFirst;
+        }
+
+        public LocationHelp(){
+        }
+
+        @Override
+        public void onLocationChanged(Location location) {
+            Log.e("onLocationChanged MapFragment", location.getLongitude() + "  " + location.getLatitude());
+            if (isFirstRequest) {
+                isFirstRequest = false;
+                googleMap.clear();
+                myPosition = new LatLng(location.getLatitude(), location.getLongitude());
+                myPositionMarker.position(myPosition);
+                googleMap.addMarker(myPositionMarker);
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(12)
+                        .build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                if(mProgressDialog!=null)
+                mProgressDialog.dismiss();
+                mLocationManager.removeUpdates(mLocationHelper);
+                if (isNetworkEnabled) {
+                    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60000, 50, mLocationHelper);
+                }else
+                if (isGPSEnabled) {
+                    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 50, mLocationHelper);
+                }
+            }
+            else {
+                    if (location.getLatitude() != myPosition.latitude && location.getLongitude() != myPosition.longitude) {
+
+                        myPosition = new LatLng(location.getLatitude(), location.getLongitude());
+                        myPositionMarker.position(myPosition);
+                        googleMap.addMarker(myPositionMarker);
+                    }
+                }
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    }
 }

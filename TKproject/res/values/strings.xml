@@ -119,6 +119,8 @@
     <string name="no_google_services_location_title">No permission for location service</string>
     <string name="no_google_services_location">Would You like to allow localization Your device now? </string>
      <string name="no_google_services_location_disabled">Localization service disabled, turn it on to use this feature </string>
+    <string name="please_wait">Please wait ...</string>
+    <string name="acquiring_position">Acquiring position ...</string>
 
     <!-- Guide -->
 
