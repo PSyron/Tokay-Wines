@@ -1,6 +1,7 @@
 
-package pl.tokajiwines.acitivities;
+package pl.tokajiwines.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,88 +10,85 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.GridView;
 
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.adapters.ProducersAdapter;
-import pl.tokajiwines.db.HotelsDataSource;
-import pl.tokajiwines.db.ProducersDataSource;
-import pl.tokajiwines.fragments.ProducersFragment;
+import pl.tokajiwines.adapters.WinesGridViewAdapter;
+import pl.tokajiwines.db.WinesDataSource;
+import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
-import pl.tokajiwines.jsonresponses.ProducersResponse;
+import pl.tokajiwines.jsonresponses.WineListItem;
+import pl.tokajiwines.jsonresponses.WinesResponse;
 import pl.tokajiwines.utils.JSONParser;
 import pl.tokajiwines.utils.Log;
+import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProducersSearchActivity extends BaseActivity {
+public class WinesGridViewActivity extends BaseActivity {
 
+    GridView mUiList;
+    WinesGridViewAdapter mAdapter;
+    private WineListItem[] mWinesList;
+    private ProducerListItem mProducer;
+    private Activity mAct;
+    private JSONParser mParser;
+    private ProgressDialog mProgDial;
+    LoadWinesTask mLoadWinesTask;
+    LoadWinesOnlineTask mLoadWinesOnlineTask;
     boolean mIsViewFilled;
-    ListView mUiList;
-    ProducersAdapter mAdapter;
-    JSONParser mParser;
-    ProgressDialog mProgDial;
-    LoadProducersTask mLoadProducersTask;
-    LoadProducersOnlineTask mLoadProducersOnlineTask;
-    Context mContext;
+    private Context mContext;
     private String sUrl;
     private String sUsername;
     private String sPassword;
-    private ProducerListItem[] mProducersList;
-    private String mName;
-    public static final String PRODUCER_TAG = "producer";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_producers_search);
-        getActionBar().setTitle(getResources().getString(R.string.title_wineyards));
+        setContentView(R.layout.activity_wines_gridview);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            mName = (String) extras.getString(SearchableActivity.TAG_NAME);
+            mProducer = (ProducerListItem) extras.getSerializable(ProducerActivity.TAG_ID_PRODUCER);
         }
+        getActionBar().setTitle(
+                mProducer.mName + " - " + getResources().getString(R.string.all_wines_available));
+        mAct = this;
         mContext = this;
-
-        sUrl = getResources().getString(R.string.UrlProducersList);
+        sUrl = getResources().getString(R.string.UrlWinesGridViewList);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
 
-        mProducersList = new ProducerListItem[0];
-        mUiList = (ListView) findViewById(R.id.activity_producers_search_list);
-        mAdapter = new ProducersAdapter(this, mProducersList);
+        mWinesList = new WineListItem[0];
+        mUiList = (GridView) findViewById(R.id.activity_wines_gridView);
+        mAdapter = new WinesGridViewAdapter(this, mWinesList);
         mUiList.setAdapter(mAdapter);
 
         mUiList.setOnItemClickListener(new OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ProducerListItem temp = (ProducerListItem) mAdapter.getItem(position);
-                Log.e(ProducersFragment.class.getName(), temp + " ");
-                Intent intent = new Intent(mContext, ProducerActivity.class);
-                intent.putExtra(PRODUCER_TAG, temp);
-
-                startActivityForResult(intent, ProducerActivity.REQUEST);
-
+                Intent intent = new Intent(mAct, WineActivity.class);
+                intent.putExtra(WineActivity.TAG_WINE, (WineListItem) mAdapter.getItem(position));
+                intent.putExtra(WineActivity.TAG_CALLED_FROM_PRODUCER, true);
+                startActivityForResult(intent, 1);
             }
-
         });
         mIsViewFilled = false;
     }
 
     public void fillView() {
-
         Log.e("fillView", "View filled");
-        mAdapter = new ProducersAdapter(this, mProducersList);
+        mAdapter = new WinesGridViewAdapter(mAct, mWinesList);
         mUiList.setAdapter(mAdapter);
         mIsViewFilled = true;
     }
@@ -99,18 +97,21 @@ public class ProducersSearchActivity extends BaseActivity {
         // TODO Auto-generated method stub
         super.onResume();
 
-        if (mProducersList.length == 0) {
+        if (mWinesList.length == 0) {
 
-            if (App.isOnline(mContext)) {
-                mLoadProducersOnlineTask = new LoadProducersOnlineTask();
-                mLoadProducersOnlineTask.execute();
+            if (App.isOnline(mAct)) {
+                mLoadWinesOnlineTask = new LoadWinesOnlineTask();
+                mLoadWinesOnlineTask.execute();
             }
 
             // otherwise, show message
 
             else {
-                mLoadProducersTask = new LoadProducersTask();
-                mLoadProducersTask.execute();
+                /*Toast.makeText(mAct, getResources().getString(R.string.cannot_connect),
+                        Toast.LENGTH_LONG).show();*/
+                /*Toast.makeText(mAct, "Baza offline", Toast.LENGTH_LONG).show();*/
+                mLoadWinesTask = new LoadWinesTask();
+                mLoadWinesTask.execute();
             }
         } else {
             if (!mIsViewFilled) {
@@ -123,29 +124,30 @@ public class ProducersSearchActivity extends BaseActivity {
     @Override
     protected void onPause() {
 
-        if (mLoadProducersTask != null) {
+        if (mLoadWinesTask != null) {
 
-            mLoadProducersTask.cancel(true);
+            mLoadWinesTask.cancel(true);
             if (mProgDial != null) {
                 mProgDial.dismiss();
             }
 
-            mLoadProducersTask = null;
-        }
-        
-        if (mLoadProducersOnlineTask != null) {
-
-            mLoadProducersOnlineTask.cancel(true);
-            if (mProgDial != null) {
-                mProgDial.dismiss();
-            }
-
-            mLoadProducersOnlineTask = null;
+            mLoadWinesTask = null;
         }
         super.onPause();
     }
 
-    class LoadProducersTask extends AsyncTask<String, String, String> {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                Intent returnIntent = new Intent();
+                setResult(RESULT_OK, returnIntent);
+                finish();
+            }
+        }
+    }
+
+    class LoadWinesTask extends AsyncTask<String, String, String> {
 
         boolean failure = false;
 
@@ -155,9 +157,9 @@ public class ProducersSearchActivity extends BaseActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             if (mProgDial == null) {
-                mProgDial = new ProgressDialog(mContext);
+                mProgDial = new ProgressDialog(mAct);
             }
-            mProgDial.setMessage(getResources().getString(R.string.loading_producers));
+            mProgDial.setMessage(getResources().getString(R.string.loading_wines));
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(false);
             mProgDial.show();
@@ -168,12 +170,13 @@ public class ProducersSearchActivity extends BaseActivity {
 
         @Override
         protected String doInBackground(String... args) {
-
-            ProducersDataSource pDs = new ProducersDataSource(ProducersSearchActivity.this);
-            pDs.open();
-            mProducersList = pDs.getProducers(mName);
-            pDs.close();
-
+            WinesDataSource wDs = new WinesDataSource(WinesGridViewActivity.this);
+            wDs.open();
+            WineListItem[] response = wDs.getProducerWines(mProducer.mIdProducer);
+            if (response != null) {
+                mWinesList = response;
+            }
+            wDs.close();
             return null;
 
         }
@@ -184,17 +187,17 @@ public class ProducersSearchActivity extends BaseActivity {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            if (mProducersList != null) {
+            if (mWinesList != null) {
                 fillView();
             }
 
-            mLoadProducersTask = null;
+            mLoadWinesTask = null;
 
         }
 
     }
-    
-    class LoadProducersOnlineTask extends AsyncTask<String, String, String> {
+
+    class LoadWinesOnlineTask extends AsyncTask<String, String, String> {
 
         boolean failure = false;
 
@@ -204,9 +207,9 @@ public class ProducersSearchActivity extends BaseActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             if (mProgDial == null) {
-                mProgDial = new ProgressDialog(mContext);
+                mProgDial = new ProgressDialog(mAct);
             }
-            mProgDial.setMessage(getResources().getString(R.string.loading_producers));
+            mProgDial.setMessage(getResources().getString(R.string.loading_wines));
             mProgDial.setIndeterminate(false);
             mProgDial.setCancelable(false);
             mProgDial.show();
@@ -219,19 +222,21 @@ public class ProducersSearchActivity extends BaseActivity {
         protected String doInBackground(String... args) {
 
             mParser = new JSONParser();
-
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("name", mName));            
+            params.add(new BasicNameValuePair("lang", ""
+                    + SharedPreferencesHelper.getSharedPreferencesInt(mAct,
+                            SettingsFragment.SharedKeyLanguage, SettingsFragment.DefLanguage)));
+            params.add(new BasicNameValuePair("idProducer", "" + mProducer.mIdProducer));
 
             InputStream source = mParser.retrieveStream(sUrl, sUsername, sPassword, params);
             if (source != null) {
                 Gson gson = new Gson();
                 InputStreamReader reader = new InputStreamReader(source);
 
-                ProducersResponse response = gson.fromJson(reader, ProducersResponse.class);
+                WinesResponse response = gson.fromJson(reader, WinesResponse.class);
 
                 if (response != null) {
-                    mProducersList = response.producers;
+                    mWinesList = response.wines;
                 }
             }
 
@@ -245,11 +250,11 @@ public class ProducersSearchActivity extends BaseActivity {
 
             super.onPostExecute(file_url);
             mProgDial.dismiss();
-            if (mProducersList != null) {
+            if (mWinesList != null) {
                 fillView();
             }
 
-            mLoadProducersOnlineTask = null;
+            mLoadWinesOnlineTask = null;
 
         }
 

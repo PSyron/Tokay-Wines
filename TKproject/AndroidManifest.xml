@@ -45,7 +45,7 @@
             android:value="pl.tokajiwines.acitivities.SearchableActivity" />
 
         <activity
-            android:name=".acitivities.StartWineImageActivity"
+            android:name=".activities.StartWineImageActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -55,85 +55,85 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".acitivities.MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".acitivities.NewsActivity"
+            android:name=".activities.NewsActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.tokajiwines.MainActivity" />
+                android:value="pl.tokajiwines.activities.MainActivity" />
         </activity>
         <activity
-            android:name=".acitivities.PlaceAcitvity"
+            android:name=".activities.PlaceAcitvity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".acitivities.WinesListActivity"
+            android:name=".activities.WinesListActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".acitivities.ProducerActivity"
+            android:name=".activities.ProducerActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".acitivities.WinesGridViewActivity"
+            android:name=".activities.WinesGridViewActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".acitivities.NearPlaceActivity"
+            android:name=".activities.NearPlaceActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".acitivities.NavigateToActivity"
+            android:name=".activities.NavigateToActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".acitivities.HotelActivity"
+            android:name=".activities.HotelActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".acitivities.RestaurantActivity"
+            android:name=".activities.RestaurantActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".acitivities.WineActivity"
+            android:name=".activities.WineActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".acitivities.AboutAppActivity"
+            android:name=".activities.AboutAppActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".acitivities.ProducersSearchActivity"
+            android:name=".activities.ProducersSearchActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".acitivities.HotelsSearchActivity"
+            android:name=".activities.HotelsSearchActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".acitivities.RestaurantsSearchActivity"
+            android:name=".activities.RestaurantsSearchActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="pl.tokajiwines.acitivities.SearchableActivity"
+            android:name="pl.tokajiwines.activities.SearchableActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >

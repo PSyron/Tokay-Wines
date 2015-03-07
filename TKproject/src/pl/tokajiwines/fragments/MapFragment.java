@@ -45,9 +45,9 @@ import org.json.JSONObject;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.HotelActivity;
-import pl.tokajiwines.acitivities.ProducerActivity;
-import pl.tokajiwines.acitivities.RestaurantActivity;
+import pl.tokajiwines.activities.HotelActivity;
+import pl.tokajiwines.activities.ProducerActivity;
+import pl.tokajiwines.activities.RestaurantActivity;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.jsonresponses.NearPlacesResponse;
 import pl.tokajiwines.jsonresponses.ProducerListItem;

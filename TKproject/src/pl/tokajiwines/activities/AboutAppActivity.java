@@ -1,5 +1,5 @@
 
-package pl.tokajiwines.acitivities;
+package pl.tokajiwines.activities;
 
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;

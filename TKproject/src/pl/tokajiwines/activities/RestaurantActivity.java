@@ -1,5 +1,5 @@
 
-package pl.tokajiwines.acitivities;
+package pl.tokajiwines.activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;

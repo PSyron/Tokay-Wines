@@ -1,5 +1,5 @@
 
-package pl.tokajiwines.acitivities;
+package pl.tokajiwines.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -19,7 +18,6 @@ import org.apache.http.message.BasicNameValuePair;
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.RestaurantsAdapter;
-import pl.tokajiwines.db.HotelsDataSource;
 import pl.tokajiwines.db.RestaurantsDataSource;
 import pl.tokajiwines.jsonresponses.RestaurantListItem;
 import pl.tokajiwines.jsonresponses.RestaurantsResponse;

@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.HotelActivity;
+import pl.tokajiwines.activities.HotelActivity;
 import pl.tokajiwines.adapters.HotelsAdapter;
 import pl.tokajiwines.db.HotelsDataSource;
 import pl.tokajiwines.jsonresponses.HotelListItem;

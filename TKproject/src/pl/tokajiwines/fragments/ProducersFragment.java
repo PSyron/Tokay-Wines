@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.ProducerActivity;
+import pl.tokajiwines.activities.ProducerActivity;
 import pl.tokajiwines.adapters.ProducersAdapter;
 import pl.tokajiwines.db.ProducersDataSource;
 import pl.tokajiwines.jsonresponses.ProducerListItem;

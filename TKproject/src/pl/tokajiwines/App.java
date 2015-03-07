@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.model.LatLng;
 
-import pl.tokajiwines.acitivities.BaseActivity;
+import pl.tokajiwines.activities.BaseActivity;
 import pl.tokajiwines.utils.Log;
 import pl.tokajiwines.utils.SimpleLocation;
 

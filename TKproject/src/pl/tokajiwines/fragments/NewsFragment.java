@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.NewsActivity;
+import pl.tokajiwines.activities.NewsActivity;
 import pl.tokajiwines.adapters.NewsAdapter;
 import pl.tokajiwines.db.NewsDataSource;
 import pl.tokajiwines.jsonresponses.NewsListItem;

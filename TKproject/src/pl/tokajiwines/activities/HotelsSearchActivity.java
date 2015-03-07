@@ -1,5 +1,5 @@
 
-package pl.tokajiwines.acitivities;
+package pl.tokajiwines.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -20,7 +19,6 @@ import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.adapters.HotelsAdapter;
 import pl.tokajiwines.db.HotelsDataSource;
-import pl.tokajiwines.db.WinesDataSource;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.jsonresponses.HotelsResponse;
 import pl.tokajiwines.utils.JSONParser;

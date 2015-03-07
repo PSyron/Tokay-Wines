@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.RestaurantActivity;
+import pl.tokajiwines.activities.RestaurantActivity;
 import pl.tokajiwines.adapters.RestaurantsAdapter;
 import pl.tokajiwines.db.RestaurantsDataSource;
 import pl.tokajiwines.jsonresponses.RestaurantListItem;

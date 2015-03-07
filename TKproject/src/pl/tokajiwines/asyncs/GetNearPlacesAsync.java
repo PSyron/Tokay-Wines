@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.R;
-import pl.tokajiwines.acitivities.MainActivity;
+import pl.tokajiwines.activities.MainActivity;
 import pl.tokajiwines.db.PlacesDataSource;
 import pl.tokajiwines.fragments.SettingsFragment;
 import pl.tokajiwines.jsonresponses.NearPlacesResponse;
