@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/item_map_pager_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/item_map_pager_pager"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+      />
+</LinearLayout>

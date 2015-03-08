@@ -10,15 +10,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,25 +41,9 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.koushikdutta.ion.Ion;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import org.json.JSONObject;
-
-import pl.tokajiwines.App;
-import pl.tokajiwines.R;
-import pl.tokajiwines.activities.HotelActivity;
-import pl.tokajiwines.activities.ProducerActivity;
-import pl.tokajiwines.activities.RestaurantActivity;
-import pl.tokajiwines.jsonresponses.HotelListItem;
-import pl.tokajiwines.jsonresponses.NearPlacesResponse;
-import pl.tokajiwines.jsonresponses.ProducerListItem;
-import pl.tokajiwines.jsonresponses.RestaurantListItem;
-import pl.tokajiwines.models.Place;
-import pl.tokajiwines.utils.Constans;
-import pl.tokajiwines.utils.DirectionsJSONParser;
-//import pl.tokajiwines.utils.GPSTracker;
-import pl.tokajiwines.utils.JSONParser;
-import pl.tokajiwines.utils.Log;
-import pl.tokajiwines.utils.SimpleLocation;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -71,7 +56,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapFragment extends BaseFragment {
+import pl.tokajiwines.App;
+import pl.tokajiwines.R;
+import pl.tokajiwines.activities.HotelActivity;
+import pl.tokajiwines.activities.ProducerActivity;
+import pl.tokajiwines.activities.RestaurantActivity;
+import pl.tokajiwines.adapters.MapTourPagerAdapter;
+import pl.tokajiwines.jsonresponses.HotelListItem;
+import pl.tokajiwines.jsonresponses.NearPlacesResponse;
+import pl.tokajiwines.jsonresponses.ProducerListItem;
+import pl.tokajiwines.jsonresponses.RestaurantListItem;
+import pl.tokajiwines.models.Place;
+import pl.tokajiwines.utils.Constans;
+import pl.tokajiwines.utils.DirectionsJSONParser;
+import pl.tokajiwines.utils.JSONParser;
+import pl.tokajiwines.utils.Log;
+
+//import pl.tokajiwines.utils.GPSTracker;
+
+public class MapFragment extends BaseFragment  {
 
     private GoogleMap googleMap;
     Context mCtx;
@@ -87,9 +90,13 @@ public class MapFragment extends BaseFragment {
     LatLng myPosition; //TODO temp
     boolean trasaIsPicked = false;
     Place mSelectedPlace;
-    SimpleLocation mSLocation;
-
+    //SimpleLocation mSLocation;
+    LocationListener mLocationHelper;
+    LocationManager mLocationManager;
     private Place[] mNearbyPlaces;
+    CirclePageIndicator mUiPageIndicator;
+    MapTourPagerAdapter mUiMapTourAdapter;
+    ViewPager mUiMapTourPager;
 
     private static String sUrl;
     private String sUsername;
@@ -113,17 +120,22 @@ public class MapFragment extends BaseFragment {
                     "Producer", "http://tokajiwines.me/photos/tokaji_hetszolo_thumb.jpg")
     };
     Place[] choosenTrip;
+    boolean isGPSEnabled ;
 
+    // getting network status
+    boolean isNetworkEnabled;
     View mUiPlaceBox;
+    View mUiPagerBox;
     ImageView mUiPlaceImage;
     TextView mUiPlaceTitle;
     TextView mUiPlaceAddress;
-
+    MarkerOptions myPositionMarker;
     LinearLayout mUiPlaceDistance;
     LinearLayout mUiPlaceDuration;
     LinearLayout mUiPlacePhone;
     ImageView mUiNavigateTo;
     ImageView mUiInfo;
+    ProgressDialog mProgressDialog;
     int mPassedTrip;
     boolean mFromGuide = false;
 
@@ -179,8 +191,9 @@ public class MapFragment extends BaseFragment {
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
         View v = inflater.inflate(R.layout.fragment_map, container, false);
-        mSLocation = new SimpleLocation(getActivity());
+       // mSLocation = new SimpleLocation(getActivity());
         mMapView = (MapView) v.findViewById(R.id.map);
+
         if (App.debug_mode) {
             myPosition = new LatLng(48.1295, 21.4089);
         } else {
@@ -190,6 +203,31 @@ public class MapFragment extends BaseFragment {
             //            mGPStrack.stopUsingGPS();
 
             myPosition = App.getCurrentLatLng(getActivity());
+
+            mLocationHelper = new LocationHelp(!mFromGuide);
+            mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+             isGPSEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            // getting network status
+             isNetworkEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+            if(isNetworkEnabled){
+                mLocationManager.requestLocationUpdates( LocationManager.NETWORK_PROVIDER, 2500, 10, mLocationHelper);
+                if(!mFromGuide)
+                    showDialogProgress();
+            }else
+            if(isGPSEnabled){
+            mLocationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 2500, 10, mLocationHelper);
+                if(!mFromGuide)
+                showDialogProgress();
+
+
+            }
+            else{
+                Toast.makeText(getActivity(),"No provider enabled" , Toast.LENGTH_SHORT ).show();
+            }
+
 
         }
         mUiRange = (Spinner) v.findViewById(R.id.map_range_spinner);
@@ -209,9 +247,28 @@ public class MapFragment extends BaseFragment {
         mUiNavigateTo = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_navigate);
         mUiNavigateTo.setVisibility(View.GONE);
         mUiInfo = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_info);
+
+        mUiPagerBox = v.findViewById(R.id.fragment_map_box_pager);
+        mUiPageIndicator = (CirclePageIndicator) mUiPagerBox.findViewById(R.id.item_map_pager_indicator);
+        mUiMapTourPager = (ViewPager) mUiPagerBox.findViewById(R.id.item_map_pager_pager);
+
         //mUiInfo.setVisibility(View.GONE);
 
         return v;
+    }
+
+    public void showDialogProgress(){
+        //mProgressDialog = ProgressDialog.show(getActivity(), getResources().getString(R.string.please_wait), getResources().getString(R.string.acquiring_position), true);
+
+      //  mProgressDialog.setCancelable(false);
+
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(mCtx);
+        }
+        mProgressDialog.setMessage(getResources().getString(R.string.acquiring_position));
+        mProgressDialog.setIndeterminate(false);
+        mProgressDialog.setCancelable(true);
+        mProgressDialog.show();
     }
 
     public void fillBox(final Place clicked) {
@@ -254,29 +311,31 @@ public class MapFragment extends BaseFragment {
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         googleMap = mMapView.getMap();
 
         // create marker
         googleMap.setMyLocationEnabled(false);
-        MarkerOptions marker = new MarkerOptions().position(myPosition).title(
+        myPositionMarker = new MarkerOptions().position(myPosition).title(
                 getResources().getString(R.string.here_u_are));
 
         // Changing marker icon
-        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        myPositionMarker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
         // adding marker
-        googleMap.addMarker(marker);
+        googleMap.addMarker(myPositionMarker);
 
         googleMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
             @Override
             public boolean onMarkerClick(final Marker arg0) {
                 if (!trasaIsPicked) {
-                    if (arg0.getPosition() != myPosition) {
+                    if (arg0.getPosition().latitude != myPositionMarker.getPosition().latitude && arg0.getPosition().longitude != myPositionMarker.getPosition().longitude) {
                         new AlertDialog.Builder(getActivity())
                                 .setTitle(
                                         getResources().getString(R.string.route_to) + " "
@@ -314,7 +373,7 @@ public class MapFragment extends BaseFragment {
                     for (Place pl : choosenTrip) {
                         if (arg0.getPosition().latitude == Double.parseDouble(pl.mLat)
                                 && arg0.getPosition().longitude == Double.parseDouble(pl.mLng)) {
-                            fillBox(pl);
+                            //fillBox(pl);
 
                             return false;
                         }
@@ -334,31 +393,7 @@ public class MapFragment extends BaseFragment {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mUiRange.setAdapter(dataAdapter);
         mRangePicked = 25;
-        mUiRange.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                mRangePicked = (position + 1) * 5;
-                if (App.isOnline(mCtx)) {
-                    if (!mFirstRun) {
-                        if (App.debug_mode) {
-                            new LoadNearPlaces().execute(myPosition);
-                        } else {
-                            new LoadNearPlaces().execute(App.getCurrentLatLng(getActivity()));
-                            // new LoadNearPlaces().execute(new GPSTracker(mCtx).getLocationLatLng());
-                        }
-
-                    }
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
-
-            }
-        });
 
         mUiTours.setOnClickListener(new OnClickListener() {
 
@@ -393,7 +428,8 @@ public class MapFragment extends BaseFragment {
 
                 } else {
 
-                    if (mSLocation.hasLocationEnabled()) {
+
+                        mUiPagerBox.setVisibility(View.GONE);
                         trasaIsPicked = false;
                         googleMap.clear();
                         mUiPlaceBox.setVisibility(View.GONE);
@@ -403,11 +439,11 @@ public class MapFragment extends BaseFragment {
 
                             new LoadNearPlaces().execute(myPosition);
                         }
-                        MarkerOptions marker = new MarkerOptions().position(myPosition).title(
+                        myPositionMarker = new MarkerOptions().position(myPosition).title(
                                 getResources().getString(R.string.here_u_are));
-                        marker.icon(BitmapDescriptorFactory
+                        myPositionMarker.icon(BitmapDescriptorFactory
                                 .defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                        googleMap.addMarker(marker);
+                        googleMap.addMarker(myPositionMarker);
 
                         CameraPosition cameraPosition = new CameraPosition.Builder()
                                 .target(myPosition).zoom(10).build();
@@ -415,7 +451,7 @@ public class MapFragment extends BaseFragment {
                                 .newCameraPosition(cameraPosition));
                     }
                 }
-            }
+
         });
         mUiInfo.setOnClickListener(new OnClickListener() {
 
@@ -452,6 +488,7 @@ public class MapFragment extends BaseFragment {
     public void pickTrip(int which) {
         trasaIsPicked = true;
         googleMap.clear();
+        mUiPagerBox.setVisibility(View.VISIBLE);
         switch (which) {
             case 0:
                 addMarkers(wStroneTokaju);
@@ -470,6 +507,11 @@ public class MapFragment extends BaseFragment {
                         downloadTask.execute(url);
                     }
                 }
+                mUiMapTourAdapter = null;
+                mUiMapTourAdapter = new MapTourPagerAdapter(getActivity(), wStroneTokaju);
+                mUiMapTourPager.setAdapter(mUiMapTourAdapter);
+                mUiPageIndicator.setViewPager(mUiMapTourPager);
+
                 break;
             case 1:
                 addMarkers(wTokaju);
@@ -477,6 +519,11 @@ public class MapFragment extends BaseFragment {
                 CameraPosition cameraPosition2 = new CameraPosition.Builder()
                         .target(wTokaju[0].getLatLng()).zoom(15).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition2));
+
+                mUiMapTourAdapter = null;
+                mUiMapTourAdapter = new MapTourPagerAdapter(getActivity(), wTokaju);
+                mUiMapTourPager.setAdapter(mUiMapTourAdapter);
+                mUiPageIndicator.setViewPager(mUiMapTourPager);
                 /* za blisko siebie 
                  if (App.isOnline(getActivity())) {
                      for (int i = 0; i < wTokaju.length - 1; i++) {
@@ -570,7 +617,12 @@ public class MapFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        mLocationHelper = new  LocationHelp(false);
+        if (isGPSEnabled) {
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 50, mLocationHelper);
+        } else if (isNetworkEnabled) {
+            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60000, 50, mLocationHelper);
+        }
         mMapView.onResume();
         if (mFromGuide) {
             pickTrip(mPassedTrip);
@@ -584,6 +636,8 @@ public class MapFragment extends BaseFragment {
 
     @Override
     public void onPause() {
+        mLocationManager.removeUpdates(mLocationHelper);
+
         if (mLoadNearPlaces != null) {
 
             mLoadNearPlaces.cancel(true);
@@ -599,12 +653,16 @@ public class MapFragment extends BaseFragment {
 
     @Override
     public void onDestroy() {
+        mLocationManager.removeUpdates(mLocationHelper);
+
         super.onDestroy();
         mMapView.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
+        mLocationManager.removeUpdates(mLocationHelper);
+
         super.onLowMemory();
         mMapView.onLowMemory();
     }
@@ -837,5 +895,62 @@ public class MapFragment extends BaseFragment {
             mLoadNearPlaces = null;
         }
     }
+    private class LocationHelp implements LocationListener{
 
+        boolean isFirstRequest = true;
+
+        public LocationHelp(boolean isFirst){
+            isFirstRequest=isFirst;
+        }
+
+        public LocationHelp(){
+        }
+
+        @Override
+        public void onLocationChanged(Location location) {
+            Log.e("onLocationChanged MapFragment", location.getLongitude() + "  " + location.getLatitude());
+            if (isFirstRequest) {
+                isFirstRequest = false;
+                googleMap.clear();
+                myPosition = new LatLng(location.getLatitude(), location.getLongitude());
+                myPositionMarker.position(myPosition);
+                googleMap.addMarker(myPositionMarker);
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(12)
+                        .build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                if(mProgressDialog!=null)
+                mProgressDialog.dismiss();
+                mLocationManager.removeUpdates(mLocationHelper);
+                if (isNetworkEnabled) {
+                    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60000, 50, mLocationHelper);
+                }else
+                if (isGPSEnabled) {
+                    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 50, mLocationHelper);
+                }
+            }
+            else {
+                    if (location.getLatitude() != myPosition.latitude && location.getLongitude() != myPosition.longitude) {
+
+                        myPosition = new LatLng(location.getLatitude(), location.getLongitude());
+                        myPositionMarker.position(myPosition);
+                        googleMap.addMarker(myPositionMarker);
+                    }
+                }
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    }
 }

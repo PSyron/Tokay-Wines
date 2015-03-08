@@ -2,9 +2,13 @@
 package pl.tokajiwines.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,13 +30,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONObject;
 
-import pl.tokajiwines.App;
-import pl.tokajiwines.R;
-import pl.tokajiwines.models.Place;
-import pl.tokajiwines.utils.DirectionsJSONParser;
-import pl.tokajiwines.utils.JSONParser;
-import pl.tokajiwines.utils.Log;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +40,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import pl.tokajiwines.App;
+import pl.tokajiwines.R;
+import pl.tokajiwines.models.Place;
+import pl.tokajiwines.utils.DirectionsJSONParser;
+import pl.tokajiwines.utils.JSONParser;
+import pl.tokajiwines.utils.Log;
 
 public class NavigateToActivity extends BaseActivity {
 
@@ -63,7 +67,7 @@ public class NavigateToActivity extends BaseActivity {
     static String sUrl;
     private Place[] mNearbyPlaces;
     // GPSTracker mGPStrack;
-
+    ProgressDialog mProgressDialog;
     View mUiPlaceBox;
     ImageView mUiPlaceImage;
     TextView mUiPlaceTitle;
@@ -74,6 +78,9 @@ public class NavigateToActivity extends BaseActivity {
     ImageView mUiNavigateTo;
     ImageView mUiInfo;
     String mUiPlaceImageUrl = "";
+
+    LocationListener mListener;
+    LocationManager mLocManager;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -107,12 +114,29 @@ public class NavigateToActivity extends BaseActivity {
             Toast.makeText(NavigateToActivity.this, "404 Error", Toast.LENGTH_LONG).show();
             finish();
         } else {
-            //            mGPStrack = new GPSTracker(this);
-            //            mGPStrack.getLocation();
-            //            mStartPosition = mGPStrack.getLocationLatLng();
-            //            mGPStrack.stopUsingGPS();
 
-            mStartPosition = App.getCurrentLatLng(this);
+            mListener = new LocationHelp();
+            mLocManager =   (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            boolean isGPSEnabled = mLocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            // getting network status
+            boolean isNetworkEnabled = mLocManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+
+// finally require updates at -at least- the desired rate
+            if(isNetworkEnabled){
+                mLocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2500, 10, mListener);
+                showDialogProgress();
+            }
+             else if(isGPSEnabled){
+                mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2500, 10, mListener);
+                showDialogProgress();
+            }
+             else{
+                Toast.makeText(this,"No provider enabled" , Toast.LENGTH_SHORT ).show();
+            }
+
+            //mStartPosition = App.getCurrentLatLng(this);
             mFinishPosition = mPlaceTo.getLatLng();
         }
         getActionBar().setTitle(
@@ -132,8 +156,22 @@ public class NavigateToActivity extends BaseActivity {
 
         fillBox();
         mMapView.onCreate(savedInstanceState);
-        initView();
+       // initView();
 
+    }
+
+    public void showDialogProgress(){
+       // mProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.please_wait), getResources().getString(R.string.acquiring_position), true);
+
+       // mProgressDialog.setCancelable(true);
+
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+        }
+        mProgressDialog.setMessage(getResources().getString(R.string.acquiring_position));
+        mProgressDialog.setIndeterminate(false);
+        mProgressDialog.setCancelable(true);
+        mProgressDialog.show();
     }
 
     public void fillBox() {
@@ -408,6 +446,37 @@ public class NavigateToActivity extends BaseActivity {
             //Brzydko ale dziala
             mUiPlaceDistance.setText(distance);
             mUiPlaceDuration.setText(duration);
+        }
+    }
+
+    private class LocationHelp implements LocationListener {
+
+
+        @Override
+        public void onLocationChanged(Location location) {
+
+            mStartPosition = new LatLng(location.getLatitude(), location.getLongitude());
+            mLocManager.removeUpdates(mListener);
+            if(mProgressDialog != null)
+            mProgressDialog.dismiss();
+            mListener = null;
+            initView();
+
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
         }
     }
 

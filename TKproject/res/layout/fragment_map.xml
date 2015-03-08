@@ -40,11 +40,22 @@
         android:textSize="16sp"
         android:visibility="visible" />
 
+    <include
+        android:id="@+id/fragment_map_box_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        layout="@layout/item_map_pager"
+        android:visibility="gone"
+        />
+
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/map_tours" />
+        android:layout_below="@id/map_tours"
+        android:layout_above="@id/fragment_map_box_pager"
+        />
 
     <include
         android:id="@+id/fragment_map_box"
@@ -52,7 +63,11 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/map"
         layout="@layout/item_map"
-        android:visibility="gone" >
+        android:visibility="visible" >
     </include>
+
+
+
+
 
 </RelativeLayout>

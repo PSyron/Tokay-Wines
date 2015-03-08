@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -20,10 +21,6 @@ import android.widget.ImageView;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.model.LatLng;
 
-import pl.tokajiwines.activities.BaseActivity;
-import pl.tokajiwines.utils.Log;
-import pl.tokajiwines.utils.SimpleLocation;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,6 +30,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+
+import pl.tokajiwines.activities.BaseActivity;
+import pl.tokajiwines.utils.Log;
+import pl.tokajiwines.utils.SimpleLocation;
 
 public class App extends Application {
 
@@ -165,6 +166,10 @@ public class App extends Application {
         Bitmap wallpaperBitmap = BitmapFactory.decodeStream(fileInputStream, null, bitmapOptions);
 
         return wallpaperBitmap;
+    }
+
+    public static LatLng fromLocationToLatLng(Location loc){
+        return new LatLng(loc.getLatitude(), loc.getLongitude());
     }
 
     public static LatLng getCurrentLatLng(Context ctx) {

@@ -117,7 +117,9 @@
     <string name="check_route">Czy chcesz wyznaczyć trasę?</string>
     <string name="cancel_tour">Ukryj trasę</string><string name="no_google_services_location_title">Brak zezwolenia na lokalizacje</string>
     <string name="no_google_services_location">Czy chcesz zezwolić teraz na lokalizowanie twojego urządzenia?</string>
-<string name="no_google_services_location_disabled">Usługa lokalizacji jest wyłączona, aby uzyskać dostęp włącz ją </string>
+    <string name="no_google_services_location_disabled">Usługa lokalizacji jest wyłączona, aby uzyskać dostęp włącz ją </string>
+    <string name="please_wait">Proszę czekać ...</string>
+    <string name="acquiring_position">Określanie pozycji ...</string>
 
     <!-- Guide -->
 
