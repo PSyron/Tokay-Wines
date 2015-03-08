@@ -15,12 +15,11 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,6 +41,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.koushikdutta.ion.Ion;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import org.json.JSONObject;
 
@@ -61,6 +61,7 @@ import pl.tokajiwines.R;
 import pl.tokajiwines.activities.HotelActivity;
 import pl.tokajiwines.activities.ProducerActivity;
 import pl.tokajiwines.activities.RestaurantActivity;
+import pl.tokajiwines.adapters.MapTourPagerAdapter;
 import pl.tokajiwines.jsonresponses.HotelListItem;
 import pl.tokajiwines.jsonresponses.NearPlacesResponse;
 import pl.tokajiwines.jsonresponses.ProducerListItem;
@@ -93,6 +94,9 @@ public class MapFragment extends BaseFragment  {
     LocationListener mLocationHelper;
     LocationManager mLocationManager;
     private Place[] mNearbyPlaces;
+    CirclePageIndicator mUiPageIndicator;
+    MapTourPagerAdapter mUiMapTourAdapter;
+    ViewPager mUiMapTourPager;
 
     private static String sUrl;
     private String sUsername;
@@ -121,6 +125,7 @@ public class MapFragment extends BaseFragment  {
     // getting network status
     boolean isNetworkEnabled;
     View mUiPlaceBox;
+    View mUiPagerBox;
     ImageView mUiPlaceImage;
     TextView mUiPlaceTitle;
     TextView mUiPlaceAddress;
@@ -242,6 +247,11 @@ public class MapFragment extends BaseFragment  {
         mUiNavigateTo = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_navigate);
         mUiNavigateTo.setVisibility(View.GONE);
         mUiInfo = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_info);
+
+        mUiPagerBox = v.findViewById(R.id.fragment_map_box_pager);
+        mUiPageIndicator = (CirclePageIndicator) mUiPagerBox.findViewById(R.id.item_map_pager_indicator);
+        mUiMapTourPager = (ViewPager) mUiPagerBox.findViewById(R.id.item_map_pager_pager);
+
         //mUiInfo.setVisibility(View.GONE);
 
         return v;
@@ -363,7 +373,7 @@ public class MapFragment extends BaseFragment  {
                     for (Place pl : choosenTrip) {
                         if (arg0.getPosition().latitude == Double.parseDouble(pl.mLat)
                                 && arg0.getPosition().longitude == Double.parseDouble(pl.mLng)) {
-                            fillBox(pl);
+                            //fillBox(pl);
 
                             return false;
                         }
@@ -383,31 +393,7 @@ public class MapFragment extends BaseFragment  {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mUiRange.setAdapter(dataAdapter);
         mRangePicked = 25;
-        mUiRange.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                mRangePicked = (position + 1) * 5;
-                if (App.isOnline(mCtx)) {
-                    if (!mFirstRun) {
-                        if (App.debug_mode) {
-                            new LoadNearPlaces().execute(myPosition);
-                        } else {
-                            new LoadNearPlaces().execute(App.getCurrentLatLng(getActivity()));
-                            // new LoadNearPlaces().execute(new GPSTracker(mCtx).getLocationLatLng());
-                        }
-
-                    }
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
-
-            }
-        });
 
         mUiTours.setOnClickListener(new OnClickListener() {
 
@@ -443,7 +429,7 @@ public class MapFragment extends BaseFragment  {
                 } else {
 
 
-
+                        mUiPagerBox.setVisibility(View.GONE);
                         trasaIsPicked = false;
                         googleMap.clear();
                         mUiPlaceBox.setVisibility(View.GONE);
@@ -502,6 +488,7 @@ public class MapFragment extends BaseFragment  {
     public void pickTrip(int which) {
         trasaIsPicked = true;
         googleMap.clear();
+        mUiPagerBox.setVisibility(View.VISIBLE);
         switch (which) {
             case 0:
                 addMarkers(wStroneTokaju);
@@ -520,6 +507,11 @@ public class MapFragment extends BaseFragment  {
                         downloadTask.execute(url);
                     }
                 }
+                mUiMapTourAdapter = null;
+                mUiMapTourAdapter = new MapTourPagerAdapter(getActivity(), wStroneTokaju);
+                mUiMapTourPager.setAdapter(mUiMapTourAdapter);
+                mUiPageIndicator.setViewPager(mUiMapTourPager);
+
                 break;
             case 1:
                 addMarkers(wTokaju);
@@ -527,6 +519,11 @@ public class MapFragment extends BaseFragment  {
                 CameraPosition cameraPosition2 = new CameraPosition.Builder()
                         .target(wTokaju[0].getLatLng()).zoom(15).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition2));
+
+                mUiMapTourAdapter = null;
+                mUiMapTourAdapter = new MapTourPagerAdapter(getActivity(), wTokaju);
+                mUiMapTourPager.setAdapter(mUiMapTourAdapter);
+                mUiPageIndicator.setViewPager(mUiMapTourPager);
                 /* za blisko siebie 
                  if (App.isOnline(getActivity())) {
                      for (int i = 0; i < wTokaju.length - 1; i++) {
