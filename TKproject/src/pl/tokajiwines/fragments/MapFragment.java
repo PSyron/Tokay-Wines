@@ -98,6 +98,8 @@ public class MapFragment extends BaseFragment  {
     MapTourPagerAdapter mUiMapTourAdapter;
     ViewPager mUiMapTourPager;
 
+
+
     private static String sUrl;
     private String sUsername;
     private String sPassword;
@@ -138,6 +140,7 @@ public class MapFragment extends BaseFragment  {
     ProgressDialog mProgressDialog;
     int mPassedTrip;
     boolean mFromGuide = false;
+    List<Marker> mTourMarkers;
 
     static Place[] wTokaju = {
             new Place(2, "1. Bonchidai Csarda", "Bajcsy-Zsilinszky 21 Tokaj", "21.412635",
@@ -186,7 +189,7 @@ public class MapFragment extends BaseFragment  {
         if (container == null) {
             return null;
         }
-
+        mTourMarkers = new ArrayList<Marker>();
         sUrl = getResources().getString(R.string.UrlNearLatLngPlace);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
@@ -330,6 +333,17 @@ public class MapFragment extends BaseFragment  {
         // adding marker
         googleMap.addMarker(myPositionMarker);
 
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                if(!trasaIsPicked){
+
+                }else{
+                    mUiPlaceBox.setVisibility(View.GONE);
+                }
+            }
+        });
+
         googleMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
             @Override
@@ -370,20 +384,21 @@ public class MapFragment extends BaseFragment  {
                     }
                     return false;
                 } else {
-                    for (Place pl : choosenTrip) {
-                        if (arg0.getPosition().latitude == Double.parseDouble(pl.mLat)
-                                && arg0.getPosition().longitude == Double.parseDouble(pl.mLng)) {
-                            //fillBox(pl);
-
-                            return false;
+                    for(int i=0; i< mTourMarkers.size() ; i++)
+                    {
+                        if(mTourMarkers.get(i).equals(arg0)){
+                            mUiMapTourPager.setCurrentItem(i);
+                            ((Marker)mTourMarkers.get(i)).showInfoWindow();
                         }
                     }
+
 
                     return false;
                 }
 
             }
         });
+
         CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(12)
                 .build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -541,7 +556,25 @@ public class MapFragment extends BaseFragment  {
             default:
                 break;
         }
+        mUiPageIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                ((Marker)mTourMarkers.get(position)).showInfoWindow();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+
+            }
+        });
+        ((Marker)mTourMarkers.get(0)).showInfoWindow();
         mUiTours.setText(getResources().getString(R.string.cancel_tour));
     }
 
@@ -580,7 +613,7 @@ public class MapFragment extends BaseFragment  {
     }
 
     public void addMarkers(Place[] pozycje) {
-
+        mTourMarkers = new ArrayList<Marker>();
         for (Place pozycja : pozycje) {
 
             MarkerOptions marker = new MarkerOptions().position(pozycja.getLatLng()).title(
@@ -601,9 +634,13 @@ public class MapFragment extends BaseFragment  {
                 marker.icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
             }
-
+            if(trasaIsPicked){
+                mTourMarkers.add( googleMap.addMarker(marker));
+            }else{
+                googleMap.addMarker(marker);
+            }
             // adding marker
-            googleMap.addMarker(marker);
+
         }
     }
 
@@ -618,10 +655,11 @@ public class MapFragment extends BaseFragment  {
     public void onResume() {
         super.onResume();
         mLocationHelper = new  LocationHelp(false);
+        if (isNetworkEnabled) {
+            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60000, 50, mLocationHelper);
+        }else
         if (isGPSEnabled) {
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 50, mLocationHelper);
-        } else if (isNetworkEnabled) {
-            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60000, 50, mLocationHelper);
         }
         mMapView.onResume();
         if (mFromGuide) {
@@ -636,8 +674,10 @@ public class MapFragment extends BaseFragment  {
 
     @Override
     public void onPause() {
+        if(mLocationHelper!=null){
+            if(mLocationManager!=null)
         mLocationManager.removeUpdates(mLocationHelper);
-
+        mLocationHelper = null;}
         if (mLoadNearPlaces != null) {
 
             mLoadNearPlaces.cancel(true);
@@ -653,16 +693,18 @@ public class MapFragment extends BaseFragment  {
 
     @Override
     public void onDestroy() {
-        mLocationManager.removeUpdates(mLocationHelper);
-
+        if(mLocationHelper!=null){
+            mLocationManager.removeUpdates(mLocationHelper);
+            mLocationHelper = null;}
         super.onDestroy();
         mMapView.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
-        mLocationManager.removeUpdates(mLocationHelper);
-
+        if(mLocationHelper!=null){
+            mLocationManager.removeUpdates(mLocationHelper);
+            mLocationHelper = null;}
         super.onLowMemory();
         mMapView.onLowMemory();
     }

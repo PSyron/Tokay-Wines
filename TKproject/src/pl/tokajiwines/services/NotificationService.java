@@ -8,7 +8,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 
 import pl.tokajiwines.App;
 import pl.tokajiwines.asyncs.GetNearPlacesAsync;
@@ -22,6 +24,9 @@ public class NotificationService extends Service {
 
     LocationListener locaList;
     LocationManager lm;
+    boolean isUpdated = false;
+
+    public static final String TAG = "NotificationService";
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -29,7 +34,8 @@ public class NotificationService extends Service {
         if (SharedPreferencesHelper.getSharedPreferencesBoolean(this,
                 SettingsFragment.SharedKeyNotif, SettingsFragment.DefNotif)) {
             Log.e("onStartCommand", "execute ");
-            if (App.isOnline(this)) {
+
+           if (App.isOnline(this)) {
 
                  locaList = new LocationHelp();
                  lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -39,12 +45,21 @@ public class NotificationService extends Service {
                 boolean isNetworkEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
                 if(isNetworkEnabled){
-                    lm.requestLocationUpdates( LocationManager.NETWORK_PROVIDER, 5000, 50, locaList);
+                    lm.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, locaList, Looper.myLooper());
                 }else
                 if(isGPSEnabled){
-                    lm.requestLocationUpdates( LocationManager.GPS_PROVIDER, 5000, 50, locaList);
+                    lm.requestSingleUpdate( LocationManager.GPS_PROVIDER, locaList, Looper.myLooper());
                 }
-
+                Handler handlerTimer = new Handler();
+                handlerTimer.postDelayed(new Runnable(){
+                    public void run() {
+                        if(!isUpdated && locaList != null){
+                            if(locaList!= null) {
+                                lm.removeUpdates(locaList);
+                                locaList = null;
+                            }
+                        }
+                    }}, 20000);
                     // GPSTracker gps = new GPSTracker(this);
                     //  if (gps.canGetLocation()) {
 
@@ -70,16 +85,20 @@ public class NotificationService extends Service {
 
         @Override
         public void onLocationChanged(Location location) {
+            isUpdated = true;
             Log.e("onLocationChanged Service", location.getLongitude() + "  " + location.getLatitude());
             new GetNearPlacesAsync(NotificationService.this).execute(App.fromLocationToLatLng(location));
-            lm.removeUpdates(locaList);
-            locaList = null;
-
+            if(locaList!= null) {
+                lm.removeUpdates(locaList);
+                locaList = null;
+            }
         }
+
+
 
         @Override
         public void onStatusChanged(String s, int i, Bundle bundle) {
-
+        int intidzer = i;
         }
 
         @Override
@@ -92,5 +111,6 @@ public class NotificationService extends Service {
 
         }
     }
+
 
 }

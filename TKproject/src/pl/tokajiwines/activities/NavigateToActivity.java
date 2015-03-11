@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -81,6 +82,9 @@ public class NavigateToActivity extends BaseActivity {
 
     LocationListener mListener;
     LocationManager mLocManager;
+    boolean isGPSEnabled ;
+
+    boolean isNetworkEnabled;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -118,18 +122,18 @@ public class NavigateToActivity extends BaseActivity {
             mListener = new LocationHelp();
             mLocManager =   (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-            boolean isGPSEnabled = mLocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+             isGPSEnabled = mLocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             // getting network status
-            boolean isNetworkEnabled = mLocManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+             isNetworkEnabled = mLocManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
 
 // finally require updates at -at least- the desired rate
             if(isNetworkEnabled){
-                mLocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2500, 10, mListener);
+                mLocManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, mListener, Looper.myLooper());
                 showDialogProgress();
             }
              else if(isGPSEnabled){
-                mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2500, 10, mListener);
+                mLocManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, mListener, Looper.myLooper());
                 showDialogProgress();
             }
              else{
@@ -205,6 +209,13 @@ public class NavigateToActivity extends BaseActivity {
     public void onResume() {
         super.onResume();
 
+        mListener = new  LocationHelp();
+        if (isNetworkEnabled) {
+            mLocManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, mListener, Looper.myLooper());
+        }else
+        if (isGPSEnabled) {
+            mLocManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, mListener, Looper.myLooper());
+        }
         mMapView.onResume();
 
     }
@@ -212,12 +223,19 @@ public class NavigateToActivity extends BaseActivity {
     @Override
     public void onPause() {
         super.onPause();
+        if(mListener!=null){
+        mLocManager.removeUpdates(mListener);
+        mListener = null;}
         mMapView.onPause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        if(mListener!=null){
+            mLocManager.removeUpdates(mListener);
+            mListener = null;}
         mMapView.onDestroy();
     }
 
@@ -230,11 +248,15 @@ public class NavigateToActivity extends BaseActivity {
     @Override
     public void onLowMemory() {
         super.onLowMemory();
+        if(mListener!=null){
+            mLocManager.removeUpdates(mListener);
+            mListener = null;}
         mMapView.onLowMemory();
     }
 
     public void initView() {
         sUrl = getResources().getString(R.string.UrlNearLatLngPlace);
+
         try {
             MapsInitializer.initialize(NavigateToActivity.this);
         } catch (Exception e) {
@@ -456,10 +478,10 @@ public class NavigateToActivity extends BaseActivity {
         public void onLocationChanged(Location location) {
 
             mStartPosition = new LatLng(location.getLatitude(), location.getLongitude());
-            mLocManager.removeUpdates(mListener);
+
             if(mProgressDialog != null)
             mProgressDialog.dismiss();
-            mListener = null;
+
             initView();
 
         }

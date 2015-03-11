@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/map"
         layout="@layout/item_map"
-        android:visibility="visible" >
+        android:visibility="gone" >
     </include>
 
 
