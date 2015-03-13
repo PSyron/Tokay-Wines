@@ -49,7 +49,7 @@
             android:id="@+id/item_map_linear_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal" android:visibility="gone">
 
             <TextView
                 style="@style/ItemTextSmall"
@@ -61,8 +61,7 @@
                 android:id="@+id/item_map_phone"
                 style="@style/ItemTextSmall"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="adress" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout

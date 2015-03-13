@@ -66,10 +66,13 @@ public class MapTourPagerAdapter extends PagerAdapter {
         item.setBackgroundResource(0);
         TextView placeTitle = (TextView) item.findViewById(R.id.item_map_title);
         TextView placeAddress = (TextView) item.findViewById(R.id.item_map_address);
+
         final ImageView img = (ImageView) item.findViewById(R.id.item_map_image);
         ImageView mUiNavigateTo = (ImageView) item.findViewById(R.id.item_map_navigate);
         LinearLayout Distance = (LinearLayout) item.findViewById(R.id.item_map_linear_distance);
         LinearLayout Duration = (LinearLayout) item.findViewById(R.id.item_map_linear_duration);
+        LinearLayout PhoneNumber = (LinearLayout) item.findViewById(R.id.item_map_linear_phone);
+        PhoneNumber.setVisibility(View.GONE);
         Distance.setVisibility(View.GONE);
         Duration.setVisibility(View.GONE);
         mUiNavigateTo.setVisibility(View.GONE);

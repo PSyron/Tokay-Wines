@@ -73,7 +73,7 @@ public class NavigateToActivity extends BaseActivity {
     ImageView mUiPlaceImage;
     TextView mUiPlaceTitle;
     TextView mUiPlaceAddress;
-
+    TextView mUiPhoneNumber;
     TextView mUiPlaceDistance;
     TextView mUiPlaceDuration;
     ImageView mUiNavigateTo;
@@ -150,7 +150,7 @@ public class NavigateToActivity extends BaseActivity {
         mUiPlaceImage = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_image);
         mUiPlaceTitle = (TextView) mUiPlaceBox.findViewById(R.id.item_map_title);
         mUiPlaceAddress = (TextView) mUiPlaceBox.findViewById(R.id.item_map_address);
-
+        mUiPhoneNumber= (TextView) mUiPlaceBox.findViewById(R.id.item_map_phone);
         mUiPlaceDistance = (TextView) mUiPlaceBox.findViewById(R.id.item_map_distance);
         mUiPlaceDuration = (TextView) mUiPlaceBox.findViewById(R.id.item_map_duration);
         mUiNavigateTo = (ImageView) mUiPlaceBox.findViewById(R.id.item_map_navigate);
@@ -182,7 +182,7 @@ public class NavigateToActivity extends BaseActivity {
 
         mUiPlaceBox.setVisibility(View.VISIBLE);
         mUiPlaceTitle.setText(mPlaceTo.mName);
-
+        mUiPhoneNumber.setText(mPlaceTo.mPhone);
         mUiPlaceAddress.setText(mPlaceTo.mAddress);
         if (!mUiPlaceImageUrl.equals("")) {
             final File imgFile = new File(NavigateToActivity.this.getFilesDir().getAbsolutePath()

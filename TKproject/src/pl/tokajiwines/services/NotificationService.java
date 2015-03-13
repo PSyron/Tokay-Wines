@@ -20,7 +20,6 @@ import pl.tokajiwines.utils.SharedPreferencesHelper;
 
 public class NotificationService extends Service {
 
-    // private final IBinder mBinder = new MyBinder();
 
     LocationListener locaList;
     LocationManager lm;
@@ -45,30 +44,29 @@ public class NotificationService extends Service {
                 boolean isNetworkEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
                 if(isNetworkEnabled){
-                    lm.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, locaList, Looper.myLooper());
+                   // lm.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, locaList, Looper.myLooper());
+                    lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 10, locaList);
+                    Log.e("requestLocationUpdates Service", "NETWORK");
                 }else
                 if(isGPSEnabled){
-                    lm.requestSingleUpdate( LocationManager.GPS_PROVIDER, locaList, Looper.myLooper());
+                  //  lm.requestSingleUpdate( LocationManager.GPS_PROVIDER, locaList, Looper.myLooper());
+                    Log.e("requestLocationUpdates Service", "GPS");
+                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locaList);
                 }
                 Handler handlerTimer = new Handler();
                 handlerTimer.postDelayed(new Runnable(){
                     public void run() {
-                        if(!isUpdated && locaList != null){
+                        Log.e("requestLocationUpdates Service", "DESTROY "+isUpdated +"  "+ locaList);
+                        if(!isUpdated){
                             if(locaList!= null) {
                                 lm.removeUpdates(locaList);
                                 locaList = null;
                             }
                         }
                     }}, 20000);
-                    // GPSTracker gps = new GPSTracker(this);
-                    //  if (gps.canGetLocation()) {
-
-
-
 
             }
         }
-        // Log.e("serwis", "execute " + wyswietlone.size());
 
         return Service.START_STICKY;
     }
