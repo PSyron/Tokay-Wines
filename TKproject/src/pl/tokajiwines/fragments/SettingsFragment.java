@@ -35,7 +35,7 @@ public class SettingsFragment extends BaseFragment {
     public static final String SharedKeyGPSRange = "GPSRange";
     public static final String SharedKeyGPSData = "mobileData";
 
-    public static final boolean DefNotif = true;
+    public static final boolean DefNotif = false;
     public static final boolean DefNotifVibrat = false;
     public static final int DefLanguage = 0; // 0 - Polish ; 1 - English
     public static final int DefCurrency = 0; // 0 - PLN ; 1 - Euro ; 2 - Forint

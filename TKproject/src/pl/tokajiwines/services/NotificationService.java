@@ -63,7 +63,7 @@ public class NotificationService extends Service {
                                 locaList = null;
                             }
                         }
-                    }}, 20000);
+                    }}, 15000);
 
             }
         }
@@ -96,7 +96,7 @@ public class NotificationService extends Service {
 
         @Override
         public void onStatusChanged(String s, int i, Bundle bundle) {
-        int intidzer = i;
+
         }
 
         @Override
@@ -106,7 +106,10 @@ public class NotificationService extends Service {
 
         @Override
         public void onProviderDisabled(String s) {
-
+            if(locaList!= null) {
+                lm.removeUpdates(locaList);
+                locaList = null;
+            }
         }
     }
 

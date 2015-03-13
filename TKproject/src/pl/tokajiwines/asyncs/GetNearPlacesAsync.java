@@ -67,6 +67,7 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
         sPassword = mContext.getResources().getString(R.string.Password);
         mRangePicked = SharedPreferencesHelper.getSharedPreferencesInt(mContext,
                 SettingsFragment.SharedKeyGPSRange, SettingsFragment.DefGPSRange);
+        mNearbyPlaces = new Place[0];
 
     }
 
@@ -77,8 +78,10 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
 
         mParser = new JSONParser();
         double tempRange = Constans.sMapRadiusInKm[mRangePicked];
+        String tempUrl;
         if (App.isOnline(mContext)) {
-            String tempUrl;
+        //if(false){
+
             if (!App.debug_mode) {
                 tempUrl = sUrl + "?lat=" + args[0].latitude + "&lng=" + args[0].longitude
                         + "&radius=" + tempRange;
@@ -106,14 +109,25 @@ public class GetNearPlacesAsync extends AsyncTask<LatLng, Void, Void> {
                         mNearbyPlaces = new Place[0];
                 }
             }
-        } else {
+        }
+
+        else {
+
             PlacesDataSource pDs = new PlacesDataSource(mContext);
             pDs.open();
-            mNearbyPlaces = pDs.getPlaces(args[0].latitude, args[0].longitude, tempRange);
+            if (!App.debug_mode) {
+
+                mNearbyPlaces = pDs.getPlaces(args[0].latitude, args[0].longitude, tempRange);
+            } else {
+                LatLng myPosition = new LatLng(48.1295, 21.4089);
+                tempUrl = sUrl + "?lat=" + myPosition.latitude + "&lng=" + myPosition.longitude
+                        + "&radius=" + tempRange;
+                mNearbyPlaces = pDs.getPlaces(myPosition.latitude, myPosition.longitude, tempRange);
+            }
+
             pDs.close();
         }
 
-        if (App.isOnline(mContext)) mNearbyPlaces = new Place[0];
 
         return null;
 

@@ -102,9 +102,11 @@ public class PlacesDataSource {
         Cursor cursor = database.query(DatabaseHelper.TABLE_PLACES, allColumns,
                 "Latitude > ? AND Latitude < ? AND Longitude > ? AND Latitude < ?", selectionArgs,
                 null, null, null);
-        if (cursor.getCount() == 0)
+        if (cursor.getCount() == 0) {
             Log.w(LOG, "Places are empty for:" + "Latitude: " + lat + "Longitude: " + lng
                     + "Radius: " + radius);
+            search = new Place[0];
+        }
         else {
             search = new Place[cursor.getCount()];
             cursor.moveToFirst();
