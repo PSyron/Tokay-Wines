@@ -23,6 +23,7 @@ import pl.tokajiwines.App;
 import pl.tokajiwines.R;
 import pl.tokajiwines.db.DatabaseHelper;
 import pl.tokajiwines.fragments.SettingsFragment;
+import pl.tokajiwines.jsonresponses.DatabaseResponse;
 import pl.tokajiwines.jsonresponses.DownloadImagesRespons;
 import pl.tokajiwines.jsonresponses.WineListItem;
 import pl.tokajiwines.jsonresponses.WinesResponse;
@@ -45,6 +46,7 @@ public class StartWineImageActivity extends BaseActivity {
     TextView mUiSkipBtn;
     ImageView mUiImage;
     ProgressDialog mProgDial;
+    private ProgressDialog mProgDialDB;
     JSONParser mParser;
     private WineListItem[] mWinesList;
     public static final String DOWNLOAD = "learnedAlready";
@@ -58,6 +60,8 @@ public class StartWineImageActivity extends BaseActivity {
     LoadImages mDownloadImagesTask;
     LoadWineImageTask mLoadWine;
     LoadDatabase mLoadDatabase;
+    private String sDatabaseUrl;
+    CheckDatabase mDownloadDatabaseTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,7 @@ public class StartWineImageActivity extends BaseActivity {
 
         sUrl = getResources().getString(R.string.UrlRandomWine);
         sImagesUrl = getResources().getString(R.string.UrlAllImagesDownload);
+        sDatabaseUrl= getResources().getString(R.string.UrlDownloadDatabase);
         sUsername = getResources().getString(R.string.Username);
         sPassword = getResources().getString(R.string.Password);
         setContentView(R.layout.activity_starting_image);
@@ -411,4 +416,74 @@ public class StartWineImageActivity extends BaseActivity {
 
     }
 
+    class CheckDatabase extends AsyncTask<String, String, String> {
+
+        boolean failure = false;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mProgDialDB == null) {
+                mProgDialDB = new ProgressDialog(StartWineImageActivity.this);
+            }
+            mProgDialDB.setMessage(getResources().getString(R.string.checking_database));
+            mProgDialDB.setIndeterminate(false);
+            mProgDialDB.setCancelable(false);
+            mProgDialDB.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgDialDB.show();
+
+        }
+
+        @Override
+        protected String doInBackground(String... args) {
+
+            mParser = new JSONParser();
+
+            InputStream source = mParser.retrieveStream(sDatabaseUrl, sUsername, sPassword, null);
+            if (source != null) {
+                Gson gson = new Gson();
+                InputStreamReader reader = new InputStreamReader(source);
+
+                DatabaseResponse response = gson.fromJson(reader, DatabaseResponse.class);
+
+                if (response != null) {
+                    mProgDialDB.setMax(1);
+                    int value = 0;
+                    mProgDialDB.setProgress(value);
+                    if (!App.isOnline(StartWineImageActivity.this)) {
+                        mDownloadDatabaseTask.cancel(true);
+                        if (mProgDialDB != null) {
+                            mProgDialDB.dismiss();
+                        }
+                    }
+                    final File dbFile = new File(StartWineImageActivity.this.getFilesDir()
+                            .getAbsolutePath()
+                            + "/databases/"
+                            + response.Name);
+                    if (!dbFile.exists()) {
+                        try {
+                            App.downloadToInternal(getResources().getString(R.string.UrlDatabase)+response.Name, StartWineImageActivity.this);
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                    mProgDialDB.setProgress(++value);
+                }
+
+            }
+
+
+        return null;
+
+    }
+
+    protected void onPostExecute(String file_url) {
+
+        super.onPostExecute(file_url);
+        mProgDialDB.dismiss();
+
+    }
+
+}
 }
