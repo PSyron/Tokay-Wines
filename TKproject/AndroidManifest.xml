@@ -42,7 +42,7 @@
             android:value="AIzaSyCweB3IdP8HuqaO8TUUviVNfrQQ_exoAz4" />
         <meta-data
             android:name="android.app.default_searchable"
-            android:value="pl.tokajiwines.acitivities.SearchableActivity" />
+            android:value="pl.tokajiwines.activities.SearchableActivity" />
 
         <activity
             android:name=".activities.StartWineImageActivity"
