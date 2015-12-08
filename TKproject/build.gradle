@@ -8,16 +8,22 @@ dependencies {
 }
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'tokaji_wines'
+            keyPassword 'zxczxczxc'
+            storeFile file('C:/Users/paulc_000/Desktop/tokaji_release (1).keystore')
+            storePassword 'zxczxczxc'
+        }
+    }
     compileSdkVersion 19
     buildToolsVersion "21.0.2"
-
     lintOptions {
         checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
         // but continue the build even when errors are found:
         abortOnError false
     }
-
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -42,5 +48,13 @@ android {
         release.setRoot('build-types/release')
 
 
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.config
+        }
+        release {
+            signingConfig signingConfigs.config
+        }
     }
 }

@@ -91,16 +91,6 @@ public class RestaurantsAdapter extends BaseAdapter {
             }, 50);
         }
 
-        //   .load("http://remzo.usermd.net/zpi/photos/akt1_thumb.jpg");
-
-        //        rowView.setOnClickListener(new OnClickListener() {
-        //            @Override
-        //            public void onClick(View v) {
-        //                // TODO Auto-generated method stub
-        //                Toast.makeText(context, "You Clicked " + result[position], Toast.LENGTH_LONG)
-        //                        .show();
-        //            }
-        //        });
         return rowView;
     }
 }

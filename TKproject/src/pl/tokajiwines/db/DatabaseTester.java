@@ -88,9 +88,9 @@ public class DatabaseTester {
     public void testImages() {
         iDs.open();
         iDs.insertImage(new Image(1, 1, 125, 125, 0, "Ciota",
-                "http://tokajiwines.me/photos/no_image.jpg", 1, "Dawno"));
+                "http://tokaji.idl.pl/photos/no_image.jpg", 1, "Dawno"));
         iDs.insertImage(new Image(2, 1, 125, 125, 0, "Cioty",
-                "http://tokajiwines.me/photos/akt1_thumb.jpg", 1, "BDawno"));
+                "http://tokaji.idl.pl/photos/akt1_thumb.jpg", 1, "BDawno"));
         List<Image> il = iDs.getAllImages();
         iDs.close();
         Log.i("Images", "Image id:" + il.get(0).mImage);

@@ -93,7 +93,6 @@ public class NewsAdapter extends BaseAdapter {
             }, 50);
         }
 
-        //   .load("http://remzo.usermd.net/zpi/photos/akt1_thumb.jpg");
         holder.content.setText(mNews[position].mDescription);
 
         return rowView;

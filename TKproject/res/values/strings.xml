@@ -159,26 +159,26 @@
 
     <!-- Urls -->
 
-    <string name="UrlNearLatLngPlace">http://tokajiwines.me/services/nearPlaces.php</string>
-    <string name="UrlEventDetails">http://tokajiwines.me/services/newsdetail.php</string>
-    <string name="UrlHotelDetails">http://tokajiwines.me/services/hotelDetails.php</string>
-    <string name="UrlProducerDetails">http://tokajiwines.me/services/producerDetails.php</string>
-    <string name="UrlProducerImages">http://tokajiwines.me/services/producerImages.php</string>
-    <string name="UrlRestaurantDetails">http://tokajiwines.me/services/restaurantDetails.php</string>
-    <string name="UrlNewsList">http://tokajiwines.me/services/news.php</string>
-    <string name="UrlProducersList">http://tokajiwines.me/services/producers.php</string>
-    <string name="UrlHotelsList">http://tokajiwines.me/services/hotels.php</string>
-    <string name="UrlRestaurantsList">http://tokajiwines.me/services/restaurants.php</string>
-    <string name="UrlWineFilter">http://tokajiwines.me/services/wineFilter.php</string>
-    <string name="UrlWinesList">http://tokajiwines.me/services/wines.php</string>
-    <string name="UrlWineDetails">http://tokajiwines.me/services/wineDetails.php</string>
-    <string name="UrlWinesGridViewList">http://tokajiwines.me/services/winesGridView.php</string>
-    <string name="UrlRandomWine">http://tokajiwines.me/services/randomWine.php</string>
-    <string name="UrlAllImagesDownload">http://tokajiwines.me/services/downloadImages.php</string>
-    <string name="UrlDownloadDatabase">http://tokajiwines.me/services/database.php</string>
-    <string name="UrlDatabase">http://tokajiwines.me/databases/</string>
-    <string name="UrlSearchItems">http://tokajiwines.me/services/searchItems.php</string>
-    <string name="UrlSearchResults">http://tokajiwines.me/services/searchResults.php</string>
+    <string name="UrlNearLatLngPlace">http://tokaji.idl.pl/services/nearPlaces.php</string>
+    <string name="UrlEventDetails">http://tokaji.idl.pl/services/newsdetail.php</string>
+    <string name="UrlHotelDetails">http://tokaji.idl.pl/services/hotelDetails.php</string>
+    <string name="UrlProducerDetails">http://tokaji.idl.pl/services/producerDetails.php</string>
+    <string name="UrlProducerImages">http://tokaji.idl.pl/services/producerImages.php</string>
+    <string name="UrlRestaurantDetails">http://tokaji.idl.pl/services/restaurantDetails.php</string>
+    <string name="UrlNewsList">http://tokaji.idl.pl/services/news.php</string>
+    <string name="UrlProducersList">http://tokaji.idl.pl/services/producers.php</string>
+    <string name="UrlHotelsList">http://tokaji.idl.pl/services/hotels.php</string>
+    <string name="UrlRestaurantsList">http://tokaji.idl.pl/services/restaurants.php</string>
+    <string name="UrlWineFilter">http://tokaji.idl.pl/services/wineFilter.php</string>
+    <string name="UrlWinesList">http://tokaji.idl.pl/services/wines.php</string>
+    <string name="UrlWineDetails">http://tokaji.idl.pl/services/wineDetails.php</string>
+    <string name="UrlWinesGridViewList">http://tokaji.idl.pl/services/winesGridView.php</string>
+    <string name="UrlRandomWine">http://tokaji.idl.pl/services/randomWine.php</string>
+    <string name="UrlAllImagesDownload">http://tokaji.idl.pl/services/downloadImages.php</string>
+    <string name="UrlDownloadDatabase">http://tokaji.idl.pl/services/database.php</string>
+    <string name="UrlDatabase">http://tokaji.idl.pl/databases/</string>
+    <string name="UrlSearchItems">http://tokaji.idl.pl/services/searchItems.php</string>
+    <string name="UrlSearchResults">http://tokaji.idl.pl/services/searchResults.php</string>
     <string name="title_activity_wine">WineActivity</string>
     <string name="Username">zpi</string>
     <string name="Password">OEmGie</string>

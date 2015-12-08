@@ -88,7 +88,6 @@ public class HotelsAdapter extends BaseAdapter {
                 }
             }, 50);
         }
-        //   .load("http://remzo.usermd.net/zpi/photos/akt1_thumb.jpg");
 
         //        rowView.setOnClickListener(new OnClickListener() {
         //            @Override
